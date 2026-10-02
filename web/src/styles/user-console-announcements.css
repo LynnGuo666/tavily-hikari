@@ -18,12 +18,12 @@
   height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  background: hsl(var(--secondary));
-  color: hsl(var(--secondary-foreground));
+  background: hsl(var(--legacy-secondary));
+  color: hsl(var(--legacy-secondary-foreground));
   font-size: 0.68rem;
   font-weight: 800;
   line-height: 1;
-  box-shadow: 0 0 0 2px hsl(var(--card));
+  box-shadow: 0 0 0 2px hsl(var(--legacy-card));
 }
 
 .user-console-announcement-ticker {
@@ -33,9 +33,9 @@
   gap: 12px;
   margin-top: 14px;
   padding: 12px 14px;
-  border: 1px solid hsl(var(--primary) / 0.22);
+  border: 1px solid hsl(var(--legacy-primary) / 0.22);
   border-radius: 22px;
-  background: hsl(var(--primary) / 0.09);
+  background: hsl(var(--legacy-primary) / 0.09);
   box-shadow: var(--shadow-clay-card);
 }
 
@@ -55,8 +55,8 @@
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  background: hsl(var(--primary) / 0.14);
-  color: hsl(var(--primary));
+  background: hsl(var(--legacy-primary) / 0.14);
+  color: hsl(var(--legacy-primary));
 }
 
 .user-console-announcement-ticker-copy {
@@ -79,7 +79,7 @@
 }
 
 .user-console-announcement-ticker-content {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   line-height: 1.45;
 }
 
@@ -108,7 +108,7 @@
 .user-console-announcement-dialog-body {
   max-height: min(42vh, 24rem);
   overflow: auto;
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
 }
 
 .user-console-announcement-history {
@@ -157,9 +157,9 @@
   display: grid;
   gap: 10px;
   padding: 14px;
-  border: 1px solid hsl(var(--border) / 0.72);
+  border: 1px solid hsl(var(--legacy-border) / 0.72);
   border-radius: 20px;
-  background: hsl(var(--background) / 0.34);
+  background: hsl(var(--legacy-background) / 0.34);
 }
 
 .user-console-announcement-history-item header {
@@ -182,7 +182,7 @@
 .user-console-announcement-history-item header span,
 .user-console-announcement-history-body,
 .user-console-announcement-closed {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
 }
 
 .user-console-announcement-closed {

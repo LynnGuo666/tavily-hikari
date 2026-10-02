@@ -52,20 +52,20 @@
   align-items: baseline;
   gap: 6px;
   border-radius: 999px;
-  border: 1px solid hsl(var(--border) / 0.52);
-  background: hsl(var(--muted) / 0.2);
+  border: 1px solid hsl(var(--legacy-border) / 0.52);
+  background: hsl(var(--legacy-muted) / 0.2);
   padding: 7px 10px;
 }
 
 .user-console-inline-stat-label {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 
 .user-console-inline-stat-value {
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-size: 0.96rem;
   line-height: 1;
 }
@@ -79,26 +79,26 @@
 }
 
 .user-console-tokens-section > .table-wrapper {
-  border-color: hsl(var(--border) / 0.36);
+  border-color: hsl(var(--legacy-border) / 0.36);
   border-radius: 12px;
-  background: hsl(var(--card) / 0.22);
-  box-shadow: inset 0 1px 0 hsl(var(--background) / 0.2);
+  background: hsl(var(--legacy-card) / 0.22);
+  box-shadow: inset 0 1px 0 hsl(var(--legacy-background) / 0.2);
 }
 
 .user-console-tokens-section > .table-wrapper:hover {
-  border-color: hsl(var(--border) / 0.48);
-  box-shadow: inset 0 1px 0 hsl(var(--background) / 0.24);
+  border-color: hsl(var(--legacy-border) / 0.48);
+  box-shadow: inset 0 1px 0 hsl(var(--legacy-background) / 0.24);
 }
 
 .dark .user-console-tokens-section > .table-wrapper {
-  border-color: hsl(var(--border) / 0.36);
-  background: hsl(var(--card) / 0.22);
-  box-shadow: inset 0 1px 0 hsl(var(--background) / 0.2);
+  border-color: hsl(var(--legacy-border) / 0.36);
+  background: hsl(var(--legacy-card) / 0.22);
+  box-shadow: inset 0 1px 0 hsl(var(--legacy-background) / 0.2);
 }
 
 .dark .user-console-tokens-section > .table-wrapper:hover {
-  border-color: hsl(var(--border) / 0.48);
-  box-shadow: inset 0 1px 0 hsl(var(--background) / 0.24);
+  border-color: hsl(var(--legacy-border) / 0.48);
+  box-shadow: inset 0 1px 0 hsl(var(--legacy-background) / 0.24);
 }
 
 .user-console-tokens-section .user-console-inline-stat {
@@ -107,8 +107,8 @@
   align-items: baseline;
   gap: 6px;
   border-radius: 999px;
-  border-color: hsl(var(--border) / 0.46);
-  background: hsl(var(--muted) / 0.16);
+  border-color: hsl(var(--legacy-border) / 0.46);
+  background: hsl(var(--legacy-muted) / 0.16);
   padding: 7px 10px;
 }
 
@@ -168,12 +168,12 @@
   gap: 18px;
   padding: 22px;
   border-radius: 28px;
-  border: 1px solid hsl(var(--border) / 0.76);
+  border: 1px solid hsl(var(--legacy-border) / 0.76);
   background:
-    radial-gradient(circle at top right, hsl(var(--primary) / 0.18), transparent 36%),
-    linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--muted) / 0.38));
+    radial-gradient(circle at top right, hsl(var(--legacy-primary) / 0.18), transparent 36%),
+    linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-muted) / 0.38));
   box-shadow:
-    inset 0 1px 0 hsl(var(--background) / 0.7),
+    inset 0 1px 0 hsl(var(--legacy-background) / 0.7),
     0 24px 44px -34px hsl(24 22% 27% / 0.26);
 }
 
@@ -184,7 +184,7 @@
   width: 220px;
   height: 220px;
   border-radius: 999px;
-  background: radial-gradient(circle, hsl(var(--background) / 0.54), transparent 70%);
+  background: radial-gradient(circle, hsl(var(--legacy-background) / 0.54), transparent 70%);
   pointer-events: none;
 }
 
@@ -201,8 +201,8 @@
   min-height: 30px;
   padding: 0 12px;
   border-radius: 999px;
-  background: hsl(var(--background) / 0.76);
-  color: hsl(var(--muted-foreground));
+  background: hsl(var(--legacy-background) / 0.76);
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -231,7 +231,7 @@
 .oauth-callback-title-copy p,
 .oauth-callback-note {
   margin: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   line-height: 1.62;
 }
 
@@ -246,9 +246,9 @@
   height: 52px;
   border-radius: 18px;
   border: 1px solid transparent;
-  background: hsl(var(--background) / 0.82);
-  color: hsl(var(--foreground));
-  box-shadow: inset 0 1px 0 hsl(var(--background) / 0.86);
+  background: hsl(var(--legacy-background) / 0.82);
+  color: hsl(var(--legacy-foreground));
+  box-shadow: inset 0 1px 0 hsl(var(--legacy-background) / 0.86);
 }
 
 .oauth-callback-icon-shell-info,
@@ -289,8 +289,8 @@
   padding: 0 14px;
   border-radius: 999px;
   border: 1px solid hsl(var(--oauth-callback-accent) / 0.2);
-  background: hsl(var(--background) / 0.8);
-  color: hsl(var(--foreground));
+  background: hsl(var(--legacy-background) / 0.8);
+  color: hsl(var(--legacy-foreground));
   font-weight: 700;
 }
 
@@ -317,10 +317,10 @@
   align-items: center;
   padding: 14px 16px;
   border-radius: 20px;
-  border: 1px solid hsl(var(--border) / 0.7);
+  border: 1px solid hsl(var(--legacy-border) / 0.7);
   background:
-    linear-gradient(180deg, hsl(var(--background) / 0.64), hsl(var(--card) / 0.92));
-  color: hsl(var(--foreground));
+    linear-gradient(180deg, hsl(var(--legacy-background) / 0.64), hsl(var(--legacy-card) / 0.92));
+  color: hsl(var(--legacy-foreground));
 }
 
 .oauth-callback-step-icon {
@@ -329,8 +329,8 @@
   width: 36px;
   height: 36px;
   border-radius: 14px;
-  background: hsl(var(--muted) / 0.44);
-  color: hsl(var(--muted-foreground));
+  background: hsl(var(--legacy-muted) / 0.44);
+  color: hsl(var(--legacy-muted-foreground));
 }
 
 .oauth-callback-step-complete .oauth-callback-step-icon {
@@ -339,7 +339,7 @@
 }
 
 .oauth-callback-step-active {
-  border-color: hsl(var(--primary) / 0.34);
+  border-color: hsl(var(--legacy-primary) / 0.34);
 }
 
 .oauth-callback-step-active .oauth-callback-step-icon {
@@ -348,12 +348,12 @@
 }
 
 .oauth-callback-step-error {
-  border-color: hsl(var(--destructive) / 0.28);
+  border-color: hsl(var(--legacy-destructive) / 0.28);
 }
 
 .oauth-callback-step-error .oauth-callback-step-icon {
   background: hsl(10 100% 95%);
-  color: hsl(var(--destructive));
+  color: hsl(var(--legacy-destructive));
 }
 
 .dark .oauth-callback-icon-shell-info,
@@ -365,43 +365,43 @@
 .dark .oauth-callback-icon-shell-success,
 .dark .oauth-callback-status-pill-success,
 .dark .oauth-callback-status-dot-success {
-  --oauth-callback-accent: var(--success-readable);
+  --oauth-callback-accent: var(--legacy-success-readable);
 }
 
 .dark .oauth-callback-icon-shell-warning,
 .dark .oauth-callback-status-pill-warning,
 .dark .oauth-callback-status-dot-warning {
-  --oauth-callback-accent: var(--warning-readable);
+  --oauth-callback-accent: var(--legacy-warning-readable);
 }
 
 .dark .oauth-callback-icon-shell-danger,
 .dark .oauth-callback-status-pill-danger,
 .dark .oauth-callback-status-dot-danger {
-  --oauth-callback-accent: var(--destructive-readable);
+  --oauth-callback-accent: var(--legacy-destructive-readable);
 }
 
 .dark .oauth-callback-icon-shell {
-  background: linear-gradient(180deg, hsl(var(--card) / 0.96), hsl(var(--muted) / 0.56));
+  background: linear-gradient(180deg, hsl(var(--legacy-card) / 0.96), hsl(var(--legacy-muted) / 0.56));
   border-color: hsl(var(--oauth-callback-accent) / 0.3);
   box-shadow:
-    inset 0 1px 0 hsl(var(--foreground) / 0.05),
+    inset 0 1px 0 hsl(var(--legacy-foreground) / 0.05),
     0 10px 22px -18px hsl(var(--oauth-callback-accent) / 0.42);
 }
 
 .dark .oauth-callback-status-pill {
-  background: hsl(var(--card) / 0.9);
+  background: hsl(var(--legacy-card) / 0.9);
   border-color: hsl(var(--oauth-callback-accent) / 0.28);
 }
 
 .dark .oauth-callback-step-icon {
-  background: hsl(var(--muted) / 0.76);
-  color: hsl(var(--muted-foreground));
-  box-shadow: inset 0 1px 0 hsl(var(--foreground) / 0.035);
+  background: hsl(var(--legacy-muted) / 0.76);
+  color: hsl(var(--legacy-muted-foreground));
+  box-shadow: inset 0 1px 0 hsl(var(--legacy-foreground) / 0.035);
 }
 
 .dark .oauth-callback-step-complete .oauth-callback-step-icon {
-  background: hsl(var(--success) / 0.18);
-  color: hsl(var(--success-readable));
+  background: hsl(var(--legacy-success) / 0.18);
+  color: hsl(var(--legacy-success-readable));
 }
 
 .dark .oauth-callback-step-active .oauth-callback-step-icon {
@@ -410,8 +410,8 @@
 }
 
 .dark .oauth-callback-step-error .oauth-callback-step-icon {
-  background: hsl(var(--destructive) / 0.16);
-  color: hsl(var(--destructive-readable));
+  background: hsl(var(--legacy-destructive) / 0.16);
+  color: hsl(var(--legacy-destructive-readable));
 }
 
 .oauth-callback-actions {
@@ -543,12 +543,12 @@
 .user-console-progress-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid hsl(var(--border) / 0.5);
+  border: 1px solid hsl(var(--legacy-border) / 0.5);
   border-radius: 16px;
   background:
-    linear-gradient(180deg, hsl(var(--card) / 0.58) 0%, hsl(var(--card) / 0.38) 100%),
-    hsl(var(--muted) / 0.1);
-  box-shadow: inset 0 1px 0 hsl(var(--background) / 0.32);
+    linear-gradient(180deg, hsl(var(--legacy-card) / 0.58) 0%, hsl(var(--legacy-card) / 0.38) 100%),
+    hsl(var(--legacy-muted) / 0.1);
+  box-shadow: inset 0 1px 0 hsl(var(--legacy-background) / 0.32);
 }
 
 .user-console-summary-card {
@@ -571,7 +571,7 @@
   pointer-events: none;
   background:
     linear-gradient(180deg, hsl(var(--user-console-accent) / 0.08), transparent 34%),
-    linear-gradient(90deg, hsl(var(--background) / 0.04), transparent 52%);
+    linear-gradient(90deg, hsl(var(--legacy-background) / 0.04), transparent 52%);
 }
 
 .user-console-summary-card-success {
@@ -614,7 +614,7 @@
 
 .user-console-summary-card-label,
 .user-console-progress-card-label {
-  color: hsl(var(--foreground) / 0.74);
+  color: hsl(var(--legacy-foreground) / 0.74);
   font-size: 0.94rem;
   font-weight: 650;
   line-height: 1.45;
@@ -643,7 +643,7 @@
   position: relative;
   z-index: 1;
   margin-top: 16px;
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
 }
 
 .user-console-summary-card-value {
@@ -663,7 +663,7 @@
   position: relative;
   z-index: 1;
   margin-top: 12px;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.78rem;
   font-weight: 650;
 }
@@ -689,7 +689,7 @@
 
 .user-console-progress-card-value span {
   font-size: 1rem;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1, 'lnum' 1;
@@ -697,7 +697,7 @@
 
 .user-console-progress-card.is-loading .user-console-progress-card-value strong,
 .user-console-progress-card.is-loading .user-console-progress-card-value span {
-  color: hsl(var(--muted-foreground) / 0.72);
+  color: hsl(var(--legacy-muted-foreground) / 0.72);
 }
 
 .user-console-progress-card-foot {
@@ -706,13 +706,13 @@
   justify-content: space-between;
   gap: 8px;
   margin-top: 12px;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.8rem;
   font-weight: 700;
 }
 
 .user-console-progress-card-foot strong {
-  color: hsl(var(--foreground) / 0.9);
+  color: hsl(var(--legacy-foreground) / 0.9);
   font-size: 0.82rem;
 }
 
@@ -725,7 +725,7 @@
 
 .user-console-progress-chart-empty {
   background:
-    linear-gradient(180deg, transparent 0%, hsl(var(--muted) / 0.12) 100%);
+    linear-gradient(180deg, transparent 0%, hsl(var(--legacy-muted) / 0.12) 100%);
 }
 
 .user-console-progress-chart-svg {
@@ -737,7 +737,7 @@
 
 .user-console-progress-limit-path {
   fill: none;
-  stroke: hsl(var(--foreground) / 0.24);
+  stroke: hsl(var(--legacy-foreground) / 0.24);
   stroke-width: 1.5;
   stroke-dasharray: 5 5;
   stroke-linecap: round;
@@ -753,7 +753,7 @@
 
 .user-console-progress-line-cap {
   fill: currentColor;
-  stroke: hsl(var(--card));
+  stroke: hsl(var(--legacy-card));
   stroke-width: 2;
 }
 

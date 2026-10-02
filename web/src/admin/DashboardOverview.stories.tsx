@@ -24,7 +24,7 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ padding: 24, background: 'hsl(var(--background))' }}>
+      <div style={{ padding: 24, background: 'hsl(var(--legacy-background))' }}>
         <Story />
       </div>
     ),
@@ -1152,7 +1152,7 @@ export const RecentAlertsDesktopEvidence: Story = {
 
         .dashboard-recent-alerts-evidence .dashboard-alerts-summary__metric-chip + .dashboard-alerts-summary__metric-chip {
           border-top: 0 !important;
-          border-left: 1px solid hsl(var(--border) / 0.72) !important;
+          border-left: 1px solid hsl(var(--legacy-border) / 0.72) !important;
         }
 
         .dashboard-recent-alerts-evidence .dashboard-alerts-summary__table-head {

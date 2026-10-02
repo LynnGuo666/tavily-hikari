@@ -26,7 +26,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.82rem;
 }
 
@@ -35,18 +35,18 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 12px;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-family: 'JetBrains Mono', 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   font-size: 0.82rem;
 }
 
 .user-console-log-card-meta time {
-  color: hsl(var(--foreground) / 0.82);
+  color: hsl(var(--legacy-foreground) / 0.82);
 }
 
 .user-console-log-card-error {
   margin: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.86rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -74,9 +74,9 @@
 }
 
 .access-stat {
-  border: 1px solid hsl(var(--border) / 0.82);
+  border: 1px solid hsl(var(--legacy-border) / 0.82);
   border-radius: 14px;
-  background: hsl(var(--card) / 0.92);
+  background: hsl(var(--legacy-card) / 0.92);
   padding: 14px 18px;
   min-width: 160px;
   flex: 1 1 160px;

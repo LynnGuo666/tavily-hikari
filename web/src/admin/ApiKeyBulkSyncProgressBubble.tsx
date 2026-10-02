@@ -54,7 +54,7 @@ export function ApiKeyBulkSyncProgressBubble({
 }: ApiKeyBulkSyncProgressBubbleProps): JSX.Element {
   return (
     <div
-      className={`rounded-2xl border border-primary/25 bg-popover/98 px-4 py-3 text-popover-foreground shadow-[0_18px_44px_-28px_hsl(var(--primary)/0.75)] backdrop-blur ${className ?? ''}`}
+      className={`rounded-2xl border border-primary/25 bg-popover/98 px-4 py-3 text-popover-foreground shadow-[0_18px_44px_-28px_hsl(var(--legacy-primary)/0.75)] backdrop-blur ${className ?? ''}`}
       style={style}
     >
       <div className="space-y-1">

@@ -17,7 +17,7 @@ function RegistrationPaused(): JSX.Element {
     <div
       className={`min-h-screen text-foreground ${
         isDark
-          ? 'bg-[radial-gradient(circle_at_top,_hsl(var(--primary)/0.12),_hsl(var(--background))_38%,_oklch(0.145_0.024_305)_78%)]'
+          ? 'bg-[radial-gradient(circle_at_top,_hsl(var(--legacy-primary)/0.12),_hsl(var(--legacy-background))_38%,_oklch(0.145_0.024_305)_78%)]'
           : 'bg-[radial-gradient(circle_at_top,_rgba(255,244,214,0.95),_rgba(255,251,235,0.88)_32%,_rgba(255,255,255,0.98)_72%)]'
       }`}
     >

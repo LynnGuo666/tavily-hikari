@@ -397,12 +397,12 @@ function StoryCanvas({
       style={{
         minHeight: '100vh',
         padding: 24,
-        color: 'hsl(var(--foreground))',
+        color: 'hsl(var(--legacy-foreground))',
         background: [
-          'radial-gradient(1000px 520px at 6% -8%, hsl(var(--primary) / 0.14), transparent 62%)',
-          'radial-gradient(900px 460px at 95% -14%, hsl(var(--accent) / 0.12), transparent 64%)',
-          'linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background)) 62%, hsl(var(--muted) / 0.58) 100%)',
-          'hsl(var(--background))',
+          'radial-gradient(1000px 520px at 6% -8%, hsl(var(--legacy-primary) / 0.14), transparent 62%)',
+          'radial-gradient(900px 460px at 95% -14%, hsl(var(--legacy-accent) / 0.12), transparent 64%)',
+          'linear-gradient(180deg, hsl(var(--legacy-background)) 0%, hsl(var(--legacy-background)) 62%, hsl(var(--legacy-muted) / 0.58) 100%)',
+          'hsl(var(--legacy-background))',
         ].join(', '),
       }}
     >
@@ -444,12 +444,12 @@ function RevalidateProgressBubbleProof(): JSX.Element {
       style={{
         minHeight: '100vh',
         padding: 24,
-        color: 'hsl(var(--foreground))',
+        color: 'hsl(var(--legacy-foreground))',
         background: [
-          'radial-gradient(1000px 520px at 6% -8%, hsl(var(--primary) / 0.14), transparent 62%)',
-          'radial-gradient(900px 460px at 95% -14%, hsl(var(--accent) / 0.12), transparent 64%)',
-          'linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background)) 62%, hsl(var(--muted) / 0.58) 100%)',
-          'hsl(var(--background))',
+          'radial-gradient(1000px 520px at 6% -8%, hsl(var(--legacy-primary) / 0.14), transparent 62%)',
+          'radial-gradient(900px 460px at 95% -14%, hsl(var(--legacy-accent) / 0.12), transparent 64%)',
+          'linear-gradient(180deg, hsl(var(--legacy-background)) 0%, hsl(var(--legacy-background)) 62%, hsl(var(--legacy-muted) / 0.58) 100%)',
+          'hsl(var(--legacy-background))',
         ].join(', '),
       }}
     >
@@ -477,8 +477,8 @@ function RevalidateProgressBubbleProof(): JSX.Element {
               gap: 18,
               overflow: 'hidden',
               borderRadius: 28,
-              border: '1px dashed hsl(var(--accent) / 0.42)',
-              background: 'linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--muted) / 0.3))',
+              border: '1px dashed hsl(var(--legacy-accent) / 0.42)',
+              background: 'linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-muted) / 0.3))',
               padding: 18,
             }}
           >
@@ -492,8 +492,8 @@ function RevalidateProgressBubbleProof(): JSX.Element {
               }}
             >
               <div style={{ display: 'grid', gap: 4 }}>
-                <strong style={{ fontSize: '1rem', color: 'hsl(var(--foreground))' }}>Node pool & live stats</strong>
-                <span style={{ fontSize: '0.92rem', color: 'hsl(var(--muted-foreground))' }}>
+                <strong style={{ fontSize: '1rem', color: 'hsl(var(--legacy-foreground))' }}>Node pool & live stats</strong>
+                <span style={{ fontSize: '0.92rem', color: 'hsl(var(--legacy-muted-foreground))' }}>
                   Validate subscriptions now
                 </span>
               </div>
@@ -521,16 +521,16 @@ function RevalidateProgressBubbleProof(): JSX.Element {
                   height: 12,
                   width: '32%',
                   borderRadius: 999,
-                  background: 'hsl(var(--muted) / 0.7)',
+                  background: 'hsl(var(--legacy-muted) / 0.7)',
                 }}
               />
               <div
                 style={{
                   height: 148,
                   borderRadius: 22,
-                  border: '1px solid hsl(var(--border) / 0.7)',
+                  border: '1px solid hsl(var(--legacy-border) / 0.7)',
                   background:
-                    'linear-gradient(180deg, hsl(var(--background) / 0.4), hsl(var(--background) / 0.22))',
+                    'linear-gradient(180deg, hsl(var(--legacy-background) / 0.4), hsl(var(--legacy-background) / 0.22))',
                 }}
               />
             </div>
@@ -586,12 +586,12 @@ function StatusDetailBubbleProof(): JSX.Element {
       style={{
         minHeight: '100vh',
         padding: 24,
-        color: 'hsl(var(--foreground))',
+        color: 'hsl(var(--legacy-foreground))',
         background: [
-          'radial-gradient(1000px 520px at 6% -8%, hsl(var(--primary) / 0.14), transparent 62%)',
-          'radial-gradient(900px 460px at 95% -14%, hsl(var(--accent) / 0.12), transparent 64%)',
-          'linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background)) 62%, hsl(var(--muted) / 0.58) 100%)',
-          'hsl(var(--background))',
+          'radial-gradient(1000px 520px at 6% -8%, hsl(var(--legacy-primary) / 0.14), transparent 62%)',
+          'radial-gradient(900px 460px at 95% -14%, hsl(var(--legacy-accent) / 0.12), transparent 64%)',
+          'linear-gradient(180deg, hsl(var(--legacy-background)) 0%, hsl(var(--legacy-background)) 62%, hsl(var(--legacy-muted) / 0.58) 100%)',
+          'hsl(var(--legacy-background))',
         ].join(', '),
       }}
     >
@@ -617,8 +617,8 @@ function StatusDetailBubbleProof(): JSX.Element {
             style={{
               overflow: 'hidden',
               borderRadius: 28,
-              border: '1px dashed hsl(var(--accent) / 0.42)',
-              background: 'linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--muted) / 0.3))',
+              border: '1px dashed hsl(var(--legacy-accent) / 0.42)',
+              background: 'linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-muted) / 0.3))',
               padding: 18,
             }}
           >

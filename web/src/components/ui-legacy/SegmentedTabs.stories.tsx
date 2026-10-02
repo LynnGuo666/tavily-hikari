@@ -26,7 +26,7 @@ const meta = {
     const [value, setValue] = useState(args.value as DemoValue)
     const options = args.options as ReadonlyArray<SegmentedTabsOption<DemoValue>>
     return (
-      <div style={{ padding: 12, borderRadius: 14, background: 'hsl(var(--muted) / 0.3)' }}>
+      <div style={{ padding: 12, borderRadius: 14, background: 'hsl(var(--legacy-muted) / 0.3)' }}>
         <SegmentedTabs<DemoValue>
           value={value}
           onChange={setValue}

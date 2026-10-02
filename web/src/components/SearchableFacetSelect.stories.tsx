@@ -19,9 +19,9 @@ function StorySurface(props: { children: ReactNode }): JSX.Element {
         width: 'min(380px, 100%)',
         padding: 24,
         borderRadius: 24,
-        border: '1px solid hsl(var(--border) / 0.78)',
-        background: 'linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--card) / 0.92))',
-        boxShadow: '0 24px 48px -36px hsl(var(--foreground) / 0.24)',
+        border: '1px solid hsl(var(--legacy-border) / 0.78)',
+        background: 'linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-card) / 0.92))',
+        boxShadow: '0 24px 48px -36px hsl(var(--legacy-foreground) / 0.24)',
       }}
     >
       {props.children}
@@ -49,7 +49,7 @@ function SearchableFacetSelectDemo(props: {
             fontWeight: 700,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'hsl(var(--muted-foreground))',
+            color: 'hsl(var(--legacy-muted-foreground))',
           }}
         >
           Key

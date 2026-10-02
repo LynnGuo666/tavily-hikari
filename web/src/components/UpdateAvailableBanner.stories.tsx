@@ -87,7 +87,7 @@ export const DarkReady: Story = {
   },
   decorators: [
     (StoryComponent) => (
-      <div className="dark" style={{ minHeight: 180, padding: 24, background: 'hsl(var(--background))' }}>
+      <div className="dark" style={{ minHeight: 180, padding: 24, background: 'hsl(var(--legacy-background))' }}>
         <StoryComponent />
       </div>
     ),

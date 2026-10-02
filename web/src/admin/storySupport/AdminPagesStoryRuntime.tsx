@@ -286,8 +286,8 @@ const keysBulkToolbarStyle = {
   marginBottom: 16,
   padding: 12,
   borderRadius: 16,
-  border: '1px solid hsl(var(--border))',
-  background: 'hsl(var(--muted) / 0.35)',
+  border: '1px solid hsl(var(--legacy-border))',
+  background: 'hsl(var(--legacy-muted) / 0.35)',
 } as const
 
 const keysBulkSelectionStyle = {
@@ -5713,8 +5713,8 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
             overflow: 'hidden',
             maxHeight: 260,
             borderRadius: 28,
-            border: '1px dashed hsl(var(--accent) / 0.42)',
-            background: 'linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--muted) / 0.24))',
+            border: '1px dashed hsl(var(--legacy-accent) / 0.42)',
+            background: 'linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-muted) / 0.24))',
             padding: 18,
           }}
         >

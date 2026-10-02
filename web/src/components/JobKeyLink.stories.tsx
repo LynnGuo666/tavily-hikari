@@ -13,12 +13,12 @@ function StoryShell({ children }: { children: ReactNode }): JSX.Element {
         style={{
           minHeight: '100vh',
           padding: 24,
-          color: 'hsl(var(--foreground))',
+          color: 'hsl(var(--legacy-foreground))',
           background: [
-            'radial-gradient(1000px 520px at 6% -8%, hsl(var(--primary) / 0.14), transparent 62%)',
-            'radial-gradient(900px 460px at 95% -14%, hsl(var(--accent) / 0.12), transparent 64%)',
-            'linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background)) 62%, hsl(var(--muted) / 0.58) 100%)',
-            'hsl(var(--background))',
+            'radial-gradient(1000px 520px at 6% -8%, hsl(var(--legacy-primary) / 0.14), transparent 62%)',
+            'radial-gradient(900px 460px at 95% -14%, hsl(var(--legacy-accent) / 0.12), transparent 64%)',
+            'linear-gradient(180deg, hsl(var(--legacy-background)) 0%, hsl(var(--legacy-background)) 62%, hsl(var(--legacy-muted) / 0.58) 100%)',
+            'hsl(var(--legacy-background))',
           ].join(', '),
         }}
       >
@@ -60,8 +60,8 @@ function JobKeyLinkShowcaseCanvas(): JSX.Element {
               gap: 12,
               padding: '16px 18px',
               borderRadius: 24,
-              border: '1px solid hsl(var(--border))',
-              background: 'hsl(var(--card) / 0.92)',
+              border: '1px solid hsl(var(--legacy-border))',
+              background: 'hsl(var(--legacy-card) / 0.92)',
             }}
           >
             <div style={{ display: 'grid', gap: 4 }}>
@@ -82,8 +82,8 @@ function JobKeyLinkShowcaseCanvas(): JSX.Element {
               gap: 8,
               padding: '16px 18px',
               borderRadius: 24,
-              border: '1px dashed hsl(var(--accent) / 0.45)',
-              background: 'hsl(var(--accent) / 0.08)',
+              border: '1px dashed hsl(var(--legacy-accent) / 0.45)',
+              background: 'hsl(var(--legacy-accent) / 0.08)',
             }}
           >
             <strong>Expanded details panel key field</strong>
@@ -115,8 +115,8 @@ function JobKeyLinkShowcaseCanvas(): JSX.Element {
             maxWidth: 360,
             padding: 16,
             borderRadius: 24,
-            border: '1px solid hsl(var(--border))',
-            background: 'hsl(var(--card) / 0.94)',
+            border: '1px solid hsl(var(--legacy-border))',
+            background: 'hsl(var(--legacy-card) / 0.94)',
             display: 'grid',
             gap: 10,
           }}
@@ -190,8 +190,8 @@ function JobKeyLinkBubbleProofCanvas(): JSX.Element {
             minHeight: 280,
             padding: 24,
             borderRadius: 24,
-            border: '1px dashed hsl(var(--accent) / 0.45)',
-            background: 'hsl(var(--accent) / 0.08)',
+            border: '1px dashed hsl(var(--legacy-accent) / 0.45)',
+            background: 'hsl(var(--legacy-accent) / 0.08)',
             overflow: 'visible',
           }}
         >

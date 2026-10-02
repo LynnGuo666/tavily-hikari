@@ -915,7 +915,7 @@ const keysBulkToolbarStyle = {
   flexWrap: 'wrap',
   marginBottom: 10,
   padding: '4px 2px',
-  borderBottom: '1px solid hsl(var(--border) / 0.46)',
+  borderBottom: '1px solid hsl(var(--legacy-border) / 0.46)',
 } as const
 
 const keysBulkSelectionStyle = {

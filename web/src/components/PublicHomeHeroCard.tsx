@@ -31,7 +31,7 @@ export interface PublicHomeHeroCardProps {
 }
 
 const heroSecondaryButtonClassName =
-  'h-auto rounded-full border-foreground/20 bg-card/95 px-4 py-[0.72rem] text-foreground no-underline shadow-[0_10px_20px_-18px_hsl(var(--foreground)/0.5)] hover:-translate-y-[1px] hover:border-primary/50 hover:bg-card hover:text-foreground'
+  'h-auto rounded-full border-foreground/20 bg-card/95 px-4 py-[0.72rem] text-foreground no-underline shadow-[0_10px_20px_-18px_hsl(var(--legacy-foreground)/0.5)] hover:-translate-y-[1px] hover:border-primary/50 hover:bg-card hover:text-foreground'
 
 const heroPrimaryButtonClassName = 'h-auto rounded-full px-4 py-[0.72rem]'
 

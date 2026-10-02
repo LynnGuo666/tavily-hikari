@@ -161,7 +161,7 @@ function AnnouncementsModuleStory({
   }
 
   return (
-    <div style={{ padding: 24, background: 'hsl(var(--background))' }}>
+    <div style={{ padding: 24, background: 'hsl(var(--legacy-background))' }}>
       <AnnouncementsModule language="zh" routeMode={storyRouteMode} onNavigate={navigate} />
     </div>
   )

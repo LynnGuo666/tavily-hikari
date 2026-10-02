@@ -348,7 +348,7 @@ function KeyDetailRouteStoryCanvas({
   }, [detailMock])
 
   if (!ready) {
-    return <div style={{ minHeight: '100vh', background: 'hsl(var(--background))' }} />
+    return <div style={{ minHeight: '100vh', background: 'hsl(var(--legacy-background))' }} />
   }
 
   return <KeyDetailRouteSurface detailMock={detailMock} />

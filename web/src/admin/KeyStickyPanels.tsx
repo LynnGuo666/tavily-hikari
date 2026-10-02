@@ -224,9 +224,9 @@ function ProxyWeightTrendCell({ buckets, scale }: { buckets: ForwardProxyWeightB
       className="block h-10 w-full rounded-md border border-border/55 bg-background/45"
       aria-hidden="true"
     >
-      <line x1={0} y1={geometry.zeroY} x2={geometry.chartWidth} y2={geometry.zeroY} stroke="hsl(var(--foreground) / 0.14)" strokeWidth="1" />
-      <path d={geometry.areaPath} fill="hsl(var(--success) / 0.18)" />
-      <path d={geometry.linePath} fill="none" stroke="hsl(var(--success))" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" />
+      <line x1={0} y1={geometry.zeroY} x2={geometry.chartWidth} y2={geometry.zeroY} stroke="hsl(var(--legacy-foreground) / 0.14)" strokeWidth="1" />
+      <path d={geometry.areaPath} fill="hsl(var(--legacy-success) / 0.18)" />
+      <path d={geometry.linePath} fill="none" stroke="hsl(var(--legacy-success))" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   )
 }

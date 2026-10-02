@@ -21,7 +21,7 @@ const alertVariants = cva(
       {
         variant: 'destructive',
         emphasis: 'prominent',
-        className: 'shadow-[0_0_0_4px_hsl(var(--destructive)/0.16),var(--shadow-clay-card)]',
+        className: 'shadow-[0_0_0_4px_hsl(var(--legacy-destructive)/0.16),var(--shadow-clay-card)]',
       },
     ],
     defaultVariants: {

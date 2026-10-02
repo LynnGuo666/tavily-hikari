@@ -2,6 +2,7 @@ import { defineConfig, loadEnv, type ProxyOptions } from 'vite'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
 function withForwardAuth(target: string, forwardAuthValue: string): Partial<ProxyOptions> {
@@ -24,8 +25,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: rootDir,
+    resolve: {
+      alias: {
+        '@': resolve(rootDir, 'src'),
+      },
+    },
     plugins: [
       react(),
+      tailwindcss(),
       {
         name: 'rewrite-short-routes',
         configureServer(server) {

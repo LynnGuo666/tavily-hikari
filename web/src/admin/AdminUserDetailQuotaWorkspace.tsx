@@ -572,8 +572,8 @@ function buildSignedDeltaSliderTrack(value: number): string {
   const current = toSignedDeltaSliderPercent(value)
   const start = Math.min(zero, current)
   const end = Math.max(zero, current)
-  const activeColor = value < 0 ? 'hsl(var(--destructive) / 0.46)' : 'hsl(var(--primary) / 0.5)'
-  return `linear-gradient(to right, hsl(var(--muted) / 0.5) 0% ${start}%, ${activeColor} ${start}% ${end}%, hsl(var(--muted) / 0.5) ${end}% 100%)`
+  const activeColor = value < 0 ? 'hsl(var(--legacy-destructive) / 0.46)' : 'hsl(var(--legacy-primary) / 0.5)'
+  return `linear-gradient(to right, hsl(var(--legacy-muted) / 0.5) 0% ${start}%, ${activeColor} ${start}% ${end}%, hsl(var(--legacy-muted) / 0.5) ${end}% 100%)`
 }
 
 function buildFallbackQuotaBreakdown(

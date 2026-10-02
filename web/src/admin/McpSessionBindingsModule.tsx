@@ -414,7 +414,7 @@ export default function McpSessionBindingsModule({
           gap: 8,
           flexWrap: 'wrap',
           paddingBottom: 8,
-          borderBottom: '1px solid hsl(var(--border) / 0.46)',
+          borderBottom: '1px solid hsl(var(--legacy-border) / 0.46)',
         }}
       >
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>

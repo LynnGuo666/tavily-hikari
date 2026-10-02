@@ -163,8 +163,8 @@ function PublicHomeMobileGuideMenuProof(): JSX.Element {
           style={{
             overflow: 'hidden',
             borderRadius: 28,
-            border: '1px dashed hsl(var(--accent) / 0.42)',
-            background: 'linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--muted) / 0.3))',
+            border: '1px dashed hsl(var(--legacy-accent) / 0.42)',
+            background: 'linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-muted) / 0.3))',
             padding: 18,
           }}
         >

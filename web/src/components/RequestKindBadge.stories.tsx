@@ -50,8 +50,8 @@ function RequestKindStoryCard(props: {
         minWidth: 0,
         padding: '14px 16px',
         borderRadius: 16,
-        border: '1px solid hsl(var(--border) / 0.72)',
-        background: 'hsl(var(--background) / 0.56)',
+        border: '1px solid hsl(var(--legacy-border) / 0.72)',
+        background: 'hsl(var(--legacy-background) / 0.56)',
       }}
     >
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
@@ -61,7 +61,7 @@ function RequestKindStoryCard(props: {
             fontWeight: 700,
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            color: 'hsl(var(--muted-foreground))',
+            color: 'hsl(var(--legacy-muted-foreground))',
           }}
         >
           Preview
@@ -75,7 +75,7 @@ function RequestKindStoryCard(props: {
             fontWeight: 700,
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            color: 'hsl(var(--muted-foreground))',
+            color: 'hsl(var(--legacy-muted-foreground))',
           }}
         >
           Stable key
@@ -86,9 +86,9 @@ function RequestKindStoryCard(props: {
             minWidth: 0,
             padding: '10px 12px',
             borderRadius: 12,
-            border: '1px solid hsl(var(--border) / 0.58)',
-            background: 'hsl(var(--background) / 0.78)',
-            color: 'hsl(var(--foreground) / 0.82)',
+            border: '1px solid hsl(var(--legacy-border) / 0.58)',
+            background: 'hsl(var(--legacy-background) / 0.78)',
+            color: 'hsl(var(--legacy-foreground) / 0.82)',
             fontSize: '0.84rem',
             lineHeight: 1.5,
             whiteSpace: 'normal',
@@ -108,10 +108,10 @@ function ThemeCatalogPanel(): JSX.Element {
       style={{
         padding: 20,
         borderRadius: 20,
-        border: '1px solid hsl(var(--border) / 0.82)',
-        background: 'linear-gradient(180deg, hsl(var(--card) / 0.98), hsl(var(--card) / 0.92))',
-        color: 'hsl(var(--foreground))',
-        boxShadow: '0 18px 40px -28px hsl(var(--foreground) / 0.18)',
+        border: '1px solid hsl(var(--legacy-border) / 0.82)',
+        background: 'linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-card) / 0.92))',
+        color: 'hsl(var(--legacy-foreground))',
+        boxShadow: '0 18px 40px -28px hsl(var(--legacy-foreground) / 0.18)',
       }}
     >
       <div style={{ marginBottom: 14 }}>
@@ -121,12 +121,12 @@ function ThemeCatalogPanel(): JSX.Element {
             fontWeight: 700,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'hsl(var(--muted-foreground))',
+            color: 'hsl(var(--legacy-muted-foreground))',
           }}
         >
           Theme Catalog
         </div>
-        <div style={{ fontSize: '0.92rem', color: 'hsl(var(--muted-foreground))' }}>
+        <div style={{ fontSize: '0.92rem', color: 'hsl(var(--legacy-muted-foreground))' }}>
           Use the Storybook theme toolbar to preview the badge palette in light, dark, or system mode.
         </div>
       </div>
@@ -139,8 +139,8 @@ function ThemeCatalogPanel(): JSX.Element {
               gap: 12,
               padding: '16px 18px',
               borderRadius: 18,
-              border: '1px solid hsl(var(--border) / 0.66)',
-              background: 'hsl(var(--background) / 0.42)',
+              border: '1px solid hsl(var(--legacy-border) / 0.66)',
+              background: 'hsl(var(--legacy-background) / 0.42)',
             }}
           >
             <div style={{ display: 'grid', gap: 4 }}>
@@ -150,12 +150,12 @@ function ThemeCatalogPanel(): JSX.Element {
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  color: 'hsl(var(--muted-foreground))',
+                  color: 'hsl(var(--legacy-muted-foreground))',
                 }}
               >
                 {section.title}
               </div>
-              <div style={{ fontSize: '0.9rem', color: 'hsl(var(--muted-foreground))' }}>{section.description}</div>
+              <div style={{ fontSize: '0.9rem', color: 'hsl(var(--legacy-muted-foreground))' }}>{section.description}</div>
             </div>
             <div
               style={{
@@ -200,7 +200,7 @@ const meta = {
     },
   },
   render: (args) => (
-    <div style={{ padding: 24, borderRadius: 20, border: '1px solid hsl(var(--border) / 0.82)', background: 'hsl(var(--card) / 0.88)' }}>
+    <div style={{ padding: 24, borderRadius: 20, border: '1px solid hsl(var(--legacy-border) / 0.82)', background: 'hsl(var(--legacy-card) / 0.88)' }}>
       <RequestKindBadge {...args} />
     </div>
   ),

@@ -26,7 +26,7 @@ export default function ForwardProxyProgressBubble({
 
   return (
     <div
-      className={`rounded-2xl border border-primary/25 bg-primary/5 px-4 py-3 shadow-[0_16px_40px_-28px_hsl(var(--primary)/0.8)] ${className ?? ''}`}
+      className={`rounded-2xl border border-primary/25 bg-primary/5 px-4 py-3 shadow-[0_16px_40px_-28px_hsl(var(--legacy-primary)/0.8)] ${className ?? ''}`}
       style={style}
     >
       <div className="mb-3 flex items-start justify-between gap-3">

@@ -827,7 +827,7 @@ export default function SystemSettingsModule({
                 role="status"
                 aria-live="polite"
                 style={{
-                  color: parsedTrustedClientIpHeaders.duplicateError || error ? 'hsl(var(--destructive))' : undefined,
+                  color: parsedTrustedClientIpHeaders.duplicateError || error ? 'hsl(var(--legacy-destructive))' : undefined,
                 }}
               >
                 {parsedTrustedClientIpHeaders.duplicateError ??
@@ -891,7 +891,7 @@ export default function SystemSettingsModule({
                     <p
                       role="status"
                       aria-live="polite"
-                      style={{ color: registrationPolicy.error ? 'hsl(var(--destructive))' : undefined }}
+                      style={{ color: registrationPolicy.error ? 'hsl(var(--legacy-destructive))' : undefined }}
                     >
                       {registrationPolicy.error ?? registrationPolicy.statusText}
                     </p>
@@ -1535,7 +1535,7 @@ export default function SystemSettingsModule({
               className="system-settings-inline-status text-sm font-medium"
               role="status"
               aria-live="polite"
-              style={{ color: error ? 'hsl(var(--destructive))' : undefined }}
+              style={{ color: error ? 'hsl(var(--legacy-destructive))' : undefined }}
             >
               {error ?? strings.actions.applying}
             </p>

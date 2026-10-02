@@ -45,7 +45,7 @@
 .announcements-field span,
 .announcements-title-cell .markdown-content,
 .announcements-mobile-body {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
 }
 
 .announcements-editor-header p,
@@ -99,10 +99,10 @@
   gap: 0;
   overflow: hidden;
   min-height: var(--announcements-body-editor-min-height);
-  border: 1px solid hsl(var(--border) / 0.82);
+  border: 1px solid hsl(var(--legacy-border) / 0.82);
   border-radius: 18px;
-  background: hsl(var(--background) / 0.86);
-  box-shadow: inset 0 2px 8px hsl(var(--foreground) / 0.06);
+  background: hsl(var(--legacy-background) / 0.86);
+  box-shadow: inset 0 2px 8px hsl(var(--legacy-foreground) / 0.06);
 }
 
 .announcements-body-split::after,
@@ -119,8 +119,8 @@
 
 .announcements-body-split:focus-within::after,
 .markdown-editor-shell:not(.markdown-editor-shell--readonly):focus-within::after {
-  border-color: hsl(var(--ring) / 0.5);
-  box-shadow: inset 0 0 0 1px hsl(var(--background) / 0.42);
+  border-color: hsl(var(--legacy-ring) / 0.5);
+  box-shadow: inset 0 0 0 1px hsl(var(--legacy-background) / 0.42);
 }
 
 .announcements-body-split > .markdown-editor-shell:focus-within::after {
@@ -142,26 +142,26 @@
 }
 
 .announcements-body-split > .announcements-body-fallback:focus-visible {
-  background: hsl(var(--card) / 0.38);
+  background: hsl(var(--legacy-card) / 0.38);
   box-shadow: none;
 }
 
 .announcements-body-split > .markdown-editor-shell {
-  border-left: 1px solid hsl(var(--border) / 0.58);
+  border-left: 1px solid hsl(var(--legacy-border) / 0.58);
 }
 
 .markdown-editor-shell {
   position: relative;
   overflow: visible;
   min-height: var(--announcements-body-editor-min-height);
-  border: 1px solid hsl(var(--border) / 0.82);
+  border: 1px solid hsl(var(--legacy-border) / 0.82);
   border-radius: 18px;
-  background: hsl(var(--background) / 0.86);
-  box-shadow: inset 0 2px 8px hsl(var(--foreground) / 0.06);
+  background: hsl(var(--legacy-background) / 0.86);
+  box-shadow: inset 0 2px 8px hsl(var(--legacy-foreground) / 0.06);
 }
 
 .markdown-editor-shell--readonly {
-  background: hsl(var(--card) / 0.72);
+  background: hsl(var(--legacy-card) / 0.72);
 }
 
 .markdown-editor-shell .milkdown {
@@ -171,7 +171,7 @@
 .markdown-editor-shell .ProseMirror {
   min-height: var(--announcements-body-editor-min-height);
   padding: 16px 18px;
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-family: var(--font-sans);
   font-size: 0.95rem;
   line-height: 1.62;
@@ -192,9 +192,9 @@
   align-items: center;
   gap: 4px;
   padding: 6px;
-  border: 1px solid hsl(var(--border) / 0.72);
+  border: 1px solid hsl(var(--legacy-border) / 0.72);
   border-radius: 14px;
-  background: hsl(var(--card) / 0.96);
+  background: hsl(var(--legacy-card) / 0.96);
   box-shadow: var(--shadow-clay-button);
   transform: translateX(-50%);
 }
@@ -206,7 +206,7 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font: inherit;
   font-weight: 800;
 }
@@ -214,14 +214,14 @@
 .markdown-editor-shell--storybook .milkdown-toolbar .toolbar-item.active,
 .markdown-editor-shell--storybook .milkdown-toolbar .toolbar-item:hover,
 .markdown-editor-shell--storybook .milkdown-block-handle .operation-item:hover {
-  background: hsl(var(--primary) / 0.12);
-  color: hsl(var(--primary));
+  background: hsl(var(--legacy-primary) / 0.12);
+  color: hsl(var(--legacy-primary));
 }
 
 .markdown-editor-shell--storybook .milkdown-toolbar .divider {
   width: 1px;
   height: 24px;
-  background: hsl(var(--border) / 0.76);
+  background: hsl(var(--legacy-border) / 0.76);
 }
 
 .markdown-editor-shell--storybook .milkdown-block-handle {
@@ -230,9 +230,9 @@
   left: 12px;
   z-index: 2;
   padding: 4px;
-  border: 1px solid hsl(var(--border) / 0.64);
+  border: 1px solid hsl(var(--legacy-border) / 0.64);
   border-radius: 14px;
-  background: hsl(var(--card) / 0.92);
+  background: hsl(var(--legacy-card) / 0.92);
   box-shadow: var(--shadow-clay-button);
 }
 
@@ -287,17 +287,17 @@
 
 .markdown-editor-shell .ProseMirror p.is-editor-empty:first-child::before {
   height: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   content: attr(data-placeholder);
   float: left;
   pointer-events: none;
 }
 
 .markdown-editor-shell :where(.milkdown-toolbar, .crepe-toolbar, [data-milkdown-toolbar]) {
-  border-color: hsl(var(--border) / 0.72);
+  border-color: hsl(var(--legacy-border) / 0.72);
   z-index: var(--layer-popover);
-  background: hsl(var(--card) / 0.96);
-  color: hsl(var(--foreground));
+  background: hsl(var(--legacy-card) / 0.96);
+  color: hsl(var(--legacy-foreground));
 }
 
 .markdown-editor-shell .milkdown-toolbar {
@@ -306,7 +306,7 @@
   gap: 4px;
   z-index: var(--layer-popover);
   padding: 6px;
-  border: 1px solid hsl(var(--border) / 0.72);
+  border: 1px solid hsl(var(--legacy-border) / 0.72);
   border-radius: 14px;
   box-shadow: var(--shadow-clay-button);
   max-width: calc(100% - 24px);
@@ -319,20 +319,20 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
 }
 
 .markdown-editor-shell .milkdown-toolbar .toolbar-item:hover,
 .markdown-editor-shell .milkdown-toolbar .toolbar-item.active {
-  background: hsl(var(--primary) / 0.12);
-  color: hsl(var(--primary));
+  background: hsl(var(--legacy-primary) / 0.12);
+  color: hsl(var(--legacy-primary));
 }
 
 .markdown-editor-shell .milkdown-toolbar .divider {
   width: 1px;
   height: 24px;
   margin: 0 4px;
-  background: hsl(var(--border) / 0.76);
+  background: hsl(var(--legacy-border) / 0.76);
 }
 
 .announcements-milkdown-preview {
@@ -380,15 +380,15 @@
 }
 
 .announcements-message {
-  border: 1px solid hsl(var(--success) / 0.28);
-  background: hsl(var(--success) / 0.12);
-  color: hsl(var(--success-readable));
+  border: 1px solid hsl(var(--legacy-success) / 0.28);
+  background: hsl(var(--legacy-success) / 0.12);
+  color: hsl(var(--legacy-success-readable));
 }
 
 .announcements-error {
-  border: 1px solid hsl(var(--destructive) / 0.28);
-  background: hsl(var(--destructive) / 0.12);
-  color: hsl(var(--destructive-readable));
+  border: 1px solid hsl(var(--legacy-destructive) / 0.28);
+  background: hsl(var(--legacy-destructive) / 0.12);
+  color: hsl(var(--legacy-destructive-readable));
 }
 
 .announcements-table {
@@ -469,12 +469,12 @@
 }
 
 .announcements-title-markdown {
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-weight: 800;
 }
 
 .announcements-summary-text {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
 }
 
 .announcements-mobile-body {
@@ -530,7 +530,7 @@
   }
 
   .announcements-body-split > .markdown-editor-shell {
-    border-top: 1px solid hsl(var(--border) / 0.58);
+    border-top: 1px solid hsl(var(--legacy-border) / 0.58);
     border-left: 0;
   }
 

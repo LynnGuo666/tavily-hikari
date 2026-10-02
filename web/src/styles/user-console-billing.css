@@ -37,7 +37,7 @@
 }
 
 .user-console-setup-token-select > span {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.8rem;
   font-weight: 700;
 }
@@ -53,7 +53,7 @@
 }
 
 .user-console-setup-empty span {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
 }
 
 .user-console-detail-actions {
@@ -95,7 +95,7 @@
 
 .user-console-billing-purchase-lead p {
   margin: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.95rem;
   line-height: 1.6;
   text-wrap: pretty;
@@ -115,9 +115,9 @@
   align-items: center;
   min-height: 28px;
   border-radius: 999px;
-  border: 1px solid hsl(var(--border) / 0.68);
-  background: hsl(var(--muted) / 0.26);
-  color: hsl(var(--muted-foreground));
+  border: 1px solid hsl(var(--legacy-border) / 0.68);
+  background: hsl(var(--legacy-muted) / 0.26);
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.76rem;
   font-weight: 700;
   padding: 0 11px;
@@ -140,7 +140,7 @@
 
 .user-console-billing-stage-intro p {
   margin: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.91rem;
   line-height: 1.55;
   text-wrap: pretty;
@@ -148,9 +148,9 @@
 
 .user-console-billing-meta-pill.is-warning,
 .user-console-billing-inline-badge.is-warm {
-  border-color: hsl(var(--warning) / 0.32);
-  background: hsl(var(--warning) / 0.12);
-  color: hsl(var(--foreground));
+  border-color: hsl(var(--legacy-warning) / 0.32);
+  background: hsl(var(--legacy-warning) / 0.12);
+  color: hsl(var(--legacy-foreground));
 }
 
 .user-console-billing-total-panel {
@@ -159,7 +159,7 @@
   gap: 16px;
   align-items: end;
   padding: 0 0 18px;
-  border-bottom: 1px solid hsl(var(--border) / 0.44);
+  border-bottom: 1px solid hsl(var(--legacy-border) / 0.44);
 }
 
 .user-console-billing-total-copy {
@@ -175,7 +175,7 @@
 .user-console-billing-timeline-total > span,
 .user-console-billing-effective-row > span,
 .user-console-billing-order-secondary span {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -195,7 +195,7 @@
 
 .user-console-billing-total-copy p {
   margin: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.88rem;
   line-height: 1.45;
   text-wrap: pretty;
@@ -213,7 +213,7 @@
   gap: 16px;
   align-items: center;
   padding: 0 0 16px;
-  border-bottom: 1px solid hsl(var(--border) / 0.44);
+  border-bottom: 1px solid hsl(var(--legacy-border) / 0.44);
 }
 
 .user-console-billing-block-head {
@@ -251,7 +251,7 @@
   gap: 16px;
   align-items: center;
   padding: 10px 0;
-  border-top: 1px solid hsl(var(--border) / 0.44);
+  border-top: 1px solid hsl(var(--legacy-border) / 0.44);
 }
 
 .user-console-billing-summary-row:first-child {
@@ -285,7 +285,7 @@
 .user-console-billing-timeline-card-aside p,
 .user-console-billing-order-primary p {
   margin: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.82rem;
   line-height: 1.4;
 }
@@ -293,9 +293,9 @@
 .user-console-billing-notice {
   margin: 0;
   border-radius: 16px;
-  border: 1px solid hsl(var(--warning) / 0.28);
-  background: hsl(var(--warning) / 0.1);
-  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--legacy-warning) / 0.28);
+  background: hsl(var(--legacy-warning) / 0.1);
+  color: hsl(var(--legacy-foreground));
   font-size: 0.92rem;
   font-weight: 700;
   line-height: 1.55;
@@ -316,11 +316,11 @@
 }
 
 .user-console-billing-quota-strip > div + div {
-  border-left: 1px solid hsl(var(--border) / 0.42);
+  border-left: 1px solid hsl(var(--legacy-border) / 0.42);
 }
 
 .user-console-billing-quota-strip span {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -328,7 +328,7 @@
 }
 
 .user-console-billing-quota-strip strong {
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-size: 0.92rem;
   line-height: 1.1;
   overflow-wrap: anywhere;
@@ -336,19 +336,19 @@
 
 .user-console-billing-quota-strip.is-table {
   border-radius: 14px;
-  border: 1px solid hsl(var(--border) / 0.44);
-  background: linear-gradient(180deg, hsl(var(--background) / 0.5), hsl(var(--background) / 0.38));
+  border: 1px solid hsl(var(--legacy-border) / 0.44);
+  background: linear-gradient(180deg, hsl(var(--legacy-background) / 0.5), hsl(var(--legacy-background) / 0.38));
   overflow: hidden;
 }
 
 .user-console-billing-quota-strip.is-hero {
   border-radius: 18px;
-  border: 1px solid hsl(var(--border) / 0.52);
+  border: 1px solid hsl(var(--legacy-border) / 0.52);
   background:
-    radial-gradient(circle at top right, hsl(var(--primary) / 0.12), transparent 42%),
-    linear-gradient(180deg, hsl(var(--card) / 0.94), hsl(var(--card) / 0.8));
+    radial-gradient(circle at top right, hsl(var(--legacy-primary) / 0.12), transparent 42%),
+    linear-gradient(180deg, hsl(var(--legacy-card) / 0.94), hsl(var(--legacy-card) / 0.8));
   box-shadow:
-    inset 0 1px 0 hsl(var(--background) / 0.74),
+    inset 0 1px 0 hsl(var(--legacy-background) / 0.74),
     0 18px 32px -28px hsl(24 22% 27% / 0.2);
   overflow: hidden;
 }
@@ -384,12 +384,12 @@
 }
 
 .user-console-billing-quota-strip.is-muted strong {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
 }
 
 .user-console-billing-pricing-inline-metrics strong,
 .user-console-billing-order-secondary strong {
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-size: 0.98rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -467,8 +467,8 @@
   gap: 14px;
   padding: 18px;
   border-radius: 18px;
-  border: 1px solid hsl(var(--border) / 0.62);
-  background: var(--clay-card, hsl(var(--card) / 0.88));
+  border: 1px solid hsl(var(--legacy-border) / 0.62);
+  background: var(--clay-card, hsl(var(--legacy-card) / 0.88));
   box-shadow: var(--shadow-clay-card);
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -482,26 +482,26 @@
 
 .user-console-billing-timeline-card:hover {
   transform: translateY(-1px);
-  border-color: hsl(var(--border) / 0.8);
+  border-color: hsl(var(--legacy-border) / 0.8);
   box-shadow: var(--shadow-clay-button-hover);
 }
 
 .user-console-billing-timeline-card:focus-visible {
   outline: none;
-  border-color: hsl(var(--primary) / 0.54);
+  border-color: hsl(var(--legacy-primary) / 0.54);
   box-shadow:
-    0 0 0 3px hsl(var(--background)),
-    0 0 0 6px hsl(var(--primary) / 0.2),
+    0 0 0 3px hsl(var(--legacy-background)),
+    0 0 0 6px hsl(var(--legacy-primary) / 0.2),
     var(--shadow-clay-button);
 }
 
 .user-console-billing-timeline-card.is-selected {
   transform: translateY(-2px);
-  border-color: hsl(var(--primary) / 0.58);
+  border-color: hsl(var(--legacy-primary) / 0.58);
   background:
-    linear-gradient(145deg, hsl(var(--primary) / 0.16), hsl(var(--card) / 0.94) 52%, hsl(var(--secondary) / 0.07));
+    linear-gradient(145deg, hsl(var(--legacy-primary) / 0.16), hsl(var(--legacy-card) / 0.94) 52%, hsl(var(--legacy-secondary) / 0.07));
   box-shadow:
-    inset 0 0 0 1px hsl(var(--primary) / 0.1),
+    inset 0 0 0 1px hsl(var(--legacy-primary) / 0.1),
     var(--shadow-clay-button);
 }
 
@@ -526,7 +526,7 @@
 }
 
 .user-console-billing-timeline-card.is-selected .user-console-billing-timeline-card-aside p {
-  color: hsl(var(--primary));
+  color: hsl(var(--legacy-primary));
 }
 
 .user-console-billing-timeline-card-aside h3 {
@@ -538,14 +538,14 @@
   gap: 8px;
   padding: 12px 14px;
   border-radius: 16px;
-  background: hsl(var(--background) / 0.42);
+  background: hsl(var(--legacy-background) / 0.42);
   box-shadow: var(--shadow-clay-pressed);
 }
 
 .user-console-billing-timeline-card.is-selected .user-console-billing-timeline-total {
-  background: hsl(var(--primary) / 0.08);
+  background: hsl(var(--legacy-primary) / 0.08);
   box-shadow:
-    inset 0 0 0 1px hsl(var(--primary) / 0.16),
+    inset 0 0 0 1px hsl(var(--legacy-primary) / 0.16),
     var(--shadow-clay-pressed);
 }
 
@@ -567,11 +567,11 @@
 
 .user-console-billing-timeline-row + .user-console-billing-timeline-row {
   padding-top: 12px;
-  border-top: 1px solid hsl(var(--border) / 0.36);
+  border-top: 1px solid hsl(var(--legacy-border) / 0.36);
 }
 
 .user-console-billing-timeline-row-label {
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-size: 0.84rem;
   font-weight: 700;
   line-height: 1.35;
@@ -581,10 +581,10 @@
   width: 44px;
   height: 44px;
   min-height: 44px;
-  border: 1px solid hsl(var(--border) / 0.58);
+  border: 1px solid hsl(var(--legacy-border) / 0.58);
   border-radius: 999px;
-  background: hsl(var(--card) / 0.86);
-  color: hsl(var(--foreground));
+  background: hsl(var(--legacy-card) / 0.86);
+  color: hsl(var(--legacy-foreground));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -601,7 +601,7 @@
 
 .user-console-billing-timeline-nav-button:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: hsl(var(--primary) / 0.42);
+  border-color: hsl(var(--legacy-primary) / 0.42);
   box-shadow: var(--shadow-clay-button-hover);
 }
 
@@ -636,14 +636,14 @@
 
 .user-console-billing-timeline-status strong,
 .user-console-billing-timeline-status-bar strong {
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-size: 0.9rem;
   font-weight: 700;
 }
 
 .user-console-billing-timeline-status span,
 .user-console-billing-timeline-status-bar span {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.76rem;
   line-height: 1.3;
 }
@@ -664,7 +664,7 @@
   gap: 14px;
   align-items: center;
   padding: 14px 0;
-  border-top: 1px solid hsl(var(--border) / 0.44);
+  border-top: 1px solid hsl(var(--legacy-border) / 0.44);
 }
 
 .user-console-billing-order-row:first-child {
@@ -700,7 +700,7 @@
 
 .user-console-billing-order-facts span,
 .user-console-billing-order-impact span {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.76rem;
   font-weight: 700;
   line-height: 1.35;
@@ -710,7 +710,7 @@
 
 .user-console-billing-order-facts strong,
 .user-console-billing-order-impact strong {
-  color: hsl(var(--foreground));
+  color: hsl(var(--legacy-foreground));
   font-size: 0.9rem;
   line-height: 1.45;
 }
@@ -759,7 +759,7 @@
 
 .user-console-billing-pricing-inline-head p {
   margin: 0;
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -777,7 +777,7 @@
 }
 
 .user-console-billing-pricing-inline-metrics span {
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--legacy-muted-foreground));
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -896,7 +896,7 @@
 
   .user-console-billing-quota-strip > div + div {
     border-left: none;
-    border-top: 1px solid hsl(var(--border) / 0.42);
+    border-top: 1px solid hsl(var(--legacy-border) / 0.42);
   }
 
   .user-console-billing-quota-strip.is-micro > div + div {

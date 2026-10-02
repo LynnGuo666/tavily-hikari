@@ -4,10 +4,10 @@
   .admin-recharge-module > .admin-loading-region { min-width: 0; }
   .admin-recharge-summary { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .admin-recharge-summary span {
-    background: hsl(var(--muted) / 0.26);
-    border: 1px solid hsl(var(--border) / 0.52);
+    background: hsl(var(--legacy-muted) / 0.26);
+    border: 1px solid hsl(var(--legacy-border) / 0.52);
     border-radius: 999px;
-    color: hsl(var(--foreground));
+    color: hsl(var(--legacy-foreground));
     font-size: 0.78rem;
     font-weight: 800;
     padding: 0.38rem 0.68rem;
@@ -24,16 +24,16 @@
   }
   .admin-recharge-inline-status,
   .admin-recharge-dialog-status {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
   }
   .admin-recharge-dialog-error {
-    color: hsl(var(--destructive));
+    color: hsl(var(--legacy-destructive));
     text-align: center;
   }
   .admin-recharge-setup-callout {
-    background: hsl(var(--muted) / 0.26);
-    border: 1px solid hsl(var(--border) / 0.55);
-    color: hsl(var(--foreground));
+    background: hsl(var(--legacy-muted) / 0.26);
+    border: 1px solid hsl(var(--legacy-border) / 0.55);
+    color: hsl(var(--legacy-foreground));
     padding: 0.85rem;
   }
   .admin-recharge-toolbar { display: grid; gap: 0.85rem; }
@@ -62,7 +62,7 @@
     min-width: 0;
   }
   .admin-recharge-filter-field span {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 0.06em;
@@ -71,11 +71,11 @@
     text-transform: uppercase;
   }
   .admin-recharge-toolbar select {
-    background: hsl(var(--muted) / 0.6);
-    border: 1px solid hsl(var(--input) / 0.35);
+    background: hsl(var(--legacy-muted) / 0.6);
+    border: 1px solid hsl(var(--legacy-input) / 0.35);
     border-radius: 1.25rem;
     box-shadow: var(--shadow-clay-pressed);
-    color: hsl(var(--foreground));
+    color: hsl(var(--legacy-foreground));
     font-size: 0.875rem;
     font-weight: 650;
     min-height: 3rem;
@@ -88,20 +88,20 @@
     width: 100%;
   }
   .admin-recharge-toolbar select:hover {
-    background: hsl(var(--card) / 0.9);
-    border-color: hsl(var(--ring) / 0.42);
+    background: hsl(var(--legacy-card) / 0.9);
+    border-color: hsl(var(--legacy-ring) / 0.42);
   }
   .admin-recharge-toolbar select:focus-visible {
-    background: hsl(var(--card) / 0.9);
-    border-color: hsl(var(--ring) / 0.45);
+    background: hsl(var(--legacy-card) / 0.9);
+    border-color: hsl(var(--legacy-ring) / 0.45);
     outline: none;
     box-shadow:
       var(--shadow-clay-pressed),
-      0 0 0 4px hsl(var(--ring) / 0.2);
+      0 0 0 4px hsl(var(--legacy-ring) / 0.2);
   }
   .admin-recharge-table-scroll {
-    background: hsl(var(--card) / 0.44);
-    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--legacy-card) / 0.44);
+    border: 1px solid hsl(var(--legacy-border) / 0.5);
     border-radius: 0.75rem;
     max-width: 100%;
     min-width: 0;
@@ -136,14 +136,14 @@
     white-space: normal;
   }
   .admin-recharge-order-cell { display: grid; gap: 0.22rem; min-width: 0; }
-  .admin-recharge-order-cell span { color: hsl(var(--foreground)); font-weight: 800; }
+  .admin-recharge-order-cell span { color: hsl(var(--legacy-foreground)); font-weight: 800; }
   .admin-recharge-order-meta {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.78rem;
     font-weight: 800;
   }
   .admin-recharge-order-cell code {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.78rem;
     overflow-wrap: anywhere;
     white-space: normal;
@@ -155,7 +155,7 @@
   }
   .admin-recharge-action-button { min-width: 0; white-space: normal; }
   .admin-recharge-action-state {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.78rem;
     font-weight: 800;
   }
@@ -167,7 +167,7 @@
     padding-block: 0.35rem 0.55rem;
   }
   .admin-recharge-totp-field span {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.78rem;
     font-weight: 800;
   }
@@ -195,8 +195,8 @@
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
   .admin-recharge-user-card {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border) / 0.55);
+    background: hsl(var(--legacy-card));
+    border: 1px solid hsl(var(--legacy-border) / 0.55);
     border-radius: 0.5rem;
     display: grid;
     gap: 0.35rem;
@@ -204,12 +204,12 @@
     text-align: left;
   }
   .admin-recharge-user-card span {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.78rem;
   }
   .admin-recharge-quota-table-scroll {
-    background: hsl(var(--card) / 0.5);
-    border: 1px solid hsl(var(--border) / 0.55);
+    background: hsl(var(--legacy-card) / 0.5);
+    border: 1px solid hsl(var(--legacy-border) / 0.55);
     border-radius: 0.75rem;
     max-width: 100%;
     min-width: 0;
@@ -223,7 +223,7 @@
     gap: 0.45rem 0.75rem;
   }
   .admin-recharge-quota-table-facts span {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.78rem;
     font-weight: 800;
   }
@@ -250,7 +250,7 @@
   .admin-recharge-quota-table th:first-child,
   .admin-recharge-quota-table td:first-child { width: 10rem; }
   .admin-recharge-quota-table tbody th {
-    color: hsl(var(--foreground));
+    color: hsl(var(--legacy-foreground));
     font-weight: 800;
   }
   .user-detail-entitlements {
@@ -269,10 +269,10 @@
     gap: 0.5rem;
   }
   .user-detail-entitlement-summary span {
-    background: hsl(var(--muted) / 0.26);
-    border: 1px solid hsl(var(--border) / 0.52);
+    background: hsl(var(--legacy-muted) / 0.26);
+    border: 1px solid hsl(var(--legacy-border) / 0.52);
     border-radius: 999px;
-    color: hsl(var(--foreground));
+    color: hsl(var(--legacy-foreground));
     font-size: 0.78rem;
     font-weight: 800;
     padding: 0.38rem 0.68rem;
@@ -323,7 +323,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(5.75rem, 7rem);
   }
   .user-detail-entitlement-delta-head label {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.86rem;
     font-weight: 800;
     line-height: 1.25;
@@ -368,17 +368,17 @@
   }
   .user-detail-entitlement-form label span,
   .user-detail-entitlement-filters label span {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--legacy-muted-foreground));
     font-size: 0.72rem;
     font-weight: 800;
   }
   .user-detail-entitlement-form select,
   .user-detail-entitlement-filters select,
   .user-detail-entitlement-form textarea {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border) / 0.55);
+    background: hsl(var(--legacy-card));
+    border: 1px solid hsl(var(--legacy-border) / 0.55);
     border-radius: 0.75rem;
-    color: hsl(var(--foreground));
+    color: hsl(var(--legacy-foreground));
     font-weight: 700;
     min-height: 2.5rem;
     padding: 0.55rem 0.75rem;

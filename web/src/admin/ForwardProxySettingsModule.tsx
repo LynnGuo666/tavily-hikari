@@ -631,7 +631,7 @@ function RequestTrendCell({
 }
 
 const ERROR_KIND_COLORS: Record<string, string> = {
-  proxy_unreachable: 'hsl(var(--destructive))',
+  proxy_unreachable: 'hsl(var(--legacy-destructive))',
   send_error: 'hsl(24 90% 58%)',
   validation_failed: 'hsl(43 92% 56%)',
   upstream_unknown_403: 'hsl(338 82% 62%)',
@@ -639,7 +639,7 @@ const ERROR_KIND_COLORS: Record<string, string> = {
   upstream_usage_limit_432: 'hsl(199 86% 56%)',
   upstream_gateway_5xx: 'hsl(0 84% 60%)',
   transport_send_error: 'hsl(172 66% 45%)',
-  unknown: 'hsl(var(--muted-foreground))',
+  unknown: 'hsl(var(--legacy-muted-foreground))',
 }
 
 function getErrorKindColor(kind: string): string {
@@ -812,7 +812,7 @@ function ErrorPieCell({
             d={slice.path}
             className="forward-proxy-error-pie-slice"
             fill={getErrorKindColor(slice.item.kind)}
-            stroke="hsl(var(--card))"
+            stroke="hsl(var(--legacy-card))"
             strokeWidth={slice.item.kind === activeKind ? 1.8 : 0.8}
             transform={`translate(${slice.offsetX.toFixed(2)} ${slice.offsetY.toFixed(2)})`}
             tabIndex={0}
@@ -921,14 +921,14 @@ function WeightTrendCell({
         y1={geometry.zeroY}
         x2={geometry.chartWidth}
         y2={geometry.zeroY}
-        stroke="hsl(var(--foreground) / 0.14)"
+        stroke="hsl(var(--legacy-foreground) / 0.14)"
         strokeWidth="1"
       />
-      <path d={geometry.areaPath} fill="hsl(var(--success) / 0.18)" />
+      <path d={geometry.areaPath} fill="hsl(var(--legacy-success) / 0.18)" />
       <path
         d={geometry.linePath}
         fill="none"
-        stroke="hsl(var(--success))"
+        stroke="hsl(var(--legacy-success))"
         strokeWidth="1.8"
         strokeLinejoin="round"
         strokeLinecap="round"

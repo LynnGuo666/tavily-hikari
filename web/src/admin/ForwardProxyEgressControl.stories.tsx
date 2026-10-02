@@ -230,9 +230,9 @@ function StorySurface({
   wide?: boolean
 }): JSX.Element {
   return (
-    <div className="min-h-[360px] w-full bg-[radial-gradient(circle_at_top,hsl(var(--primary)/0.14),transparent_35%),linear-gradient(180deg,hsl(224_42%_13%),hsl(225_41%_9%))] px-6 py-8 text-foreground">
+    <div className="min-h-[360px] w-full bg-[radial-gradient(circle_at_top,hsl(var(--legacy-primary)/0.14),transparent_35%),linear-gradient(180deg,hsl(224_42%_13%),hsl(225_41%_9%))] px-6 py-8 text-foreground">
       <div
-        className={`mx-auto rounded-3xl border border-border/70 bg-card/45 shadow-[0_24px_70px_-42px_hsl(var(--foreground)/0.45)] ${
+        className={`mx-auto rounded-3xl border border-border/70 bg-card/45 shadow-[0_24px_70px_-42px_hsl(var(--legacy-foreground)/0.45)] ${
           compact
             ? 'w-[min(46rem,calc(100vw-2rem))] p-6'
             : wide
@@ -530,7 +530,7 @@ function GalleryStory(): JSX.Element {
         <p className="text-sm font-semibold text-foreground">{scenario.title}</p>
         <p className="text-sm text-muted-foreground">{scenario.note}</p>
       </div>
-      <div className="rounded-3xl border border-border/70 bg-card/45 p-6 shadow-[0_24px_70px_-42px_hsl(var(--foreground)/0.45)]">
+      <div className="rounded-3xl border border-border/70 bg-card/45 p-6 shadow-[0_24px_70px_-42px_hsl(var(--legacy-foreground)/0.45)]">
         <div
           className={`grid gap-6 ${
             scenario.layout === 'flow' && scenario.previewProgress
@@ -594,7 +594,7 @@ function GalleryStory(): JSX.Element {
               这里保留可实际操作的示例：开启时气泡自动出现，点击其他区域隐藏，悬浮开关区域可以再次显示。
             </p>
           </div>
-          <div className="rounded-3xl border border-border/70 bg-card/45 p-6 shadow-[0_24px_70px_-42px_hsl(var(--foreground)/0.45)]">
+          <div className="rounded-3xl border border-border/70 bg-card/45 p-6 shadow-[0_24px_70px_-42px_hsl(var(--legacy-foreground)/0.45)]">
             <InteractiveControlPanel />
           </div>
         </section>

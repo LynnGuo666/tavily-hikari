@@ -21,15 +21,15 @@ function RollingNumberDeltaDemo(props: { from: number; to: number; delay?: numbe
     <div style={{
       minWidth: 420,
       borderRadius: 28,
-      border: '1px solid hsl(var(--border) / 0.68)',
-      background: 'hsl(var(--card) / 0.92)',
-      boxShadow: '0 22px 54px hsl(var(--foreground) / 0.12), inset 0 1px 0 hsl(var(--background) / 0.9)',
-      color: 'hsl(var(--foreground))',
+      border: '1px solid hsl(var(--legacy-border) / 0.68)',
+      background: 'hsl(var(--legacy-card) / 0.92)',
+      boxShadow: '0 22px 54px hsl(var(--legacy-foreground) / 0.12), inset 0 1px 0 hsl(var(--legacy-background) / 0.9)',
+      color: 'hsl(var(--legacy-foreground))',
       padding: '24px 28px 22px',
       textAlign: 'left',
     }}>
       <div style={{
-        color: 'hsl(var(--muted-foreground))',
+        color: 'hsl(var(--legacy-muted-foreground))',
         fontSize: 13,
         fontWeight: 800,
         letterSpacing: '0.08em',
@@ -39,7 +39,7 @@ function RollingNumberDeltaDemo(props: { from: number; to: number; delay?: numbe
       </div>
       <div style={{
         marginTop: 12,
-        color: 'hsl(var(--muted-foreground))',
+        color: 'hsl(var(--legacy-muted-foreground))',
         fontSize: 16,
         fontWeight: 700,
       }}>
@@ -57,7 +57,7 @@ function RollingNumberDeltaDemo(props: { from: number; to: number; delay?: numbe
       </div>
       <div style={{
         marginTop: 14,
-        color: 'hsl(var(--muted-foreground))',
+        color: 'hsl(var(--legacy-muted-foreground))',
         fontSize: 14,
         fontWeight: 700,
       }}>
