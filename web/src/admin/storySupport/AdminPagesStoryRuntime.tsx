@@ -4642,7 +4642,7 @@ function JobsPageCanvas(): JSX.Element {
             <h2>{jobsStrings.title}</h2>
             <p className="panel-description text-sm text-muted-foreground">{jobsStrings.description}</p>
           </div>
-          <div className="panel-actions admin-jobs-actions">
+          <div className="flex flex-wrap items-end gap-3 admin-jobs-actions">
             <AdminJobTriggerMenu
               disabled={false}
               triggeringJobType={jobTriggering}

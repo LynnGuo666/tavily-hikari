@@ -10202,7 +10202,7 @@ function AdminDashboard(): JSX.Element {
   )
   const renderJobFilterToolbar = (className?: string) => (
     <div className={['flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--end', className].filter(Boolean).join(' ')}>
-      <div className="panel-actions admin-jobs-actions">
+      <div className="flex flex-wrap items-end gap-3 admin-jobs-actions">
         <AdminJobTriggerMenu
           disabled={jobsBlocking}
           triggeringJobType={jobTriggering}

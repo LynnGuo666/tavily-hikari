@@ -896,7 +896,7 @@ export default function AdminRecentRequestsPanel({
       : 'flex items-center justify-between gap-2 text-sm admin-mobile-kv--stacked'
   const headerCopyVisible = showHeaderCopy && (title.trim().length > 0 || description.trim().length > 0)
   const renderFilters = (className?: string) => (
-    <div className={['panel-actions recent-requests-filters', className].filter(Boolean).join(' ')}>
+    <div className={['flex flex-wrap items-end gap-3 recent-requests-filters', className].filter(Boolean).join(' ')}>
       <AdminRecentRequestsRequestKindFilter
         language={language}
         isSmallViewport={isSmallViewport}
@@ -909,8 +909,8 @@ export default function AdminRecentRequestsPanel({
         onToggleRequestKind={onToggleRequestKind}
         onClearRequestKinds={onClearRequestKinds}
       />
-      <div className="recent-requests-filter-field">
-        <span className="recent-requests-filter-label">{strings.logs.filters.resultOrEffect}</span>
+      <div className="recent-requests-filter-field flex flex-col gap-1">
+        <span className="recent-requests-filter-label text-xs font-medium text-muted-foreground">{strings.logs.filters.resultOrEffect}</span>
         <Select
           value={outcomeValue}
           onValueChange={(value) => {
@@ -953,12 +953,12 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 resultOptions.map((option) => (
                   <SelectItem key={`result-${option.value}`} value={`result:${option.value}`}>
-                    <span className="recent-requests-facet-option recent-requests-facet-option--status">
-                      <span className="recent-requests-facet-option-main">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                      <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('result', option.value, strings)}
                       </span>
                       <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="recent-requests-facet-count">{`x${option.count ?? 0}`}</span>
+                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -974,12 +974,12 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 keyEffectOptions.map((option) => (
                   <SelectItem key={`effect-${option.value}`} value={`keyEffect:${option.value}`}>
-                    <span className="recent-requests-facet-option recent-requests-facet-option--status">
-                      <span className="recent-requests-facet-option-main">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                      <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('keyEffect', option.value, strings)}
                       </span>
                       <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="recent-requests-facet-count">{`x${option.count ?? 0}`}</span>
+                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -995,12 +995,12 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 bindingEffectOptions.map((option) => (
                   <SelectItem key={`binding-effect-${option.value}`} value={`bindingEffect:${option.value}`}>
-                    <span className="recent-requests-facet-option recent-requests-facet-option--status">
-                      <span className="recent-requests-facet-option-main">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                      <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('bindingEffect', option.value, strings)}
                       </span>
                       <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="recent-requests-facet-count">{`x${option.count ?? 0}`}</span>
+                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -1016,12 +1016,12 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 selectionEffectOptions.map((option) => (
                   <SelectItem key={`selection-effect-${option.value}`} value={`selectionEffect:${option.value}`}>
-                    <span className="recent-requests-facet-option recent-requests-facet-option--status">
-                      <span className="recent-requests-facet-option-main">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                      <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('selectionEffect', option.value, strings)}
                       </span>
                       <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="recent-requests-facet-count">{`x${option.count ?? 0}`}</span>
+                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -1031,8 +1031,8 @@ export default function AdminRecentRequestsPanel({
         </Select>
       </div>
       {showKeyColumn && onKeyFilterChange ? (
-        <div className="recent-requests-filter-field">
-          <span className="recent-requests-filter-label">{strings.logs.table.key}</span>
+        <div className="recent-requests-filter-field flex flex-col gap-1">
+          <span className="recent-requests-filter-label text-xs font-medium text-muted-foreground">{strings.logs.table.key}</span>
           <SearchableFacetSelect
             value={selectedKeyId ?? null}
             options={keyOptions}
@@ -1069,7 +1069,7 @@ export default function AdminRecentRequestsPanel({
       </div>
       <AdminTableShell
         className={desktopClassName}
-        tableClassName={`recent-requests-table recent-requests-table--${variant}`}
+        tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:align-middle [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_td]:align-middle [&_tbody_tr]:border-b recent-requests-table recent-requests-table--${variant}`}
         loadState={loadState}
         loadingLabel={loadingLabel}
         errorLabel={errorLabel ?? undefined}
