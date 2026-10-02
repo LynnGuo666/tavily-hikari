@@ -1,8 +1,8 @@
 import { Icon } from '../lib/icons'
 
 import { languageOptions, type Language, useLanguage, useTranslate } from '../i18n'
-import { Button } from './ui-legacy/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui-legacy/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
 const LANGUAGE_META: Record<Language, { icon: string; short: string }> = {
   en: { icon: 'circle-flags:gb', short: 'EN' },

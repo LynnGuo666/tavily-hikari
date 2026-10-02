@@ -1,5 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Check, Monitor, Moon, Sun } from 'lucide-react'
+import {
+  BellRingIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  CrownIcon,
+  LoaderCircleIcon,
+  LogOutIcon,
+  MonitorIcon,
+  MoonIcon,
+  SettingsIcon,
+  SunIcon,
+} from 'lucide-react'
 
 import BrandLockup from './BrandLockup'
 import { Icon } from '../lib/icons'
@@ -8,7 +19,8 @@ import { languageOptions, type Language, useLanguage, useTranslate } from '../i1
 import { type ThemeMode, useTheme } from '../theme'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
-import { Button } from './ui-legacy/button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +28,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui-legacy/dropdown-menu'
+} from '@/components/ui/dropdown-menu'
 
 interface UserConsoleHeaderProps {
   title: string
@@ -91,9 +103,9 @@ const UTILITY_COPY = {
 } as const
 
 function ThemeModeIcon({ mode }: { mode: ThemeMode }): JSX.Element {
-  if (mode === 'dark') return <Moon className="h-4 w-4" aria-hidden="true" />
-  if (mode === 'light') return <Sun className="h-4 w-4" aria-hidden="true" />
-  return <Monitor className="h-4 w-4" aria-hidden="true" />
+  if (mode === 'dark') return <MoonIcon aria-hidden="true" />
+  if (mode === 'light') return <SunIcon aria-hidden="true" />
+  return <MonitorIcon aria-hidden="true" />
 }
 
 function UserConsoleAvatar(props: UserConsoleAvatarProps): JSX.Element {
@@ -125,6 +137,9 @@ function UserConsoleAvatar(props: UserConsoleAvatarProps): JSX.Element {
   )
 }
 
+const AVATAR_BASE_CLASS = 'user-console-account-avatar-image size-6 shrink-0 overflow-hidden rounded-full'
+const AVATAR_FALLBACK_CLASS = `${AVATAR_BASE_CLASS} user-console-account-avatar-fallback flex items-center justify-center bg-muted text-xs font-semibold text-muted-foreground`
+
 function UserConsoleUtilityMenu(): JSX.Element {
   const { language, setLanguage } = useLanguage()
   const { mode, setMode } = useTheme()
@@ -147,49 +162,45 @@ function UserConsoleUtilityMenu(): JSX.Element {
         <Button
           type="button"
           variant="outline"
-          size="xs"
+          size="sm"
           className="user-console-utility-trigger"
           aria-label={`${copy.menu}: ${copy.theme} / ${strings.common.languageLabel}`}
         >
-          <Icon icon="mdi:tune-variant" width={18} height={18} aria-hidden="true" />
-          <span className="user-console-utility-trigger-label">{copy.menu}</span>
+          <SettingsIcon data-icon="inline-start" />
+          {copy.menu}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={8} className="user-console-utility-menu">
-        <DropdownMenuLabel className="user-console-utility-group-label">{copy.theme}</DropdownMenuLabel>
-        <DropdownMenuItem className="user-console-utility-item" onClick={() => handleThemeSelect('light')}>
-          <Sun className="h-4 w-4" aria-hidden="true" />
-          <span className="user-console-utility-item-label">{copy.light}</span>
-          {mode === 'light' ? <Check className="ml-auto h-4 w-4" aria-hidden="true" /> : null}
+      <DropdownMenuContent align="end" sideOffset={8}>
+        <DropdownMenuLabel>{copy.theme}</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => handleThemeSelect('light')}>
+          <SunIcon aria-hidden="true" />
+          {copy.light}
+          {mode === 'light' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
         </DropdownMenuItem>
-        <DropdownMenuItem className="user-console-utility-item" onClick={() => handleThemeSelect('dark')}>
-          <Moon className="h-4 w-4" aria-hidden="true" />
-          <span className="user-console-utility-item-label">{copy.dark}</span>
-          {mode === 'dark' ? <Check className="ml-auto h-4 w-4" aria-hidden="true" /> : null}
+        <DropdownMenuItem onClick={() => handleThemeSelect('dark')}>
+          <MoonIcon aria-hidden="true" />
+          {copy.dark}
+          {mode === 'dark' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
         </DropdownMenuItem>
-        <DropdownMenuItem className="user-console-utility-item" onClick={() => handleThemeSelect('system')}>
+        <DropdownMenuItem onClick={() => handleThemeSelect('system')}>
           <ThemeModeIcon mode="system" />
-          <span className="user-console-utility-item-label">{copy.system}</span>
-          {mode === 'system' ? <Check className="ml-auto h-4 w-4" aria-hidden="true" /> : null}
+          {copy.system}
+          {mode === 'system' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuLabel className="user-console-utility-group-label">{strings.common.languageLabel}</DropdownMenuLabel>
+        <DropdownMenuLabel>{strings.common.languageLabel}</DropdownMenuLabel>
         {languageOptions.map((option) => {
           const meta = LANGUAGE_META[option.value]
           const isActive = option.value === language
           return (
-            <DropdownMenuItem
-              key={option.value}
-              className="user-console-utility-item"
-              onClick={() => handleLanguageSelect(option.value)}
-            >
+            <DropdownMenuItem key={option.value} onClick={() => handleLanguageSelect(option.value)}>
               <span className="language-flag" aria-hidden="true">
                 <Icon icon={meta.icon} width={18} height={18} />
               </span>
-              <span className="user-console-utility-item-label">{strings.common[option.labelKey]}</span>
-              {isActive ? <Check className="ml-auto h-4 w-4" aria-hidden="true" /> : null}
+              {strings.common[option.labelKey]}
+              {isActive ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
             </DropdownMenuItem>
           )
         })}
@@ -215,14 +226,14 @@ function UserConsoleAnnouncementsTrigger({
     <Button
       type="button"
       variant="outline"
-      size="xs"
+      size="sm"
       className="user-console-announcements-trigger"
       aria-label={announcementsLabel}
       onClick={onOpenAnnouncements}
     >
-      <Icon icon="mdi:bell-ring-outline" width={16} height={16} aria-hidden="true" />
+      <BellRingIcon data-icon="inline-start" />
       {announcementCount && announcementCount > 0 ? (
-        <span className="user-console-announcements-count">{announcementCount}</span>
+        <Badge variant="secondary" className="px-1.5 tabular-nums">{announcementCount}</Badge>
       ) : null}
     </Button>
   )
@@ -248,37 +259,31 @@ function UserConsoleAccountMenu(props: UserConsoleAccountMenuProps): JSX.Element
         <Button
           type="button"
           variant="outline"
-          size="xs"
+          size="sm"
           className="user-console-account-trigger"
           aria-label={`${props.sessionLabel}: ${accountName}`}
         >
           <UserConsoleAvatar
             avatarUrl={props.sessionAvatarUrl}
             displayName={accountName}
-            className="user-console-account-avatar user-console-account-avatar-fallback user-console-account-trigger-icon"
-            imageClassName="user-console-account-avatar user-console-account-avatar-image user-console-account-trigger-icon"
+            className={AVATAR_FALLBACK_CLASS}
+            imageClassName={AVATAR_BASE_CLASS}
           />
-          <span className="user-console-account-name">{accountName}</span>
-          <Icon
-            icon="mdi:chevron-down"
-            width={14}
-            height={14}
-            aria-hidden="true"
-            className="user-console-account-trigger-chevron"
-          />
+          <span className="max-w-32 truncate">{accountName}</span>
+          <ChevronDownIcon data-icon="inline-end" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={8} className="user-console-account-menu">
-        <div className="user-console-account-summary">
+      <DropdownMenuContent align="end" sideOffset={8} className="w-56">
+        <div className="flex items-center gap-2.5 px-2 py-2">
           <UserConsoleAvatar
             avatarUrl={props.sessionAvatarUrl}
             displayName={accountName}
-            className="user-console-account-avatar user-console-account-avatar-fallback user-console-account-summary-icon"
-            imageClassName="user-console-account-avatar user-console-account-avatar-image user-console-account-summary-icon"
+            className={`${AVATAR_FALLBACK_CLASS} size-8`}
+            imageClassName={`${AVATAR_BASE_CLASS} size-8`}
           />
-          <div className="user-console-account-summary-body">
-            <span className="user-console-account-summary-name">{accountName}</span>
-            {accountMeta && <span className="user-console-account-summary-meta">{accountMeta}</span>}
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate text-sm font-medium">{accountName}</span>
+            {accountMeta ? <span className="truncate text-xs text-muted-foreground">{accountMeta}</span> : null}
           </div>
         </div>
 
@@ -286,21 +291,20 @@ function UserConsoleAccountMenu(props: UserConsoleAccountMenuProps): JSX.Element
 
         {hasAdminAction && (
           <DropdownMenuItem
-            className="user-console-account-menu-item user-console-account-menu-admin"
             onSelect={() => {
               if (props.adminHref) {
                 window.location.href = props.adminHref
               }
             }}
           >
-            <Icon icon="mdi:crown-outline" width={16} height={16} aria-hidden="true" />
-            <span>{props.adminMenuLabel ?? props.adminActionLabel}</span>
+            <CrownIcon aria-hidden="true" />
+            {props.adminMenuLabel ?? props.adminActionLabel}
           </DropdownMenuItem>
         )}
 
         {props.logoutVisible && (
           <DropdownMenuItem
-            className="user-console-account-menu-item user-console-account-menu-logout"
+            variant="destructive"
             onSelect={(event) => {
               event.preventDefault()
               if (!props.isLoggingOut) {
@@ -309,14 +313,12 @@ function UserConsoleAccountMenu(props: UserConsoleAccountMenuProps): JSX.Element
             }}
             disabled={props.isLoggingOut}
           >
-            <Icon
-              icon={props.isLoggingOut ? 'mdi:loading' : 'mdi:logout-variant'}
-              width={16}
-              height={16}
-              className={props.isLoggingOut ? 'icon-spin' : undefined}
-              aria-hidden="true"
-            />
-            <span>{props.isLoggingOut ? props.loggingOutLabel : props.logoutLabel}</span>
+            {props.isLoggingOut ? (
+              <LoaderCircleIcon className="animate-spin" aria-hidden="true" />
+            ) : (
+              <LogOutIcon aria-hidden="true" />
+            )}
+            {props.isLoggingOut ? props.loggingOutLabel : props.logoutLabel}
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
@@ -328,44 +330,48 @@ export default function UserConsoleHeader(props: UserConsoleHeaderProps): JSX.El
   const desktopSummary = props.subtitle
 
   return (
-    <section className="surface app-header user-console-header">
-      <div className="user-console-header-main">
-        <div className="user-console-header-topline">
-          <div className="user-console-header-brandline">
-            <BrandLockup
-              title="Tavily Hikari"
-              variant="responsive"
-              className="user-console-header-brand"
-              markClassName="user-console-header-brand-mark"
-            />
-            <span className="user-console-header-eyebrow">{props.eyebrow}</span>
-          </div>
-          <span className="user-console-header-summary">{desktopSummary}</span>
+    <section className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="user-console-header-topline user-console-header-main flex min-w-0 items-center gap-3">
+          <BrandLockup title="Tavily Hikari" variant="responsive" />
+          <span className="hidden rounded-full border bg-muted px-2 py-0.5 text-xs text-muted-foreground sm:inline">
+            {props.eyebrow}
+          </span>
+          <span className="hidden min-w-0 truncate text-sm text-muted-foreground lg:inline">
+            {desktopSummary}
+          </span>
         </div>
-      </div>
 
-      <div className="user-console-header-actions user-console-header-actions-desktop" aria-label={props.sessionLabel}>
-        <ThemeToggle />
-        <LanguageSwitcher />
-        <UserConsoleAnnouncementsTrigger
-          announcementsLabel={props.announcementsLabel}
-          announcementCount={props.announcementCount}
-          onOpenAnnouncements={props.onOpenAnnouncements}
-        />
-        <UserConsoleAccountMenu {...props} />
-      </div>
-
-      <div className="user-console-header-actions user-console-header-actions-compact" aria-label={props.sessionLabel}>
-        <div className="user-console-header-compact-tools">
+        <div
+          className="user-console-header-actions-desktop hidden items-center gap-2 md:flex"
+          aria-label={props.sessionLabel}
+        >
+          <ThemeToggle />
+          <LanguageSwitcher />
           <UserConsoleAnnouncementsTrigger
             announcementsLabel={props.announcementsLabel}
             announcementCount={props.announcementCount}
             onOpenAnnouncements={props.onOpenAnnouncements}
           />
-          <UserConsoleUtilityMenu />
-        </div>
-        <div className="user-console-header-compact-account">
           <UserConsoleAccountMenu {...props} />
+        </div>
+
+        <div
+          className="user-console-header-actions-compact flex w-full items-center justify-between gap-2 md:hidden"
+          aria-label={props.sessionLabel}
+        >
+          <span className="min-w-0 truncate text-sm text-muted-foreground">{desktopSummary}</span>
+          <div className="user-console-header-compact-tools flex items-center gap-2">
+            <UserConsoleAnnouncementsTrigger
+              announcementsLabel={props.announcementsLabel}
+              announcementCount={props.announcementCount}
+              onOpenAnnouncements={props.onOpenAnnouncements}
+            />
+            <UserConsoleUtilityMenu />
+          </div>
+          <div className="user-console-header-compact-account flex items-center">
+            <UserConsoleAccountMenu {...props} />
+          </div>
         </div>
       </div>
     </section>
