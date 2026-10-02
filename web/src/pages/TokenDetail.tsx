@@ -200,21 +200,21 @@ function TokenOwnerValue({
   onOpenUser?: (userId: string) => void
 }): JSX.Element {
   if (!owner) {
-    return <span className="token-owner-empty">{emptyLabel}</span>
+    return <span className="token-owner-empty text-xs text-muted-foreground">{emptyLabel}</span>
   }
 
   const secondary = tokenOwnerSecondary(owner)
   return (
-    <div className="token-owner-block">
+    <div className="token-owner-block flex items-center gap-2">
       {onOpenUser ? (
-        <button type="button" className="link-button token-owner-trigger" onClick={() => onOpenUser(owner.userId)}>
-          <span className="token-owner-link">{tokenOwnerPrimary(owner)}</span>
-          {secondary ? <span className="token-owner-secondary">{secondary}</span> : null}
+        <button type="button" className="link-button token-owner-trigger inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-sm hover:bg-muted" onClick={() => onOpenUser(owner.userId)}>
+          <span className="token-owner-link text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
+          {secondary ? <span className="token-owner-secondary text-xs text-muted-foreground">{secondary}</span> : null}
         </button>
       ) : (
         <>
-          <span className="token-owner-link">{tokenOwnerPrimary(owner)}</span>
-          {secondary ? <span className="token-owner-secondary">{secondary}</span> : null}
+          <span className="token-owner-link text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
+          {secondary ? <span className="token-owner-secondary text-xs text-muted-foreground">{secondary}</span> : null}
         </>
       )}
     </div>
@@ -1160,20 +1160,20 @@ export default function TokenDetail({
             <ThemeToggle />
           </div>
           <div className="admin-sidebar-utility-meta">
-            <span className={`sse-chip ${sseConnected ? 'sse-chip-ok' : 'sse-chip-warn'}`} title="Live updates via SSE">
-              <span className="sse-dot" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
+            <span className={`sse-chip inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
+              <span className="sse-dot size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
             </span>
           </div>
-          <div className="admin-sidebar-utility-actions">
+          <div className="admin-sidebar-utility-actions flex flex-col gap-1">
             <AdminReturnToConsoleLink
               label={translations.admin.header.returnToConsole}
               href={ADMIN_USER_CONSOLE_HREF}
-              className="admin-sidebar-utility-action"
+              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
             />
             <Button
               type="button"
               variant="outline"
-              className="admin-sidebar-utility-action"
+              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
               onClick={() => (onBack ? onBack() : window.history.back())}
             >
               <Icon icon="mdi:arrow-left" width={18} height={18} />
@@ -1183,11 +1183,11 @@ export default function TokenDetail({
         </AdminSidebarUtilityCard>
 
         <AdminSidebarUtilityCard>
-          <div className="admin-sidebar-utility-actions">
+          <div className="admin-sidebar-utility-actions flex flex-col gap-1">
             <Button
               type="button"
               variant="warning"
-              className="admin-sidebar-utility-action"
+              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
               onClick={() => setIsRotateDialogOpen(true)}
               aria-label="Regenerate secret"
             >
@@ -1211,19 +1211,19 @@ export default function TokenDetail({
 
       <div className="block md:hidden">
         <section className="surface app-header">
-          <div className="title-group">
+          <div className="title-group flex flex-col gap-1">
             <h1>Access Token Detail</h1>
-            <div className="subtitle">Token <code>{id}</code></div>
+            <div className="subtitle text-sm text-muted-foreground">Token <code>{id}</code></div>
           </div>
-          <div className="controls token-detail-controls">
+          <div className="controls token-detail-controls flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <AdminReturnToConsoleLink
               label={translations.admin.header.returnToConsole}
               href={ADMIN_USER_CONSOLE_HREF}
               className="admin-return-link--detail"
             />
-            <span className={`sse-chip ${sseConnected ? 'sse-chip-ok' : 'sse-chip-warn'}`} title="Live updates via SSE">
-              <span className="sse-dot" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
+            <span className={`sse-chip inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
+              <span className="sse-dot size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
             </span>
             <Button type="button" variant="outline" onClick={() => (onBack ? onBack() : window.history.back())}>
               <Icon icon="mdi:arrow-left" width={18} height={18} />
@@ -1251,14 +1251,14 @@ export default function TokenDetail({
 
       {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{error}</div>}
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 token-info-section">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 token-info-section flex flex-col gap-1">
         <AdminLoadingRegion
           loadState={infoRegionLoadState}
           loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
           minHeight={184}
         >
           {info ? (
-            <div className="token-info-grid" aria-label="Token metadata">
+            <div className="token-info-grid grid min-w-0 gap-3 px-4 sm:grid-cols-2" aria-label="Token metadata">
               <InfoCard
                 label="Token ID"
                 value={<code className="code-chip" title={info.id}>{info.id}</code>}
@@ -1280,7 +1280,7 @@ export default function TokenDetail({
               />
               <InfoCard
                 label="Note"
-                value={info.note ? <span className="token-info-note" title={info.note}>{info.note}</span> : '—'}
+                value={info.note ? <span className="token-info-note text-xs text-muted-foreground" title={info.note}>{info.note}</span> : '—'}
               />
             </div>
           ) : (
@@ -1339,13 +1339,13 @@ export default function TokenDetail({
       </section>
 
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 token-panel-header">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 token-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
           <div>
             <h2>Usage Snapshot</h2>
             <p className="panel-description text-sm text-muted-foreground">Aggregated metrics for the selected window.</p>
           </div>
-          <div className="token-period-controls" role="group" aria-label="Period filter">
-            <div className="token-period-control">
+          <div className="token-period-controls flex flex-wrap items-center gap-2 px-4" role="group" aria-label="Period filter">
+            <div className="token-period-control inline-flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted">
               <label htmlFor={periodSelectId}>Period</label>
               <Select
                 value={period}
@@ -1368,7 +1368,7 @@ export default function TokenDetail({
                 </SelectContent>
               </Select>
             </div>
-            <div className="token-period-control">
+            <div className="token-period-control inline-flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted">
               <label htmlFor={sinceInputId}>Start</label>
               {period === 'day' && (
                 <Input
@@ -1404,7 +1404,7 @@ export default function TokenDetail({
           </div>
         </div>
         {warning && (
-          <div className="token-period-warning alert border-warning/40 bg-warning/10 text-warning" role="status">
+          <div className="token-period-warning px-4 text-xs text-warning alert border-warning/40 bg-warning/10 text-warning" role="status">
             <Icon icon="mdi:alert-circle-outline" width={18} height={18} aria-hidden="true" className="token-warning-icon" />
             <span>{warning}</span>
           </div>
@@ -1414,7 +1414,7 @@ export default function TokenDetail({
           loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
           minHeight={160}
         >
-          <div className="token-stats">
+          <div className="token-stats grid min-w-0 grid-cols-2 gap-3 px-4 sm:grid-cols-4">
             <MetricCard label="Requests" value={formatNumber(summary?.total_requests ?? 0)} />
             <MetricCard label="Success" value={formatNumber(summary?.success_count ?? 0)} />
             <MetricCard label="Errors" value={formatNumber(summary?.error_count ?? 0)} />
@@ -1529,18 +1529,18 @@ export default function TokenDetail({
 
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="token-stat">
-      <div className="stat-title">{label}</div>
-      <div className="stat-value">{value}</div>
+    <div className="token-stat flex min-w-0 flex-col gap-1 rounded-lg border p-3">
+      <div className="stat-title text-xs font-medium text-muted-foreground">{label}</div>
+      <div className="stat-value font-mono text-lg font-semibold tabular-nums">{value}</div>
     </div>
   )
 }
 
 function InfoCard({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="token-info-card">
-      <span className="token-info-label">{label}</span>
-      <div className="token-info-value">{value}</div>
+    <div className="token-info-card flex min-w-0 flex-col gap-2 rounded-lg border p-4">
+      <span className="token-info-label text-xs font-medium text-muted-foreground">{label}</span>
+      <div className="token-info-value text-sm font-medium">{value}</div>
     </div>
   )
 }
