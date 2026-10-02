@@ -49,16 +49,16 @@ export function UserRechargeQuotaCalendar({
   const Heading = embedded ? 'h3' : 'h2'
 
   return (
-    <section className={embedded ? 'user-recharge-quota-calendar-panel user-recharge-quota-calendar-panel--embedded' : 'surface panel user-recharge-quota-calendar-panel'}>
-      <div className="panel-header">
+    <section className={embedded ? 'user-recharge-quota-calendar-panel user-recharge-quota-calendar-panel--embedded' : 'surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-recharge-quota-calendar-panel'}>
+      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
         <div>
           <Heading>{strings.title}</Heading>
-          <p className="panel-description">{strings.description}</p>
+          <p className="panel-description text-sm text-muted-foreground">{strings.description}</p>
         </div>
       </div>
 
       {rows.length === 0 ? (
-        <div className="empty-state alert">{strings.empty}</div>
+        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.empty}</div>
       ) : (
         <>
           <div className="admin-recharge-quota-table-facts" aria-label={strings.title}>

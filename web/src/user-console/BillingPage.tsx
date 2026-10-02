@@ -716,7 +716,7 @@ export default function BillingPage({
 
   return (
     <div className="user-console-billing-stack">
-      <section className="surface panel user-console-section user-console-billing-section">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-section user-console-billing-section">
         <header className="user-console-billing-stage-head">
           <div className="user-console-billing-stage-intro">
             <h2>{text.timelineTitle}</h2>
@@ -737,7 +737,7 @@ export default function BillingPage({
           ) : null}
         </header>
         {loading && timeline.length === 0 ? (
-          <div className="empty-state">Loading timeline...</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">Loading timeline...</div>
         ) : timeline.length > 0 ? (
           <>
             <div className="user-console-billing-timeline-stage">
@@ -806,7 +806,7 @@ export default function BillingPage({
             )}
           </>
         ) : (
-          <div className="empty-state">{text.timelineNoFuture}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{text.timelineNoFuture}</div>
         )}
         {timeline.length > 0 && !hasFutureScheduledEntitlement ? (
           <p className="user-console-billing-inline-note">{text.timelineNoScheduledChanges}</p>
@@ -815,11 +815,11 @@ export default function BillingPage({
 
       <div className="user-console-billing-workbench">
         <div className="user-console-billing-main-column">
-          <section className="surface panel user-console-section user-console-billing-section user-console-billing-summary-section">
-            <header className="panel-header user-console-section-header user-console-billing-summary-head">
+          <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-section user-console-billing-section user-console-billing-summary-section">
+            <header className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-section-header user-console-billing-summary-head">
               <div>
                 <h2>{text.summaryTitle}</h2>
-                <p className="panel-description">{text.summaryDescription}</p>
+                <p className="panel-description text-sm text-muted-foreground">{text.summaryDescription}</p>
               </div>
               {selectedTimelineMonth ? (
                 <div className="user-console-billing-summary-meta">
@@ -836,7 +836,7 @@ export default function BillingPage({
               ) : null}
             </header>
             {loading && !summary ? (
-              <div className="empty-state">Loading billing summary...</div>
+              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">Loading billing summary...</div>
             ) : summary && selectedTimelineMonth ? (
               <>
                 <div className="user-console-billing-current-total-row">
@@ -859,7 +859,7 @@ export default function BillingPage({
                 ) : null}
               </>
             ) : (
-              <div className="empty-state">{text.emptyDelta}</div>
+              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{text.emptyDelta}</div>
             )}
           </section>
         </div>
@@ -919,15 +919,15 @@ export default function BillingPage({
           />
         </aside>
 
-        <section className="surface panel user-console-section user-console-billing-section user-console-billing-orders-section">
-          <header className="panel-header user-console-section-header">
+        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-section user-console-billing-section user-console-billing-orders-section">
+          <header className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-section-header">
             <div>
               <h2>{text.ordersTitle}</h2>
-              <p className="panel-description">{text.ordersDescription}</p>
+              <p className="panel-description text-sm text-muted-foreground">{text.ordersDescription}</p>
             </div>
           </header>
           {orders.length === 0 ? (
-            <div className="empty-state">{rechargeText.noOrders}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{rechargeText.noOrders}</div>
           ) : (
             <>
               <div className="user-console-billing-orders-table" role="list">

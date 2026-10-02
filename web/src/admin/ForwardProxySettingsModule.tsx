@@ -2358,11 +2358,11 @@ export default function ForwardProxySettingsModule({
 
   return (
     <div className="forward-proxy-stack">
-      <Card className="surface panel forward-proxy-summary-panel">
+      <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 forward-proxy-summary-panel">
         <CardHeader className="forward-proxy-panel-header forward-proxy-summary-header">
           <div className="forward-proxy-panel-heading forward-proxy-panel-heading--compact">
             <CardTitle>{strings.summary.range}</CardTitle>
-            <CardDescription className="panel-description">
+            <CardDescription className="panel-description text-sm text-muted-foreground">
               {formatTimeRange(stats?.rangeStart, stats?.rangeEnd)}
             </CardDescription>
           </div>
@@ -2374,7 +2374,7 @@ export default function ForwardProxySettingsModule({
             </div>
             <div className="forward-proxy-range-row">
               {savedAt != null && (
-                <span className="panel-description">
+                <span className="panel-description text-sm text-muted-foreground">
                   {strings.summary.savedAt.replace('{time}', dateTimeFormatter.format(new Date(savedAt)))}
                 </span>
               )}
@@ -2406,11 +2406,11 @@ export default function ForwardProxySettingsModule({
         </CardContent>
       </Card>
 
-      <Card className="surface panel">
+      <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <CardHeader className="forward-proxy-panel-header">
           <div className="forward-proxy-panel-heading">
             <CardTitle>{strings.nodes.title}</CardTitle>
-            <CardDescription className="panel-description">{strings.nodes.description}</CardDescription>
+            <CardDescription className="panel-description text-sm text-muted-foreground">{strings.nodes.description}</CardDescription>
           </div>
           <div className="forward-proxy-view-switcher" role="tablist" aria-label={strings.nodes.viewSwitcherLabel}>
             <Button
@@ -2456,7 +2456,7 @@ export default function ForwardProxySettingsModule({
               minHeight={240}
             >
             {mergedNodes.length === 0 ? (
-              <div className="empty-state alert">{strings.nodes.empty}</div>
+              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.nodes.empty}</div>
             ) : (
               <>
                 <div className="forward-proxy-node-list-mobile">
@@ -2638,7 +2638,7 @@ export default function ForwardProxySettingsModule({
               minHeight={240}
             >
               {errorRows.length === 0 ? (
-                <div className="empty-state alert">{strings.nodes.errorStats.empty}</div>
+                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.nodes.errorStats.empty}</div>
               ) : (
                 <div className="forward-proxy-table-wrapper rounded-2xl border border-border/75 bg-card/50">
                   <Table className="forward-proxy-table min-w-[1080px] table-fixed text-xs xl:min-w-0">
@@ -2762,11 +2762,11 @@ export default function ForwardProxySettingsModule({
         </CardContent>
       </Card>
 
-      <Card className="surface panel">
+      <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <CardHeader className="forward-proxy-panel-header">
           <div className="forward-proxy-panel-heading">
             <CardTitle>{strings.config.title}</CardTitle>
-            <CardDescription className="panel-description">{strings.config.description}</CardDescription>
+            <CardDescription className="panel-description text-sm text-muted-foreground">{strings.config.description}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="forward-proxy-panel-content">
@@ -2843,13 +2843,13 @@ export default function ForwardProxySettingsModule({
                   <CardHeader className="forward-proxy-editor-head">
                     <div>
                       <CardTitle className="text-base">{strings.config.subscriptionsTitle}</CardTitle>
-                      <CardDescription className="panel-description">{strings.config.subscriptionsDescription}</CardDescription>
+                      <CardDescription className="panel-description text-sm text-muted-foreground">{strings.config.subscriptionsDescription}</CardDescription>
                     </div>
                     <Badge variant="info">{formatNumber(subscriptionUrls.length)}</Badge>
                   </CardHeader>
                   <CardContent className="forward-proxy-editor-card-content">
                     {subscriptionUrls.length === 0 ? (
-                      <div className="empty-state alert">{strings.config.subscriptionListEmpty}</div>
+                      <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.config.subscriptionListEmpty}</div>
                     ) : (
                       <ul className="space-y-2">
                         {subscriptionUrls.map((subscriptionUrl, index) => (
@@ -2886,13 +2886,13 @@ export default function ForwardProxySettingsModule({
                   <CardHeader className="forward-proxy-editor-head">
                     <div>
                       <CardTitle className="text-base">{strings.config.manualTitle}</CardTitle>
-                      <CardDescription className="panel-description">{strings.config.manualDescription}</CardDescription>
+                      <CardDescription className="panel-description text-sm text-muted-foreground">{strings.config.manualDescription}</CardDescription>
                     </div>
                     <Badge variant="outline">{formatNumber(manualUrls.length)}</Badge>
                   </CardHeader>
                   <CardContent className="forward-proxy-editor-card-content">
                     {manualUrls.length === 0 ? (
-                      <div className="empty-state alert">{strings.config.manualListEmpty}</div>
+                      <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.config.manualListEmpty}</div>
                     ) : (
                       <ul className="space-y-2">
                         {manualUrls.map((proxyUrl, index) => (
@@ -2944,7 +2944,7 @@ export default function ForwardProxySettingsModule({
                           ))}
                         </SelectContent>
                       </Select>
-                      <span className="panel-description">{strings.config.subscriptionIntervalHint}</span>
+                      <span className="panel-description text-sm text-muted-foreground">{strings.config.subscriptionIntervalHint}</span>
                     </label>
                   </CardContent>
                 </Card>
@@ -2961,7 +2961,7 @@ export default function ForwardProxySettingsModule({
                       />
                       <div>
                         <strong>{strings.config.insertDirectLabel}</strong>
-                        <p className="panel-description">{strings.config.insertDirectHint}</p>
+                        <p className="panel-description text-sm text-muted-foreground">{strings.config.insertDirectHint}</p>
                       </div>
                     </label>
                   </CardContent>

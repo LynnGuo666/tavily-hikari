@@ -356,22 +356,22 @@ export default function KeyStickyPanels({
 
   return (
     <div className="key-sticky-panels-stack">
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{keyDetailsStrings.stickyUsers.title}</h2>
-            <p className="panel-description">{keyDetailsStrings.stickyUsers.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.stickyUsers.description}</p>
           </div>
         </div>
         <AdminLoadingRegion
-          className="table-wrapper admin-responsive-up"
+          className="table-wrapper overflow-hidden rounded-lg border admin-responsive-up"
           loadState={stickyUsersLoadState}
           loadingLabel={stickyUsersLoadingLabel}
           errorLabel={stickyUsersError ?? adminStrings.errors.loadKeyDetails}
           minHeight={220}
         >
           {stickyUsers.length === 0 ? (
-            <div className="empty-state alert">{keyDetailsStrings.stickyUsers.empty}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyUsers.empty}</div>
           ) : (
             <Table>
               <thead>
@@ -441,7 +441,7 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyUsers.length === 0 ? (
-            <div className="empty-state alert">{keyDetailsStrings.stickyUsers.empty}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyUsers.empty}</div>
           ) : (
             stickyUsers.map((item) => {
               const secondary = stickyUserSecondary(item.user)
@@ -509,7 +509,7 @@ export default function KeyStickyPanels({
             page={stickyUsersPage}
             totalPages={stickyUsersTotalPages}
             pageSummary={
-              <span className="panel-description">
+              <span className="panel-description text-sm text-muted-foreground">
                 {keyStrings.pagination.page
                   .replace('{page}', String(stickyUsersPage))
                   .replace('{total}', String(stickyUsersTotalPages))}
@@ -526,22 +526,22 @@ export default function KeyStickyPanels({
         ) : null}
       </section>
 
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{keyDetailsStrings.stickyNodes.title}</h2>
-            <p className="panel-description">{keyDetailsStrings.stickyNodes.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.stickyNodes.description}</p>
           </div>
         </div>
         <AdminLoadingRegion
-          className="table-wrapper admin-responsive-up"
+          className="table-wrapper overflow-hidden rounded-lg border admin-responsive-up"
           loadState={stickyNodesLoadState}
           loadingLabel={stickyNodesLoadingLabel}
           errorLabel={stickyNodesError ?? adminStrings.errors.loadKeyDetails}
           minHeight={220}
         >
           {stickyNodes.length === 0 ? (
-            <div className="empty-state alert">{keyDetailsStrings.stickyNodes.empty}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyNodes.empty}</div>
           ) : (
             <Table className="key-sticky-nodes-table">
               <thead>
@@ -595,7 +595,7 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyNodes.length === 0 ? (
-            <div className="empty-state alert">{keyDetailsStrings.stickyNodes.empty}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyNodes.empty}</div>
           ) : (
             stickyNodes.map((node) => {
               const assignmentSummary = stickyNodeAssignmentSummary(node, keyDetailsStrings.stickyNodes)

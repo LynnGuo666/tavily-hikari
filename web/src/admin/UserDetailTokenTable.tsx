@@ -25,7 +25,7 @@ export function UserDetailTokenTable({
   deletingTokenId = null,
 }: UserDetailTokenTableProps): JSX.Element {
   if (tokens.length === 0) {
-    return <div className="empty-state alert">{usersStrings.empty.noTokens}</div>
+    return <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.noTokens}</div>
   }
 
   return (
@@ -140,7 +140,7 @@ export function UserDetailTokenTable({
               <div className="admin-user-mobile-card-head">
                 <div className="admin-mobile-identity-block admin-user-mobile-identity">
                   <span className="admin-mobile-identity-label">{usersStrings.tokens.table.id}</span>
-                  <div className="panel-description admin-mobile-identity-meta admin-user-token-meta">
+                  <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta admin-user-token-meta">
                     <code className="admin-user-detail-mobile-code">{token.tokenId}</code>
                     <div className="admin-user-token-summary-row">
                       <span className="admin-user-mobile-note">{token.note || '—'}</span>

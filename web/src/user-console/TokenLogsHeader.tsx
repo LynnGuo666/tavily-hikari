@@ -56,7 +56,7 @@ export default function TokenLogsHeader({
   onFilterChange,
 }: TokenLogsHeaderProps): JSX.Element {
   return (
-    <div className="panel-header user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
+    <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
       <h2 className="text-base font-semibold">{title}</h2>
       <div className="user-console-logs-header-actions flex items-center gap-2">
         <Tabs

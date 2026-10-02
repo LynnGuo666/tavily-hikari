@@ -261,7 +261,7 @@ function SummaryMetricCard({
 
   return (
     <div
-      className={`metric-card dashboard-summary-card${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width' : ''}`}
+      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width' : ''}`}
     >
       {backdrop ? (
         <DashboardUsageBackdropChart
@@ -313,7 +313,7 @@ function QuotaChargeCard({
   backdrop?: DashboardCardBackdropSeries
 }): JSX.Element {
   return (
-    <article className="metric-card dashboard-summary-card dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
+    <article className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={card.title}
@@ -893,12 +893,12 @@ export default function DashboardOverview({
     <div className="dashboard-overview-stack">
       <section className="dashboard-summary-panel">
         {!overviewReady ? (
-          <div className="surface panel dashboard-summary-fallback">
-            <div className="empty-state alert">{strings.loading}</div>
+          <div className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 dashboard-summary-fallback">
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.loading}</div>
           </div>
         ) : !hasTodaySummary && !hasMonthSummary && !hasStatusSummary ? (
-          <div className="surface panel dashboard-summary-fallback">
-            <div className="empty-state alert">{overviewReady ? strings.summaryUnavailable : strings.loading}</div>
+          <div className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 dashboard-summary-fallback">
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{overviewReady ? strings.summaryUnavailable : strings.loading}</div>
           </div>
         ) : (
           <div className="dashboard-summary-layout">
@@ -908,7 +908,7 @@ export default function DashboardOverview({
                   <header className="dashboard-summary-header">
                     <div>
                       <h2>{strings.todayTitle}</h2>
-                      <p className="panel-description">{strings.todayDescription}</p>
+                      <p className="panel-description text-sm text-muted-foreground">{strings.todayDescription}</p>
                     </div>
                   </header>
                   {hasTodaySummary ? (
@@ -931,7 +931,7 @@ export default function DashboardOverview({
                       </div>
                     </div>
                   ) : (
-                    <div className="empty-state alert dashboard-summary-empty">{strings.summaryUnavailable}</div>
+                    <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert dashboard-summary-empty">{strings.summaryUnavailable}</div>
                   )}
                 </div>
               </article>
@@ -941,7 +941,7 @@ export default function DashboardOverview({
                   <header className="dashboard-summary-header">
                     <div>
                       <h2>{strings.monthTitle}</h2>
-                      <p className="panel-description">{strings.monthDescription}</p>
+                      <p className="panel-description text-sm text-muted-foreground">{strings.monthDescription}</p>
                     </div>
                   </header>
                   {hasMonthSummary ? (
@@ -967,7 +967,7 @@ export default function DashboardOverview({
                       </div>
                     </div>
                   ) : (
-                    <div className="empty-state alert dashboard-summary-empty">{strings.summaryUnavailable}</div>
+                    <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert dashboard-summary-empty">{strings.summaryUnavailable}</div>
                   )}
                 </div>
               </article>
@@ -977,7 +977,7 @@ export default function DashboardOverview({
               <header className="dashboard-summary-header">
                 <div>
                   <h2>{strings.currentStatusTitle}</h2>
-                  <p className="panel-description">{strings.currentStatusDescription}</p>
+                  <p className="panel-description text-sm text-muted-foreground">{strings.currentStatusDescription}</p>
                 </div>
               </header>
               {hasStatusSummary ? (
@@ -987,7 +987,7 @@ export default function DashboardOverview({
                   ))}
                 </div>
               ) : (
-                <div className="empty-state alert dashboard-summary-empty">
+                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert dashboard-summary-empty">
                   {statusLoading ? strings.loading : strings.statusUnavailable}
                 </div>
               )}
@@ -1009,20 +1009,20 @@ export default function DashboardOverview({
         chartLabelTimeZone={chartLabelTimeZone}
       />
 
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{strings.recentAlertsTitle}</h2>
-            <p className="panel-description">{strings.recentAlertsDescription}</p>
+            <p className="panel-description text-sm text-muted-foreground">{strings.recentAlertsDescription}</p>
           </div>
           <button type="button" className="btn btn-outline" onClick={onOpenRecentAlerts}>
             {strings.recentAlertsOpen}
           </button>
         </div>
         {!overviewReady ? (
-          <div className="empty-state alert">{strings.loading}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.loading}</div>
         ) : recentAlerts.totalEvents === 0 ? (
-          <div className="empty-state alert">{strings.recentAlertsEmpty}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.recentAlertsEmpty}</div>
         ) : (
           <div className="dashboard-alerts-summary">
             <div className="dashboard-alerts-summary__overview">
@@ -1163,11 +1163,11 @@ export default function DashboardOverview({
         )}
       </section>
 
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{strings.actionsTitle}</h2>
-            <p className="panel-description">{strings.actionsDescription}</p>
+            <p className="panel-description text-sm text-muted-foreground">{strings.actionsDescription}</p>
           </div>
         </div>
         <div className="dashboard-actions-grid">

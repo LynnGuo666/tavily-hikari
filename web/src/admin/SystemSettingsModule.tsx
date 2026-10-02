@@ -871,7 +871,7 @@ export default function SystemSettingsModule({
   )
 
   return (
-    <section className="surface panel system-settings-shell">
+    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 system-settings-shell">
       <AdminLoadingRegion
         loadState={loadState}
         loadingLabel={strings.description}

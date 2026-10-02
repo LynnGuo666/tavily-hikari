@@ -331,9 +331,9 @@ export default function McpSessionBindingsModule({
   }
 
   return (
-    <section className="surface panel" style={{ display: 'grid', gap: 16 }}>
+    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10" style={{ display: 'grid', gap: 16 }}>
       {showStatusTabs ? (
-        <div className="panel-header" style={{ justifyContent: 'flex-end', gap: 12 }}>
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ justifyContent: 'flex-end', gap: 12 }}>
           <McpSessionBindingsStatusTabs
             language={language}
             value={query.status ?? 'active'}
@@ -463,10 +463,10 @@ export default function McpSessionBindingsModule({
         minHeight={260}
       >
         {!data || data.items.length === 0 ? (
-          <div className="empty-state alert">{copy.empty}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{copy.empty}</div>
         ) : (
           <>
-            <div className="table-wrapper jobs-table-wrapper">
+            <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
               <Table className="jobs-table admin-users-table mcp-session-bindings-table">
                 <TableHeader>
                   <TableRow>
@@ -572,7 +572,7 @@ export default function McpSessionBindingsModule({
               page={data.page}
               totalPages={totalPages}
               pageSummary={
-                <span className="panel-description">
+                <span className="panel-description text-sm text-muted-foreground">
                   {copy.pagination
                     .replace('{page}', String(data.page))
                     .replace('{total}', String(totalPages))}

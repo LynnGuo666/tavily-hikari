@@ -605,7 +605,7 @@ function AnnouncementsListPanel({
         minHeight={260}
       >
         {items.length === 0 ? (
-          <div className="empty-state alert announcements-empty-state">
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert announcements-empty-state">
             <span>{strings.empty}</span>
             {showCreateAction ? (
               <Button type="button" size="sm" onClick={onCreate}>
@@ -616,7 +616,7 @@ function AnnouncementsListPanel({
           </div>
         ) : (
           <>
-            <div className="table-wrapper announcements-table-wrapper admin-responsive-up">
+            <div className="table-wrapper overflow-hidden rounded-lg border announcements-table-wrapper admin-responsive-up">
               <table className="jobs-table announcements-table">
                 <colgroup>
                   <col className="announcements-col-title" />

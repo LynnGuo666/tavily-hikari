@@ -194,11 +194,11 @@ export function AdminUserDetailQuotaWorkspace({
   }
 
   return (
-    <section className="surface panel user-detail-quota-workspace" id="user-detail-quota">
-      <div className="panel-header" style={{ gap: 12, flexWrap: 'wrap' }}>
+    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-detail-quota-workspace" id="user-detail-quota">
+      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
         <div>
           <h2>{usersStrings.quota.title}</h2>
-          <p className="panel-description">{usersStrings.quota.description}</p>
+          <p className="panel-description text-sm text-muted-foreground">{usersStrings.quota.description}</p>
         </div>
       </div>
 
@@ -211,7 +211,7 @@ export function AdminUserDetailQuotaWorkspace({
       <div className="user-detail-quota-breakdown">
         <div className="user-detail-subsection-heading">
           <h3>{usersStrings.effectiveQuota.title}</h3>
-          <p className="panel-description">{usersStrings.effectiveQuota.description}</p>
+          <p className="panel-description text-sm text-muted-foreground">{usersStrings.effectiveQuota.description}</p>
         </div>
         <UserDetailQuotaBreakdown
           entries={breakdownEntries}
@@ -234,7 +234,7 @@ export function AdminUserDetailQuotaWorkspace({
         <div className="user-detail-entitlement-heading-row">
           <div className="user-detail-subsection-heading">
             <h3>{rechargeStrings.entitlementTitle}</h3>
-            <p className="panel-description">{rechargeStrings.entitlementDescription}</p>
+            <p className="panel-description text-sm text-muted-foreground">{rechargeStrings.entitlementDescription}</p>
           </div>
           <Dialog
             open={entitlementDialogOpen}
@@ -437,7 +437,7 @@ function EntitlementTable({
   locale: string
   formatSignedQuotaDelta: (value: number) => string
 }) {
-  if (items.length === 0) return <div className="empty-state alert">{strings.entitlementEmpty}</div>
+  if (items.length === 0) return <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.entitlementEmpty}</div>
   return (
     <div className="table-scroll-shell admin-recharge-quota-table-scroll" data-table-density="compact">
       <table className="admin-recharge-quota-table user-detail-entitlement-table" data-table-density="compact">

@@ -464,7 +464,7 @@ export default function UpstreamPrivacyStatusModule({
     : []
 
   return (
-    <section className="surface panel upstream-privacy-shell">
+    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 upstream-privacy-shell">
       <div className="upstream-privacy-shell__toolbar">
         {status ? (
           <p className="upstream-privacy-shell__meta">
@@ -490,7 +490,7 @@ export default function UpstreamPrivacyStatusModule({
         minHeight={280}
       >
         {!status ? (
-          <div className="empty-state alert">{strings.empty}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.empty}</div>
         ) : (
           <div className="upstream-privacy-layout">
             <section className="upstream-privacy-overview">
@@ -589,10 +589,10 @@ export default function UpstreamPrivacyStatusModule({
             </section>
 
             <section className="upstream-privacy-section">
-              <div className="panel-header">
+              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{strings.attentionTitle}</h3>
-                  <p className="panel-description">
+                  <p className="panel-description text-sm text-muted-foreground">
                     {statusIssues.length === 0 ? strings.attentionClear : strings.attentionDescription}
                   </p>
                 </div>
@@ -618,7 +618,7 @@ export default function UpstreamPrivacyStatusModule({
             </section>
 
             <section className="upstream-privacy-section">
-              <div className="panel-header">
+              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{strings.countersTitle}</h3>
                 </div>
@@ -782,10 +782,10 @@ export default function UpstreamPrivacyStatusModule({
             </section>
 
             <section className="upstream-privacy-section" data-testid="system-status-reconciliation-progress">
-              <div className="panel-header">
+              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{diagnosticsLabels.progressTitle}</h3>
-                  <p className="panel-description">{diagnosticsLabels.progressDescription}</p>
+                  <p className="panel-description text-sm text-muted-foreground">{diagnosticsLabels.progressDescription}</p>
                 </div>
               </div>
               <div className="upstream-privacy-progress-grid">
@@ -837,10 +837,10 @@ export default function UpstreamPrivacyStatusModule({
             </section>
 
             <section className="upstream-privacy-section" data-testid="system-status-retry-buckets">
-              <div className="panel-header">
+              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{diagnosticsLabels.retryBucketsTitle}</h3>
-                  <p className="panel-description">{diagnosticsLabels.retryBucketsDescription}</p>
+                  <p className="panel-description text-sm text-muted-foreground">{diagnosticsLabels.retryBucketsDescription}</p>
                 </div>
               </div>
               <div className="upstream-privacy-counters">
@@ -864,10 +864,10 @@ export default function UpstreamPrivacyStatusModule({
             </section>
 
             <section className="upstream-privacy-section" data-testid="system-status-key-activity">
-              <div className="panel-header">
+              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{diagnosticsLabels.keyActivityTitle}</h3>
-                  <p className="panel-description">{diagnosticsLabels.keyActivityDescription}</p>
+                  <p className="panel-description text-sm text-muted-foreground">{diagnosticsLabels.keyActivityDescription}</p>
                 </div>
                 <StatusBadge tone="info">{status.currentPeriodCode}</StatusBadge>
               </div>
@@ -904,10 +904,10 @@ export default function UpstreamPrivacyStatusModule({
               </summary>
               <div className="upstream-privacy-details__body">
                 <section className="upstream-privacy-detail-section">
-                  <div className="panel-header">
+                  <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.configurationTitle}</h3>
-                      <p className="panel-description">
+                      <p className="panel-description text-sm text-muted-foreground">
                         {configurationDriftCount === 0 ? strings.configurationAligned : strings.detailsDescription}
                       </p>
                     </div>
@@ -944,10 +944,10 @@ export default function UpstreamPrivacyStatusModule({
                 </section>
 
                 <section className="upstream-privacy-detail-section">
-                  <div className="panel-header">
+                  <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.gateTitle}</h3>
-                      <p className="panel-description">{strings.gateDescription}</p>
+                      <p className="panel-description text-sm text-muted-foreground">{strings.gateDescription}</p>
                     </div>
                   </div>
                   <div className="upstream-privacy-gates">
@@ -966,7 +966,7 @@ export default function UpstreamPrivacyStatusModule({
                 </section>
 
                 <section className="upstream-privacy-detail-section">
-                  <div className="panel-header">
+                  <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.headersTitle}</h3>
                     </div>
@@ -978,13 +978,13 @@ export default function UpstreamPrivacyStatusModule({
                 </section>
 
                 <section className="upstream-privacy-detail-section">
-                  <div className="panel-header">
+                  <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.adjustmentsTitle}</h3>
                     </div>
                   </div>
                   {status.recentAdjustments.length === 0 ? (
-                    <div className="empty-state alert">{strings.adjustmentsEmpty}</div>
+                    <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.adjustmentsEmpty}</div>
                   ) : (
                     <div className="upstream-privacy-adjustments">
                       {status.recentAdjustments.map((adjustment) => (
@@ -1022,7 +1022,7 @@ function HeaderList({ title, items }: { title: string; items: string[] }): JSX.E
     <div className="upstream-privacy-header-list">
       <strong>{title}</strong>
       {items.length === 0 ? (
-        <span className="panel-description">—</span>
+        <span className="panel-description text-sm text-muted-foreground">—</span>
       ) : (
         <div className="upstream-privacy-pill-list">
           {items.map((item) => (

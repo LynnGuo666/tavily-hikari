@@ -2143,20 +2143,20 @@ function StoryMonthlyBrokenDrawer({
     <Drawer open={open} onOpenChange={onOpenChange} shouldScaleBackground={false}>
       <DrawerContent className="request-entity-drawer-content-fit">
         <div className="request-entity-drawer-body-fit">
-          <section className="surface panel">
-            <div className="panel-header" style={{ gap: 12, flexWrap: 'wrap' }}>
+          <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+            <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
               <div>
                 <h2>{users.brokenKeys.drawerTitle}</h2>
-                <p className="panel-description">
+                <p className="panel-description text-sm text-muted-foreground">
                   {users.brokenKeys.drawerDescription.replace('{label}', label)}
                 </p>
               </div>
             </div>
             {items.length === 0 ? (
-              <div className="empty-state alert">{users.brokenKeys.empty}</div>
+              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{users.brokenKeys.empty}</div>
             ) : (
               <>
-                <div className="table-wrapper jobs-table-wrapper admin-responsive-up">
+                <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-responsive-up">
                   <table className="jobs-table admin-users-table">
                     <thead>
                       <tr>
@@ -2267,14 +2267,14 @@ function MonthlyBrokenDrawerStoryCanvas({
       activeModule="users"
       overlays={<StoryMonthlyBrokenDrawer open label={label} items={items} onOpenChange={() => undefined} />}
     >
-      <section className="surface panel">
-        <div className="panel-header" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <h2>Blocked-key Drawer Sandbox</h2>
-            <p className="panel-description">Focused Storybook surface for verifying adaptive drawer height.</p>
+            <p className="panel-description text-sm text-muted-foreground">Focused Storybook surface for verifying adaptive drawer height.</p>
           </div>
         </div>
-        <div className="empty-state alert">Background reference only. Use the open drawer to inspect sizing.</div>
+        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">Background reference only. Use the open drawer to inspect sizing.</div>
       </section>
     </AdminPageFrame>
   )
@@ -2682,7 +2682,7 @@ function StoryUserTagBadgeList({
   limit?: number
 }): JSX.Element {
   if (tags.length === 0) {
-    return <span className="panel-description">{emptyLabel}</span>
+    return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
   }
   const visibleTags = limit == null ? tags : tags.slice(0, limit)
   const overflow = limit == null ? 0 : Math.max(0, tags.length - visibleTags.length)
@@ -2786,7 +2786,7 @@ function StoryUserTagCatalogCard({
               <div className="user-tag-pill-list">
                 <StoryUserTagBadge tag={{ ...draft }} users={users} />
               </div>
-              <div className="panel-description user-tag-catalog-subtitle">
+              <div className="panel-description text-sm text-muted-foreground user-tag-catalog-subtitle">
                 <code>{draft.name}</code>
                 {iconSrc ? ` · ${draft.icon}` : ''}
               </div>
@@ -3645,7 +3645,7 @@ function TokensPageCanvas(): JSX.Element {
 
   return (
     <AdminPageFrame activeModule="tokens" introActions={tokenToolbar}>
-      <section className="surface panel">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <div className="admin-stacked-only">
           {tokenToolbar}
         </div>
@@ -3666,7 +3666,7 @@ function TokensPageCanvas(): JSX.Element {
           <button type="button" className="btn btn-ghost btn-sm">{tokenStrings.filters.clear}</button>
         </div>
 
-        <div className="table-wrapper jobs-table-wrapper admin-users-usage-table-wrapper">
+        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-users-usage-table-wrapper">
           <table className="jobs-table tokens-table">
             <thead>
               <tr>
@@ -3736,7 +3736,7 @@ function TokensPageCanvas(): JSX.Element {
         </div>
 
         <div className="table-pagination">
-          <span className="panel-description">{tokenStrings.pagination.page.replace('{page}', '1').replace('{total}', '3')}</span>
+          <span className="panel-description text-sm text-muted-foreground">{tokenStrings.pagination.page.replace('{page}', '1').replace('{total}', '3')}</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
             <button type="button" className="btn btn-outline">{tokenStrings.pagination.prev}</button>
             <button type="button" className="btn btn-outline">{tokenStrings.pagination.next}</button>
@@ -3943,11 +3943,11 @@ function KeysPageCanvas({
 
   return (
     <AdminPageFrame activeModule="keys">
-      <section className="surface panel">
-        <div className="panel-header" style={{ flexWrap: 'wrap', gap: 12, alignItems: 'flex-start' }}>
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ flexWrap: 'wrap', gap: 12, alignItems: 'flex-start' }}>
           <div style={{ flex: '1 1 320px', minWidth: 240 }}>
             <h2>{keyStrings.title}</h2>
-            <p className="panel-description">{keyStrings.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{keyStrings.description}</p>
           </div>
           <div style={{ ...keysQuickAddCardStyle, marginLeft: 'auto' }}>
             <div style={keysQuickAddActionsStyle}>
@@ -4104,7 +4104,7 @@ function KeysPageCanvas({
         </div>
         <div style={keysBulkToolbarStyle}>
           <div style={keysBulkSelectionStyle}>
-            <span className="panel-description">
+            <span className="panel-description text-sm text-muted-foreground">
               {keyStrings.selection.selectedCount.replace('{count}', String(selectedVisibleKeyCount))}
             </span>
             <Button
@@ -4178,7 +4178,7 @@ function KeysPageCanvas({
           </div>
         ) : null}
 
-        <div className="table-wrapper jobs-table-wrapper">
+        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
           <table className="jobs-table api-keys-table api-keys-table--admin">
             <thead>
               <tr>
@@ -4387,7 +4387,7 @@ function KeysPageCanvas({
             page={safePage}
             totalPages={totalPages}
             pageSummary={
-              <span className="panel-description">
+              <span className="panel-description text-sm text-muted-foreground">
                 {keyStrings.pagination.page.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
               </span>
             }
@@ -4636,11 +4636,11 @@ function JobsPageCanvas(): JSX.Element {
 
   return (
     <AdminPageFrame activeModule="jobs">
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{jobsStrings.title}</h2>
-            <p className="panel-description">{jobsStrings.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{jobsStrings.description}</p>
           </div>
           <div className="panel-actions admin-jobs-actions">
             <AdminJobTriggerMenu
@@ -4682,11 +4682,11 @@ function JobsPageCanvas(): JSX.Element {
             </DropdownMenu>
           </div>
         </div>
-        <div className="empty-state alert" role="status" style={{ marginBottom: 16 }}>
+        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" role="status" style={{ marginBottom: 16 }}>
           {jobTriggerNotice}
         </div>
 
-        <div className="table-wrapper jobs-table-wrapper jobs-module-table-wrapper">
+        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper jobs-module-table-wrapper">
           <table className="jobs-table jobs-module-table">
             <thead>
               <tr>
@@ -4800,7 +4800,7 @@ function JobsPageCanvas(): JSX.Element {
               {visibleJobs.length === 0 ? (
                 <tr>
                   <td colSpan={8}>
-                    <div className="empty-state alert">{jobsStrings.empty.none}</div>
+                    <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{jobsStrings.empty.none}</div>
                   </td>
                 </tr>
               ) : null}
@@ -4809,7 +4809,7 @@ function JobsPageCanvas(): JSX.Element {
         </div>
 
         <div className="table-pagination">
-          <span className="panel-description">{jobsStrings.description} (1 / 2)</span>
+          <span className="panel-description text-sm text-muted-foreground">{jobsStrings.description} (1 / 2)</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
             <button type="button" className="btn btn-outline">
               {admin.tokens.pagination.prev}
@@ -4889,11 +4889,11 @@ function UsersPageCanvas({
 
   return (
     <AdminPageFrame activeModule="users">
-      <section className="surface panel">
-        <div className="panel-header admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div className="admin-stacked-only">
             <h2>{users.title}</h2>
-            <p className="panel-description">{users.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{users.description}</p>
           </div>
           <div className="users-search-controls">
             <Input
@@ -4916,14 +4916,14 @@ function UsersPageCanvas({
           </div>
         </div>
         {usersFilterStatusText && (
-          <p className="panel-description" data-testid="users-filter-status">
+          <p className="panel-description text-sm text-muted-foreground" data-testid="users-filter-status">
             {usersFilterStatusText}
           </p>
         )}
 
-        <div className="table-wrapper jobs-table-wrapper">
+        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
           {filteredUsers.length === 0 ? (
-            <div className="empty-state alert">{users.empty.none}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{users.empty.none}</div>
           ) : (
             <table className={`jobs-table admin-users-table admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}>
               <thead>
@@ -4999,7 +4999,7 @@ function UsersPageCanvas({
                       >
                         <strong>{item.displayName || item.username || item.userId}</strong>
                       </button>
-                      <div className="panel-description admin-users-identity-meta">
+                      <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
                         <code>{item.userId}</code>
                         {item.username ? ` · @${item.username}` : ''}
                       </div>
@@ -5061,11 +5061,11 @@ function UsersPageCanvas({
         </div>
       </section>
 
-      <section className="surface panel">
-        <div className="panel-header" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <h2>{users.catalog.summaryTitle}</h2>
-            <p className="panel-description">{users.catalog.summaryDescription}</p>
+            <p className="panel-description text-sm text-muted-foreground">{users.catalog.summaryDescription}</p>
           </div>
           <button type="button" className="btn btn-outline">
             {users.userTags.manageCatalog}
@@ -5088,7 +5088,7 @@ function UsersPageCanvas({
                 </div>
                 <div className="user-tag-summary-count">
                   <strong>{formatNumber(tag.userCount)}</strong>
-                  <span className="panel-description">{users.catalog.summaryAccounts}</span>
+                  <span className="panel-description text-sm text-muted-foreground">{users.catalog.summaryAccounts}</span>
                 </div>
               </article>
             )
@@ -5394,14 +5394,14 @@ function UnboundTokenUsagePageCanvas({
         />
       }
     >
-      <section className="surface panel">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <div className="admin-desktop-only">
-          <p className="panel-description admin-usage-filter-status" data-selected-token>{selectedTokenId ? `Opened ${selectedTokenId}` : 'No token opened yet'}</p>
+          <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-selected-token>{selectedTokenId ? `Opened ${selectedTokenId}` : 'No token opened yet'}</p>
         </div>
 
-        <div className="table-wrapper jobs-table-wrapper admin-users-usage-table-wrapper admin-responsive-up">
+        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-users-usage-table-wrapper admin-responsive-up">
           {pagedItems.length === 0 ? (
-            <div className="empty-state alert">{errorMessage ?? strings.empty.none}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{errorMessage ?? strings.empty.none}</div>
           ) : (
             <table className="jobs-table admin-users-table admin-users-usage-table">
               <thead>
@@ -5493,7 +5493,7 @@ function UnboundTokenUsagePageCanvas({
                         >
                           <strong>{item.tokenId}</strong>
                         </button>
-                        <div className="panel-description admin-users-identity-meta">
+                        <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
                           {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                         </div>
                       </td>
@@ -5577,7 +5577,7 @@ function UnboundTokenUsagePageCanvas({
 
         <div className="admin-mobile-list admin-responsive-down">
           {pagedItems.length === 0 ? (
-            <div className="empty-state alert">{errorMessage ?? strings.empty.none}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{errorMessage ?? strings.empty.none}</div>
           ) : (
             pagedItems.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
@@ -5594,7 +5594,7 @@ function UnboundTokenUsagePageCanvas({
                       <strong>{item.tokenId}</strong>
                     </button>
                   </div>
-                  <div className="panel-description admin-mobile-identity-meta">
+                  <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta">
                     {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                   </div>
                 </div>
@@ -5668,7 +5668,7 @@ function UnboundTokenUsagePageCanvas({
             page={safePage}
             totalPages={totalPages}
             pageSummary={
-              <span className="panel-description">
+              <span className="panel-description text-sm text-muted-foreground">
                 {users.pagination.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
               </span>
             }
@@ -5698,11 +5698,11 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
 
   return (
     <div style={{ display: 'grid', gap: 20, maxWidth: 840, margin: '0 auto' }}>
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>Users usage tooltip proof</h2>
-            <p className="panel-description">
+            <p className="panel-description text-sm text-muted-foreground">
               The table shell is intentionally clipped to reproduce the original overlap bug. Shared tooltips must
               render above the sticky header and scroll frame.
             </p>
@@ -5718,7 +5718,7 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
             padding: 18,
           }}
         >
-          <div className="table-wrapper jobs-table-wrapper" style={{ maxHeight: 180, overflow: 'auto' }}>
+          <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper" style={{ maxHeight: 180, overflow: 'auto' }}>
             <table className="jobs-table admin-users-table admin-users-usage-table">
               <thead>
                 <tr>
@@ -5804,11 +5804,11 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
           }
         />
       </div>
-      <section className="surface panel admin-stacked-only">
-        <div className="panel-header" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-stacked-only">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <h2>{users.catalog.title}</h2>
-            <p className="panel-description">{users.catalog.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{users.catalog.description}</p>
           </div>
           <div className="user-tag-page-actions">
             <button type="button" className="btn btn-outline">{users.catalog.backToUsers}</button>
@@ -5819,7 +5819,7 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
         </div>
       </section>
 
-      <section className="surface panel">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <div className="user-tag-catalog-grid">
           {cards.map((tag, index) => {
             const mode: StoryTagCardMode = editorMode === 'new' && index === 0
@@ -5921,11 +5921,11 @@ function UserDetailPageCanvas({
     >
       {activeTab === 'account' && (
       <>
-      <section className="surface panel user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{users.detail.identityTitle}</h2>
-            <p className="panel-description">{users.detail.identityDescription}</p>
+            <p className="panel-description text-sm text-muted-foreground">{users.detail.identityDescription}</p>
           </div>
         </div>
         <dl className="user-detail-definition-grid">
@@ -5982,11 +5982,11 @@ function UserDetailPageCanvas({
           </div>
         </dl>
       </section>
-      <section className="surface panel">
-        <div className="panel-header" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <h2>{users.userTags.title}</h2>
-            <p className="panel-description">{users.userTags.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{users.userTags.description}</p>
           </div>
           <button type="button" className="btn btn-outline">
             {users.userTags.manageCatalog}
@@ -5996,7 +5996,7 @@ function UserDetailPageCanvas({
           <div className="user-tag-binding-summary">
             <div className="user-tag-binding-summary-top">
               <StoryUserTagBadgeList tags={detail.tags} users={users} emptyLabel={users.userTags.empty} />
-              <p className="panel-description user-tag-binding-summary-note">
+              <p className="panel-description text-sm text-muted-foreground user-tag-binding-summary-note">
                 系统标签保持只读，手动标签在右侧选择后绑定。
               </p>
             </div>
@@ -6137,7 +6137,7 @@ function UserDetailPageCanvas({
       />
       )}
       {activeTab === 'activity' && (
-      <section className="surface panel">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <UserDetailSharedUsagePanel
           usersStrings={users}
           language={language}
@@ -6159,18 +6159,18 @@ function UserDetailPageCanvas({
       </section>
       )}
       {activeTab === 'account' && (
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{users.detail.tokensTitle}</h2>
-            <p className="panel-description">{users.detail.tokensDescription}</p>
+            <p className="panel-description text-sm text-muted-foreground">{users.detail.tokensDescription}</p>
           </div>
           <Button type="button" variant="secondary" size="sm" onClick={addToken}>
             <Icon icon="mdi:key-plus" width={16} height={16} />
             <span>{users.detail.addToken}</span>
           </Button>
         </div>
-        <div className="table-wrapper jobs-table-wrapper">
+        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
           <UserDetailTokenTable
             tokens={detail.tokens}
             usersStrings={users}
@@ -6972,7 +6972,7 @@ export const UsersUsage: Story = {
     if (!introSearch) {
       throw new Error('Expected user usage page intro to host the usage search input.')
     }
-    const panelHeader = canvasElement.querySelector<HTMLElement>('.surface.panel .panel-header')
+    const panelHeader = canvasElement.querySelector<HTMLElement>('.surface.panel .panel-header flex flex-col gap-1.5 border-b px-4 pb-4')
     if (panelHeader) {
       throw new Error('Expected user usage page panel to drop the duplicated header block.')
     }
@@ -7080,7 +7080,7 @@ export const UnboundTokenUsage: Story = {
     if (!introSearch) {
       throw new Error('Expected unbound token usage page intro to host the usage search input.')
     }
-    const panelHeader = canvasElement.querySelector<HTMLElement>('.surface.panel .panel-header')
+    const panelHeader = canvasElement.querySelector<HTMLElement>('.surface.panel .panel-header flex flex-col gap-1.5 border-b px-4 pb-4')
     if (panelHeader) {
       throw new Error('Expected unbound token usage page panel to drop the duplicated header block.')
     }
@@ -7357,7 +7357,7 @@ export const UserDetail: Story = {
       throw new Error('Expected the user detail compact intro to avoid horizontal overflow.')
     }
     const hasDuplicatedDetailHeader = Array.from(
-      canvasElement.querySelectorAll<HTMLElement>('.admin-shell-content > .surface.panel > .panel-header h2'),
+      canvasElement.querySelectorAll<HTMLElement>('.admin-shell-content > .surface.panel > .panel-header flex flex-col gap-1.5 border-b px-4 pb-4 h2'),
     ).some((item) => item.textContent?.trim() === '用户详情')
     if (hasDuplicatedDetailHeader) {
       throw new Error('Expected user detail story to remove the standalone title panel header.')

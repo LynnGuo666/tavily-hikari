@@ -138,7 +138,7 @@ export function UsagePageIntro({
         </section>
       </div>
       {filterStatusText ? (
-        <p className="panel-description admin-usage-filter-status" data-testid={filterStatusTestId}>
+        <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-testid={filterStatusTestId}>
           {filterStatusText}
         </p>
       ) : null}
@@ -201,7 +201,7 @@ export function UserTagBadgeList({
   limit?: number
 }): JSX.Element {
   if (tags.length === 0) {
-    return <span className="panel-description">{emptyLabel}</span>
+    return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
   }
 
   const visibleTags = tags.slice(0, limit)

@@ -206,7 +206,7 @@ export default function AdminRechargeRecordsModule({
   if (data && !data.hasRechargeOrders) {
     return (
       <section className="admin-recharge-module admin-recharge-module--empty" aria-label={strings.title}>
-        <div className="empty-state">{strings.emptyHiddenDescription}</div>
+        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{strings.emptyHiddenDescription}</div>
       </section>
     )
   }

@@ -65,7 +65,7 @@ export function UserDetailQuotaBreakdown({
 
   return (
     <>
-      <div className="table-wrapper jobs-table-wrapper admin-responsive-up" style={{ marginTop: 12 }}>
+      <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-responsive-up" style={{ marginTop: 12 }}>
         <table className="jobs-table admin-users-table user-tag-breakdown-table">
           <thead>
             <tr>
@@ -122,7 +122,7 @@ export function UserDetailQuotaBreakdown({
               <div className="admin-user-mobile-card-head">
                 <div className="admin-mobile-identity-block admin-user-mobile-identity">
                   <span className="admin-mobile-identity-label">{usersStrings.effectiveQuota.columns.item}</span>
-                  <div className="panel-description admin-mobile-identity-meta admin-user-breakdown-meta">
+                  <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta admin-user-breakdown-meta">
                     <strong className="admin-user-breakdown-title">{view.breakdownLabel}</strong>
                     {entry.tagName ? <code className="admin-user-detail-mobile-code">{entry.tagName}</code> : null}
                   </div>

@@ -1251,7 +1251,7 @@ export default function TokenDetail({
 
       {error && <div className="surface error-banner" role="alert">{error}</div>}
 
-      <section className="surface panel token-info-section">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 token-info-section">
         <AdminLoadingRegion
           loadState={infoRegionLoadState}
           loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
@@ -1284,16 +1284,16 @@ export default function TokenDetail({
               />
             </div>
           ) : (
-            <div className="empty-state alert">Token details are unavailable right now.</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">Token details are unavailable right now.</div>
           )}
         </AdminLoadingRegion>
       </section>
 
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>Quick Stats</h2>
-            <p className="panel-description">Rolling usage windows (1 hour / 24 hours / calendar month).</p>
+            <p className="panel-description text-sm text-muted-foreground">Rolling usage windows (1 hour / 24 hours / calendar month).</p>
           </div>
         </div>
         <AdminLoadingRegion
@@ -1327,7 +1327,7 @@ export default function TokenDetail({
                 />
               </>
             ) : (
-              <div className="empty-state alert" style={{ gridColumn: '1 / -1' }}>
+              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" style={{ gridColumn: '1 / -1' }}>
                 Token quota details are unavailable right now.
               </div>
             )}
@@ -1338,11 +1338,11 @@ export default function TokenDetail({
         </div>
       </section>
 
-      <section className="surface panel">
-        <div className="panel-header token-panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 token-panel-header">
           <div>
             <h2>Usage Snapshot</h2>
-            <p className="panel-description">Aggregated metrics for the selected window.</p>
+            <p className="panel-description text-sm text-muted-foreground">Aggregated metrics for the selected window.</p>
           </div>
           <div className="token-period-controls" role="group" aria-label="Period filter">
             <div className="token-period-control">
@@ -1586,7 +1586,7 @@ function UsageChart({
   return (
     <div className="hourly-chart" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {loading ? (
-        <div className="empty-state">Loading…</div>
+        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">Loading…</div>
       ) : (
         <div style={{ height }}>
           <Bar options={options} data={chartData} />

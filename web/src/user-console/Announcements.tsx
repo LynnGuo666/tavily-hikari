@@ -281,7 +281,7 @@ export default function UserConsoleAnnouncements({
           </DrawerHeader>
           <div className="user-console-announcement-history-list flex flex-col gap-3 overflow-y-auto p-4 pt-0">
             {historyAnnouncements.length === 0 ? (
-              <div className="empty-state alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">
+              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">
                 {strings.emptyHistory}
               </div>
             ) : (

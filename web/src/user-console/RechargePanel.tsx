@@ -233,11 +233,11 @@ export default function RechargePanel({
   }
 
   return (
-    <Card className="surface panel user-console-section user-console-recharge-section gap-0 py-0">
-      <CardHeader className="panel-header user-console-section-header user-console-recharge-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">
+    <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-section user-console-recharge-section gap-0 py-0">
+      <CardHeader className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-section-header user-console-recharge-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">
         <div className="min-w-0">
           <CardTitle className="text-base font-semibold">{text.title}</CardTitle>
-          <CardDescription className="panel-description mt-1 text-sm">{text.description}</CardDescription>
+          <CardDescription className="panel-description text-sm text-muted-foreground mt-1 text-sm">{text.description}</CardDescription>
         </div>
         {config?.enabled ? (
           <StatusBadge tone="success">{text.enabled}</StatusBadge>
@@ -381,7 +381,7 @@ export default function RechargePanel({
               {error ? <p className="user-console-recharge-error text-sm text-destructive" role="status" aria-live="polite">{error}</p> : null}
             </div>
           ) : (
-            <p className="empty-state user-console-recharge-disabled rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">{text.unavailable}</p>
+            <p className="empty-state px-4 py-8 text-center text-sm text-muted-foreground user-console-recharge-disabled rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">{text.unavailable}</p>
           )}
         </div>
 
@@ -390,7 +390,7 @@ export default function RechargePanel({
             <h3 className="text-sm font-semibold">{text.orders}</h3>
             <div className="user-console-recharge-orders-panel flex flex-col gap-3">
               {orders.length === 0 ? (
-                <p className="empty-state rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">{text.noOrders}</p>
+                <p className="empty-state px-4 py-8 text-center text-sm text-muted-foreground rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">{text.noOrders}</p>
               ) : (
                 <ul className="flex flex-col gap-2">
                   {orders.slice(0, ordersLimit).map((order) => (

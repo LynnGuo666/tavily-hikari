@@ -59,7 +59,7 @@ export default function OAuthCallbackPanel({
 }: OAuthCallbackPanelProps): JSX.Element {
   return (
     <Card
-      className="surface panel access-panel oauth-callback-panel mx-auto w-full max-w-xl gap-0 py-0"
+      className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 access-panel oauth-callback-panel mx-auto w-full max-w-xl gap-0 py-0"
       role="region"
       aria-label={`${model.badge} ${model.title}`}
     >

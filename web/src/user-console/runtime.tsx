@@ -3011,11 +3011,11 @@ export default function UserConsole(): JSX.Element {
                 </CardAction>
               ) : null}
             </CardHeader>
-            <CardContent className="table-wrapper flex flex-col gap-6 p-0">
+            <CardContent className="table-wrapper overflow-hidden rounded-lg border flex flex-col gap-6 p-0">
               {showTokenListLoading ? (
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.loading}</div>
+                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.loading}</div>
               ) : showEmptyTokens ? (
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.empty}</div>
+                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.empty}</div>
               ) : (
                 <>
                   <div className="hidden overflow-hidden rounded-lg border md:block">

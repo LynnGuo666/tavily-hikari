@@ -52,7 +52,7 @@ export default function AdminLoadingRegion({
           <div className="admin-loading-region-label">{loadingLabel}</div>
         </div>
       ) : errored && errorLabel ? (
-        <div className="admin-loading-region-error empty-state alert" role="alert">
+        <div className="admin-loading-region-error empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" role="alert">
           {errorLabel}
         </div>
       ) : (

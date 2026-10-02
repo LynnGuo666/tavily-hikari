@@ -443,9 +443,9 @@ export default function PressureAnalysisScreen({
 
   if (error && !snapshot) {
     return (
-      <section className="surface panel pressure-analysis-empty-state" role="alert">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 pressure-analysis-empty-state" role="alert">
         <h2>{strings.errorTitle}</h2>
-        <p className="panel-description">{error}</p>
+        <p className="panel-description text-sm text-muted-foreground">{error}</p>
         <button type="button" className="btn btn-outline" onClick={onRetry}>
           {strings.retry}
         </button>
@@ -455,20 +455,20 @@ export default function PressureAnalysisScreen({
 
   if (!snapshot) {
     return (
-      <section className="surface panel pressure-analysis-empty-state">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 pressure-analysis-empty-state">
         <h2>{strings.emptyTitle}</h2>
-        <p className="panel-description">{strings.emptyDescription}</p>
+        <p className="panel-description text-sm text-muted-foreground">{strings.emptyDescription}</p>
       </section>
     )
   }
 
   return (
     <div className="pressure-analysis-page" data-testid="pressure-analysis-screen">
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{strings.charts.last24h.title}</h2>
-            <p className="panel-description">{strings.charts.last24h.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{strings.charts.last24h.description}</p>
           </div>
         </div>
         <div className="pressure-chart-shell pressure-chart-shell-line">
@@ -479,15 +479,15 @@ export default function PressureAnalysisScreen({
         </div>
       </section>
 
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{strings.charts.userDistribution.title}</h2>
-            <p className="panel-description">{strings.charts.userDistribution.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{strings.charts.userDistribution.description}</p>
           </div>
         </div>
         {userDistributionPoints.length === 0 ? (
-          <div className="empty-state alert">{strings.charts.userDistribution.empty}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.charts.userDistribution.empty}</div>
         ) : (
           <div
             className="pressure-chart-shell pressure-chart-shell-distribution"
@@ -509,11 +509,11 @@ export default function PressureAnalysisScreen({
         )}
       </section>
 
-      <section className="surface panel">
-        <div className="panel-header">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
           <div>
             <h2>{strings.charts.last7d.title}</h2>
-            <p className="panel-description">{strings.charts.last7d.description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{strings.charts.last7d.description}</p>
           </div>
         </div>
         <div className="pressure-chart-shell pressure-chart-shell-line">

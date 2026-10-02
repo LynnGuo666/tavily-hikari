@@ -99,7 +99,7 @@ export function UsersUsageScreen({
         filterStatusText={filterStatusText}
       />
 
-      <section className="surface panel">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <AdminTableShell
           className="jobs-table-wrapper admin-users-usage-table-wrapper admin-responsive-up"
           tableClassName={`jobs-table admin-users-table admin-users-usage-table${showShadowDailyColumn ? ' admin-users-usage-table--shadow-compare' : ''}`}
@@ -112,7 +112,7 @@ export function UsersUsageScreen({
             <tbody>
               <tr>
                 <td colSpan={showShadowDailyColumn ? 12 : 11}>
-                  <div className="empty-state alert">{usersStrings.empty.none}</div>
+                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.none}</div>
                 </td>
               </tr>
             </tbody>
@@ -220,7 +220,7 @@ export function UsersUsageScreen({
                           <strong>{formatAdminUserListPrimary(item)}</strong>
                         </button>
                         {userMeta ? (
-                          <div className="panel-description admin-users-identity-meta">{userMeta}</div>
+                          <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">{userMeta}</div>
                         ) : null}
                       </td>
                       <td>
@@ -308,7 +308,7 @@ export function UsersUsageScreen({
           minHeight={260}
         >
           {users.length === 0 ? (
-            <div className="empty-state alert">{usersStrings.empty.none}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.none}</div>
           ) : (
             users.map((item) => {
               const requestRate = resolveRequestRate(item, 'user')

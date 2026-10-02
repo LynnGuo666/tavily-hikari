@@ -121,7 +121,7 @@ export default function TokenLogsPanel({
   return (
     <section
       className={cn(
-        'surface panel user-console-detail-panel user-console-logs-panel',
+        'surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-detail-panel user-console-logs-panel',
         `is-${mode}`,
         'overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10',
       )}
@@ -154,7 +154,7 @@ export default function TokenLogsPanel({
       ) : null}
       <div
         className={cn(
-          'table-wrapper user-console-md-up max-h-[420px] overflow-auto',
+          'table-wrapper overflow-hidden rounded-lg border user-console-md-up max-h-[420px] overflow-auto',
           mode === 'detail' && 'table-sticky-header-shell user-console-logs-table-scroll',
         )}
         onScroll={mode === 'detail'
@@ -162,7 +162,7 @@ export default function TokenLogsPanel({
           : undefined}
       >
         {logs.length === 0 ? (
-          <div className="empty-state alert p-6 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert p-6 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
         ) : (
           <>
             {mode === 'detail' ? (
@@ -192,7 +192,7 @@ export default function TokenLogsPanel({
       {mode === 'full' ? (
         <div className="user-console-mobile-list user-console-md-down flex flex-col gap-3 p-4">
           {logs.length === 0 ? (
-            <div className="empty-state alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
           ) : (
             logs.map((log) => (
               <article

@@ -1056,13 +1056,13 @@ export default function AdminRecentRequestsPanel({
     ? createPortal(renderFilters('recent-requests-filters--header'), headerFiltersTarget)
     : null
   return (
-    <section className="surface panel">
+    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
       {headerFiltersPortal}
-      <div className={`panel-header recent-requests-header${headerCopyVisible ? '' : ' recent-requests-header--filters-only'}${headerFiltersTarget ? ' recent-requests-header--portal' : ''}`}>
+      <div className={`panel-header flex flex-col gap-1.5 border-b px-4 pb-4 recent-requests-header${headerCopyVisible ? '' : ' recent-requests-header--filters-only'}${headerFiltersTarget ? ' recent-requests-header--portal' : ''}`}>
         {headerCopyVisible ? (
           <div>
             <h2>{title}</h2>
-            <p className="panel-description">{description}</p>
+            <p className="panel-description text-sm text-muted-foreground">{description}</p>
           </div>
         ) : null}
         {renderFilters(headerFiltersTarget ? 'recent-requests-filters--mobile-only' : undefined)}
@@ -1095,7 +1095,7 @@ export default function AdminRecentRequestsPanel({
           {logs.length === 0 ? (
             <TableRow>
               <TableCell colSpan={summaryColumnCount}>
-                <div className="empty-state alert">{emptyLabel}</div>
+                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{emptyLabel}</div>
               </TableCell>
             </TableRow>
           ) : (
@@ -1256,7 +1256,7 @@ export default function AdminRecentRequestsPanel({
         minHeight={240}
       >
         {logs.length === 0 ? (
-          <div className="empty-state alert">{emptyLabel}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{emptyLabel}</div>
         ) : (
           logs.map((log) => {
             const expanded = expandedLogs.has(log.id)

@@ -591,11 +591,11 @@ export default function DashboardTrendPanel({
     : new Date(rollupIntegrity.lastVerifiedAt * 1000).toLocaleString()
 
   return (
-    <section className="surface panel dashboard-trend-panel">
-      <div className="panel-header dashboard-trend-header">
+    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 dashboard-trend-panel">
+      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 dashboard-trend-header">
         <div>
           <h2>{strings.trendsTitle}</h2>
-          <p className="panel-description">{strings.trendsDescription}</p>
+          <p className="panel-description text-sm text-muted-foreground">{strings.trendsDescription}</p>
         </div>
         <div className="dashboard-trend-meta">
           <span>{chartMeta}</span>
@@ -651,9 +651,9 @@ export default function DashboardTrendPanel({
 
       <div className="dashboard-chart-shell">
         {!overviewReady ? (
-          <div className="empty-state alert">{strings.loading}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.loading}</div>
         ) : showEmpty ? (
-          <div className="empty-state alert">{strings.chartEmpty}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.chartEmpty}</div>
         ) : (
           <div className="dashboard-chart-canvas">
             {isAreaMode ? (

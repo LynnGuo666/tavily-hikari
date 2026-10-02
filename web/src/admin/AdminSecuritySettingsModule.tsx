@@ -466,7 +466,7 @@ export default function AdminSecuritySettingsModule({
   ])
 
   return (
-    <section className="surface panel system-settings-shell">
+    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 system-settings-shell">
       <div className="system-settings-form-layout" aria-label={copy.title}>
         <section className="system-settings-config-section">
           <h4>{copy.postureSectionTitle}</h4>

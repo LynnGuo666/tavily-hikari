@@ -816,7 +816,7 @@ export default function AlertsCenter({
   }, [])
   return (
     <div className="alerts-center-stack">
-      <section className="surface panel alerts-center-panel">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 alerts-center-panel">
         <div className="alerts-center-toolbar">
           <div className={`alerts-center-tabs-mobile${inlineTabsVariant === 'mobile' ? ' admin-stacked-only' : ''}`}>
             <SegmentedTabs<AlertsCenterView>
@@ -1021,7 +1021,7 @@ export default function AlertsCenter({
                 {eventsPage.items.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7}>
-                      <div className="empty-state alert">{copy.emptyEvents}</div>
+                      <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{copy.emptyEvents}</div>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -1112,7 +1112,7 @@ export default function AlertsCenter({
                 {groupsPage.items.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6}>
-                      <div className="empty-state alert">{copy.emptyGroups}</div>
+                      <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{copy.emptyGroups}</div>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -1296,7 +1296,7 @@ export default function AlertsCenter({
                 <h3>{copy.requestDrawer.title}</h3>
               </DrawerTitle>
               <DrawerDescription asChild>
-                <p className="panel-description">{requestSummary(selectedRequest)}</p>
+                <p className="panel-description text-sm text-muted-foreground">{requestSummary(selectedRequest)}</p>
               </DrawerDescription>
             </header>
 
@@ -1333,7 +1333,7 @@ export default function AlertsCenter({
                 <h3>{copy.childDrawer.title}</h3>
               </DrawerTitle>
               <DrawerDescription asChild>
-                <p className="panel-description">
+                <p className="panel-description text-sm text-muted-foreground">
                   {selectedChildDetails
                     ? `${semanticWindowLabel(selectedChildDetails.child, language)} · ${childRequestRecords.length} ${copy.groupUi.requestRecords}`
                     : '—'}

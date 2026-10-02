@@ -32,7 +32,7 @@ export default function AdminTableShell({
 }: AdminTableShellProps): JSX.Element {
   return (
     <AdminLoadingRegion
-      className={cn('table-wrapper', className)}
+      className={cn('table-wrapper overflow-hidden rounded-lg border', className)}
       loadState={loadState}
       loadingLabel={loadingLabel}
       errorLabel={errorLabel}

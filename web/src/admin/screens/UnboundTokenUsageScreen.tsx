@@ -85,7 +85,7 @@ export function UnboundTokenUsageScreen({
         searchControls={searchControls}
       />
 
-      <section className="surface panel">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <AdminTableShell
           className="jobs-table-wrapper admin-users-usage-table-wrapper admin-responsive-up"
           tableClassName="jobs-table admin-users-table admin-users-usage-table"
@@ -98,7 +98,7 @@ export function UnboundTokenUsageScreen({
             <tbody>
               <tr>
                 <td colSpan={10}>
-                  <div className="empty-state alert">{unboundTokenUsageStrings.empty.none}</div>
+                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{unboundTokenUsageStrings.empty.none}</div>
                 </td>
               </tr>
             </tbody>
@@ -200,7 +200,7 @@ export function UnboundTokenUsageScreen({
                         >
                           <strong>{item.tokenId}</strong>
                         </button>
-                        <div className="panel-description admin-users-identity-meta">
+                        <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
                           {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                         </div>
                       </td>
@@ -261,7 +261,7 @@ export function UnboundTokenUsageScreen({
           minHeight={260}
         >
           {items.length === 0 ? (
-            <div className="empty-state alert">{unboundTokenUsageStrings.empty.none}</div>
+            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{unboundTokenUsageStrings.empty.none}</div>
           ) : (
             items.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
@@ -278,7 +278,7 @@ export function UnboundTokenUsageScreen({
                         <strong>{item.tokenId}</strong>
                       </button>
                     </div>
-                    <div className="panel-description admin-mobile-identity-meta">
+                    <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta">
                       {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                     </div>
                   </div>

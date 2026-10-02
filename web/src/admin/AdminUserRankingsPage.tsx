@@ -527,11 +527,11 @@ function RankingsChartCard({
   const interactiveRows = useMemo(() => buildInteractiveRows(rows, compact), [compact, rows])
 
   return (
-    <article className="surface panel admin-ranking-card">
-      <div className="panel-header">
+    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card">
+      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
         <div>
           <h3>{title}</h3>
-          <p className="panel-description">{description}</p>
+          <p className="panel-description text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
       <div className="admin-ranking-card-body">
@@ -607,11 +607,11 @@ function RankingsLoadingCard({
   }))
 
   return (
-    <article className="surface panel admin-ranking-card">
-      <div className="panel-header">
+    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card">
+      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
         <div>
           <h3>{title}</h3>
-          <p className="panel-description">{description}</p>
+          <p className="panel-description text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
       <div className="admin-ranking-card-body">
@@ -894,8 +894,8 @@ export default function AdminUserRankingsPage({
   return (
     <section className="admin-rankings-page">
       {showHeader ? (
-        <section className="surface panel">
-          <div className="panel-header admin-rankings-header">
+        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+          <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-rankings-header">
             <div className="admin-rankings-header-row">
               <h2>{strings.title}</h2>
               <RankingsMeta

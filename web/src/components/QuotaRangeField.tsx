@@ -53,7 +53,7 @@ export default function QuotaRangeField({
             aria-label={sliderAriaLabel}
             disabled={disabled}
           />
-          <span className="panel-description">{helperText}</span>
+          <span className="panel-description text-sm text-muted-foreground">{helperText}</span>
         </div>
         <Input
           type="text"

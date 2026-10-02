@@ -194,7 +194,7 @@ export default function ForwardProxyEgressControl({
           }
           className="mt-0.5 shrink-0 text-base"
         />
-        <p className={errorMessage ? 'line-clamp-2' : 'panel-description'} title={errorMessage ?? undefined}>
+        <p className={errorMessage ? 'line-clamp-2' : 'panel-description text-sm text-muted-foreground'} title={errorMessage ?? undefined}>
           {errorMessage
             ? errorPresentation === 'alert'
               ? `${strings.config.egressErrorTitle}：${errorMessage}`

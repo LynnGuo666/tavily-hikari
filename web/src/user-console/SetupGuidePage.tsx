@@ -32,11 +32,11 @@ export default function SetupGuidePage({
   guide,
 }: SetupGuidePageProps): JSX.Element {
   return (
-    <Card className="surface panel user-console-setup-page gap-0 overflow-visible py-0">
-      <CardHeader className="panel-header user-console-setup-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">
+    <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-setup-page gap-0 overflow-visible py-0">
+      <CardHeader className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-setup-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">
         <div className="user-console-setup-heading min-w-0">
           <h2 className="text-base font-semibold">{text.title}</h2>
-          <CardDescription className="panel-description mt-1 text-sm">{text.description}</CardDescription>
+          <CardDescription className="panel-description text-sm text-muted-foreground mt-1 text-sm">{text.description}</CardDescription>
         </div>
         {selectedTokenId ? (
           <div className="user-console-setup-token-select flex items-center gap-2">
@@ -60,7 +60,7 @@ export default function SetupGuidePage({
       </CardHeader>
       <CardContent className="p-0">
         {selectedTokenId ? guide : (
-          <div className="empty-state user-console-setup-empty flex flex-col items-center gap-2 p-10 text-center">
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground user-console-setup-empty flex flex-col items-center gap-2 p-10 text-center">
             <strong className="text-sm font-semibold">{text.emptyTitle}</strong>
             <span className="text-sm text-muted-foreground">{text.emptyDescription}</span>
           </div>

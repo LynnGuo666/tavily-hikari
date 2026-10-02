@@ -736,7 +736,7 @@ export function UserDetailSharedUsagePanel({
         <span>{formatNumber(language, total)}</span>
       </div>
       {values.length === 0 ? (
-        <p className="panel-description">{usersStrings.detail.ipUsageListEmpty}</p>
+        <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.ipUsageListEmpty}</p>
       ) : (
         <div className="admin-user-ip-list-values">
           {values.map((ip) => (
@@ -751,10 +751,10 @@ export function UserDetailSharedUsagePanel({
     <div className="admin-user-ip-usage">
       <div className="admin-user-ip-usage-copy">
         <h3>{usersStrings.detail.ipUsageTitle}</h3>
-        <p className="panel-description">{usersStrings.detail.ipUsageDescription}</p>
+        <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.ipUsageDescription}</p>
       </div>
       {ipTimeline.length === 0 ? (
-        <div className="empty-state alert">{usersStrings.detail.ipUsageEmpty}</div>
+        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.detail.ipUsageEmpty}</div>
       ) : (
         <div
           className="admin-user-ip-gantt-chart"
@@ -787,10 +787,10 @@ export function UserDetailSharedUsagePanel({
       data-tooltip-pinned={pinnedTooltip != null ? 'true' : 'false'}
     >
       {title || description ? (
-        <div className="panel-header admin-user-shared-usage-panel-header">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-user-shared-usage-panel-header">
           <div className="admin-user-shared-usage-heading">
             {title ? <h2>{title}</h2> : null}
-            {description ? <p className="panel-description">{description}</p> : null}
+            {description ? <p className="panel-description text-sm text-muted-foreground">{description}</p> : null}
           </div>
           <SegmentedTabs<AdminUserUsagePanelTab>
             value={activeSeries}
@@ -888,9 +888,9 @@ export function UserDetailSharedUsagePanel({
         {activeSeries === 'ip' ? (
           renderIpUsage()
         ) : (statusBySeries[activeSeries] ?? 'idle') === 'loading' && !currentSeries ? (
-          <div className="empty-state alert">{usersStrings.detail.sharedUsageLoading}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.detail.sharedUsageLoading}</div>
         ) : (statusBySeries[activeSeries] ?? 'idle') === 'error' && !currentSeries ? (
-          <div className="empty-state alert">
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">
             <div>{usersStrings.detail.sharedUsageLoadFailed}</div>
             <Button
               type="button"
@@ -903,7 +903,7 @@ export function UserDetailSharedUsagePanel({
             </Button>
           </div>
         ) : !hasRenderablePoints ? (
-          <div className="empty-state alert">{usersStrings.detail.sharedUsageEmpty}</div>
+          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.detail.sharedUsageEmpty}</div>
         ) : (
           <>
             <Chart type="bar" data={chartData} options={chartOptions} />
