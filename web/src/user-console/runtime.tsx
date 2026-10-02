@@ -1,5 +1,5 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Icon, getGuideClientIconName } from '../lib/icons'
+import { Icon } from '../lib/icons'
 import CherryStudioMock from '../components/CherryStudioMock'
 import ConnectivityChecksPanel, {
   type ProbeBubbleItem,
@@ -84,8 +84,11 @@ import {
 import RollingNumber from '../components/RollingNumber'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import UserConsoleFooter from '../components/UserConsoleFooter'
-import { Button } from '../components/ui-legacy/button'
-import SegmentedTabs, { type SegmentedTabsOption } from '../components/ui-legacy/SegmentedTabs'
+import { Button } from '@/components/ui/button'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { type SegmentedTabsOption } from '../components/ui-legacy/SegmentedTabs'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -119,7 +122,7 @@ import {
   type UserConsoleLandingSection,
   type UserConsoleRoute as ConsoleRoute,
 } from '../lib/userConsoleRoutes'
-import { GuideCodeSample, MobileGuideDropdown, buildGuideContent, resolveGuideCopyLabel, resolveGuideSamples, useGuideSampleCopy } from './guide'
+import { GuideCodeSample, buildGuideContent, resolveGuideCopyLabel, resolveGuideSamples, useGuideSampleCopy } from './guide'
 import { GUIDE_KEY_ORDER, DEFAULT_GUIDE_KEY, buildSetupGuideSearch, resolveSetupGuide } from './guideSearch'
 import { EN, ZH } from './text'
 import { useOfflineState } from '../pwa/useOfflineState'
@@ -2716,41 +2719,37 @@ export default function UserConsole(): JSX.Element {
     showHeading?: boolean
     embedded?: boolean
   }): JSX.Element => (
-    <section className={options?.embedded ? 'public-home-guide user-console-guide-embedded' : 'surface panel public-home-guide'}>
+    <section
+      className={
+        options?.embedded
+          ? 'user-console-guide-embedded flex flex-col gap-4 rounded-xl bg-card text-card-foreground ring-1 ring-foreground/10'
+          : 'flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10'
+      }
+    >
       {options?.showHeading === false ? null : options?.sectionTitle ? (
-        <div className="panel-header user-console-section-header">
-          <div>
-            <h2>{options.sectionTitle}</h2>
-            {options.sectionDescription ? (
-              <p className="panel-description">{options.sectionDescription}</p>
-            ) : null}
-          </div>
+        <div className="flex flex-col gap-1.5 px-4">
+          <h2 className="text-lg font-semibold leading-none">{options.sectionTitle}</h2>
+          {options.sectionDescription ? (
+            <p className="text-sm text-muted-foreground">{options.sectionDescription}</p>
+          ) : null}
         </div>
       ) : (
-        <h2>{publicStrings.guide.title}</h2>
+        <h2 className="px-4 text-lg font-semibold leading-none">{publicStrings.guide.title}</h2>
       )}
-      {isCompactLayout && (
-        <div className="guide-select" aria-label="Client selector (mobile)">
-          <MobileGuideDropdown active={activeGuide} onChange={handleSetupGuideChange} labels={guideTabs} />
-        </div>
-      )}
-      {!isCompactLayout && (
-        <div className="guide-tabs">
-          {guideTabs.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              className={`guide-tab${activeGuide === tab.id ? ' active' : ''}`}
-              onClick={() => handleSetupGuideChange(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      )}
-      <div className="guide-panel">
-        <div className="guide-panel-header">
-          <h3>{guideDescription.title}</h3>
+      <div className="px-4">
+        <Tabs value={activeGuide} onValueChange={(value) => handleSetupGuideChange(value as GuideKey)}>
+          <TabsList className="user-console-guide-tabs h-auto flex-wrap">
+            {guideTabs.map((tab) => (
+              <TabsTrigger key={tab.id} value={tab.id}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
+      <div className="flex flex-col gap-4 border-t px-4 pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-base font-semibold">{guideDescription.title}</h3>
           <Button
             type="button"
             variant="outline"
@@ -2768,15 +2767,15 @@ export default function UserConsole(): JSX.Element {
               width={16}
               height={16}
               aria-hidden="true"
-              className={guideTokenLoading ? 'guide-token-toggle-icon-spin' : undefined}
+              className={guideTokenLoading ? 'animate-spin' : undefined}
             />
             <span>{guideTokenToggleLabel}</span>
           </Button>
         </div>
         {guideTokenError ? (
-          <p className="guide-token-error" role="status" aria-live="polite">{guideTokenError}</p>
+          <p className="text-sm text-destructive" role="status" aria-live="polite">{guideTokenError}</p>
         ) : null}
-        <ol>
+        <ol className="flex list-decimal flex-col gap-2 pl-5 text-sm leading-6 [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-xs">
           {guideDescription.steps.map((step, index) => (
             <li key={index}>{step}</li>
           ))}
@@ -2786,8 +2785,8 @@ export default function UserConsole(): JSX.Element {
           const currentCopyState = guideCopyState[sampleKey] ?? 'idle'
           const copyLabel = resolveGuideCopyLabel(currentCopyState, text.tokens)
           return (
-            <div className="guide-sample" key={`${guideDescription.title}-${sample.title}`}>
-              <p className="guide-sample-title">{sample.title}</p>
+            <div className="flex flex-col gap-2" key={`${guideDescription.title}-${sample.title}`}>
+              <p className="text-sm font-medium">{sample.title}</p>
               <GuideCodeSample
                 copyLabel={copyLabel}
                 copyState={currentCopyState}
@@ -2796,9 +2795,9 @@ export default function UserConsole(): JSX.Element {
                 sampleKey={sampleKey}
               />
               {sample.reference ? (
-                <p className="guide-reference">
+                <p className="text-xs text-muted-foreground">
                   {publicStrings.guide.dataSourceLabel}
-                  <a href={sample.reference.url} target="_blank" rel="noreferrer">
+                  <a href={sample.reference.url} target="_blank" rel="noreferrer" className="ml-1 text-primary underline-offset-4 hover:underline">
                     {sample.reference.label}
                   </a>
                 </p>
@@ -2832,12 +2831,7 @@ export default function UserConsole(): JSX.Element {
   ])
 
   return (
-    <main
-      ref={pageRef}
-      className={`app-shell public-home user-console-shell viewport-${viewportMode} content-${contentMode}${
-        isCompactLayout ? ' is-compact-layout' : ''
-      }`}
-    >
+    <main ref={pageRef} className="min-h-svh bg-background text-foreground">
       <UserConsoleHeader
         title={text.title}
         subtitle={subtitle}
@@ -2864,12 +2858,13 @@ export default function UserConsole(): JSX.Element {
         onLogout={handleLogout}
       />
 
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
       <ConnectedUpdateAvailableBanner strings={publicStrings.updateBanner} />
       {consoleUnavailable && <AccessStatePanel state="unavailable" text={text} onHome={goHome} />}
       {consoleLoggedOut && <AccessStatePanel state="logged_out" text={text} onHome={goHome} />}
       {consoleNeedsLogin && <AccessStatePanel state="login_required" text={text} onHome={goHome} />}
       {isOAuthCallbackRoute && (
-        <div className="oauth-callback-stage">
+        <div className="flex justify-center py-4">
           <OAuthCallbackPanel
             model={oauthCallbackModel}
             onRestart={restartOAuthCallbackAuth}
@@ -2894,7 +2889,7 @@ export default function UserConsole(): JSX.Element {
         />
       ) : null}
 
-      {!consoleEmptyState && error && <section className="surface error-banner">{error}</section>}
+      {!consoleEmptyState && error && <section className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">{error}</section>}
 
       <UserConsoleAnnouncementsSection
         hidden={consoleEmptyState || isOAuthCallbackRoute}
@@ -2910,9 +2905,9 @@ export default function UserConsole(): JSX.Element {
 
       {!consoleEmptyState && !isOAuthCallbackRoute ? (
         <div className="user-console-billing-nav-section">
-          <SegmentedTabs<'dashboard' | 'billing' | 'tokens' | 'setup'>
+          <Tabs
             value={activeConsoleSection}
-            onChange={(value) => {
+            onValueChange={(value) => {
               if (value === 'dashboard') {
                 goDashboard()
                 return
@@ -2927,50 +2922,56 @@ export default function UserConsole(): JSX.Element {
               }
               goTokens()
             }}
-            options={consoleSectionTabs}
-            ariaLabel={text.billing.navAria}
-            className="user-console-billing-nav-tabs"
-            smallViewportBehavior="buttons"
-          />
+          >
+            <TabsList className="user-console-billing-nav-tabs h-auto flex-wrap">
+              {consoleSectionTabs.map((option) => (
+                <TabsTrigger key={option.value} value={option.value}>
+                  {option.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
         </div>
       ) : null}
 
       {!consoleEmptyState && route.name === 'landing' && (
-        <div className={`user-console-landing-stack${showRechargePanel ? ' has-rail' : ''}`}>
+        <div
+          className={`user-console-landing-stack flex flex-col gap-6${showRechargePanel ? ' has-rail lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start' : ''}`}
+        >
           <section
             ref={dashboardSectionRef}
             id="console-dashboard-section"
-            className="surface panel user-console-section user-console-dashboard-section"
+            className="user-console-section user-console-dashboard-section flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
             data-console-section="dashboard"
           >
-            <header className="panel-header user-console-section-header">
-              <div>
-                <h2>{text.dashboard.usage}</h2>
-                <p className="panel-description">{text.dashboard.description}</p>
-              </div>
-            </header>
-            <UserDashboardOverview
-              text={text.dashboard}
-              overview={dashboardOverview}
-              loading={loading}
-              language={language}
-              requestRateLabel={formatRequestRateSummary(resolveRequestRate(dashboard, 'user'), language)}
-              formatNumber={formatNumber}
-            />
-            <div className="user-console-dashboard-footer">
-              <DebugInfoSharingToggle
-                shared={dashboard?.debugInfoShared ?? false}
-                disabled={loading || debugSharing.saving || dashboard == null}
-                saving={debugSharing.saving}
-                error={debugSharing.error}
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">{text.dashboard.usage}</CardTitle>
+              <CardDescription>{text.dashboard.description}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-6">
+              <UserDashboardOverview
                 text={text.dashboard}
-                onChange={(shared) => void debugSharing.toggle(shared)}
+                overview={dashboardOverview}
+                loading={loading}
+                language={language}
+                requestRateLabel={formatRequestRateSummary(resolveRequestRate(dashboard, 'user'), language)}
+                formatNumber={formatNumber}
               />
-            </div>
+              <div className="user-console-dashboard-footer">
+                <DebugInfoSharingToggle
+                  shared={dashboard?.debugInfoShared ?? false}
+                  disabled={loading || debugSharing.saving || dashboard == null}
+                  saving={debugSharing.saving}
+                  error={debugSharing.error}
+                  text={text.dashboard}
+                  onChange={(shared) => void debugSharing.toggle(shared)}
+                />
+              </div>
+            </CardContent>
           </section>
 
           {showRechargePanel ? (
-            <div className="user-console-landing-rail">
+            <div className="user-console-landing-rail min-w-0">
               <RechargePanel
                 text={text.recharge}
                 language={language}
@@ -2992,16 +2993,14 @@ export default function UserConsole(): JSX.Element {
           <section
             ref={tokensSectionRef}
             id="console-tokens-section"
-            className="surface panel user-console-section user-console-tokens-section"
+            className="user-console-section user-console-tokens-section flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
             data-console-section="tokens"
           >
-            <div className="panel-header user-console-section-header user-console-section-header-dense">
-              <div className="user-console-section-heading user-console-section-heading-with-meta">
-                <div className="user-console-section-heading-copy">
-                  <h2>{text.tokens.title}</h2>
-                  <p className="panel-description">{text.tokens.description}</p>
-                </div>
-                {!showTokenListLoading && !showEmptyTokens ? (
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">{text.tokens.title}</CardTitle>
+              <CardDescription>{text.tokens.description}</CardDescription>
+              {!showTokenListLoading && !showEmptyTokens ? (
+                <CardAction className="self-center">
                   <TokenListSummary
                     text={text.tokens}
                     total={tokens.length}
@@ -3009,144 +3008,124 @@ export default function UserConsole(): JSX.Element {
                     dailySuccess={tokenDailySuccessTotal}
                     formatNumber={formatNumber}
                   />
-                ) : null}
-              </div>
-            </div>
-            <div className="table-wrapper jobs-table-wrapper user-console-md-up">
+                </CardAction>
+              ) : null}
+            </CardHeader>
+            <CardContent className="table-wrapper flex flex-col gap-6 p-0">
               {showTokenListLoading ? (
-                <div className="empty-state">{text.tokens.loading}</div>
+                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.loading}</div>
               ) : showEmptyTokens ? (
-                <div className="empty-state alert">{text.tokens.empty}</div>
+                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.empty}</div>
               ) : (
-                <table className="user-console-tokens-table" data-table-density="compact">
-                  <thead>
-                    <tr>
-                      <th>{text.tokens.table.id}</th>
-                      <th>{text.tokens.table.status}</th>
-                      <th>{text.tokens.table.stats}</th>
-                      <th>{text.tokens.table.actions}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <>
+                  <div className="hidden overflow-hidden rounded-lg border md:block">
+                    <Table className="user-console-tokens-table" data-table-density="compact">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>{text.tokens.table.id}</TableHead>
+                          <TableHead>{text.tokens.table.status}</TableHead>
+                          <TableHead>{text.tokens.table.stats}</TableHead>
+                          <TableHead>{text.tokens.table.actions}</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {tokens.map((item) => {
+                          const state = copyState[item.tokenId] ?? 'idle'
+                          return (
+                            <TableRow key={item.tokenId}>
+                              <TableCell><code className="font-mono text-xs font-medium">{item.tokenId}</code></TableCell>
+                              <TableCell>
+                                <div className="flex flex-col items-start gap-1.5">
+                                  <StatusBadge className="user-console-token-status-badge" tone={tokenListStatusTone(item.enabled)}>
+                                    {item.enabled ? text.tokens.table.enabled : text.tokens.table.disabled}
+                                  </StatusBadge>
+                                  <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs">
+                                    <span className="text-muted-foreground">{text.tokens.table.lastUsed}</span> <strong className="font-medium">{formatTokenLastUsedLabel(item.lastUsedAt, text.tokens.table.neverUsed)}</strong>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <div className="grid gap-2 sm:grid-cols-3 sm:gap-4">
+                                  <div className="flex flex-col gap-0.5">
+                                    <span className="text-xs text-muted-foreground">{text.tokens.table.dailySuccess}</span> <strong className="font-mono text-sm font-semibold tabular-nums">{formatNumber(item.dailySuccess)}</strong>
+                                  </div>
+                                  <div className="flex flex-col gap-0.5">
+                                    <span className="text-xs text-muted-foreground">{text.tokens.table.dailyFailure}</span> <strong className="font-mono text-sm font-semibold tabular-nums">{formatNumber(item.dailyFailure)}</strong>
+                                  </div>
+                                  <div className="flex flex-col gap-0.5">
+                                    <span className="text-xs text-muted-foreground">{text.tokens.table.monthlySuccess}</span> <strong className="font-mono text-sm font-semibold tabular-nums">{formatNumber(item.monthlySuccess)}</strong>
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <TokenListActions
+                                  tokenId={item.tokenId}
+                                  text={text.tokens}
+                                  copyState={state}
+                                  onScheduleWarmSecret={scheduleWarmTokenSecret}
+                                  onCancelWarmSecret={cancelWarmTokenSecret}
+                                  onWarmSecret={warmTokenSecret}
+                                  onCopy={(tokenId, anchorEl) => void copyToken(tokenId, anchorEl)}
+                                  onDetail={goTokenDetail}
+                                  onReset={openResetTokenDialog}
+                                  isCopyIntentKey={isCopyIntentKey}
+                                  canReset={item.enabled}
+                                  className="user-console-token-actions-desktop"
+                                />
+                              </TableCell>
+                            </TableRow>
+                          )
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <div className="flex flex-col gap-3 md:hidden">
                     {tokens.map((item) => {
                       const state = copyState[item.tokenId] ?? 'idle'
                       return (
-                        <tr key={item.tokenId}>
-                          <td>
-                            <div className="user-console-token-id-cell">
-                              <code>{item.tokenId}</code>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="user-console-token-status-summary">
-                              <StatusBadge
-                                className="user-console-token-status-badge"
-                                tone={tokenListStatusTone(item.enabled)}
-                              >
-                                {item.enabled ? text.tokens.table.enabled : text.tokens.table.disabled}
-                              </StatusBadge>
-                              <div className="user-console-token-last-used">
-                                <span>{text.tokens.table.lastUsed}</span>
-                                <strong>{formatTokenLastUsedLabel(item.lastUsedAt, text.tokens.table.neverUsed)}</strong>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="user-console-token-stats-grid">
-                              <div className="user-console-token-stat">
-                                <span>{text.tokens.table.dailySuccess}</span>
-                                <strong>{formatNumber(item.dailySuccess)}</strong>
-                              </div>
-                              <div className="user-console-token-stat">
-                                <span>{text.tokens.table.dailyFailure}</span>
-                                <strong>{formatNumber(item.dailyFailure)}</strong>
-                              </div>
-                              <div className="user-console-token-stat">
-                                <span>{text.tokens.table.monthlySuccess}</span>
-                                <strong>{formatNumber(item.monthlySuccess)}</strong>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <TokenListActions
-                              tokenId={item.tokenId}
-                              text={text.tokens}
-                              copyState={state}
-                              onScheduleWarmSecret={scheduleWarmTokenSecret}
-                              onCancelWarmSecret={cancelWarmTokenSecret}
-                              onWarmSecret={warmTokenSecret}
-                              onCopy={(tokenId, anchorEl) => void copyToken(tokenId, anchorEl)}
-                              onDetail={goTokenDetail}
-                              onReset={openResetTokenDialog}
-                              isCopyIntentKey={isCopyIntentKey}
-                              canReset={item.enabled}
-                              className="user-console-token-actions-desktop"
-                            />
-                          </td>
-                        </tr>
+                        <article key={item.tokenId} className="user-console-mobile-card flex flex-col gap-2 rounded-lg border p-3">
+                          <header className="user-console-mobile-card-header flex items-center justify-between gap-2">
+                            <strong className="text-xs font-medium text-muted-foreground">{text.tokens.table.id}</strong> <code className="font-mono text-xs font-medium">{item.tokenId}</code>
+                          </header>
+                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                            <span className="text-xs text-muted-foreground">{text.tokens.table.status}</span>
+                            <StatusBadge tone={tokenListStatusTone(item.enabled)}>
+                              {item.enabled ? text.tokens.table.enabled : text.tokens.table.disabled}
+                            </StatusBadge>
+                          </div>
+                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                            <span className="text-xs text-muted-foreground">{text.tokens.table.lastUsed}</span> <strong className="text-sm font-medium">{formatTokenLastUsedLabel(item.lastUsedAt, text.tokens.table.neverUsed)}</strong>
+                          </div>
+                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                            <span className="text-xs text-muted-foreground">{text.tokens.table.dailySuccess}</span> <strong className="text-sm font-medium">{formatNumber(item.dailySuccess)}</strong>
+                          </div>
+                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                            <span className="text-xs text-muted-foreground">{text.tokens.table.dailyFailure}</span> <strong className="text-sm font-medium">{formatNumber(item.dailyFailure)}</strong>
+                          </div>
+                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                            <span className="text-xs text-muted-foreground">{text.tokens.table.monthlySuccess}</span> <strong className="text-sm font-medium">{formatNumber(item.monthlySuccess)}</strong>
+                          </div>
+                          <TokenListActions
+                            tokenId={item.tokenId}
+                            text={text.tokens}
+                            copyState={state}
+                            onScheduleWarmSecret={scheduleWarmTokenSecret}
+                            onCancelWarmSecret={cancelWarmTokenSecret}
+                            onWarmSecret={warmTokenSecret}
+                            onCopy={(tokenId, anchorEl) => void copyToken(tokenId, anchorEl)}
+                            onDetail={goTokenDetail}
+                            onReset={openResetTokenDialog}
+                            isCopyIntentKey={isCopyIntentKey}
+                            canReset={item.enabled}
+                            className="user-console-mobile-actions"
+                          />
+                        </article>
                       )
                     })}
-                  </tbody>
-                </table>
+                  </div>
+                </>
               )}
-            </div>
-            <div className="user-console-mobile-list user-console-md-down">
-              {showTokenListLoading ? (
-                <div className="empty-state">{text.tokens.loading}</div>
-              ) : showEmptyTokens ? (
-                <div className="empty-state alert">{text.tokens.empty}</div>
-              ) : (
-                tokens.map((item) => {
-                  const state = copyState[item.tokenId] ?? 'idle'
-                  return (
-                    <article key={item.tokenId} className="user-console-mobile-card">
-                      <header className="user-console-mobile-card-header">
-                        <strong>{text.tokens.table.id}</strong>
-                        <code>{item.tokenId}</code>
-                      </header>
-                      <div className="user-console-mobile-kv">
-                        <span>{text.tokens.table.status}</span>
-                        <strong>
-                          <StatusBadge tone={tokenListStatusTone(item.enabled)}>
-                            {item.enabled ? text.tokens.table.enabled : text.tokens.table.disabled}
-                          </StatusBadge>
-                        </strong>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>{text.tokens.table.lastUsed}</span>
-                        <strong>{formatTokenLastUsedLabel(item.lastUsedAt, text.tokens.table.neverUsed)}</strong>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>{text.tokens.table.dailySuccess}</span>
-                        <strong>{formatNumber(item.dailySuccess)}</strong>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>{text.tokens.table.dailyFailure}</span>
-                        <strong>{formatNumber(item.dailyFailure)}</strong>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>{text.tokens.table.monthlySuccess}</span>
-                        <strong>{formatNumber(item.monthlySuccess)}</strong>
-                      </div>
-                      <TokenListActions
-                        tokenId={item.tokenId}
-                        text={text.tokens}
-                        copyState={state}
-                        onScheduleWarmSecret={scheduleWarmTokenSecret}
-                        onCancelWarmSecret={cancelWarmTokenSecret}
-                        onWarmSecret={warmTokenSecret}
-                        onCopy={(tokenId, anchorEl) => void copyToken(tokenId, anchorEl)}
-                        onDetail={goTokenDetail}
-                        onReset={openResetTokenDialog}
-                        isCopyIntentKey={isCopyIntentKey}
-                        canReset={item.enabled}
-                        className="user-console-mobile-actions"
-                      />
-                    </article>
-                  )
-                })
-              )}
-            </div>
+            </CardContent>
           </section>
         </div>
       )}
@@ -3186,94 +3165,106 @@ export default function UserConsole(): JSX.Element {
 
       {!consoleEmptyState && route.name === 'token' && (
         <>
-          <section className="surface panel access-panel">
-            <header className="panel-header user-console-detail-header" style={{ marginBottom: 8 }}>
-              <div>
-                <h2 ref={detailHeadingRef} tabIndex={-1}>{text.detail.title} <code>{route.id}</code></h2>
-                <p className="panel-description user-console-detail-description">
-                  <span className="user-console-detail-description-full">{text.detail.subtitle}</span>
-                  <span className="user-console-detail-description-short">{text.detail.subtitleShort}</span>
-                </p>
+          <Card className="gap-6">
+            <CardHeader className="user-console-detail-header flex flex-row flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-col gap-1.5">
+                <CardTitle className="text-lg font-semibold">
+                  <h2 ref={detailHeadingRef} tabIndex={-1} className="font-heading text-lg leading-snug font-semibold">
+                    {text.detail.title} <code className="font-mono text-sm font-medium">{route.id}</code>
+                  </h2>
+                </CardTitle>
+                <CardDescription className="user-console-detail-description">
+                  <span className="user-console-detail-description-full hidden sm:inline">{text.detail.subtitle}</span>
+                  <span className="user-console-detail-description-short sm:hidden">{text.detail.subtitleShort}</span>
+                </CardDescription>
               </div>
-              <div className="user-console-detail-actions">
+              <div className="user-console-detail-actions flex flex-wrap items-center gap-2">
                 <Button type="button" variant="outline" onClick={() => goSetup(route.id)}>
                   <Icon icon="mdi:book-open-page-variant-outline" width={18} height={18} aria-hidden="true" />
                   {text.setup.detailAction}
                 </Button>
-                <button type="button" className="btn btn-outline user-console-detail-back" onClick={() => goTokens()}>
+                <Button type="button" variant="outline" className="user-console-detail-back" onClick={() => goTokens()}>
                   <span className="user-console-detail-back-full">{text.detail.back}</span>
                   <span className="user-console-detail-back-short">{text.detail.backShort}</span>
-                </button>
+                </Button>
               </div>
-            </header>
+            </CardHeader>
 
-            <div className="access-stats">
-              <div className="access-stat"><div className="access-stat-title">{text.dashboard.dailySuccess}</div><p><RollingNumber value={detailLoading ? null : detail?.dailySuccess ?? 0} /></p></div>
-              <div className="access-stat"><div className="access-stat-title">{text.dashboard.dailyFailure}</div><p><RollingNumber value={detailLoading ? null : detail?.dailyFailure ?? 0} /></p></div>
-              <div className="access-stat"><div className="access-stat-title">{text.dashboard.monthlySuccessUtc}</div><p><RollingNumber value={detailLoading ? null : detail?.monthlySuccess ?? 0} /></p></div>
-            </div>
-            <DashboardQuotaGrid
-              text={text.dashboard}
-              rateLabel={formatRequestRateSummary(resolveRequestRate(detail, 'token'), language)}
-              rate={resolveRequestRate(detail, 'token')}
-              hourlyUsed={detail?.businessCalls1h.totalCount ?? 0}
-              hourlyLimit={detail?.businessCalls1h.limit ?? 0}
-              dailyUsed={detail?.dailyCreditsUsed ?? 0}
-              dailyLimit={detail?.dailyCreditsLimit ?? 0}
-              monthlyUsed={detail?.monthlyCreditsUsed ?? 0}
-              monthlyLimit={detail?.monthlyCreditsLimit ?? 0}
-              formatNumber={formatNumber}
-              language={language}
-            />
+            <CardContent className="flex flex-col gap-6">
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="flex flex-col gap-1.5 rounded-lg border p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.dailySuccess}</p>
+                  <p className="font-mono text-xl font-semibold tabular-nums"><RollingNumber value={detailLoading ? null : detail?.dailySuccess ?? 0} /></p>
+                </div>
+                <div className="flex flex-col gap-1.5 rounded-lg border p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.dailyFailure}</p>
+                  <p className="font-mono text-xl font-semibold tabular-nums"><RollingNumber value={detailLoading ? null : detail?.dailyFailure ?? 0} /></p>
+                </div>
+                <div className="flex flex-col gap-1.5 rounded-lg border p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.monthlySuccessUtc}</p>
+                  <p className="font-mono text-xl font-semibold tabular-nums"><RollingNumber value={detailLoading ? null : detail?.monthlySuccess ?? 0} /></p>
+                </div>
+              </div>
+              <DashboardQuotaGrid
+                text={text.dashboard}
+                rateLabel={formatRequestRateSummary(resolveRequestRate(detail, 'token'), language)}
+                rate={resolveRequestRate(detail, 'token')}
+                hourlyUsed={detail?.businessCalls1h.totalCount ?? 0}
+                hourlyLimit={detail?.businessCalls1h.limit ?? 0}
+                dailyUsed={detail?.dailyCreditsUsed ?? 0}
+                dailyLimit={detail?.dailyCreditsLimit ?? 0}
+                monthlyUsed={detail?.monthlyCreditsUsed ?? 0}
+                monthlyLimit={detail?.monthlyCreditsLimit ?? 0}
+                formatNumber={formatNumber}
+                language={language}
+              />
 
-            <TokenSecretField
-              inputId={`user-console-token-${route.id}`}
-              inputRef={detailTokenFieldRef}
-              value={detailTokenValue}
-              visible={detailTokenVisible}
-              hiddenDisplayValue={tokenLabel(route.id)}
-              visibilityBusy={detailTokenLoading}
-              copyState={detailTokenCopyState}
-              onValueChange={() => undefined}
-              onToggleVisibility={() => void toggleTokenSecretVisibility()}
-              onCopyIntent={() => scheduleWarmTokenSecret(route.id)}
-              onCopyIntentCancel={() => cancelWarmTokenSecret(route.id)}
-              onCopy={(anchorEl) => copyToken(route.id, anchorEl)}
-              label={text.detail.tokenLabel}
-              visibilityShowLabel={text.detail.tokenSecret.show}
-              visibilityHideLabel={text.detail.tokenSecret.hide}
-              visibilityIconAlt={text.detail.tokenSecret.iconAlt}
-              copyAriaLabel={text.tokens.copy}
-              copyLabel={text.tokens.copy}
-              copiedLabel={text.tokens.copied}
-              copyErrorLabel={text.tokens.copyFailed}
-              wrapperClassName="access-token-box user-console-token-box"
-              readOnly
-            />
-            {detailTokenLoading ? (
-              <p className="sr-only" role="status" aria-live="polite">
-                {text.detail.tokenSecret.loading}
-              </p>
-            ) : null}
-            {detailTokenError ? (
-              <p className="user-console-token-error" role="status" aria-live="polite">{detailTokenError}</p>
-            ) : null}
+              <TokenSecretField
+                inputId={`user-console-token-${route.id}`}
+                inputRef={detailTokenFieldRef}
+                value={detailTokenValue}
+                visible={detailTokenVisible}
+                hiddenDisplayValue={tokenLabel(route.id)}
+                visibilityBusy={detailTokenLoading}
+                copyState={detailTokenCopyState}
+                onValueChange={() => undefined}
+                onToggleVisibility={() => void toggleTokenSecretVisibility()}
+                onCopyIntent={() => scheduleWarmTokenSecret(route.id)}
+                onCopyIntentCancel={() => cancelWarmTokenSecret(route.id)}
+                onCopy={(anchorEl) => copyToken(route.id, anchorEl)}
+                label={text.detail.tokenLabel}
+                visibilityShowLabel={text.detail.tokenSecret.show}
+                visibilityHideLabel={text.detail.tokenSecret.hide}
+                visibilityIconAlt={text.detail.tokenSecret.iconAlt}
+                copyAriaLabel={text.tokens.copy}
+                copyLabel={text.tokens.copy}
+                copiedLabel={text.tokens.copied}
+                copyErrorLabel={text.tokens.copyFailed}
+                wrapperClassName="access-token-box user-console-token-box"
+                readOnly
+              />
+              {detailTokenLoading ? (
+                <p className="sr-only" role="status" aria-live="polite">
+                  {text.detail.tokenSecret.loading}
+                </p>
+              ) : null}
+              {detailTokenError ? (
+                <p className="user-console-token-error text-sm text-destructive" role="status" aria-live="polite">{detailTokenError}</p>
+              ) : null}
 
-            <ConnectivityChecksPanel
-              title={text.detail.probe.title}
-              costHint={text.detail.probe.costHint}
-              costHintAria={text.detail.probe.costHintAria}
-              stepStatusText={text.detail.probe.stepStatus}
-              mcpButtonLabel={probeButtonLabel('mcp', mcpProbe)}
-              apiButtonLabel={probeButtonLabel('api', apiProbe)}
-              mcpProbe={mcpProbe}
-              apiProbe={apiProbe}
-              probeBubble={probeBubble}
-              anyProbeRunning={anyProbeRunning}
-              onMcpClick={() => void runMcpProbe()}
-              onApiClick={() => void runApiProbe()}
-            />
-          </section>
+              <ConnectivityChecksPanel
+                title={text.detail.probe.title}
+                costHint={text.detail.probe.costHint}
+                costHintAria={text.detail.probe.costHintAria}
+                stepStatusText={text.detail.probe.stepStatus}
+                mcpButtonLabel={probeButtonLabel('mcp', mcpProbe)}
+                apiButtonLabel={probeButtonLabel('api', apiProbe)}
+                mcpProbe={mcpProbe}
+                apiProbe={apiProbe}
+                probeBubble={probeBubble}
+                anyProbeRunning={anyProbeRunning}
+                onMcpClick={() => void runMcpProbe()}
+                onApiClick={() => void runApiProbe()}
+              />
+            </CardContent>
+          </Card>
 
           <TokenLogsPanel
             logs={detailLogs}
@@ -3295,20 +3286,22 @@ export default function UserConsole(): JSX.Element {
 
       {!consoleEmptyState && route.name === 'tokenLogs' && (
         <>
-          <section className="surface panel access-panel">
-            <header className="panel-header user-console-detail-header" style={{ marginBottom: 8 }}>
-              <div>
-                <h2 ref={detailHeadingRef} tabIndex={-1}>{text.detail.logs}</h2>
-                <p className="panel-description user-console-detail-description">
-                  {text.detail.logsSubtitle}
-                </p>
+          <Card>
+            <CardHeader className="user-console-detail-header flex flex-row flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-col gap-1.5">
+                <CardTitle className="text-lg font-semibold">
+                  <h2 ref={detailHeadingRef} tabIndex={-1} className="font-heading text-lg leading-snug font-semibold">{text.detail.logs}</h2>
+                </CardTitle>
+                <CardDescription className="user-console-detail-description">{text.detail.logsSubtitle}</CardDescription>
               </div>
-              <button type="button" className="btn btn-outline user-console-detail-back" onClick={() => goTokenDetail(route.id)}>
-                <span className="user-console-detail-back-full">{text.detail.logsBack}</span>
-                <span className="user-console-detail-back-short">{text.detail.backShort}</span>
-              </button>
-            </header>
-          </section>
+              <div className="user-console-detail-actions flex flex-wrap items-center gap-2">
+                <Button type="button" variant="outline" className="user-console-detail-back" onClick={() => goTokenDetail(route.id)}>
+                  <span className="user-console-detail-back-full">{text.detail.logsBack}</span>
+                  <span className="user-console-detail-back-short">{text.detail.backShort}</span>
+                </Button>
+              </div>
+            </CardHeader>
+          </Card>
           <TokenLogsPanel
             logs={detailLogs}
             text={text.detail}
@@ -3325,6 +3318,7 @@ export default function UserConsole(): JSX.Element {
           />
         </>
       )}
+      </div>
       <UserConsoleFooter strings={text.footer} versionState={versionState} />
       <TokenResetDialogs
         text={text}
