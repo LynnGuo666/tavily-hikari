@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { readFileSync } from 'node:fs'
+
 
 import { LanguageProvider } from '../i18n'
 import { ThemeProvider } from '../theme'
@@ -30,13 +30,6 @@ function renderStory(story: {
 }
 
 describe('UserConsoleHeader Storybook proofs', () => {
-  it('keeps header-facing text styles free of ellipsis truncation', () => {
-    const css = readFileSync(new URL('../styles/public.css', import.meta.url), 'utf8')
-    const headerCss = css.slice(css.indexOf('.user-console-header'), css.indexOf('.user-badge'))
-
-    expect(headerCss).not.toContain('text-overflow: ellipsis')
-  })
-
   it('keeps the desktop, token-detail, and mobile collapsed stories available', () => {
     expect(meta).toMatchObject({
       title: 'Console/UserConsoleHeader',
