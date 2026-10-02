@@ -13652,8 +13652,8 @@ export function KeyDetails({
                 ].map((m) => (
                   <div key={m.id} className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4">
                     <h3>{m.label}</h3>
-                    <div className="metric-value">{m.value}</div>
-                    <div className="metric-subtitle">{m.subtitle}</div>
+                    <div className="metric-value font-mono text-2xl font-semibold tabular-nums">{m.value}</div>
+                    <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
                   </div>
                 ))
               })()
@@ -13704,8 +13704,8 @@ export function KeyDetails({
               metricCards.map((m) => (
                 <div key={m.id} className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4">
                   <h3>{m.label}</h3>
-                  <div className="metric-value">{m.value}</div>
-                  <div className="metric-subtitle">{m.subtitle}</div>
+                  <div className="metric-value font-mono text-2xl font-semibold tabular-nums">{m.value}</div>
+                  <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
                 </div>
               ))
             )}

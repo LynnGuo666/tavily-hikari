@@ -222,7 +222,7 @@ function MetricValue({
   const splitValue = value.split(' / ')
   if (splitValue.length === 2) {
     return (
-      <div className={`metric-value dashboard-metric-value-split${compact ? ' dashboard-metric-value-split-compact' : ''}`}>
+      <div className={`metric-value font-mono text-2xl font-semibold tabular-nums dashboard-metric-value-split${compact ? ' dashboard-metric-value-split-compact' : ''}`}>
         <span>{splitValue[0]}</span>
         <span className="dashboard-metric-value-divider">/ {splitValue[1]}</span>
       </div>
@@ -231,13 +231,13 @@ function MetricValue({
 
   if (typeof valueNumber === 'number' && Number.isFinite(valueNumber)) {
     return (
-      <div className={`metric-value dashboard-metric-value${compact ? ' dashboard-metric-value-compact' : ''}`}>
+      <div className={`metric-value font-mono text-2xl font-semibold tabular-nums dashboard-metric-value${compact ? ' dashboard-metric-value-compact' : ''}`}>
         <RollingNumber value={valueNumber} />
       </div>
     )
   }
 
-  return <div className="metric-value dashboard-metric-value">{value}</div>
+  return <div className="metric-value font-mono text-2xl font-semibold tabular-nums dashboard-metric-value">{value}</div>
 }
 
 function SummaryMetricCard({
@@ -261,12 +261,12 @@ function SummaryMetricCard({
 
   return (
     <div
-      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width' : ''}`}
+      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative flex flex-col gap-2 overflow-hidden rounded-lg border p-4${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width' : ''}`}
     >
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={metric.label}
-          className="dashboard-summary-card-backdrop"
+          className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0"
           primaryValues={backdrop.current}
           comparisonValues={backdrop.comparison}
           primaryColor={backdrop.color ?? readChartColorVar('--primary', 'hsl(262 83% 58%)')}
@@ -275,8 +275,8 @@ function SummaryMetricCard({
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <div className="dashboard-summary-card-content">
-        <div className="dashboard-summary-card-heading">
+      <div className="dashboard-summary-card-content flex flex-col gap-1.5">
+        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2">
           <h3>{metric.label}</h3>
           {metric.marker ? (
             <span className={`dashboard-summary-card-marker dashboard-summary-card-marker-${metric.markerTone ?? 'neutral'}`}>
@@ -296,10 +296,10 @@ function SummaryMetricCard({
             </div>
           </div>
         ) : metric.subtitle ? (
-          <div className="metric-subtitle">{metric.subtitle}</div>
+          <div className="metric-subtitle text-xs text-muted-foreground">{metric.subtitle}</div>
         ) : null}
-        {metric.comparison && metric.subtitle ? <div className="metric-subtitle">{metric.subtitle}</div> : null}
-        {!metric.comparison && backdropNotice ? <div className="metric-subtitle">{backdropNotice}</div> : null}
+        {metric.comparison && metric.subtitle ? <div className="metric-subtitle text-xs text-muted-foreground">{metric.subtitle}</div> : null}
+        {!metric.comparison && backdropNotice ? <div className="metric-subtitle text-xs text-muted-foreground">{backdropNotice}</div> : null}
       </div>
     </div>
   )
@@ -313,11 +313,11 @@ function QuotaChargeCard({
   backdrop?: DashboardCardBackdropSeries
 }): JSX.Element {
   return (
-    <article className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
+    <article className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative flex flex-col gap-2 overflow-hidden rounded-lg border p-4 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={card.title}
-          className="dashboard-summary-card-backdrop"
+          className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0"
           primaryValues={backdrop.current}
           comparisonValues={backdrop.comparison}
           primaryColor={backdrop.color ?? readChartColorVar('--primary', 'hsl(262 83% 58%)')}
@@ -326,8 +326,8 @@ function QuotaChargeCard({
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <div className="dashboard-summary-card-content">
-        <div className="dashboard-summary-card-heading">
+      <div className="dashboard-summary-card-content flex flex-col gap-1.5">
+        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2">
           <h3>{card.title}</h3>
         </div>
         <div className="dashboard-quota-charge-grid">
@@ -890,8 +890,8 @@ export default function DashboardOverview({
   const monthComparisonNotice = monthBackdrop.hasVisibleComparison ? null : strings.monthComparisonEmpty
 
   return (
-    <div className="dashboard-overview-stack">
-      <section className="dashboard-summary-panel">
+    <div className="dashboard-overview-stack flex flex-col gap-4">
+      <section className="dashboard-summary-panel flex flex-col gap-4">
         {!overviewReady ? (
           <div className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 dashboard-summary-fallback">
             <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.loading}</div>
@@ -901,18 +901,18 @@ export default function DashboardOverview({
             <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{overviewReady ? strings.summaryUnavailable : strings.loading}</div>
           </div>
         ) : (
-          <div className="dashboard-summary-layout">
-            <div className="dashboard-summary-top-row">
-              <article className="dashboard-summary-block dashboard-summary-block-primary">
-                <div className="dashboard-summary-block-content">
-                  <header className="dashboard-summary-header">
+          <div className="dashboard-summary-layout grid gap-4 px-4">
+            <div className="dashboard-summary-top-row grid gap-3 sm:grid-cols-3">
+              <article className="dashboard-summary-block relative rounded-lg border bg-card p-4 dashboard-summary-block-primary">
+                <div className="dashboard-summary-block-content flex flex-col gap-3">
+                  <header className="dashboard-summary-header flex items-start justify-between gap-2">
                     <div>
                       <h2>{strings.todayTitle}</h2>
                       <p className="panel-description text-sm text-muted-foreground">{strings.todayDescription}</p>
                     </div>
                   </header>
                   {hasTodaySummary ? (
-                    <div className="dashboard-summary-section-stack">
+                    <div className="dashboard-summary-section-stack flex flex-col gap-3">
                       {todayTotalMetric ? (
                         <SummaryMetricCard
                           metric={todayTotalMetric}
@@ -936,16 +936,16 @@ export default function DashboardOverview({
                 </div>
               </article>
 
-              <article className="dashboard-summary-block dashboard-summary-block-secondary">
-                <div className="dashboard-summary-block-content">
-                  <header className="dashboard-summary-header">
+              <article className="dashboard-summary-block relative rounded-lg border bg-card p-4 dashboard-summary-block-secondary">
+                <div className="dashboard-summary-block-content flex flex-col gap-3">
+                  <header className="dashboard-summary-header flex items-start justify-between gap-2">
                     <div>
                       <h2>{strings.monthTitle}</h2>
                       <p className="panel-description text-sm text-muted-foreground">{strings.monthDescription}</p>
                     </div>
                   </header>
                   {hasMonthSummary ? (
-                    <div className="dashboard-summary-section-stack">
+                    <div className="dashboard-summary-section-stack flex flex-col gap-3">
                       {monthTotalMetric ? (
                         <SummaryMetricCard
                           metric={monthTotalMetric}
@@ -973,8 +973,8 @@ export default function DashboardOverview({
               </article>
             </div>
 
-            <article className="dashboard-summary-block dashboard-summary-block-status">
-              <header className="dashboard-summary-header">
+            <article className="dashboard-summary-block relative rounded-lg border bg-card p-4 dashboard-summary-block-status">
+              <header className="dashboard-summary-header flex items-start justify-between gap-2">
                 <div>
                   <h2>{strings.currentStatusTitle}</h2>
                   <p className="panel-description text-sm text-muted-foreground">{strings.currentStatusDescription}</p>
