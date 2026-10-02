@@ -55,6 +55,12 @@ function probeButtonTone(state: ProbeButtonState): string {
   return 'user-console-probe-btn-idle'
 }
 
+function probeButtonToneClass(state: ProbeButtonState): string {
+  if (state === 'success') return 'border-success/40 bg-success/10 text-success hover:bg-success/20'
+  if (state === 'partial') return 'border-warning/40 bg-warning/10 text-warning hover:bg-warning/20'
+  return ''
+}
+
 function probeButtonIcon(state: ProbeButtonState): string {
   if (state === 'success') return 'mdi:check-circle-outline'
   if (state === 'partial') return 'mdi:alert-circle-outline'
@@ -233,8 +239,8 @@ export default function ConnectivityChecksPanel({
           <Button
             ref={handleMcpButtonRef}
             type="button"
-            data-probe-kind="mcp" size="sm" variant={mcpProbe.state === 'success' ? 'success' : mcpProbe.state === 'partial' ? 'warning' : mcpProbe.state === 'failed' ? 'destructive' : 'outline'}
-            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(mcpProbe.state)}`}
+            data-probe-kind="mcp" size="sm" variant={mcpProbe.state === 'failed' ? 'destructive' : 'outline'}
+            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(mcpProbe.state)} ${probeButtonToneClass(mcpProbe.state)}`}
             onClick={onMcpClick}
             disabled={anyProbeRunning}
           >
@@ -250,8 +256,8 @@ export default function ConnectivityChecksPanel({
           <Button
             ref={handleApiButtonRef}
             type="button"
-            data-probe-kind="api" size="sm" variant={apiProbe.state === 'success' ? 'success' : apiProbe.state === 'partial' ? 'warning' : apiProbe.state === 'failed' ? 'destructive' : 'outline'}
-            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(apiProbe.state)}`}
+            data-probe-kind="api" size="sm" variant={apiProbe.state === 'failed' ? 'destructive' : 'outline'}
+            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(apiProbe.state)} ${probeButtonToneClass(apiProbe.state)}`}
             onClick={onApiClick}
             disabled={anyProbeRunning}
           >

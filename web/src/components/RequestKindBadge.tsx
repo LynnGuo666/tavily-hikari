@@ -128,9 +128,9 @@ export function RequestKindBadge({
 
   return (
     <Badge
-      variant="neutral"
+      variant="outline"
       className={cn(
-        'request-kind-badge max-w-full',
+        'request-kind-badge max-w-full bg-muted text-muted-foreground',
         `request-kind-badge--${tone}`,
         size === 'sm' ? 'request-kind-badge--sm' : 'request-kind-badge--md',
         className,

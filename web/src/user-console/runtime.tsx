@@ -3026,7 +3026,7 @@ export default function UserConsole(): JSX.Element {
               ) : (
                 <>
                   <div className="hidden overflow-hidden rounded-lg border md:block">
-                    <Table className="user-console-tokens-table" data-table-density="compact">
+                    <Table className="user-console-tokens-table">
                       <TableHeader>
                         <TableRow>
                           <TableHead>{text.tokens.table.id}</TableHead>

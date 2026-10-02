@@ -29,12 +29,13 @@ function mount(element: React.JSX.Element) {
   return container
 }
 
-describe('shadcn composition on React 18', () => {
-  it('reports actual progress rather than an indeterminate state', () => {
+describe('shadcn ui composition', () => {
+  it('drives the progress indicator transform from the value prop', () => {
     const container = mount(<Progress value={60} aria-label="Coverage" />)
     const meter = container.querySelector('[role=progressbar]')!
-    expect(meter.getAttribute('aria-valuenow')).toBe('60')
-    expect(meter.getAttribute('aria-valuemax')).toBe('100')
+    expect(meter).not.toBeNull()
+    const indicator = meter.querySelector<HTMLElement>('[data-slot=progress-indicator]')!
+    expect(indicator.style.transform).toBe('translateX(-40%)')
   })
 
   it('connects the searchable trigger and input to their popups and selects once', async () => {

@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component: [
-          'Shared table shell used by admin data views to keep width, density, loading treatment, and table framing consistent.',
+          'Shared table shell used by admin data views to keep width, loading treatment, and table framing consistent.',
           '',
           'Public docs: [Deployment & Anonymity](../deployment-anonymity.html) · [Storybook Guide](../storybook-guide.html)',
         ].join('\n'),
@@ -20,11 +20,10 @@ const meta = {
   },
   args: {
     children: null,
-    density: 'comfortable',
   },
   render: (args) => (
     <div style={{ maxWidth: 920, margin: '0 auto' }}>
-      <AdminTableShell tableClassName="admin-users-table" density={args.density}>
+      <AdminTableShell tableClassName="admin-users-table">
         <TableHeader>
           <TableRow>
             <TableHead>User</TableHead>
@@ -63,12 +62,6 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
-
-export const Compact: Story = {
-  args: {
-    density: 'compact',
-  },
-}
 
 export const SwitchLoading: Story = {
   args: {

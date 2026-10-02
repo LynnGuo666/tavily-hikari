@@ -422,8 +422,8 @@ export default function HaStatusBanner({
                     <Button
                       type="button"
                       size="sm"
-                      variant="warning"
-                      className="ha-node-action-button"
+                      variant="outline"
+                      className="ha-node-action-button border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
                       onClick={onPromote}
                       disabled={busy}
                     >
@@ -435,8 +435,8 @@ export default function HaStatusBanner({
                     <Button
                       type="button"
                       size="sm"
-                      variant="success"
-                      className="ha-node-action-button"
+                      variant="outline"
+                      className="ha-node-action-button border-success/40 bg-success/10 text-success hover:bg-success/20"
                       onClick={onFinalize}
                       disabled={busy}
                     >
@@ -454,8 +454,8 @@ export default function HaStatusBanner({
                     <Button
                       type="button"
                       size="sm"
-                      variant="warning"
-                      className="ha-node-action-button"
+                      variant="outline"
+                      className="ha-node-action-button border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
                       onClick={() => onPlannedCutover(row.targetNodeId!)}
                       disabled={busy}
                     >

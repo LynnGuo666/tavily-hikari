@@ -18,10 +18,6 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
-        warning:
-          "border-warning/40 bg-warning/10 text-warning hover:bg-warning/20 aria-expanded:bg-warning/20",
-        success:
-          "border-success/40 bg-success/10 text-success hover:bg-success/20 aria-expanded:bg-success/20",
       },
       size: {
         default:
@@ -44,16 +40,16 @@ const buttonVariants = cva(
   }
 )
 
-const Button = React.forwardRef<React.ElementRef<"button">, React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }>(function Button({
+function Button({
   className,
   variant = "default",
   size = "default",
   asChild = false,
   ...props
-}, ref) {
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
   const Comp = asChild ? Slot.Root : "button"
 
   return (
@@ -62,10 +58,9 @@ const Button = React.forwardRef<React.ElementRef<"button">, React.ComponentProps
       data-variant={variant}
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
-      ref={ref}
       {...props}
     />
   )
-})
+}
 
 export { Button, buttonVariants }

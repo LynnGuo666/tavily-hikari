@@ -450,8 +450,8 @@ function EntitlementTable({
 }) {
   if (items.length === 0) return <Empty className="empty-state"><EmptyDescription>{strings.entitlementEmpty}</EmptyDescription></Empty>
   return (
-    <div className="table-scroll-shell admin-recharge-quota-table-scroll" data-table-density="compact">
-      <Table className="admin-recharge-quota-table user-detail-entitlement-table" data-table-density="compact">
+    <div className="table-scroll-shell admin-recharge-quota-table-scroll">
+      <Table className="admin-recharge-quota-table user-detail-entitlement-table">
         <TableHeader>
           <TableRow>
             <TableHead>{strings.entitlementScope}</TableHead>

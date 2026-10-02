@@ -586,7 +586,24 @@ function getSourceLabel(strings: AdminTranslations['proxySettings'], source: str
   return strings.sources.unknown
 }
 
-type StatusBadgeVariant = 'success' | 'warning' | 'info' | 'neutral' | 'destructive'
+type StatusBadgeTone = 'success' | 'warning' | 'info' | 'neutral' | 'destructive'
+
+const STATUS_BADGE_STYLES: Record<StatusBadgeTone, { variant: 'outline' | 'destructive'; className?: string }> = {
+  success: { variant: 'outline', className: 'border-success/30 bg-success/10 text-success' },
+  warning: { variant: 'outline', className: 'border-warning/40 bg-warning/10 text-warning' },
+  info: { variant: 'outline', className: 'border-primary/30 bg-primary/10 text-primary' },
+  neutral: { variant: 'outline', className: 'bg-muted text-muted-foreground' },
+  destructive: { variant: 'destructive' },
+}
+
+function StatusToneBadge({ tone, children }: { tone: StatusBadgeTone; children: React.ReactNode }) {
+  const style = STATUS_BADGE_STYLES[tone]
+  return (
+    <Badge variant={style.variant} className={style.className}>
+      {children}
+    </Badge>
+  )
+}
 
 function mapValidationErrorLabel(
   strings: AdminTranslations['proxySettings'],
@@ -744,16 +761,16 @@ function updateSubscriptionNodeRows(
 function getValidationRowBadgeState(
   strings: AdminTranslations['proxySettings'],
   row: ForwardProxyValidationNodeRow,
-): { label: string; variant: StatusBadgeVariant } {
+): { label: string; tone: StatusBadgeTone } {
   switch (row.status) {
     case 'ok':
-      return { label: strings.validation.ok, variant: 'success' }
+      return { label: strings.validation.ok, tone: 'success' }
     case 'failed':
-      return { label: strings.validation.failed, variant: 'destructive' }
+      return { label: strings.validation.failed, tone: 'destructive' }
     case 'probing':
-      return { label: strings.progress.running, variant: 'info' }
+      return { label: strings.progress.running, tone: 'info' }
     default:
-      return { label: strings.progress.waiting, variant: 'neutral' }
+      return { label: strings.progress.waiting, tone: 'neutral' }
   }
 }
 
@@ -1011,9 +1028,9 @@ function ForwardProxyValidationNodeTable({
               </TableCell>
               <TableCell>
                 <div className="flex flex-col items-start gap-1">
-                  <Badge variant={getValidationRowBadgeState(strings, row).variant}>
+                  <StatusToneBadge tone={getValidationRowBadgeState(strings, row).tone}>
                     {getValidationRowBadgeState(strings, row).label}
-                  </Badge>
+                  </StatusToneBadge>
                   {row.latencyMs != null && (
                     <span className={`text-[11px] ${getLatencyToneClass(row.latencyMs)}`}>
                       {strings.validation.latency}: {formatLatency(row.latencyMs)}
@@ -1194,7 +1211,7 @@ export function ForwardProxyCandidateDialog({
             <Card className="forward-proxy-validation-card">
               <CardContent className="forward-proxy-validation-card-content">
                 <div className="forward-proxy-validation-head">
-                  <Badge variant={dialogResults[0].result.ok ? 'success' : 'destructive'}>
+                  <StatusToneBadge tone={dialogResults[0].result.ok ? 'success' : 'destructive'}>
                     {dialogResults[0].result.ok
                       ? strings.validation.ok
                       : mapValidationErrorLabel(
@@ -1202,7 +1219,7 @@ export function ForwardProxyCandidateDialog({
                         dialogResults[0].result.errorCode,
                         dialogResults[0].result.message,
                       )}
-                  </Badge>
+                  </StatusToneBadge>
                   <Badge variant="outline">{strings.validation.subscriptionKind}</Badge>
                 </div>
                 <p className="forward-proxy-validation-message">
@@ -1296,29 +1313,29 @@ export function ForwardProxyCandidateDialog({
 function getNodeStateBadge(
   strings: AdminTranslations['proxySettings'],
   node: ForwardProxyStatsNode,
-): { label: string; variant: StatusBadgeVariant } {
+): { label: string; tone: StatusBadgeTone } {
   if (node.disabled) {
-    return { label: strings.states.disabled, variant: 'neutral' }
+    return { label: strings.states.disabled, tone: 'neutral' }
   }
   if (node.source === 'direct') {
-    return { label: strings.states.direct, variant: 'info' }
+    return { label: strings.states.direct, tone: 'info' }
   }
   if (node.penalized) {
-    return { label: strings.states.penalized, variant: 'warning' }
+    return { label: strings.states.penalized, tone: 'warning' }
   }
   if (!node.available) {
     switch (node.lastError) {
       case 'proxy_timeout':
-        return { label: strings.states.timeout, variant: 'destructive' }
+        return { label: strings.states.timeout, tone: 'destructive' }
       case 'proxy_unreachable':
-        return { label: strings.states.unreachable, variant: 'destructive' }
+        return { label: strings.states.unreachable, tone: 'destructive' }
       case 'xray_missing':
-        return { label: strings.states.xrayMissing, variant: 'warning' }
+        return { label: strings.states.xrayMissing, tone: 'warning' }
       default:
-        return { label: strings.states.unavailable, variant: 'neutral' }
+        return { label: strings.states.unavailable, tone: 'neutral' }
     }
   }
-  return { label: strings.states.ready, variant: 'success' }
+  return { label: strings.states.ready, tone: 'success' }
 }
 
 export default function ForwardProxySettingsModule({
@@ -1983,10 +2000,17 @@ export default function ForwardProxySettingsModule({
                             <span className="forward-proxy-node-chip-text text-xs">
                               {strings.nodes.secondary}: <strong>{formatNumber(node.secondaryAssignmentCount)}</strong>
                             </span>
-                            <Badge variant={node.source === 'subscription' ? 'info' : node.source === 'manual' ? 'outline' : 'neutral'}>
+                            <Badge
+                              variant="outline"
+                              className={node.source === 'subscription'
+                                ? 'border-primary/30 bg-primary/10 text-primary'
+                                : node.source === 'manual'
+                                  ? ''
+                                  : 'bg-muted text-muted-foreground'}
+                            >
                               {getSourceLabel(strings, node.source)}
                             </Badge>
-                            <Badge variant={stateBadge.variant}>{stateBadge.label}</Badge>
+                            <StatusToneBadge tone={stateBadge.tone}>{stateBadge.label}</StatusToneBadge>
                           </div>
                         </CardHeader>
                         <CardContent className="forward-proxy-node-mobile-content flex min-w-0 flex-col gap-3">
@@ -2083,10 +2107,17 @@ export default function ForwardProxySettingsModule({
                                   <span className="forward-proxy-node-chip-text text-xs">
                                     {strings.nodes.secondary}: <strong>{formatNumber(node.secondaryAssignmentCount)}</strong>
                                   </span>
-                                  <Badge variant={node.source === 'subscription' ? 'info' : node.source === 'manual' ? 'outline' : 'neutral'}>
+                                  <Badge
+                                    variant="outline"
+                                    className={node.source === 'subscription'
+                                      ? 'border-primary/30 bg-primary/10 text-primary'
+                                      : node.source === 'manual'
+                                        ? ''
+                                        : 'bg-muted text-muted-foreground'}
+                                  >
                                     {getSourceLabel(strings, node.source)}
                                   </Badge>
-                                  <Badge variant={stateBadge.variant}>{stateBadge.label}</Badge>
+                                  <StatusToneBadge tone={stateBadge.tone}>{stateBadge.label}</StatusToneBadge>
                                 </div>
                               </div>
                             </TableCell>
@@ -2181,10 +2212,19 @@ export default function ForwardProxySettingsModule({
                                 <strong className="truncate text-sm">{node.displayName}</strong>
                               </div>
                               <div className="forward-proxy-node-chip-row flex flex-wrap items-center gap-1.5">
-                                <Badge variant={node.source === 'subscription' ? 'info' : node.source === 'manual' ? 'outline' : 'neutral'}>
+                                <Badge
+                                  variant="outline"
+                                  className={
+                                    node.source === 'subscription'
+                                      ? 'border-primary/30 bg-primary/10 text-primary'
+                                      : node.source === 'manual'
+                                        ? ''
+                                        : 'bg-muted text-muted-foreground'
+                                  }
+                                >
                                   {getSourceLabel(strings, node.source)}
                                 </Badge>
-                                {node.disabled && <Badge variant="neutral">{strings.states.disabled}</Badge>}
+                                {node.disabled && <Badge variant="outline" className="bg-muted text-muted-foreground">{strings.states.disabled}</Badge>}
                                 <span className="forward-proxy-node-chip-text text-xs">
                                   {strings.nodes.errorStats.total24h}: <strong>{formatNumber(node.total24h)}</strong>
                                 </span>
@@ -2333,7 +2373,7 @@ export default function ForwardProxySettingsModule({
                       <CardTitle className="text-base">{strings.config.subscriptionsTitle}</CardTitle>
                       <CardDescription className="panel-description text-sm text-muted-foreground">{strings.config.subscriptionsDescription}</CardDescription>
                     </div>
-                    <Badge variant="info">{formatNumber(subscriptionUrls.length)}</Badge>
+                    <Badge variant="outline" className="border-primary/30 bg-primary/10 text-primary">{formatNumber(subscriptionUrls.length)}</Badge>
                   </CardHeader>
                   <CardContent className="forward-proxy-editor-card-content flex min-w-0 flex-col gap-3">
                     {subscriptionUrls.length === 0 ? (

@@ -445,7 +445,8 @@ export default function McpSessionBindingsModule({
           </Button>
           <Button
             type="button"
-            variant="warning"
+            variant="outline"
+            className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
             size="sm"
             onClick={() => setConfirmReleaseAllOpen(true)}
             disabled={(data?.activeMatchingCount ?? 0) === 0 || busy}
@@ -607,7 +608,8 @@ export default function McpSessionBindingsModule({
             </Button>
             <Button
               type="button"
-              variant="warning"
+              variant="outline"
+              className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
               onClick={async () => {
                 await onRevokeFiltered(currentApiQuery)
                 setConfirmReleaseAllOpen(false)

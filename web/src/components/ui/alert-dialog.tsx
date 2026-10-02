@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { cn } from "cn"
 import { AlertDialog as AlertDialogPrimitive } from "radix-ui"
@@ -12,14 +10,13 @@ function AlertDialog({
   return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />
 }
 
-const AlertDialogTrigger = React.forwardRef<React.ElementRef<typeof AlertDialogPrimitive.Trigger>, React.ComponentProps<typeof AlertDialogPrimitive.Trigger>>(function AlertDialogTrigger({
+function AlertDialogTrigger({
   ...props
-}, ref) {
+}: React.ComponentProps<typeof AlertDialogPrimitive.Trigger>) {
   return (
-    <AlertDialogPrimitive.Trigger data-slot="alert-dialog-trigger" ref={ref}
-      {...props} />
+    <AlertDialogPrimitive.Trigger data-slot="alert-dialog-trigger" {...props} />
   )
-})
+}
 
 function AlertDialogPortal({
   ...props
@@ -29,10 +26,10 @@ function AlertDialogPortal({
   )
 }
 
-const AlertDialogOverlay = React.forwardRef<React.ElementRef<typeof AlertDialogPrimitive.Overlay>, React.ComponentProps<typeof AlertDialogPrimitive.Overlay>>(function AlertDialogOverlay({
+function AlertDialogOverlay({
   className,
   ...props
-}, ref) {
+}: React.ComponentProps<typeof AlertDialogPrimitive.Overlay>) {
   return (
     <AlertDialogPrimitive.Overlay
       data-slot="alert-dialog-overlay"
@@ -40,11 +37,10 @@ const AlertDialogOverlay = React.forwardRef<React.ElementRef<typeof AlertDialogP
         "fixed inset-0 z-50 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
         className
       )}
-      ref={ref}
       {...props}
     />
   )
-})
+}
 
 function AlertDialogContent({
   className,
@@ -149,43 +145,41 @@ function AlertDialogDescription({
   )
 }
 
-const AlertDialogAction = React.forwardRef<React.ElementRef<typeof AlertDialogPrimitive.Action>, React.ComponentProps<typeof AlertDialogPrimitive.Action> &
-  Pick<React.ComponentProps<typeof Button>, "variant" | "size">>(function AlertDialogAction({
+function AlertDialogAction({
   className,
   variant = "default",
   size = "default",
   ...props
-}, ref) {
+}: React.ComponentProps<typeof AlertDialogPrimitive.Action> &
+  Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
   return (
     <Button variant={variant} size={size} asChild>
       <AlertDialogPrimitive.Action
         data-slot="alert-dialog-action"
         className={cn(className)}
-        ref={ref}
         {...props}
       />
     </Button>
   )
-})
+}
 
-const AlertDialogCancel = React.forwardRef<React.ElementRef<typeof AlertDialogPrimitive.Cancel>, React.ComponentProps<typeof AlertDialogPrimitive.Cancel> &
-  Pick<React.ComponentProps<typeof Button>, "variant" | "size">>(function AlertDialogCancel({
+function AlertDialogCancel({
   className,
   variant = "outline",
   size = "default",
   ...props
-}, ref) {
+}: React.ComponentProps<typeof AlertDialogPrimitive.Cancel> &
+  Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
   return (
     <Button variant={variant} size={size} asChild>
       <AlertDialogPrimitive.Cancel
         data-slot="alert-dialog-cancel"
         className={cn(className)}
-        ref={ref}
         {...props}
       />
     </Button>
   )
-})
+}
 
 export {
   AlertDialog,

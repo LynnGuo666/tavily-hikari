@@ -390,6 +390,9 @@ const LazyUserDetailTokenTable = lazy(async () =>
   })),
 )
 
+const SUCCESS_BUTTON_CLASS = 'border-success/40 bg-success/10 text-success hover:bg-success/20'
+const SUCCESS_BADGE_CLASS = 'border-success/30 bg-success/10 text-success'
+
 function formatHaSourceKindLabel(
   kind: HaStatus['edgeoneCurrentSourceKind'],
   strings: AdminTranslations['systemSettings']['ha'],
@@ -778,9 +781,9 @@ function MonthlyBrokenKeyValue({
       />
       <Button
         type="button"
-        variant={copyState === 'copied' ? 'success' : 'ghost'}
+        variant="ghost"
         size="icon"
-        className="monthly-broken-key-copy-button shadow-none"
+        className={`monthly-broken-key-copy-button shadow-none${copyState === 'copied' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
         title={copyText}
         aria-label={copyText}
         onClick={(event) => void onCopy(event.currentTarget)}
@@ -8218,13 +8221,13 @@ function AdminDashboard(): React.JSX.Element {
         </div>
 
         <div className="user-tag-catalog-card-meta">
-          <Badge variant={isSystem ? 'info' : 'neutral'} className="user-tag-meta-badge">
+          <Badge variant="outline" className={`user-tag-meta-badge ${isSystem ? 'border-primary/30 bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
             {isSystem ? usersStrings.catalog.scopeSystem : usersStrings.catalog.scopeCustom}
           </Badge>
           {isEditing ? (
             renderUserTagEffectToggle()
           ) : (
-            <Badge variant={isBlockAll ? 'destructive' : 'success'} className="user-tag-meta-badge">
+            <Badge variant={isBlockAll ? 'destructive' : 'outline'} className={`user-tag-meta-badge${isBlockAll ? '' : ` ${SUCCESS_BADGE_CLASS}`}`}>
               {isBlockAll
                 ? usersStrings.catalog.effectKinds.blockAll
                 : usersStrings.catalog.effectKinds.quotaDelta}
@@ -10800,9 +10803,9 @@ function AdminDashboard(): React.JSX.Element {
                           <div className="table-actions flex flex-wrap items-center gap-1">
 <Button
   type="button"
-  variant={state === 'copied' ? 'success' : 'ghost'}
+  variant="ghost"
   size="icon"
-  className="token-action-button shadow-none"
+  className={`token-action-button shadow-none${state === 'copied' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
   title={tokenStrings.actions.copy}
   aria-label={tokenStrings.actions.copy}
   onPointerEnter={() => scheduleSecretWarm(`token:${t.id}`, () => warmTokenSecret(t.id))}
@@ -10817,9 +10820,9 @@ function AdminDashboard(): React.JSX.Element {
 </Button>
 <Button
   type="button"
-  variant={shareState === 'copied' ? 'success' : 'ghost'}
+  variant="ghost"
   size="icon"
-  className="token-action-button shadow-none"
+  className={`token-action-button shadow-none${shareState === 'copied' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
   title={tokenStrings.actions.share}
   aria-label={tokenStrings.actions.share}
   onPointerEnter={() => scheduleSecretWarm(`token:${t.id}`, () => warmTokenSecret(t.id))}
@@ -10957,7 +10960,8 @@ function AdminDashboard(): React.JSX.Element {
                     <div className="admin-mobile-actions">
 <Button
   type="button"
-  variant={state === 'copied' ? 'success' : 'outline'}
+  variant="outline"
+  className={state === 'copied' ? SUCCESS_BUTTON_CLASS : undefined}
   size="sm"
   onPointerEnter={() => scheduleSecretWarm(`token:${t.id}`, () => warmTokenSecret(t.id))}
   onPointerLeave={() => cancelSecretWarm(`token:${t.id}`)}
@@ -10971,7 +10975,8 @@ function AdminDashboard(): React.JSX.Element {
 </Button>
 <Button
   type="button"
-  variant={shareState === 'copied' ? 'success' : 'outline'}
+  variant="outline"
+  className={shareState === 'copied' ? SUCCESS_BUTTON_CLASS : undefined}
   size="sm"
   onPointerEnter={() => scheduleSecretWarm(`token:${t.id}`, () => warmTokenSecret(t.id))}
   onPointerLeave={() => cancelSecretWarm(`token:${t.id}`)}
@@ -11155,7 +11160,7 @@ function AdminDashboard(): React.JSX.Element {
                       <Icon icon="mdi:filter-variant" width={16} height={16} aria-hidden="true" />
                       <span style={{ whiteSpace: 'nowrap' }}>{keyGroupFilterSummary}</span>
                       {selectedKeyGroups.length > 0 ? (
-                        <Badge variant="neutral" className="ml-1 px-1.5 py-0 text-[10px]">
+                        <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                           {selectedKeyGroups.length}
                         </Badge>
                       ) : null}
@@ -11197,7 +11202,7 @@ function AdminDashboard(): React.JSX.Element {
                     <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
                     <span style={{ whiteSpace: 'nowrap' }}>{keyStatusFilterSummary}</span>
                     {selectedKeyStatuses.length > 0 ? (
-                      <Badge variant="neutral" className="ml-1 px-1.5 py-0 text-[10px]">
+                      <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                         {selectedKeyStatuses.length}
                       </Badge>
                     ) : null}
@@ -11238,7 +11243,7 @@ function AdminDashboard(): React.JSX.Element {
                     <Icon icon="mdi:map-marker-radius-outline" width={16} height={16} aria-hidden="true" />
                     <span style={{ whiteSpace: 'nowrap' }}>{keyRegionFilterSummary}</span>
                     {selectedKeyRegions.length > 0 ? (
-                      <Badge variant="neutral" className="ml-1 px-1.5 py-0 text-[10px]">
+                      <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                         {selectedKeyRegions.length}
                       </Badge>
                     ) : null}
@@ -11340,7 +11345,8 @@ function AdminDashboard(): React.JSX.Element {
                 </Button>
                 <Button
                   type="button"
-                  variant="warning"
+                  variant="outline"
+                  className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
                   size="sm"
                   onClick={() => setPendingBulkDelete(true)}
                   disabled={selectedVisibleKeyCount === 0 || bulkKeyActionInFlight != null}
@@ -11492,9 +11498,9 @@ function AdminDashboard(): React.JSX.Element {
                             {isAdmin && (
 <Button
   type="button"
-  variant={state === 'copied' ? 'success' : 'ghost'}
+  variant="ghost"
   size="icon"
-  className="h-8 w-8 rounded-full p-0 shadow-none"
+  className={`h-8 w-8 rounded-full p-0 shadow-none${state === 'copied' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
   style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
   title={keyStrings.actions.copy}
   aria-label={keyStrings.actions.copy}
@@ -11724,7 +11730,8 @@ function AdminDashboard(): React.JSX.Element {
                     <div className="admin-mobile-actions">
 <Button
   type="button"
-  variant={state === 'copied' ? 'success' : 'outline'}
+  variant="outline"
+  className={state === 'copied' ? SUCCESS_BUTTON_CLASS : undefined}
   size="sm"
   onPointerEnter={() => scheduleSecretWarm(`key:${item.id}`, () => warmApiKeySecret(item.id))}
   onPointerLeave={() => cancelSecretWarm(`key:${item.id}`)}
@@ -11769,7 +11776,8 @@ function AdminDashboard(): React.JSX.Element {
 )}
 <Button
   type="button"
-  variant="warning"
+  variant="outline"
+  className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
   size="sm"
   onClick={() => openDeleteConfirm(item.id)}
   disabled={deletingId === item.id}
@@ -12598,7 +12606,7 @@ function AdminDashboard(): React.JSX.Element {
                 <Button type="button" variant="outline" onClick={() => setHaCutoverDialogOpen(false)}>
                   {systemSettingsStrings.ha.dialogPlannedCutoverCancel}
                 </Button>
-                <Button type="button" variant="warning" onClick={() => void handleRunPlannedCutover()} disabled={haBusy || !haCutoverTargetNodeId}>
+                <Button type="button" variant="outline" className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20" onClick={() => void handleRunPlannedCutover()} disabled={haBusy || !haCutoverTargetNodeId}>
                   {systemSettingsStrings.ha.dialogPlannedCutoverConfirm}
                 </Button>
               </DialogFooter>
@@ -13417,8 +13425,8 @@ export function KeyDetails({
           <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <Button
               type="button"
-              variant={syncState === 'success' ? 'success' : 'default'}
-              className="admin-sidebar-utility-action"
+              variant="default"
+              className={`admin-sidebar-utility-action${syncState === 'success' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
               onClick={() => void syncUsage()}
               disabled={syncState === 'syncing'}
               aria-busy={syncState === 'syncing'}
@@ -13463,7 +13471,8 @@ export function KeyDetails({
             />
             <Button
               type="button"
-              variant={syncState === 'success' ? 'success' : 'default'}
+              variant="default"
+              className={syncState === 'success' ? SUCCESS_BUTTON_CLASS : undefined}
               onClick={() => void syncUsage()}
               disabled={syncState === 'syncing'}
               aria-busy={syncState === 'syncing'}
@@ -13535,7 +13544,8 @@ export function KeyDetails({
             </div>
             <Button
               type="button"
-              variant="warning"
+              variant="outline"
+              className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
               onClick={() => void clearQuarantine()}
               disabled={quarantineState === 'clearing'}
               aria-busy={quarantineState === 'clearing'}

@@ -246,8 +246,8 @@ function RegistrationIpIndicator(props: {
         onBlur={() => setOpen(false)}
       >
         <Badge
-          variant="success"
-          className="gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em]"
+          variant="outline"
+          className="gap-1 rounded-full border-success/30 bg-success/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-success"
         >
           <Icon icon="mdi:check-bold" width={12} height={12} aria-hidden="true" />
           <span>{props.label}</span>

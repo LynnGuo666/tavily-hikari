@@ -2093,9 +2093,9 @@ function StoryMonthlyBrokenKeyValue({
       />
       <Button
         type="button"
-        variant={copied ? 'success' : 'ghost'}
+        variant="ghost"
         size="icon"
-        className="monthly-broken-key-copy-button shadow-none"
+        className={`monthly-broken-key-copy-button shadow-none${copied ? ' border-success/40 bg-success/10 text-success hover:bg-success/20' : ''}`}
         title={copied ? copiedLabel : copyLabel}
         aria-label={copied ? copiedLabel : copyLabel}
         onClick={() => void onCopy()}
@@ -2829,13 +2829,13 @@ function StoryUserTagCatalogCard({
       </div>
 
       <div className="user-tag-catalog-card-meta">
-        <Badge variant={isSystem ? 'info' : 'neutral'} className="user-tag-meta-badge">
+        <Badge variant="outline" className={`user-tag-meta-badge ${isSystem ? 'border-primary/30 bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
           {isSystem ? users.catalog.scopeSystem : users.catalog.scopeCustom}
         </Badge>
         {isEditing ? (
           <StoryUserTagEffectToggle users={users} active={isBlockAll ? 'block_all' : 'quota_delta'} />
         ) : (
-          <Badge variant={isBlockAll ? 'destructive' : 'success'} className="user-tag-meta-badge">
+          <Badge variant={isBlockAll ? 'destructive' : 'outline'} className={`user-tag-meta-badge${isBlockAll ? '' : ' border-success/30 bg-success/10 text-success'}`}>
             {isBlockAll ? users.catalog.effectKinds.blockAll : users.catalog.effectKinds.quotaDelta}
           </Badge>
         )}
@@ -3994,7 +3994,7 @@ function KeysPageCanvas({
                   <Icon icon="mdi:filter-variant" width={16} height={16} aria-hidden="true" />
                   <span style={{ whiteSpace: 'nowrap' }}>{groupSummary}</span>
                   {selectedGroups.length > 0 ? (
-                    <Badge variant="neutral" className="ml-1 px-1.5 py-0 text-[10px]">
+                    <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                       {selectedGroups.length}
                     </Badge>
                   ) : null}
@@ -4035,7 +4035,7 @@ function KeysPageCanvas({
                   <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
                   <span style={{ whiteSpace: 'nowrap' }}>{statusSummary}</span>
                   {selectedStatuses.length > 0 ? (
-                    <Badge variant="neutral" className="ml-1 px-1.5 py-0 text-[10px]">
+                    <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                       {selectedStatuses.length}
                     </Badge>
                   ) : null}
@@ -4076,7 +4076,7 @@ function KeysPageCanvas({
                   <Icon icon="mdi:map-marker-radius-outline" width={16} height={16} aria-hidden="true" />
                   <span style={{ whiteSpace: 'nowrap' }}>{regionSummary}</span>
                   {selectedRegions.length > 0 ? (
-                    <Badge variant="neutral" className="ml-1 px-1.5 py-0 text-[10px]">
+                    <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                       {selectedRegions.length}
                     </Badge>
                   ) : null}
@@ -4156,7 +4156,7 @@ function KeysPageCanvas({
                 ? keyStrings.bulkActions.running
                 : keyStrings.bulkActions.clearQuarantine}
             </Button>
-            <Button type="button" variant="warning" size="sm" disabled={bulkActionInFlight != null}>
+            <Button type="button" variant="outline" className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20" size="sm" disabled={bulkActionInFlight != null}>
               <Icon
                 icon={bulkActionInFlight === 'delete' ? 'mdi:loading' : 'mdi:trash-can-outline'}
                 width={16}

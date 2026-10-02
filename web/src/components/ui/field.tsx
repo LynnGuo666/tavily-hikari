@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { useMemo } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
@@ -99,10 +98,10 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-const FieldLabel = React.forwardRef<React.ElementRef<typeof Label>, React.ComponentProps<typeof Label>>(function FieldLabel({
+function FieldLabel({
   className,
   ...props
-}, ref) {
+}: React.ComponentProps<typeof Label>) {
   return (
     <Label
       data-slot="field-label"
@@ -111,11 +110,10 @@ const FieldLabel = React.forwardRef<React.ElementRef<typeof Label>, React.Compon
         "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
         className
       )}
-      ref={ref}
       {...props}
     />
   )
-})
+}
 
 function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (

@@ -81,25 +81,24 @@ const inputGroupButtonVariants = cva(
   }
 )
 
-const InputGroupButton = React.forwardRef<React.ElementRef<typeof Button>, Omit<React.ComponentProps<typeof Button>, "size"> &
-  VariantProps<typeof inputGroupButtonVariants>>(function InputGroupButton({
+function InputGroupButton({
   className,
   type = "button",
   variant = "ghost",
   size = "xs",
   ...props
-}, ref) {
+}: Omit<React.ComponentProps<typeof Button>, "size"> &
+  VariantProps<typeof inputGroupButtonVariants>) {
   return (
     <Button
       type={type}
       data-size={size}
       variant={variant}
       className={cn(inputGroupButtonVariants({ size }), className)}
-      ref={ref}
       {...props}
     />
   )
-})
+}
 
 function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
   return (
@@ -113,10 +112,10 @@ function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
   )
 }
 
-const InputGroupInput = React.forwardRef<React.ElementRef<"input">, React.ComponentProps<"input">>(function InputGroupInput({
+function InputGroupInput({
   className,
   ...props
-}, ref) {
+}: React.ComponentProps<"input">) {
   return (
     <Input
       data-slot="input-group-control"
@@ -124,16 +123,15 @@ const InputGroupInput = React.forwardRef<React.ElementRef<"input">, React.Compon
         "flex-1 rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent",
         className
       )}
-      ref={ref}
       {...props}
     />
   )
-})
+}
 
-const InputGroupTextarea = React.forwardRef<React.ElementRef<"textarea">, React.ComponentProps<"textarea">>(function InputGroupTextarea({
+function InputGroupTextarea({
   className,
   ...props
-}, ref) {
+}: React.ComponentProps<"textarea">) {
   return (
     <Textarea
       data-slot="input-group-control"
@@ -141,11 +139,10 @@ const InputGroupTextarea = React.forwardRef<React.ElementRef<"textarea">, React.
         "flex-1 resize-none rounded-none border-0 bg-transparent py-2 shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent",
         className
       )}
-      ref={ref}
       {...props}
     />
   )
-})
+}
 
 export {
   InputGroup,

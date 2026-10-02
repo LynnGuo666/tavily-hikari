@@ -67,8 +67,8 @@ export function UserRechargeQuotaCalendar({
           <div className="admin-recharge-quota-table-facts" aria-label={strings.title}>
             {tableFacts.map((fact) => <span key={fact}>{fact}</span>)}
           </div>
-          <div className="table-scroll-shell admin-recharge-quota-table-scroll" data-table-density="compact">
-            <Table className="admin-recharge-quota-table" data-table-density="compact">
+          <div className="table-scroll-shell admin-recharge-quota-table-scroll">
+            <Table className="admin-recharge-quota-table">
             <TableHeader>
               <TableRow>
                 <TableHead scope="col">{strings.monthColumn}</TableHead>

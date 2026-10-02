@@ -1,27 +1,14 @@
-"use client"
-
 import * as React from "react"
 import { cn } from "cn"
 
-export type TableDensity = "comfortable" | "compact"
-
-function Table({
-  className,
-  containerClassName,
-  density,
-  ...props
-}: React.ComponentProps<"table"> & {
-  containerClassName?: string
-  density?: TableDensity
-}) {
+function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
       data-slot="table-container"
-      className={cn("relative w-full overflow-x-auto", containerClassName)}
+      className="relative w-full overflow-x-auto"
     >
       <table
         data-slot="table"
-        data-table-density={density}
         className={cn("w-full caption-bottom text-sm", className)}
         {...props}
       />

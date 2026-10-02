@@ -1,5 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { CircleAlert } from 'lucide-react'
+import { CircleAlert, XIcon } from 'lucide-react'
+import { Dialog as DialogPrimitive } from 'radix-ui'
 import type React from 'react'
 
 import type {
@@ -13,11 +14,12 @@ import { updateAdminHaSourceSettings } from '../api'
 import type { AdminTranslations } from '../i18n'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogPortal, DialogTitle } from '@/components/ui/dialog'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import SegmentedTabs from '@/components/SegmentedTabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
+import { cn } from '../lib/utils'
 
 type SubmitFailureState = {
   title: string
@@ -244,7 +246,15 @@ export default function HaSourceSettingsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl" portalContainer={dialogPortalContainer}>
+      <DialogPortal container={dialogPortalContainer ?? undefined}>
+        <DialogOverlay />
+        <DialogPrimitive.Content
+          data-slot="dialog-content"
+          className={cn(
+            'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
+            'sm:max-w-2xl',
+          )}
+        >
         <DialogHeader>
           <DialogTitle>{strings.sourceDialogTitle}</DialogTitle>
           <DialogDescription>{strings.sourceDialogDescription}</DialogDescription>
@@ -422,7 +432,6 @@ export default function HaSourceSettingsDialog({
             <Alert
               ref={submitFailureRef}
               variant="destructive"
-              emphasis="prominent"
               aria-live="assertive"
               tabIndex={-1}
               className="grid gap-3 rounded-[28px] border-destructive/48 bg-destructive/13 px-5 py-4 text-foreground outline-none focus:outline-none"
@@ -493,7 +502,14 @@ export default function HaSourceSettingsDialog({
             </Button>
           )}
         </DialogFooter>
-      </DialogContent>
+        <DialogPrimitive.Close data-slot="dialog-close" asChild>
+          <Button variant="ghost" className="absolute top-2 right-2" size="icon-sm">
+            <XIcon />
+            <span className="sr-only">Close</span>
+          </Button>
+        </DialogPrimitive.Close>
+        </DialogPrimitive.Content>
+      </DialogPortal>
     </Dialog>
   )
 }

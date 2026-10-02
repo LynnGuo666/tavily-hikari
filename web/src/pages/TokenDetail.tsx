@@ -1188,8 +1188,8 @@ export default function TokenDetail({
           <div className="admin-sidebar-utility-actions flex flex-col gap-1">
             <Button
               type="button"
-              variant="warning"
-              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
+              variant="outline"
+              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md border-warning/40 bg-warning/10 px-2 py-1.5 text-sm text-warning hover:bg-warning/20"
               onClick={() => setIsRotateDialogOpen(true)}
               aria-label="Regenerate secret"
             >
@@ -1233,7 +1233,8 @@ export default function TokenDetail({
             </Button>
             <Button
               type="button"
-              variant="warning"
+              variant="outline"
+              className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
               onClick={() => setIsRotateDialogOpen(true)}
               aria-label="Regenerate secret"
             >
@@ -1491,7 +1492,7 @@ export default function TokenDetail({
           <Button type="button" variant="outline" onClick={() => setIsRotateDialogOpen(false)}>
             Cancel
           </Button>
-          <Button type="button" variant="warning" onClick={() => void handleRotateToken()} disabled={rotating}>
+          <Button type="button" variant="outline" className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20" onClick={() => void handleRotateToken()} disabled={rotating}>
             {rotating ? 'Regenerating…' : 'Regenerate'}
           </Button>
         </div>

@@ -148,7 +148,7 @@ describe('HaSourceSettingsDialog interactions', () => {
     expect(hostInput?.getAttribute('aria-describedby')).toBe('ha-source-direct-host-error')
     expect(getPortalText(portalRoot)).toContain(strings.sourceInvalidDirectHost)
     expect(getPortalText(portalRoot)).not.toContain(strings.sourceSaveFailedTitle)
-    expect(portalRoot.querySelector('[data-slot=alert][data-emphasis=prominent]')).toBeNull()
+    expect(portalRoot.querySelector('[data-slot=alert]')).toBeNull()
     expect(submitCalled).toBe(false)
 
     await act(async () => root.unmount())
@@ -190,7 +190,7 @@ describe('HaSourceSettingsDialog interactions', () => {
     })
     await flushEffects()
 
-    const alert = portalRoot.querySelector('[data-slot=alert][data-emphasis=prominent]')
+    const alert = portalRoot.querySelector('[data-slot=alert]')
     expect(alert).not.toBeNull()
     expect(document.activeElement).toBe(alert)
     expect(alert?.textContent).toContain(strings.sourceApplyFailedTitle)

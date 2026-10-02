@@ -6,7 +6,7 @@ import type { AdminTranslations } from '../i18n'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
 import { Icon } from '../lib/icons'
 import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
+import { LoadingSwitch } from '../components/LoadingSwitch'
 import type { ForwardProxyDialogProgressState } from './forwardProxyDialogProgress'
 import ForwardProxyProgressBubble from './ForwardProxyProgressBubble'
 
@@ -148,7 +148,7 @@ export default function ForwardProxyEgressControl({
             if (hasProgress) setBubbleVisible(true)
           }}
         >
-          <Switch
+          <LoadingSwitch
             ref={switchRef}
             aria-label={strings.config.egressSwitchLabel}
             checked={enabled}

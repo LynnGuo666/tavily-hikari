@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
@@ -17,11 +19,7 @@ const ToggleGroupContext = React.createContext<
   orientation: "horizontal",
 })
 
-const ToggleGroup = React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitive.Root>, React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
-  VariantProps<typeof toggleVariants> & {
-    spacing?: number
-    orientation?: "horizontal" | "vertical"
-  }>(function ToggleGroup({
+function ToggleGroup({
   className,
   variant,
   size,
@@ -29,7 +27,11 @@ const ToggleGroup = React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitiv
   orientation = "horizontal",
   children,
   ...props
-}, ref) {
+}: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
+  VariantProps<typeof toggleVariants> & {
+    spacing?: number
+    orientation?: "horizontal" | "vertical"
+  }) {
   return (
     <ToggleGroupPrimitive.Root
       data-slot="toggle-group"
@@ -42,7 +44,6 @@ const ToggleGroup = React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitiv
         "group/toggle-group flex w-fit flex-row items-center gap-[--spacing(var(--gap))] rounded-lg data-[size=sm]:rounded-[min(var(--radius-md),10px)] data-vertical:flex-col data-vertical:items-stretch",
         className
       )}
-      ref={ref}
       {...props}
     >
       <ToggleGroupContext.Provider
@@ -52,16 +53,16 @@ const ToggleGroup = React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitiv
       </ToggleGroupContext.Provider>
     </ToggleGroupPrimitive.Root>
   )
-})
+}
 
-const ToggleGroupItem = React.forwardRef<React.ElementRef<typeof ToggleGroupPrimitive.Item>, React.ComponentProps<typeof ToggleGroupPrimitive.Item> &
-  VariantProps<typeof toggleVariants>>(function ToggleGroupItem({
+function ToggleGroupItem({
   className,
   children,
   variant = "default",
   size = "default",
   ...props
-}, ref) {
+}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> &
+  VariantProps<typeof toggleVariants>) {
   const context = React.useContext(ToggleGroupContext)
 
   return (
@@ -78,12 +79,11 @@ const ToggleGroupItem = React.forwardRef<React.ElementRef<typeof ToggleGroupPrim
         }),
         className
       )}
-      ref={ref}
       {...props}
     >
       {children}
     </ToggleGroupPrimitive.Item>
   )
-})
+}
 
 export { ToggleGroup, ToggleGroupItem }
