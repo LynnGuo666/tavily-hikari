@@ -1,10 +1,26 @@
 import BrandLockup from '../components/BrandLockup'
-import { Icon } from '../lib/icons'
-import { createContext, type PropsWithChildren, type ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarTrigger,
+  useSidebar,
+} from '@/components/ui/sidebar'
+import { cn } from '@/lib/utils'
+import { createContext, type PropsWithChildren, type ReactNode, useCallback, useContext, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { ADMIN_SIDEBAR_STACK_MAX, useResponsiveModes } from '../lib/responsive'
 
-import AdminNavButton from './AdminNavButton'
 import type { AdminAnalysisView, AdminModuleId } from './routes'
 
 export type AdminNavTarget =
@@ -37,9 +53,96 @@ interface AdminShellProps extends PropsWithChildren {
 
 const AdminSidebarUtilityContext = createContext<HTMLDivElement | null>(null)
 
-function readStackedSidebarMode(): boolean {
-  if (typeof window === 'undefined') return false
-  return window.matchMedia(`(max-width: ${ADMIN_SIDEBAR_STACK_MAX}px)`).matches
+interface AdminSidebarNavigationProps {
+  activeItem: AdminNavTarget
+  navItems: AdminNavItem[]
+  onSelectItem: (target: AdminNavTarget) => void
+  onUtilityHostChange: (host: HTMLDivElement | null) => void
+}
+
+function AdminSidebarNavigation({
+  activeItem,
+  navItems,
+  onSelectItem,
+  onUtilityHostChange,
+}: AdminSidebarNavigationProps): JSX.Element {
+  const { isMobile, setOpenMobile } = useSidebar()
+
+  const handleSelectItem = useCallback(
+    (target: AdminNavTarget) => {
+      if (isMobile) setOpenMobile(false)
+      onSelectItem(target)
+    },
+    [isMobile, onSelectItem, setOpenMobile],
+  )
+
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <BrandLockup title="Tavily Hikari" variant="responsive" />
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <nav id="admin-sidebar-nav" aria-label="Admin navigation">
+              <SidebarMenu>
+                {navItems.map((item) => {
+                  const active = item.target === activeItem
+                  const childActive = item.children?.some((child) => child.target === activeItem) ?? false
+                  return (
+                    <SidebarMenuItem key={item.target}>
+                      <SidebarMenuButton
+                        isActive={active}
+                        aria-current={active ? 'page' : undefined}
+                        className={cn(
+                          'admin-nav-item',
+                          active && 'admin-nav-item-active',
+                          childActive && 'admin-nav-item-parent-active',
+                        )}
+                        onClick={() => handleSelectItem(item.target)}
+                      >
+                        <span className="admin-nav-item-icon" aria-hidden="true">
+                          {item.icon}
+                        </span>
+                        <span>{item.label}</span>
+                      </SidebarMenuButton>
+                      {item.children && item.children.length > 0 && (
+                        <SidebarMenuSub aria-label={item.label}>
+                          {item.children.map((child) => (
+                            <SidebarMenuSubItem key={child.target}>
+                              <SidebarMenuSubButton
+                                asChild
+                                isActive={child.target === activeItem}
+                                className={cn(
+                                  'admin-nav-subitem',
+                                  child.target === activeItem && 'admin-nav-subitem-active',
+                                )}
+                              >
+                                <button
+                                  type="button"
+                                  aria-current={child.target === activeItem ? 'page' : undefined}
+                                  onClick={() => handleSelectItem(child.target)}
+                                >
+                                  <span>{child.label}</span>
+                                </button>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      )}
+                    </SidebarMenuItem>
+                  )
+                })}
+              </SidebarMenu>
+            </nav>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <div ref={onUtilityHostChange} className="admin-sidebar-utility" />
+      </SidebarFooter>
+    </Sidebar>
+  )
 }
 
 export default function AdminShell({
@@ -49,138 +152,32 @@ export default function AdminShell({
   onSelectItem,
   children,
 }: AdminShellProps): JSX.Element {
-  const contentRef = useRef<HTMLElement>(null)
-  const { viewportMode, contentMode, isCompactLayout } = useResponsiveModes(contentRef)
-  const activeLayoutClass = `admin-layout--${activeItem.replaceAll('_', '-')}`
-  const [isStackedSidebar, setIsStackedSidebar] = useState<boolean>(() => readStackedSidebarMode())
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [sidebarUtilityHost, setSidebarUtilityHost] = useState<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    const media = window.matchMedia(`(max-width: ${ADMIN_SIDEBAR_STACK_MAX}px)`)
-    const apply = () => setIsStackedSidebar(media.matches)
-    apply()
-    media.addEventListener('change', apply)
-    return () => media.removeEventListener('change', apply)
-  }, [])
-
-  useEffect(() => {
-    if (!isStackedSidebar) {
-      setIsMenuOpen(false)
-      return
-    }
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsMenuOpen(false)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isStackedSidebar])
-
-  useEffect(() => {
-    if (isStackedSidebar) setIsMenuOpen(false)
-  }, [activeItem, isStackedSidebar])
-
-  useEffect(() => {
-    if (!isStackedSidebar || !isMenuOpen) return
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = previousOverflow
-    }
-  }, [isMenuOpen, isStackedSidebar])
-
-  const handleSelectItem = useCallback((target: AdminNavTarget) => {
-    if (isStackedSidebar) setIsMenuOpen(false)
-    onSelectItem(target)
-  }, [isStackedSidebar, onSelectItem])
 
   return (
     <AdminSidebarUtilityContext.Provider value={sidebarUtilityHost}>
-      <div
-        className={`admin-layout ${activeLayoutClass} viewport-${viewportMode} content-${contentMode}${isCompactLayout ? ' is-compact-layout' : ''}`}
-      >
-        <a className="admin-skip-link" href="#admin-main-content">
-          {skipToContentLabel}
-        </a>
-
-        {isStackedSidebar && isMenuOpen && (
-          <button
-            type="button"
-            className="admin-sidebar-backdrop"
-            aria-label="Close navigation menu"
-            onClick={() => setIsMenuOpen(false)}
-          />
-        )}
-
-        <aside className={`admin-sidebar surface${isStackedSidebar ? ' is-stacked' : ''}`} aria-label="Admin navigation">
-          <div className="admin-sidebar-topbar">
-            <BrandLockup
-              title="Tavily Hikari"
-              variant="responsive"
-              className="admin-sidebar-brand"
-              markClassName="admin-sidebar-brand-mark"
-            />
-            {isStackedSidebar && (
-              <button
-                type="button"
-                className={`admin-menu-toggle${isMenuOpen ? ' is-open' : ''}`}
-                aria-expanded={isMenuOpen}
-                aria-controls="admin-sidebar-nav"
-                onClick={() => setIsMenuOpen((open) => !open)}
-              >
-                <Icon icon={isMenuOpen ? 'mdi:close' : 'mdi:menu'} width={18} height={18} aria-hidden="true" />
-                <span>{isMenuOpen ? 'Close' : 'Menu'}</span>
-              </button>
-            )}
-          </div>
-          <div className={`admin-sidebar-menu${!isStackedSidebar || isMenuOpen ? ' is-open' : ''}`}>
-            <nav id="admin-sidebar-nav" className="admin-sidebar-nav">
-              {navItems.map((item) => {
-                const active = item.target === activeItem
-                const childActive = item.children?.some((child) => child.target === activeItem) ?? false
-                return (
-                  <div key={item.target} className="admin-nav-group">
-                    <AdminNavButton
-                      icon={item.icon}
-                      active={active}
-                      className={childActive ? 'admin-nav-item-parent-active' : undefined}
-                      onClick={() => handleSelectItem(item.target)}
-                    >
-                      <span>{item.label}</span>
-                    </AdminNavButton>
-                    {item.children && item.children.length > 0 && (
-                      <div className="admin-nav-subitems" aria-label={item.label}>
-                        {item.children.map((child) => (
-                          <button
-                            key={child.target}
-                            type="button"
-                            className={`admin-nav-subitem${child.target === activeItem ? ' admin-nav-subitem-active' : ''}`}
-                            aria-current={child.target === activeItem ? 'page' : undefined}
-                            onClick={() => handleSelectItem(child.target)}
-                          >
-                            <span className="admin-nav-subitem-marker" aria-hidden="true" />
-                            <span>{child.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
-            </nav>
-            <div ref={setSidebarUtilityHost} className="admin-sidebar-utility" />
-          </div>
-        </aside>
-
-        <section
-          ref={contentRef}
-          id="admin-main-content"
-          className={`admin-main-content viewport-${viewportMode} content-${contentMode}${isCompactLayout ? ' is-compact-layout' : ''}`}
-          role="main"
-        >
-          <div className="app-shell admin-shell-content">{children}</div>
-        </section>
-      </div>
+      <SidebarProvider>
+        <AdminSidebarNavigation
+          activeItem={activeItem}
+          navItems={navItems}
+          onSelectItem={onSelectItem}
+          onUtilityHostChange={setSidebarUtilityHost}
+        />
+        <SidebarInset>
+          <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
+            <SidebarTrigger />
+            <a
+              href="#admin-main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-1.5 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-md"
+            >
+              {skipToContentLabel}
+            </a>
+          </header>
+          <main id="admin-main-content" role="main" className="flex-1 p-4 lg:p-6 admin-main-content">
+            <div className="admin-shell-content">{children}</div>
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
     </AdminSidebarUtilityContext.Provider>
   )
 }
