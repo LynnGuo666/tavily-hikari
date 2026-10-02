@@ -261,7 +261,7 @@ function SummaryMetricCard({
 
   return (
     <div
-      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative flex flex-col gap-2 overflow-hidden rounded-lg border p-4${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width' : ''}`}
+      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative min-w-0 flex flex-col gap-2 overflow-hidden rounded-lg border p-4${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width' : ''}`}
     >
       {backdrop ? (
         <DashboardUsageBackdropChart
@@ -313,7 +313,7 @@ function QuotaChargeCard({
   backdrop?: DashboardCardBackdropSeries
 }): JSX.Element {
   return (
-    <article className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative flex flex-col gap-2 overflow-hidden rounded-lg border p-4 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
+    <article className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative min-w-0 flex flex-col gap-2 overflow-hidden rounded-lg border p-4 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={card.title}
@@ -901,9 +901,9 @@ export default function DashboardOverview({
             <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{overviewReady ? strings.summaryUnavailable : strings.loading}</div>
           </div>
         ) : (
-          <div className="dashboard-summary-layout grid gap-4 px-4">
-            <div className="dashboard-summary-top-row grid gap-3 sm:grid-cols-3">
-              <article className="dashboard-summary-block relative rounded-lg border bg-card p-4 dashboard-summary-block-primary">
+          <div className="dashboard-summary-layout flex min-w-0 flex-col gap-4 px-4">
+            <div className="dashboard-summary-top-row grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
+              <article className="dashboard-summary-block relative min-w-0 overflow-hidden rounded-lg border bg-card p-4 dashboard-summary-block-primary">
                 <div className="dashboard-summary-block-content flex flex-col gap-3">
                   <header className="dashboard-summary-header flex items-start justify-between gap-2">
                     <div>
@@ -920,7 +920,7 @@ export default function DashboardOverview({
                         />
                       ) : null}
                       {todayQuotaCharge ? <QuotaChargeCard card={todayQuotaCharge} backdrop={todayCardBackdrops.total} /> : null}
-                      <div className="dashboard-summary-metrics dashboard-summary-metrics-primary dashboard-today-grid">
+                      <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6 dashboard-summary-metrics-primary dashboard-today-grid">
                         {todayDetailMetrics.map((metric) => (
                           <SummaryMetricCard
                             key={metric.id}
@@ -936,7 +936,7 @@ export default function DashboardOverview({
                 </div>
               </article>
 
-              <article className="dashboard-summary-block relative rounded-lg border bg-card p-4 dashboard-summary-block-secondary">
+              <article className="dashboard-summary-block relative min-w-0 overflow-hidden rounded-lg border bg-card p-4 dashboard-summary-block-secondary">
                 <div className="dashboard-summary-block-content flex flex-col gap-3">
                   <header className="dashboard-summary-header flex items-start justify-between gap-2">
                     <div>
@@ -954,7 +954,7 @@ export default function DashboardOverview({
                         />
                       ) : null}
                       {monthQuotaCharge ? <QuotaChargeCard card={monthQuotaCharge} backdrop={monthCardBackdrops.total} /> : null}
-                      <div className="dashboard-summary-metrics dashboard-summary-metrics-compact dashboard-summary-metrics-month">
+                      <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6 dashboard-summary-metrics-compact dashboard-summary-metrics-month">
                         {monthDetailMetrics.map((metric) => (
                           <SummaryMetricCard
                             key={metric.id}
@@ -973,7 +973,7 @@ export default function DashboardOverview({
               </article>
             </div>
 
-            <article className="dashboard-summary-block relative rounded-lg border bg-card p-4 dashboard-summary-block-status">
+            <article className="dashboard-summary-block relative min-w-0 overflow-hidden rounded-lg border bg-card p-4 dashboard-summary-block-status">
               <header className="dashboard-summary-header flex items-start justify-between gap-2">
                 <div>
                   <h2>{strings.currentStatusTitle}</h2>
@@ -981,7 +981,7 @@ export default function DashboardOverview({
                 </div>
               </header>
               {hasStatusSummary ? (
-                <div className="dashboard-summary-metrics dashboard-summary-metrics-compact dashboard-summary-metrics-status">
+                <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6 dashboard-summary-metrics-compact dashboard-summary-metrics-status">
                   {statusMetrics.map((metric) => (
                     <SummaryMetricCard key={metric.id} metric={metric} compact />
                   ))}
