@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { cn } from '../lib/utils'
 
-import { Input } from './ui-legacy/input'
+import { Input } from '@/components/ui/input'
 
 interface DateTimeRangeFieldProps {
   label: ReactNode

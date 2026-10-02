@@ -46,12 +46,12 @@ import { AdminSidebarUtilityCard, AdminSidebarUtilityStack } from '../../compone
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { StatusBadge, type StatusTone } from '../../components/StatusBadge'
 import ThemeToggle from '../../components/ThemeToggle'
-import { Button } from '../../components/ui-legacy/button'
-import SegmentedTabs from '../../components/ui-legacy/SegmentedTabs'
+import { Button } from '@/components/ui/button'
+import SegmentedTabs from '@/components/SegmentedTabs'
 import {
   Drawer,
   DrawerContent,
-} from '../../components/ui-legacy/drawer'
+} from '@/components/ui/drawer'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -62,12 +62,12 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../../components/ui-legacy/dropdown-menu'
-import { Input } from '../../components/ui-legacy/input'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../../components/ui-legacy/tooltip'
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { UserTagBindingControls } from '../UserTagBindingControls'
-import { Card } from '../../components/ui-legacy/card'
-import { Badge } from '../../components/ui-legacy/badge'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { translations, useLanguage, type AdminTranslations } from '../../i18n'
 import { KeyDetails } from '../../AdminDashboard'
 import { TokenDetailStoryCanvas } from '../../pages/TokenDetail.stories'

@@ -15,21 +15,21 @@ import {
 } from '../tokenLogRequestKinds'
 
 import RequestKindBadge from './RequestKindBadge'
-import { Button } from './ui-legacy/button'
+import { Button } from '@/components/ui/button'
 import {
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from './ui-legacy/drawer'
+} from '@/components/ui/drawer'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from './ui-legacy/dropdown-menu'
-import SegmentedTabs from './ui-legacy/SegmentedTabs'
+} from '@/components/ui/dropdown-menu'
+import SegmentedTabs from '@/components/SegmentedTabs'
 
 type Language = 'en' | 'zh'
 type RequestKindContainer = 'dropdown' | 'drawer'

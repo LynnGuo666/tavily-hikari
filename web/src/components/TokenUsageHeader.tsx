@@ -2,8 +2,8 @@ import { Icon } from '../lib/icons'
 
 import AdminReturnToConsoleLink from './AdminReturnToConsoleLink'
 import ThemeToggle from './ThemeToggle'
-import { Button } from './ui-legacy/button'
-import SegmentedTabs, { type SegmentedTabsOption } from './ui-legacy/SegmentedTabs'
+import { Button } from '@/components/ui/button'
+import SegmentedTabs, { type SegmentedTabsOption } from '@/components/SegmentedTabs'
 
 type TokenLeaderboardPeriod = 'day' | 'month' | 'all'
 type TokenLeaderboardFocus = 'usage' | 'errors' | 'other'

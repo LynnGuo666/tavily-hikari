@@ -14,11 +14,11 @@ import type { AdminTranslations } from '../i18n'
 import type { AdminDisplayDensity } from './displayDensity'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import { Icon } from '../lib/icons'
-import { Button } from '../components/ui-legacy/button'
-import { Input } from '../components/ui-legacy/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
-import { Switch } from '../components/ui-legacy/switch'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/ui-legacy/tooltip'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Dialog,
   DialogContent,
@@ -26,7 +26,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui-legacy/dialog'
+} from '@/components/ui/dialog'
 
 interface SystemSettingsModuleProps {
   strings: AdminTranslations['systemSettings']
@@ -737,7 +737,7 @@ export default function SystemSettingsModule({
           {strings.form.trustedClientIpConfigure}
         </Button>
         <DialogContent
-          hideCloseButton
+          showCloseButton={false}
           onEscapeKeyDown={(event) => event.preventDefault()}
           onPointerDownOutside={(event) => event.preventDefault()}
           className="grid max-h-[calc(100dvh-2rem)] w-[min(72rem,calc(100vw-2rem))] max-w-6xl grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0"

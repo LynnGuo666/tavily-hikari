@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../components/ui-legacy/dropdown-menu'
-import { Button } from '../components/ui-legacy/button'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 import { Icon, getGuideClientIconName } from '../lib/icons'
 import { copyText } from '../lib/clipboard'
 import type { Language } from '../i18n'
@@ -58,15 +59,19 @@ export function GuideCodeSample({
   sampleKey: string
 }): JSX.Element {
   return (
-    <div className="mockup-code relative guide-code-shell">
-      <span className="guide-lang-badge badge badge-outline badge-sm">
+    <div className="mockup-code guide-code-shell relative overflow-hidden rounded-lg border border-border bg-muted/40">
+      <span className="guide-lang-badge badge badge-outline badge-sm absolute top-2 left-2 z-10 rounded-md border border-border bg-background/80 px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
         {(sample.language ?? 'code').toUpperCase()}
       </span>
       <Button
         type="button"
         variant="outline"
         size="sm"
-        className={`guide-copy-button${copyState === 'copied' ? ' copied' : copyState === 'error' ? ' error' : ''}`}
+        className={cn(
+          'guide-copy-button absolute top-1.5 right-1.5 z-10',
+          copyState === 'copied' && 'copied border-success/40 bg-success/10 text-success hover:bg-success/20',
+          copyState === 'error' && 'error border-warning/40 bg-warning/10 text-warning hover:bg-warning/20',
+        )}
         aria-label={copyLabel}
         title={copyLabel}
         onClick={() => onCopy(sampleKey, sample.snippet)}
@@ -79,8 +84,8 @@ export function GuideCodeSample({
         />
         <span>{copyLabel}</span>
       </Button>
-      <pre>
-        <code dangerouslySetInnerHTML={{ __html: sample.snippet }} />
+      <pre className="overflow-x-auto p-4 pt-10 text-xs leading-relaxed [&_.hl-boolean]:text-chart-5 [&_.hl-comment]:text-muted-foreground [&_.hl-key]:text-chart-2 [&_.hl-section]:text-chart-3 [&_.hl-string]:text-chart-4">
+        <code className="font-mono" dangerouslySetInnerHTML={{ __html: sample.snippet }} />
       </pre>
     </div>
   )
@@ -107,35 +112,35 @@ export function MobileGuideDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button type="button" className="btn btn-outline w-full justify-between btn-sm md:btn-md">
+        <Button type="button" variant="outline" className="w-full justify-between">
           <span className="inline-flex items-center gap-2">
             <Icon
               icon={getGuideClientIconName(active)}
               width={18}
               height={18}
               aria-hidden="true"
-              style={{ color: '#475569' }}
+              className="text-muted-foreground"
             />
             {current?.label ?? active}
           </span>
-          <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" style={{ color: '#647589' }} />
-        </button>
+          <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" className="text-muted-foreground" />
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="guide-select-menu p-1">
+      <DropdownMenuContent align="start" className="guide-select-menu w-56 p-1">
         {labels.map((tab) => (
           <DropdownMenuItem
             key={tab.id}
-            className={`flex items-center gap-2 ${tab.id === active ? 'bg-accent/45 text-accent-foreground' : ''}`}
+            className={cn('flex items-center gap-2', tab.id === active && 'bg-accent text-accent-foreground')}
             onSelect={() => onChange(tab.id)}
           >
-              <Icon
-                icon={getGuideClientIconName(tab.id)}
-                width={16}
-                height={16}
-                aria-hidden="true"
-                style={{ color: '#475569' }}
-              />
-              <span className="truncate">{tab.label}</span>
+            <Icon
+              icon={getGuideClientIconName(tab.id)}
+              width={16}
+              height={16}
+              aria-hidden="true"
+              className="text-muted-foreground"
+            />
+            <span className="truncate">{tab.label}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

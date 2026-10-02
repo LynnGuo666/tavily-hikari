@@ -3,9 +3,9 @@ import type { ReactNode } from 'react'
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 
 import AdminCompactIntro from '../../components/AdminCompactIntro'
-import { Badge } from '../../components/ui-legacy/badge'
-import { Button } from '../../components/ui-legacy/button'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../../components/ui-legacy/tooltip'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { AdminUserTagBinding, SortDirection } from '../../api'
 import type { AdminTranslations } from '../../i18n'
 

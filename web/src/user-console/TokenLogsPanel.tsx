@@ -1,7 +1,15 @@
 import { type PublicTokenLog } from '../api'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
-import TokenLogsHeader, { type DetailLogsPushIssueCode, type UserTokenLogFilter } from './TokenLogsHeader'
-import { type SegmentedTabsOption } from '../components/ui-legacy/SegmentedTabs'
+import TokenLogsHeader, { type DetailLogsPushIssueCode, type SegmentedTabsOption, type UserTokenLogFilter } from './TokenLogsHeader'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { cn } from '@/lib/utils'
 
 interface TokenLogsPanelText {
   logs: string
@@ -42,6 +50,8 @@ interface TokenLogsPanelProps {
   statusTone: (status: string) => StatusTone
 }
 
+const LOGS_TABLE_HEAD_CLASS = 'text-xs tracking-wide text-muted-foreground uppercase'
+
 export default function TokenLogsPanel({
   logs,
   text,
@@ -58,44 +68,64 @@ export default function TokenLogsPanel({
 }: TokenLogsPanelProps): JSX.Element {
   const renderDesktopRows = (keyPrefix: string) =>
     logs.map((log, index) => (
-      <tr key={`${keyPrefix}-${log.id}-${index}`}>
-        <td>
-          <div className="user-console-log-stack">
-            <strong className="user-console-log-main">{formatTimestamp(log.created_at)}</strong>
-            <span className="user-console-log-meta">
+      <TableRow key={`${keyPrefix}-${log.id}-${index}`}>
+        <TableCell className="whitespace-normal">
+          <div className="user-console-log-stack flex min-w-0 flex-col gap-0.5">
+            <strong className="user-console-log-main text-sm font-semibold tabular-nums">{formatTimestamp(log.created_at)}</strong>
+            <span className="user-console-log-meta truncate text-xs text-muted-foreground">
               {log.method} {log.path}
               {log.query ? ` · ${log.query}` : ''}
             </span>
           </div>
-        </td>
-        <td>
-          <div className="user-console-log-transport">
-            <span className="user-console-log-transport-item">
-              <em>H</em>
-              <strong>{log.http_status ?? '—'}</strong>
+        </TableCell>
+        <TableCell>
+          <div className="user-console-log-transport flex items-center gap-3 text-xs">
+            <span className="user-console-log-transport-item flex items-center gap-1">
+              <em className="not-italic text-muted-foreground">H</em>
+              <strong className="font-semibold tabular-nums">{log.http_status ?? '—'}</strong>
             </span>
-            <span className="user-console-log-transport-item">
-              <em>T</em>
-              <strong>{log.mcp_status ?? '—'}</strong>
+            <span className="user-console-log-transport-item flex items-center gap-1">
+              <em className="not-italic text-muted-foreground">T</em>
+              <strong className="font-semibold tabular-nums">{log.mcp_status ?? '—'}</strong>
             </span>
           </div>
-        </td>
-        <td className="user-console-log-credits">
+        </TableCell>
+        <TableCell className="user-console-log-credits tabular-nums">
           {formatLogCredits(log.business_credits)}
-        </td>
-        <td>
-          <div className="user-console-log-result-line">
+        </TableCell>
+        <TableCell className="whitespace-normal">
+          <div className="user-console-log-result-line flex min-w-0 flex-wrap items-center gap-2">
             <StatusBadge className="user-console-log-status" tone={statusTone(log.result_status)}>
               {log.result_status}
             </StatusBadge>
-            <span className="user-console-log-error">{log.error_message ?? '—'}</span>
+            <span className="user-console-log-error truncate text-xs text-muted-foreground">{log.error_message ?? '—'}</span>
           </div>
-        </td>
-      </tr>
+        </TableCell>
+      </TableRow>
     ))
 
+  const renderLogsTable = (tableClassName: string, keyPrefix: string): JSX.Element => (
+    <Table className={tableClassName}>
+      <TableHeader>
+        <TableRow>
+          <TableHead className={LOGS_TABLE_HEAD_CLASS}>{text.table.request}</TableHead>
+          <TableHead className={LOGS_TABLE_HEAD_CLASS}>{text.table.transport}</TableHead>
+          <TableHead className={LOGS_TABLE_HEAD_CLASS}>{text.table.credits}</TableHead>
+          <TableHead className={LOGS_TABLE_HEAD_CLASS}>{text.table.result}</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>{renderDesktopRows(keyPrefix)}</TableBody>
+    </Table>
+  )
+
   return (
-    <section className={`surface panel user-console-detail-panel user-console-logs-panel is-${mode}`}>
+    <section
+      className={cn(
+        'surface panel user-console-detail-panel user-console-logs-panel',
+        `is-${mode}`,
+        'overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10',
+      )}
+    >
       <TokenLogsHeader
         title={text.logs}
         filter={filter}
@@ -109,43 +139,36 @@ export default function TokenLogsPanel({
       {mode === 'detail' ? (
         <button
           type="button"
-          className="user-console-mobile-log-entry user-console-md-down"
+          className="user-console-mobile-log-entry user-console-md-down flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50"
           aria-label={`${text.mobileOpen}，${text.mobileSummary}`}
           onClick={onOpenFull}
         >
-          <span className="user-console-mobile-log-entry-content">
-            <strong>{text.mobileOpen}</strong>
-            <span>{text.mobileSummary}</span>
+          <span className="user-console-mobile-log-entry-content flex min-w-0 flex-col">
+            <strong className="truncate text-sm font-semibold">{text.mobileOpen}</strong>
+            <span className="truncate text-xs text-muted-foreground">{text.mobileSummary}</span>
           </span>
-          <span className="user-console-mobile-log-entry-action" aria-hidden="true">
+          <span className="user-console-mobile-log-entry-action text-muted-foreground" aria-hidden="true">
             {text.mobileAction}
           </span>
         </button>
       ) : null}
       <div
-        className={`table-wrapper user-console-md-up ${mode === 'detail' ? 'table-sticky-header-shell user-console-logs-table-scroll' : ''}`}
+        className={cn(
+          'table-wrapper user-console-md-up max-h-[420px] overflow-auto',
+          mode === 'detail' && 'table-sticky-header-shell user-console-logs-table-scroll',
+        )}
         onScroll={mode === 'detail'
           ? (event) => event.currentTarget.style.setProperty('--table-scroll-y', `${event.currentTarget.scrollTop}px`)
           : undefined}
       >
         {logs.length === 0 ? (
-          <div className="empty-state alert">{text.emptyLogs}</div>
+          <div className="empty-state alert p-6 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
         ) : (
           <>
             {mode === 'detail' ? (
-              <div className="table-sticky-header-overlay" aria-hidden="true">
+              <div className="table-sticky-header-overlay sr-only" aria-hidden="true">
                 <div className="table-sticky-header-blur-source">
-                  <table className="token-detail-table user-console-logs-table">
-                    <thead>
-                      <tr>
-                        <th>{text.table.request}</th>
-                        <th>{text.table.transport}</th>
-                        <th>{text.table.credits}</th>
-                        <th>{text.table.result}</th>
-                      </tr>
-                    </thead>
-                    <tbody>{renderDesktopRows('blur')}</tbody>
-                  </table>
+                  {renderLogsTable('token-detail-table user-console-logs-table table-sticky-header-blur', 'blur')}
                 </div>
                 <div className="table-sticky-header-labels">
                   <span>{text.table.request}</span>
@@ -156,44 +179,42 @@ export default function TokenLogsPanel({
               </div>
             ) : null}
             <div className={mode === 'detail' ? 'table-sticky-header-content' : undefined}>
-              <table className={`${mode === 'detail' ? 'table-sticky-header ' : ''}token-detail-table user-console-logs-table`}>
-                <thead>
-                  <tr>
-                    <th>{text.table.request}</th>
-                    <th>{text.table.transport}</th>
-                    <th>{text.table.credits}</th>
-                    <th>{text.table.result}</th>
-                  </tr>
-                </thead>
-                <tbody>{renderDesktopRows('content')}</tbody>
-              </table>
+              {renderLogsTable(
+                mode === 'detail'
+                  ? 'token-detail-table user-console-logs-table table-sticky-header'
+                  : 'token-detail-table user-console-logs-table',
+                'content',
+              )}
             </div>
           </>
         )}
       </div>
       {mode === 'full' ? (
-        <div className="user-console-mobile-list user-console-md-down">
+        <div className="user-console-mobile-list user-console-md-down flex flex-col gap-3 p-4">
           {logs.length === 0 ? (
-            <div className="empty-state alert">{text.emptyLogs}</div>
+            <div className="empty-state alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
           ) : (
             logs.map((log) => (
-              <article key={log.id} className="user-console-mobile-card user-console-log-card">
-                <header className="user-console-log-card-head">
-                  <div className="user-console-log-card-request">
-                    <strong>{log.method} {log.path}</strong>
-                    {log.query ? <span>{log.query}</span> : null}
+              <article
+                key={log.id}
+                className="user-console-mobile-card user-console-log-card rounded-lg border border-border bg-card p-4"
+              >
+                <header className="user-console-log-card-head flex items-start justify-between gap-3">
+                  <div className="user-console-log-card-request min-w-0">
+                    <strong className="block truncate text-sm font-semibold">{log.method} {log.path}</strong>
+                    {log.query ? <span className="block truncate text-xs text-muted-foreground">{log.query}</span> : null}
                   </div>
                   <StatusBadge className="user-console-mobile-status" tone={statusTone(log.result_status)}>
                     {log.result_status}
                   </StatusBadge>
                 </header>
-                <div className="user-console-log-card-meta">
+                <div className="user-console-log-card-meta mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                   <time dateTime={new Date(log.created_at * 1000).toISOString()}>{formatTimestamp(log.created_at)}</time>
                   <span>H {log.http_status ?? '—'}</span>
                   <span>T {log.mcp_status ?? '—'}</span>
                   <span>{text.table.credits} {formatLogCredits(log.business_credits)}</span>
                 </div>
-                <p className="user-console-log-card-error">
+                <p className="user-console-log-card-error mt-2 text-xs text-muted-foreground">
                   {log.error_message ?? text.noError}
                 </p>
               </article>

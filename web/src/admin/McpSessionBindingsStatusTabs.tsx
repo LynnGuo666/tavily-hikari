@@ -3,7 +3,7 @@ import { useId, useMemo } from 'react'
 import type { Language } from '../i18n'
 import type { AdminMcpSessionBindingsStatusView } from './routes'
 
-import SegmentedTabs from '../components/ui-legacy/SegmentedTabs'
+import SegmentedTabs from '@/components/SegmentedTabs'
 
 function copyFor(language: Language) {
   if (language === 'zh') {

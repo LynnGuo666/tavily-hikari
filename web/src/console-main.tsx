@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import { installDemoRuntime } from './api/demo'
-import { TooltipProvider } from './components/ui-legacy/tooltip'
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { LanguageProvider } from './i18n'
 import { bootstrapOfflineShellDocument, registerPwaServiceWorker } from './pwa/runtime'
 import { ThemeProvider } from './theme'

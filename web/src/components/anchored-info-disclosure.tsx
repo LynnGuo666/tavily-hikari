@@ -10,8 +10,8 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 
-import { useAnchoredFloatingLayer } from '../../lib/useAnchoredFloatingLayer'
-import { cn } from '../../lib/utils'
+import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
+import { cn } from '../lib/utils'
 
 export interface AnchoredInfoDisclosureProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {

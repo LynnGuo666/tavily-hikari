@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react'
 
 import { keyDetailPath } from '../admin/routes'
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui-legacy/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface JobKeyLinkProps {
   keyId: string | null

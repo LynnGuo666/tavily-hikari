@@ -10,12 +10,12 @@ import type {
 } from '../api'
 import { updateAdminHaSourceSettings } from '../api'
 import type { AdminTranslations } from '../i18n'
-import { Alert, AlertDescription, AlertTitle } from '../components/ui-legacy/alert'
-import { Button } from '../components/ui-legacy/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui-legacy/dialog'
-import { Input } from '../components/ui-legacy/input'
-import SegmentedTabs from '../components/ui-legacy/SegmentedTabs'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import SegmentedTabs from '@/components/SegmentedTabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 type SubmitFailureState = {
   title: string

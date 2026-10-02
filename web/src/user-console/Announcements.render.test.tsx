@@ -8,7 +8,7 @@ import { createRoot, type Root } from 'react-dom/client'
 import type { Announcement } from '../api'
 import { EN } from './text'
 
-mock.module('../components/ui-legacy/dialog', () => {
+function mockDialogModule() {
   const Dialog = ({ open, children }: { open: boolean; children?: ReactNode }) => open ? <>{children}</> : null
   const DialogContent = ({ children, ...props }: ComponentProps<'div'>) => <div {...props}>{children}</div>
   const DialogHeader = ({ children, ...props }: ComponentProps<'div'>) => <div {...props}>{children}</div>
@@ -16,9 +16,12 @@ mock.module('../components/ui-legacy/dialog', () => {
   const DialogTitle = ({ children, ...props }: ComponentProps<'h2'>) => <h2 {...props}>{children}</h2>
 
   return { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle }
-})
+}
 
-mock.module('../components/ui-legacy/drawer', () => {
+mock.module('../components/ui/dialog', mockDialogModule)
+mock.module('@/components/ui/dialog', mockDialogModule)
+
+function mockDrawerModule() {
   const Drawer = ({ open, children }: { open: boolean; children?: ReactNode }) => open ? <>{children}</> : null
   const DrawerClose = ({ children }: { children?: ReactNode }) => <>{children}</>
   const DrawerContent = ({ children, direction: _direction, ...props }: ComponentProps<'div'> & {
@@ -29,7 +32,10 @@ mock.module('../components/ui-legacy/drawer', () => {
   const DrawerTitle = ({ children, ...props }: ComponentProps<'h2'>) => <h2 {...props}>{children}</h2>
 
   return { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle }
-})
+}
+
+mock.module('../components/ui/drawer', mockDrawerModule)
+mock.module('@/components/ui/drawer', mockDrawerModule)
 
 const { default: UserConsoleAnnouncements } = await import('./Announcements')
 

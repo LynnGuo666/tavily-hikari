@@ -103,7 +103,7 @@ async function mountPanel(
 }
 
 function clickTab(container: HTMLElement, label: string) {
-  const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('button[role="radio"]'))
+  const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('button[role="tab"]'))
   const target = buttons.find((button) => button.textContent?.trim() === label)
   if (!target) {
     throw new Error(`tab not found: ${label}`)
@@ -122,7 +122,7 @@ describe('UserDetailSharedUsagePanel tab presentation', () => {
   it('orders windows from shortest to longest while keeping business 1h as the default active series', async () => {
     const { container, root } = await mountPanel()
 
-    const labels = Array.from(container.querySelectorAll<HTMLButtonElement>('button[role="radio"]'))
+    const labels = Array.from(container.querySelectorAll<HTMLButtonElement>('button[role="tab"]'))
       .map((button) => button.textContent?.trim())
 
     expect(labels).toEqual([

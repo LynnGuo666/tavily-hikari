@@ -11,7 +11,7 @@ import type {
 } from '../api'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import { StatusBadge } from '../components/StatusBadge'
-import { Switch } from '../components/ui-legacy/switch'
+import { Switch } from '@/components/ui/switch'
 
 interface UpstreamPrivacyStatusModuleProps {
   strings: AdminTranslations['systemSettings']['privacy']

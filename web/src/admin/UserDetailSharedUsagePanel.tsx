@@ -24,8 +24,8 @@ import type {
   AdminUserUsageSeriesQuotaPoint,
 } from '../api'
 import type { AdminTranslations } from '../i18n'
-import SegmentedTabs from '../components/ui-legacy/SegmentedTabs'
-import { Button } from '../components/ui-legacy/button'
+import SegmentedTabs from '@/components/SegmentedTabs'
+import { Button } from '@/components/ui/button'
 import { useTheme } from '../theme'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineController, LineElement, PointElement, Tooltip, Legend)

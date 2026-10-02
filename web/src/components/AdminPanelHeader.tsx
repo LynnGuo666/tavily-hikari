@@ -5,7 +5,7 @@ import { Icon } from '../lib/icons'
 import AdminReturnToConsoleLink from './AdminReturnToConsoleLink'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
-import { Button } from './ui-legacy/button'
+import { Button } from '@/components/ui/button'
 
 interface AdminPanelHeaderProps {
   title: string

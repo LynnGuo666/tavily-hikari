@@ -6,6 +6,8 @@ import type {
   UserDashboardProgressCard,
 } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 import type { Language } from '../i18n'
 
 interface UserDashboardOverviewText {
@@ -164,6 +166,13 @@ function buildChartGeometry(points: UserDashboardOverviewSeriesPoint[]): ChartGe
   }
 }
 
+const CHART_ACCENT_CLASS: Record<'request' | 'hour' | 'day' | 'month', string> = {
+  request: 'text-chart-1',
+  hour: 'text-chart-2',
+  day: 'text-chart-4',
+  month: 'text-chart-3',
+}
+
 function ProgressChart({
   card,
   accentId,
@@ -172,21 +181,37 @@ function ProgressChart({
   accentId: string
 }): JSX.Element {
   if (!card) {
-    return <div className="user-console-progress-chart user-console-progress-chart-empty" aria-hidden="true" />
+    return (
+      <div
+        className="user-console-progress-chart user-console-progress-chart-empty min-h-[120px] flex-1 rounded-lg border border-dashed border-border/70 bg-muted/30"
+        aria-hidden="true"
+      />
+    )
   }
 
   const geometry = buildChartGeometry(card.points)
 
   if (!geometry.hasData && geometry.limitPaths.length === 0) {
-    return <div className="user-console-progress-chart user-console-progress-chart-empty" aria-hidden="true" />
+    return (
+      <div
+        className="user-console-progress-chart user-console-progress-chart-empty min-h-[120px] flex-1 rounded-lg border border-dashed border-border/70 bg-muted/30"
+        aria-hidden="true"
+      />
+    )
   }
 
   const lastPoint = geometry.actualSegments[geometry.actualSegments.length - 1]?.lastPoint ?? null
 
   return (
-    <div className="user-console-progress-chart" aria-hidden="true">
+    <div
+      className={cn(
+        'user-console-progress-chart relative min-h-[120px] flex-1 self-stretch overflow-hidden rounded-lg bg-muted/20',
+        CHART_ACCENT_CLASS[accentId as keyof typeof CHART_ACCENT_CLASS] ?? 'text-chart-1',
+      )}
+      aria-hidden="true"
+    >
       <svg
-        className="user-console-progress-chart-svg"
+        className="user-console-progress-chart-svg h-full w-full"
         viewBox={`0 0 ${geometry.width} ${geometry.height}`}
         preserveAspectRatio="none"
         data-accent={accentId}
@@ -201,13 +226,13 @@ function ProgressChart({
           <path
             key={`limit-${index}`}
             d={path}
-            className="user-console-progress-limit-path"
+            className="user-console-progress-limit-path fill-none stroke-muted-foreground/60 [stroke-dasharray:5_4] [stroke-width:1.5]"
           />
         ))}
         {geometry.actualSegments.map((segment, index) => (
           <g key={`actual-${index}`}>
             <path d={segment.areaPath} fill={`url(#user-console-${accentId}-area)`} />
-            <path d={segment.linePath} className="user-console-progress-line-path" />
+            <path d={segment.linePath} className="user-console-progress-line-path fill-none stroke-current [vector-effect:non-scaling-stroke] [stroke-width:2]" />
           </g>
         ))}
         {lastPoint ? (
@@ -215,12 +240,18 @@ function ProgressChart({
             cx={lastPoint.x}
             cy={lastPoint.y}
             r="4"
-            className="user-console-progress-line-cap"
+            className="user-console-progress-line-cap fill-current stroke-background [stroke-width:2]"
           />
         ) : null}
       </svg>
     </div>
   )
+}
+
+const SUMMARY_TONE_VALUE_CLASS: Record<'success' | 'failure' | 'month', string> = {
+  success: 'text-success',
+  failure: 'text-destructive',
+  month: 'text-foreground',
 }
 
 function SummaryCard({
@@ -239,18 +270,35 @@ function SummaryCard({
   formatNumber: (value: number) => string
 }): JSX.Element {
   return (
-    <article className={`user-console-summary-card user-console-summary-card-${tone}`}>
-      <div className="user-console-summary-card-header">
-        <span className="user-console-summary-card-label">{label}</span>
-        <span className="user-console-summary-card-marker">{marker}</span>
-      </div>
-      <div className="user-console-summary-card-value">
-        <span>{loading ? '--' : formatNumber(value)}</span>
-      </div>
-      <div className="user-console-summary-card-foot">
+    <Card
+      className={cn(
+        `user-console-summary-card user-console-summary-card-${tone}`,
+        'gap-2 py-5',
+      )}
+    >
+      <CardHeader className="user-console-summary-card-header gap-1">
+        <CardDescription className="user-console-summary-card-label text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          {label}
+        </CardDescription>
+        <CardAction className="user-console-summary-card-marker text-xs text-muted-foreground">
+          {marker}
+        </CardAction>
+      </CardHeader>
+      <CardContent className="user-console-summary-card-value">
+        <span
+          className={cn(
+            'text-3xl font-semibold tabular-nums',
+            SUMMARY_TONE_VALUE_CLASS[tone],
+            loading && 'text-muted-foreground/50',
+          )}
+        >
+          {loading ? '--' : formatNumber(value)}
+        </span>
+      </CardContent>
+      <CardFooter className="user-console-summary-card-foot justify-between text-xs text-muted-foreground">
         <span>{marker}</span>
-      </div>
-    </article>
+      </CardFooter>
+    </Card>
   )
 }
 
@@ -274,23 +322,41 @@ function ProgressCard({
     : null
 
   return (
-    <article className={`user-console-progress-card user-console-progress-card-${accent}${loading ? ' is-loading' : ''}`}>
-      <div className="user-console-progress-card-copy">
-        <div className="user-console-progress-card-header">
-          <span className="user-console-progress-card-label">{label}</span>
-          <span className="user-console-progress-card-marker">{marker}</span>
-        </div>
-        <div className="user-console-progress-card-value">
-          <strong>{loading || !card ? '--' : formatNumber(card.used)}</strong>
-          <span>{loading || !card ? '/ --' : `/ ${formatNumber(card.limit)}`}</span>
-        </div>
-        <div className="user-console-progress-card-foot">
+    <Card
+      className={cn(
+        `user-console-progress-card user-console-progress-card-${accent}`,
+        loading && 'is-loading',
+        'gap-3 py-5',
+      )}
+    >
+      <div className="user-console-progress-card-copy flex flex-1 flex-col gap-3">
+        <CardHeader className="user-console-progress-card-header gap-1">
+          <CardDescription className="user-console-progress-card-label min-w-0 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+            {label}
+          </CardDescription>
+          <CardAction className="user-console-progress-card-marker text-xs text-muted-foreground">
+            {marker}
+          </CardAction>
+        </CardHeader>
+        <CardContent className="user-console-progress-card-value">
+          <strong className={cn('text-2xl font-semibold tabular-nums', loading && 'text-muted-foreground/50')}>
+            {loading || !card ? '--' : formatNumber(card.used)}
+          </strong>
+          <span className="ml-1.5 text-sm text-muted-foreground">
+            {loading || !card ? '/ --' : `/ ${formatNumber(card.limit)}`}
+          </span>
+        </CardContent>
+        <CardFooter className="user-console-progress-card-foot mt-auto justify-between border-t bg-transparent pt-3 text-xs text-muted-foreground">
           <span>{marker}</span>
-          <strong>{fillRatio == null ? '--' : `${Math.round(fillRatio * 100)}%`}</strong>
-        </div>
+          <strong className={cn('tabular-nums', CHART_ACCENT_CLASS[accent])}>
+            {fillRatio == null ? '--' : `${Math.round(fillRatio * 100)}%`}
+          </strong>
+        </CardFooter>
       </div>
-      <ProgressChart card={card} accentId={accent} />
-    </article>
+      <div className="px-4">
+        <ProgressChart card={card} accentId={accent} />
+      </div>
+    </Card>
   )
 }
 
@@ -321,8 +387,8 @@ export default function UserDashboardOverview({
       }
 
   return (
-    <div className="user-console-overview-grid">
-      <div className="user-console-summary-grid">
+    <div className="user-console-overview-grid flex flex-col gap-4">
+      <div className="user-console-summary-grid grid gap-4 sm:grid-cols-3">
         <SummaryCard
           label={text.dailySuccess}
           value={summary?.dailySuccess ?? 0}
@@ -349,7 +415,7 @@ export default function UserDashboardOverview({
         />
       </div>
 
-      <div className="user-console-progress-grid">
+      <div className="user-console-progress-grid grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <ProgressCard
           label={requestRateLabel}
           card={progress?.requestRate ?? null}

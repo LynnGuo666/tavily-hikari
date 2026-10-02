@@ -13,9 +13,9 @@ import {
   type AdminRechargeViewMode,
 } from '../api'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
-import { Button } from '../components/ui-legacy/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui-legacy/dialog'
-import { Input } from '../components/ui-legacy/input'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
 import { useTranslate, type AdminTranslations } from '../i18n'
 import type { QueryLoadState } from './queryLoadState'
 

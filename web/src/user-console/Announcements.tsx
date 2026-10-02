@@ -3,14 +3,15 @@ import { useMemo, useState } from 'react'
 import type { Announcement } from '../api'
 import MarkdownContent from '../components/MarkdownContent'
 import { StatusBadge } from '../components/StatusBadge'
-import { Button } from '../components/ui-legacy/button'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui-legacy/dialog'
+} from '@/components/ui/dialog'
 import {
   Drawer,
   DrawerClose,
@@ -18,7 +19,8 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from '../components/ui-legacy/drawer'
+} from '@/components/ui/drawer'
+import { cn } from '@/lib/utils'
 import type { Language } from '../i18n'
 import { Icon } from '../lib/icons'
 import { useViewportMode } from '../lib/responsive'
@@ -120,17 +122,26 @@ export default function UserConsoleAnnouncements({
   return (
     <>
       {tickerAnnouncement && tickerParsed ? (
-        <section className="surface user-console-announcement-ticker" aria-live="polite">
+        <Card
+          className={cn(
+            'surface user-console-announcement-ticker flex-row items-center gap-3 rounded-xl px-4 py-3',
+          )}
+          aria-live="polite"
+        >
           <div
             className={[
               'user-console-announcement-ticker-main',
               tickerHasTitle ? 'user-console-announcement-ticker-main--titled' : 'user-console-announcement-ticker-main--untitled',
+              'flex min-w-0 flex-1 items-center gap-2.5',
             ].join(' ')}
           >
-            <span className="user-console-announcement-ticker-icon" aria-hidden="true">
+            <span
+              className="user-console-announcement-ticker-icon flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
+              aria-hidden="true"
+            >
               <Icon icon="mdi:bullhorn-outline" width={18} height={18} />
             </span>
-            <span className="user-console-announcement-ticker-copy">
+            <span className="user-console-announcement-ticker-copy min-w-0 flex-1 text-sm">
               {tickerHasTitle && tickerParsed.titleMarkdown ? (
                 <AnnouncementTitleMarkdown
                   markdown={tickerParsed.titleMarkdown}
@@ -150,7 +161,7 @@ export default function UserConsoleAnnouncements({
               type="button"
               variant="ghost"
               size="xs"
-              className="user-console-announcement-action"
+              className="user-console-announcement-action shrink-0"
               aria-label={strings.tickerOpen.replace('{title}', tickerParsed.titleText ?? strings.ticker)}
               onClick={() => setTickerDetailId(tickerAnnouncement.id)}
             >
@@ -162,7 +173,7 @@ export default function UserConsoleAnnouncements({
               type="button"
               variant="ghost"
               size="xs"
-              className="user-console-announcement-close"
+              className="user-console-announcement-close shrink-0"
               aria-label={strings.tickerClose}
               onClick={() => {
                 setTickerDetailId(null)
@@ -172,7 +183,7 @@ export default function UserConsoleAnnouncements({
               <Icon icon="mdi:close" width={16} height={16} aria-hidden="true" />
             </Button>
           )}
-        </section>
+        </Card>
       ) : null}
 
       <Dialog
@@ -184,7 +195,7 @@ export default function UserConsoleAnnouncements({
         }}
       >
         {modalAnnouncement && modalParsed?.titleMarkdown ? (
-          <DialogContent className="user-console-announcement-dialog" aria-describedby={undefined}>
+          <DialogContent className="user-console-announcement-dialog sm:max-w-md" aria-describedby={undefined}>
             <DialogHeader>
               <DialogTitle>
                 <AnnouncementTitleMarkdown
@@ -195,7 +206,7 @@ export default function UserConsoleAnnouncements({
             </DialogHeader>
             <MarkdownContent
               content={modalParsed.bodyMarkdown}
-              className="user-console-announcement-dialog-body"
+              className="user-console-announcement-dialog-body text-sm text-muted-foreground"
             />
             <DialogFooter>
               <Button type="button" onClick={() => onCloseAnnouncement(modalAnnouncement.id)}>
@@ -215,7 +226,7 @@ export default function UserConsoleAnnouncements({
         }}
       >
         {tickerDetailAnnouncement && tickerDetailParsed?.titleMarkdown ? (
-          <DialogContent className="user-console-announcement-dialog" aria-describedby={undefined}>
+          <DialogContent className="user-console-announcement-dialog sm:max-w-md" aria-describedby={undefined}>
             <DialogHeader>
               <DialogTitle>
                 <AnnouncementTitleMarkdown
@@ -226,7 +237,7 @@ export default function UserConsoleAnnouncements({
             </DialogHeader>
             <MarkdownContent
               content={tickerDetailParsed.bodyMarkdown}
-              className="user-console-announcement-dialog-body"
+              className="user-console-announcement-dialog-body text-sm text-muted-foreground"
             />
             <DialogFooter>
               <Button
@@ -247,11 +258,10 @@ export default function UserConsoleAnnouncements({
         direction={drawerDirection}
       >
         <DrawerContent
-          direction={drawerDirection}
           className={`user-console-announcement-history user-console-announcement-history--${drawerDirection}`}
         >
           <DrawerHeader className="user-console-announcement-history-header">
-            <div className="user-console-announcement-history-heading">
+            <div className="user-console-announcement-history-heading flex items-start justify-between gap-3">
               <div>
                 <DrawerTitle>{strings.historyTitle}</DrawerTitle>
                 <DrawerDescription>{strings.historyDescription}</DrawerDescription>
@@ -269,25 +279,30 @@ export default function UserConsoleAnnouncements({
               </DrawerClose>
             </div>
           </DrawerHeader>
-          <div className="user-console-announcement-history-list">
+          <div className="user-console-announcement-history-list flex flex-col gap-3 overflow-y-auto p-4 pt-0">
             {historyAnnouncements.length === 0 ? (
-              <div className="empty-state alert">{strings.emptyHistory}</div>
+              <div className="empty-state alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">
+                {strings.emptyHistory}
+              </div>
             ) : (
               historyAnnouncements.map((item) => {
                 const parsed = parseAnnouncementContent(item.content)
                 const historyContent = parsed.hasTitle ? parsed.bodyMarkdown : parsed.fullContent
 
                 return (
-                  <article key={item.id} className="user-console-announcement-history-item">
-                    <header>
-                      <div>
+                  <article
+                    key={item.id}
+                    className="user-console-announcement-history-item rounded-lg border border-border bg-card p-4"
+                  >
+                    <header className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
                         {parsed.titleMarkdown ? (
                           <AnnouncementTitleMarkdown
                             markdown={parsed.titleMarkdown}
                             className="user-console-announcement-history-title"
                           />
                         ) : null}
-                        <span>
+                        <span className="text-xs text-muted-foreground">
                           {item.displayKind === 'ticker' ? strings.ticker : strings.modal}
                           {' · '}
                           {formatAnnouncementTime(announcementHistoryTime(item), language)}
@@ -300,11 +315,11 @@ export default function UserConsoleAnnouncements({
                     {historyContent ? (
                       <MarkdownContent
                         content={historyContent}
-                        className="user-console-announcement-history-body"
+                        className="user-console-announcement-history-body mt-2 text-sm text-muted-foreground"
                       />
                     ) : null}
                     {isClosed(item, closedRecords) ? (
-                      <div className="user-console-announcement-closed">
+                      <div className="user-console-announcement-closed mt-2 flex items-center gap-1.5 text-xs text-success">
                         <Icon icon="mdi:check-circle-outline" width={16} height={16} aria-hidden="true" />
                         <span>
                           {strings.handledAt.replace(
@@ -317,7 +332,7 @@ export default function UserConsoleAnnouncements({
                     {item.status === 'published'
                     && item.displayKind === 'ticker'
                     && !isClosed(item, closedRecords) ? (
-                      <div className="user-console-announcement-history-actions">
+                      <div className="user-console-announcement-history-actions mt-3">
                         <Button
                           type="button"
                           variant="outline"

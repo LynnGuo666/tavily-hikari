@@ -1,3 +1,6 @@
+import { Alert, AlertAction, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Icon } from '../lib/icons'
 import { USER_CONSOLE_LOGIN_START_PATH } from './oauthCallback'
 import type { EN } from './text'
@@ -18,21 +21,28 @@ export default function AccessStatePanel({ state, text, onHome }: AccessStatePan
       : { icon: 'mdi:account-arrow-right-outline', copy: text.loginRequired, action: () => { window.location.href = USER_CONSOLE_LOGIN_START_PATH } }
 
   return (
-    <section className="surface panel access-panel">
-      <div className="console-unavailable-state">
-        <div className="console-unavailable-icon" aria-hidden="true">
+    <Card className="surface panel access-panel mx-auto w-full max-w-xl gap-0 py-0">
+      <Alert className="console-unavailable-state m-4 items-start gap-4 rounded-lg border-none">
+        <span
+          className="console-unavailable-icon flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
+          aria-hidden="true"
+        >
           <Icon icon={model.icon} width={22} height={22} />
+        </span>
+        <div className="console-unavailable-copy flex flex-1 flex-col gap-1 text-left">
+          <AlertTitle>
+            <h2 className="text-base font-semibold">{model.copy.title}</h2>
+          </AlertTitle>
+          <AlertDescription className="text-sm text-muted-foreground">
+            <p>{model.copy.description}</p>
+          </AlertDescription>
         </div>
-        <div className="console-unavailable-copy">
-          <h2>{model.copy.title}</h2>
-          <p>{model.copy.description}</p>
-        </div>
-        <div className="table-actions console-unavailable-actions">
-          <button type="button" className="btn btn-primary" onClick={model.action}>
+        <AlertAction className="console-unavailable-actions self-center">
+          <Button type="button" onClick={model.action}>
             {'home' in model.copy ? model.copy.home : model.copy.action}
-          </button>
-        </div>
-      </div>
-    </section>
+          </Button>
+        </AlertAction>
+      </Alert>
+    </Card>
   )
 }

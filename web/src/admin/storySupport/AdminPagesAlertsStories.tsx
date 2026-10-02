@@ -5,7 +5,7 @@ import type { AlertCatalog, AlertEvent, AlertGroup, AlertsPage } from '../../api
 import AlertsCenter from '../AlertsCenter'
 import { alertsPath } from '../routes'
 import { useLanguage } from '../../i18n'
-import SegmentedTabs from '../../components/ui-legacy/SegmentedTabs'
+import SegmentedTabs from '@/components/SegmentedTabs'
 import { AdminPageFrame } from './AdminPagesStoryRuntime'
 
 const STORY_ALERTS_CATALOG: AlertCatalog = {

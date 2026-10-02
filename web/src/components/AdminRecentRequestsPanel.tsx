@@ -31,7 +31,7 @@ import {
 } from './requestLogRebalance'
 import SearchableFacetSelect from './SearchableFacetSelect'
 import { StatusBadge, type StatusTone } from './StatusBadge'
-import { Button } from './ui-legacy/button'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -40,9 +40,9 @@ import {
   SelectLabel,
   SelectSeparator,
   SelectTrigger,
-} from './ui-legacy/select'
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui-legacy/table'
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui-legacy/tooltip'
+} from '@/components/ui/select'
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useViewportMode } from '../lib/responsive'
 type Language = 'en' | 'zh'
 type RecentRequestsVariant = 'admin' | 'token'

@@ -32,7 +32,7 @@ import { buildOctoRillReleaseLink, formatVersionDisplay } from '../lib/releaseLi
 import HaSourceSettingsDialog from './HaSourceSettingsDialog'
 import HaNodeDetailPanel from './HaNodeDetailPanel'
 import { AdminSidebarUtilityCard, AdminSidebarUtilityStack } from '../components/AdminSidebarUtility'
-import { Button } from '../components/ui-legacy/button'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -40,13 +40,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui-legacy/dialog'
+} from '@/components/ui/dialog'
 import {
   Drawer,
   DrawerContent,
-} from '../components/ui-legacy/drawer'
-import { Input } from '../components/ui-legacy/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
+} from '@/components/ui/drawer'
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -57,15 +57,15 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../components/ui-legacy/dropdown-menu'
-import { Card } from '../components/ui-legacy/card'
-import { Badge } from '../components/ui-legacy/badge'
-import { Table } from '../components/ui-legacy/table'
-import { Textarea } from '../components/ui-legacy/textarea'
+} from '@/components/ui/dropdown-menu'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Table } from '@/components/ui/table'
+import { Textarea } from '@/components/ui/textarea'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
-import { AnchoredInfoDisclosure } from '../components/ui-legacy/anchored-info-disclosure'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../components/ui-legacy/tooltip'
-import SegmentedTabs from '../components/ui-legacy/SegmentedTabs'
+import { AnchoredInfoDisclosure } from '@/components/anchored-info-disclosure'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import SegmentedTabs from '@/components/SegmentedTabs'
 import { ArrowDown, ArrowUp, ArrowUpDown, ChartColumnIncreasing } from 'lucide-react'
 import { UserTagBindingControls } from './UserTagBindingControls'
 import { AdminUserDetailQuotaWorkspace } from './AdminUserDetailQuotaWorkspace'

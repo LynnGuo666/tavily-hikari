@@ -1,7 +1,7 @@
-import { Button } from '../components/ui-legacy/button'
-import { Input } from '../components/ui-legacy/input'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import DateTimeRangeField from '../components/DateTimeRangeField'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../components/ui-legacy/dialog'
+} from '@/components/ui/dialog'
 import type {
   AccountEntitlementScopeKind,
   AdminUserDetail,

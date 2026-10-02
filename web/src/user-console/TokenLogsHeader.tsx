@@ -1,9 +1,17 @@
+import type { ReactNode } from 'react'
+
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Icon } from '../lib/icons'
-import SegmentedTabs, { type SegmentedTabsOption } from '../components/ui-legacy/SegmentedTabs'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../components/ui-legacy/tooltip'
 
 export type DetailLogsPushIssueCode = 'unsupported' | 'reconnecting' | 'closed'
 export type UserTokenLogFilter = 'all' | 'billable'
+
+export interface SegmentedTabsOption<T extends string = string> {
+  value: T
+  label: ReactNode
+  disabled?: boolean
+}
 
 export interface DetailLogsPushStatusText {
   ariaLabel: string
@@ -48,24 +56,33 @@ export default function TokenLogsHeader({
   onFilterChange,
 }: TokenLogsHeaderProps): JSX.Element {
   return (
-    <div className="panel-header user-console-logs-header">
-      <h2>{title}</h2>
-      <div className="user-console-logs-header-actions">
-        <SegmentedTabs<UserTokenLogFilter>
+    <div className="panel-header user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
+      <h2 className="text-base font-semibold">{title}</h2>
+      <div className="user-console-logs-header-actions flex items-center gap-2">
+        <Tabs
           value={filter}
-          onChange={onFilterChange}
-          options={filterOptions}
-          ariaLabel={filterAriaLabel}
-          className="user-console-log-filter-tabs"
-          disabled={filterDisabled}
-        />
+          onValueChange={(next) => onFilterChange(next as UserTokenLogFilter)}
+        >
+          <TabsList className="user-console-log-filter-tabs" aria-label={filterAriaLabel}>
+            {filterOptions.map((option) => (
+              <TabsTrigger
+                key={option.value}
+                value={option.value}
+                className="segmented-tab"
+                disabled={filterDisabled || option.disabled}
+              >
+                {option.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
         {pushIssue ? (
-          <div className="user-console-push-status-slot is-active">
+          <div className="user-console-push-status-slot is-active flex items-center">
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
                   type="button"
-                  className="user-console-push-status-trigger"
+                  className="user-console-push-status-trigger flex size-8 items-center justify-center rounded-md text-warning transition-colors hover:bg-warning/10"
                   aria-label={pushStatusText.ariaLabel}
                 >
                   <Icon icon="mdi:alert-circle-outline" width={18} height={18} aria-hidden="true" />

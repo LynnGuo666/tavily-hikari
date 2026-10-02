@@ -1,4 +1,4 @@
-import { AnchoredInfoDisclosure } from './ui-legacy/anchored-info-disclosure'
+import { AnchoredInfoDisclosure } from "@/components/anchored-info-disclosure"
 import { cn } from '../lib/utils'
 
 export type UsageMetricHelpKind = 'businessCalls1h' | 'dailyCredits' | 'monthlyCredits'

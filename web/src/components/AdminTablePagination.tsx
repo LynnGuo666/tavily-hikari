@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { Button } from './ui-legacy/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui-legacy/select'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface AdminTablePaginationProps {
   page: number

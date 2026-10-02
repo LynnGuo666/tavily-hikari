@@ -1,12 +1,13 @@
-import { Button } from '../components/ui-legacy/button'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui-legacy/dialog'
-import { Textarea } from '../components/ui-legacy/textarea'
+} from '@/components/ui/dialog'
+import { Textarea } from '@/components/ui/textarea'
 import { selectAllReadonlyText } from '../lib/clipboard'
 import type { TokenSecretCopyState } from '../components/TokenSecretField'
 import type { RefObject } from 'react'
@@ -58,16 +59,21 @@ export default function TokenResetDialogs({
             </DialogDescription>
           </DialogHeader>
           {resetTokenError ? (
-            <p className="user-console-token-error" role="alert">{resetTokenError}</p>
+            <p className="user-console-token-error text-sm text-destructive" role="alert">{resetTokenError}</p>
           ) : null}
-          <div className="table-actions justify-end">
+          <DialogFooter className="table-actions justify-end">
             <Button type="button" variant="outline" onClick={onCloseResetTokenDialog} disabled={resettingTokenId != null}>
               {text.tokens.resetDialog.cancel}
             </Button>
-            <Button type="button" variant="warning" onClick={onResetToken} disabled={resettingTokenId != null}>
+            <Button
+              type="button"
+              className="btn-warning bg-warning/15 text-warning hover:bg-warning/25"
+              onClick={onResetToken}
+              disabled={resettingTokenId != null}
+            >
               {resettingTokenId ? text.tokens.resetDialog.running : text.tokens.resetDialog.confirm}
             </Button>
-          </div>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
       <Dialog open={resetResultToken != null} onOpenChange={(open) => {
@@ -95,7 +101,7 @@ export default function TokenResetDialogs({
             onClick={(event) => selectAllReadonlyText(event.currentTarget)}
             onFocus={(event) => selectAllReadonlyText(event.currentTarget)}
           />
-          <div className="table-actions justify-end">
+          <DialogFooter className="table-actions justify-end">
             <Button type="button" variant="outline" onClick={onCloseResetResult}>
               {text.tokens.resetResult.close}
             </Button>
@@ -106,7 +112,7 @@ export default function TokenResetDialogs({
                   ? text.tokens.resetResult.copyFailed
                   : text.tokens.resetResult.copy}
             </Button>
-          </div>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

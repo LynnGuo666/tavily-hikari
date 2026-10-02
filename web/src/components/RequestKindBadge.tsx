@@ -2,7 +2,7 @@ import type { HTMLAttributes } from 'react'
 
 import { cn } from '../lib/utils'
 
-import { Badge } from './ui-legacy/badge'
+import { Badge } from '@/components/ui/badge'
 
 export type RequestKindBadgeTone =
   | 'neutral'

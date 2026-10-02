@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
 import { cn } from '../lib/utils'
-import { Button } from '../components/ui-legacy/button'
+import { Button } from '@/components/ui/button'
 
 interface AdminNavButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon: ReactNode

@@ -5,14 +5,14 @@ import PublicHomeHeroCard from './components/PublicHomeHeroCard'
 import LanguageSwitcher from './components/LanguageSwitcher'
 import ThemeToggle from './components/ThemeToggle'
 import TokenSecretField from './components/TokenSecretField'
-import { Button } from './components/ui-legacy/button'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './components/ui-legacy/dropdown-menu'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './components/ui-legacy/dialog'
+} from '@/components/ui/dropdown-menu'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useTranslate } from './i18n'
 import { Icon, getGuideClientIconName } from './lib/icons'
 import { __testables as publicHomeTestables } from './PublicHome'
@@ -125,10 +125,10 @@ function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): JSX.Element {
             </a>
           </p>
           <div className="modal-action">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button type='button' variant="outline" onClick={() => setOpen(false)}>
               {strings.tokenAccess.dialog.actions.cancel}
             </Button>
-            <Button type="button" disabled={tokenDraft.trim().length === 0}>
+            <Button type='button' disabled={tokenDraft.trim().length === 0}>
               {strings.tokenAccess.dialog.actions.confirm}
             </Button>
           </div>
@@ -171,7 +171,7 @@ function PublicHomeMobileGuideMenuProof(): JSX.Element {
           <div style={{ minHeight: 120 }}>
             <DropdownMenu open>
               <DropdownMenuTrigger asChild>
-                <Button type="button" variant="outline" size="sm" className="w-full justify-between md:h-10">
+                <Button type='button' variant="outline" size="sm" className="w-full justify-between md:h-10">
                   <span className="inline-flex items-center gap-2">
                     <Icon
                       icon={getGuideClientIconName(active.id)}
@@ -231,7 +231,7 @@ function PublicHomeGuideTokenRevealedProof(): JSX.Element {
           {publicGuideTabs.map((tab) => (
             <button
               key={tab.id}
-              type="button"
+              type='button'
               className={`guide-tab${tab.id === activeGuide ? ' active' : ''}`}
               aria-pressed={tab.id === activeGuide}
             >
@@ -244,7 +244,7 @@ function PublicHomeGuideTokenRevealedProof(): JSX.Element {
           <div className="guide-panel-header">
             <h3 id="public-home-guide-other">{guideDescription.title}</h3>
             <Button
-              type="button"
+              type='button'
               variant="outline"
               size="sm"
               className="guide-token-toggle"

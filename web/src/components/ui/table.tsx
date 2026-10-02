@@ -3,14 +3,25 @@
 import * as React from "react"
 import { cn } from "cn"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+export type TableDensity = "comfortable" | "compact"
+
+function Table({
+  className,
+  containerClassName,
+  density,
+  ...props
+}: React.ComponentProps<"table"> & {
+  containerClassName?: string
+  density?: TableDensity
+}) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className={cn("relative w-full overflow-x-auto", containerClassName)}
     >
       <table
         data-slot="table"
+        data-table-density={density}
         className={cn("w-full caption-bottom text-sm", className)}
         {...props}
       />

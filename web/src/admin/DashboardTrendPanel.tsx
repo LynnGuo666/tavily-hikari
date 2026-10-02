@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import type { DashboardHourlyRequestWindow, DashboardRollupIntegrityStatus } from '../api'
-import SegmentedTabs from '../components/ui-legacy/SegmentedTabs'
+import SegmentedTabs from '@/components/SegmentedTabs'
 import { Bar, Line } from 'react-chartjs-2'
 import {
   BarElement,

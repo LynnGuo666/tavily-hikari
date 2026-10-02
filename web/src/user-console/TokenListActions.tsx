@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import type { TokenSecretCopyState } from '../components/TokenSecretField'
 import type { EN } from './text'
 
@@ -18,6 +20,12 @@ interface TokenListActionsProps {
   className?: string
 }
 
+const COPY_STATE_CLASS: Record<TokenSecretCopyState, string> = {
+  idle: '',
+  copied: 'btn-success border-success/40 bg-success/10 text-success hover:bg-success/20',
+  error: 'btn-warning border-warning/40 bg-warning/10 text-warning hover:bg-warning/20',
+}
+
 export default function TokenListActions({
   tokenId,
   text,
@@ -32,14 +40,15 @@ export default function TokenListActions({
   canReset,
   className = '',
 }: TokenListActionsProps): JSX.Element {
-  const copyClass = `btn btn-outline btn-sm ${copyState === 'copied' ? 'btn-success' : copyState === 'error' ? 'btn-warning' : ''}`
   const copyLabel = copyState === 'copied' ? text.copied : copyState === 'error' ? text.copyFailed : text.copy
 
   return (
-    <div className={`table-actions ${className}`}>
-      <button
+    <div className={cn('table-actions flex flex-wrap items-center gap-2', className)}>
+      <Button
         type="button"
-        className={copyClass}
+        variant="outline"
+        size="sm"
+        className={COPY_STATE_CLASS[copyState]}
         onPointerEnter={() => onScheduleWarmSecret(tokenId)}
         onPointerLeave={() => onCancelWarmSecret(tokenId)}
         onBlur={() => onCancelWarmSecret(tokenId)}
@@ -51,18 +60,19 @@ export default function TokenListActions({
         onClick={(event) => onCopy(tokenId, event.currentTarget)}
       >
         {copyLabel}
-      </button>
-      <button type="button" className="btn btn-primary btn-sm" onClick={() => onDetail(tokenId)}>
+      </Button>
+      <Button type="button" size="sm" onClick={() => onDetail(tokenId)}>
         {text.detail}
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
-        className="btn btn-warning btn-sm"
+        size="sm"
+        className="btn-warning bg-warning/15 text-warning hover:bg-warning/25"
         onClick={() => onReset(tokenId)}
         disabled={!canReset}
       >
         {text.reset}
-      </button>
+      </Button>
     </div>
   )
 }

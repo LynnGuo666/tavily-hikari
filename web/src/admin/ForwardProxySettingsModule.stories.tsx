@@ -9,7 +9,7 @@ import ForwardProxySettingsModule, {
 import ForwardProxyProgressBubble from './ForwardProxyProgressBubble'
 import type { ForwardProxyDialogProgressState } from './forwardProxyDialogProgress'
 import type { ForwardProxySettings } from '../api'
-import { Dialog, DialogContent } from '../components/ui-legacy/dialog'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import {
   forwardProxyStorySavedAt,
   forwardProxyStoryErrorStats,

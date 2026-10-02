@@ -21,11 +21,16 @@ const alertVariants = cva(
 function Alert({
   className,
   variant,
+  emphasis,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+}: React.ComponentProps<"div"> &
+  VariantProps<typeof alertVariants> & {
+    emphasis?: "default" | "prominent"
+  }) {
   return (
     <div
       data-slot="alert"
+      data-emphasis={emphasis}
       role="alert"
       className={cn(alertVariants({ variant }), className)}
       {...props}
