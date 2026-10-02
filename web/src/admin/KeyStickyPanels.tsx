@@ -4,6 +4,7 @@ import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useMemo } from 'react'
+import type React from 'react'
 
 import type {
   ForwardProxyActivityBucket,
@@ -92,7 +93,7 @@ function stickyUserSecondary(user: StickyUserIdentityLike): string | null {
   return user.username ? `@${user.username}` : null
 }
 
-function StickyCreditsTrendCell({ buckets, scaleMax }: { buckets: StickyUserDailyBucket[]; scaleMax: number }): JSX.Element {
+function StickyCreditsTrendCell({ buckets, scaleMax }: { buckets: StickyUserDailyBucket[]; scaleMax: number }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
   const data = buckets.map((bucket) => ({ label: formatDateOnly(bucket.bucketStart), success: bucket.successCredits, failure: bucket.failureCredits }))
   return <ChartContainer config={{ success: { label: 'Success', color: 'var(--chart-1)' }, failure: { label: 'Failure', color: 'var(--chart-2)' } }} className="h-16 w-40 aspect-auto">
@@ -105,7 +106,7 @@ function StickyCreditsTrendCell({ buckets, scaleMax }: { buckets: StickyUserDail
   </ChartContainer>
 }
 
-function ProxyActivityTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyActivityBucket[]; scaleMax: number }): JSX.Element {
+function ProxyActivityTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyActivityBucket[]; scaleMax: number }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
   const data = buckets.map((bucket) => ({ label: formatTrendTimeRange(bucket.bucketStart, bucket.bucketEnd), success: bucket.successCount, failure: bucket.failureCount }))
   return <ChartContainer config={{ success: { label: 'Success', color: 'var(--chart-1)' }, failure: { label: 'Failure', color: 'var(--chart-2)' } }} className="h-16 w-40 aspect-auto">
@@ -118,7 +119,7 @@ function ProxyActivityTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyAc
   </ChartContainer>
 }
 
-function ProxyWeightTrendCell({ buckets, scale }: { buckets: ForwardProxyWeightBucket[]; scale: WeightTrendScale }): JSX.Element {
+function ProxyWeightTrendCell({ buckets, scale }: { buckets: ForwardProxyWeightBucket[]; scale: WeightTrendScale }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
   return <ChartContainer config={{ lastWeight: { label: 'Weight', color: 'var(--chart-1)' } }} className="h-16 w-40 aspect-auto">
     <AreaChart accessibilityLayer data={buckets.map((bucket) => ({ ...bucket, label: formatTrendTimeRange(bucket.bucketStart, bucket.bucketEnd) }))}>
@@ -184,7 +185,7 @@ function StickyWindowValue({
   failureValue: number
   successLabel: string
   failureLabel: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <span className="sticky-window-values inline-flex items-center gap-1 tabular-nums">
       <span
@@ -217,7 +218,7 @@ export default function KeyStickyPanels({
   stickyNodesLoadState,
   stickyNodesError,
   onOpenUser = () => undefined,
-}: KeyStickyPanelsProps): JSX.Element {
+}: KeyStickyPanelsProps): React.JSX.Element {
   const translations = useTranslate()
   const adminStrings = translations.admin
   const keyStrings = adminStrings.keys

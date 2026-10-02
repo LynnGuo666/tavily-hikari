@@ -1,4 +1,5 @@
 import { Icon } from '../lib/icons'
+import type React from 'react'
 
 interface OfflineStatusBannerProps {
   title: string
@@ -8,7 +9,7 @@ interface OfflineStatusBannerProps {
 export default function OfflineStatusBanner({
   title,
   description,
-}: OfflineStatusBannerProps): JSX.Element {
+}: OfflineStatusBannerProps): React.JSX.Element {
   return (
     <section className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive offline-status-banner" role="status" aria-live="polite">
       <div className="offline-status-banner-icon" aria-hidden="true">

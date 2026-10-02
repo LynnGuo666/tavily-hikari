@@ -1,4 +1,5 @@
 import { type ReactNode, useId, useMemo, useState } from 'react'
+import type React from 'react'
 
 import { Icon } from '../lib/icons'
 import { cn } from '../lib/utils'
@@ -50,7 +51,7 @@ export default function SearchableFacetSelect({
   contentClassName,
   labelVariant = 'default',
   renderOptionLabel,
-}: SearchableFacetSelectProps): JSX.Element {
+}: SearchableFacetSelectProps): React.JSX.Element {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const popupId = useId()

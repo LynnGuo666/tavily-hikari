@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import type React from 'react'
 
 import type { RequestLog, RequestLogBodies } from '../api'
 import { useLanguage, useTranslate } from '../i18n'
@@ -233,7 +234,7 @@ function buildFacetOptions(values: Array<string | null | undefined>) {
     .map(([value, count]) => ({ value, count }))
 }
 
-function LazyDetailsStateGallery(): JSX.Element {
+function LazyDetailsStateGallery(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
   const [selectedRequestKinds, setSelectedRequestKinds] = useState<string[]>([])
@@ -386,7 +387,7 @@ const alignmentStoryLogs: RequestLog[] = [
   },
 ]
 
-function IdentifierAlignmentShowcase(): JSX.Element {
+function IdentifierAlignmentShowcase(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
 
@@ -452,7 +453,7 @@ function IdentifierAlignmentShowcase(): JSX.Element {
   )
 }
 
-function RebalanceMarkerShowcase(): JSX.Element {
+function RebalanceMarkerShowcase(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
 
@@ -515,7 +516,7 @@ function RebalanceMarkerShowcase(): JSX.Element {
   )
 }
 
-function RequestKindDesktopExpandedShowcase(): JSX.Element {
+function RequestKindDesktopExpandedShowcase(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
   const [requestKinds, setRequestKinds] = useState<string[]>([])
@@ -618,7 +619,7 @@ function RequestKindDesktopExpandedShowcase(): JSX.Element {
   )
 }
 
-function RequestKindMobileDrawerShowcase(): JSX.Element {
+function RequestKindMobileDrawerShowcase(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
   const [requestKinds, setRequestKinds] = useState<string[]>([])
@@ -705,7 +706,7 @@ function RequestKindMobileDrawerShowcase(): JSX.Element {
   )
 }
 
-function CatalogLoadingShowcase(): JSX.Element {
+function CatalogLoadingShowcase(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
 
@@ -754,7 +755,7 @@ function CatalogLoadingShowcase(): JSX.Element {
   )
 }
 
-function EmptyStateShowcase(): JSX.Element {
+function EmptyStateShowcase(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
 
@@ -803,7 +804,7 @@ function EmptyStateShowcase(): JSX.Element {
   )
 }
 
-function ErrorStateShowcase(): JSX.Element {
+function ErrorStateShowcase(): React.JSX.Element {
   const admin = useTranslate().admin
   const { language } = useLanguage()
 

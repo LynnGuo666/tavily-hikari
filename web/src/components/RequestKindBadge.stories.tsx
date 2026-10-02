@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import RequestKindBadge from './RequestKindBadge'
 
@@ -41,7 +42,7 @@ const requestKindSections = [
 function RequestKindStoryCard(props: {
   requestKindKey: string
   requestKindLabel: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div
       style={{
@@ -102,7 +103,7 @@ function RequestKindStoryCard(props: {
   )
 }
 
-function ThemeCatalogPanel(): JSX.Element {
+function ThemeCatalogPanel(): React.JSX.Element {
   return (
     <div
       style={{

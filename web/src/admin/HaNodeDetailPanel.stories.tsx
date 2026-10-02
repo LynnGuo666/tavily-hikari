@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import type { HaChannelHealth, HaNodeDetail } from '../api'
 import HaNodeDetailPanel from './HaNodeDetailPanel'
@@ -135,7 +136,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-function renderStateGallery(): JSX.Element {
+function renderStateGallery(): React.JSX.Element {
   return (
     <div style={{ display: 'grid', gap: 24 }}>
       {gcStateMatrix.map((scenario) => (
@@ -153,7 +154,7 @@ function renderStateGallery(): JSX.Element {
   )
 }
 
-function renderEvidenceSurface(child: JSX.Element): JSX.Element {
+function renderEvidenceSurface(child: React.JSX.Element): React.JSX.Element {
   return (
     <div
       data-testid="ha-node-detail-evidence-surface"

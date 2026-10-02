@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useEffect, useState } from 'react'
+import type React from 'react'
 
 import RollingNumber from './RollingNumber'
 
@@ -9,7 +10,7 @@ function finalDigitGroup(value: number): string {
   return String(Math.abs(value) % 1000).padStart(3, '0')
 }
 
-function RollingNumberDeltaDemo(props: { from: number; to: number; delay?: number; note: string }): JSX.Element {
+function RollingNumberDeltaDemo(props: { from: number; to: number; delay?: number; note: string }): React.JSX.Element {
   const [value, setValue] = useState<number>(props.from)
 
   useEffect(() => {

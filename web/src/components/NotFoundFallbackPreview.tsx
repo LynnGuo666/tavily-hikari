@@ -1,4 +1,5 @@
 import BrandLockup from './BrandLockup'
+import type React from 'react'
 
 interface NotFoundFallbackPreviewProps {
   originalPath?: string
@@ -8,7 +9,7 @@ interface NotFoundFallbackPreviewProps {
 export default function NotFoundFallbackPreview({
   originalPath = '/accounts',
   returnHref = '/',
-}: NotFoundFallbackPreviewProps): JSX.Element {
+}: NotFoundFallbackPreviewProps): React.JSX.Element {
   return (
     <div className="not-found-page-body">
       <main className="not-found-shell" role="main">

@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction }
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useId, useMemo } from 'react'
+import type React from 'react'
 
 import type {
   AlertGroup,
@@ -200,7 +201,7 @@ function MetricValue({
   value: string
   valueNumber?: number
   compact?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   const splitValue = value.split(' / ')
   if (splitValue.length === 2) {
     return (
@@ -232,7 +233,7 @@ function SummaryMetricCard({
   compact?: boolean
   backdrop?: DashboardCardBackdropSeries
   backdropNotice?: string | null
-}): JSX.Element {
+}): React.JSX.Element {
   const deltaTone = metric.comparison?.tone ?? (
     metric.comparison?.direction === 'flat'
       ? 'neutral'
@@ -292,7 +293,7 @@ function QuotaChargeCard({
 }: {
   card: DashboardQuotaChargeCardData
   backdrop?: DashboardCardBackdropSeries
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Card size="sm" className="metric-card dashboard-summary-card relative min-w-0 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
       {backdrop ? (
@@ -348,7 +349,7 @@ function DashboardUsageBackdropChart({
   primaryInitialValue?: number
   comparisonInitialValue?: number
   className?: string
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   if (primaryValues.length === 0) return null
   const primary = buildCumulativeNullableSeries(primaryValues, primaryInitialValue)
   const comparison = comparisonValues ? buildCumulativeNullableSeries(comparisonValues, comparisonInitialValue) : []
@@ -477,7 +478,7 @@ export default function DashboardOverview({
   initialVisibleCreditSeries,
   chartPersistenceKey,
   chartLabelTimeZone,
-}: DashboardOverviewProps): JSX.Element {
+}: DashboardOverviewProps): React.JSX.Element {
   const recentAlertsTableId = useId()
   const recentAlertsAlertHeaderId = `${recentAlertsTableId}-alert`
   const recentAlertsWindowHeaderId = `${recentAlertsTableId}-window`

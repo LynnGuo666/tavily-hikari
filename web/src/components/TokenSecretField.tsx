@@ -1,5 +1,6 @@
 import type { InputHTMLAttributes, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react'
 import { CheckIcon, CircleAlertIcon, CopyIcon, EyeIcon, EyeOffIcon } from 'lucide-react'
+import type React from 'react'
 
 import { isCopyIntentKey } from '../lib/clipboard'
 import { cn } from '@/lib/utils'
@@ -67,7 +68,7 @@ export default function TokenSecretField({
   className,
   onBlur,
   ...inputProps
-}: TokenSecretFieldProps): JSX.Element {
+}: TokenSecretFieldProps): React.JSX.Element {
   const displayValue = !visible && hiddenDisplayValue != null ? hiddenDisplayValue : value
   const copied = copyState === 'copied'
   const failed = copyState === 'error'

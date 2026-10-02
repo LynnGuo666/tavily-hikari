@@ -45,7 +45,7 @@ export function useAdminStackedLayout(): boolean {
   return isStacked
 }
 
-function readContentMode<T extends HTMLElement>(ref: RefObject<T>, maxWidth: number): ContentMode {
+function readContentMode<T extends HTMLElement>(ref: RefObject<T | null>, maxWidth: number): ContentMode {
   const width = ref.current?.getBoundingClientRect().width
   if (typeof width !== 'number' || Number.isNaN(width)) {
     return 'normal'
@@ -54,7 +54,7 @@ function readContentMode<T extends HTMLElement>(ref: RefObject<T>, maxWidth: num
 }
 
 export function useContentMode<T extends HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   maxWidth: number = CONTENT_COMPACT_MAX,
 ): ContentMode {
   const [mode, setMode] = useState<ContentMode>(() => readContentMode(ref, maxWidth))
@@ -82,7 +82,7 @@ export function useContentMode<T extends HTMLElement>(
   return mode
 }
 
-export function useResponsiveModes<T extends HTMLElement>(ref: RefObject<T>): {
+export function useResponsiveModes<T extends HTMLElement>(ref: RefObject<T | null>): {
   viewportMode: ViewportMode
   contentMode: ContentMode
   isCompactLayout: boolean

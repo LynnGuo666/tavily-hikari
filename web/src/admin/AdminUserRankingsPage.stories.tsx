@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState, type ComponentProps } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
+import type React from 'react'
 
 import { LanguageProvider, translations } from '../i18n'
 import AdminUserRankingsPage, { type RankingTabKey } from './AdminUserRankingsPage'
@@ -49,7 +50,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-function InteractiveRender(args: StoryArgs): JSX.Element {
+function InteractiveRender(args: StoryArgs): React.JSX.Element {
   const [activeTab, setActiveTab] = useState<RankingTabKey>(args.activeTab ?? 'last24h')
   return <AdminUserRankingsPage {...args} activeTab={activeTab} onTabChange={setActiveTab} />
 }

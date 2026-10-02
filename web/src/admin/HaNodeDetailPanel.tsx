@@ -1,4 +1,5 @@
 import { ArrowLeft, RotateCcw, Server } from 'lucide-react'
+import type React from 'react'
 
 import type { HaNodeDetail, HaTimelineEvent } from '../api'
 import type { AdminTranslations } from '../i18n'
@@ -198,7 +199,7 @@ export default function HaNodeDetailPanel({
   onBack,
   onLoadMoreTimeline = null,
   hasMoreTimeline = false,
-}: HaNodeDetailPanelProps): JSX.Element {
+}: HaNodeDetailPanelProps): React.JSX.Element {
   const node = detail?.node ?? null
   const timeline = detail?.timeline.events ?? []
   const cutoverStatus = node ? { tone: cutoverTone(node), label: cutoverLabel(node, strings) } : null

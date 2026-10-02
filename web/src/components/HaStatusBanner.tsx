@@ -1,4 +1,5 @@
 import { ArrowRight, CircleAlert, Crown, RotateCcw, Server, ShieldCheck } from 'lucide-react'
+import type React from 'react'
 
 import type { HaStatus, HaTimelineEvent } from '../api'
 import type { AdminTranslations } from '../i18n'
@@ -245,7 +246,7 @@ export default function HaStatusBanner({
   onLoadMoreTimeline = null,
   hasMoreTimeline = false,
   onOpenNodeDetails,
-}: HaStatusBannerProps): JSX.Element | null {
+}: HaStatusBannerProps): React.JSX.Element | null {
   const fallbackStrings = useTranslate().admin.systemSettings.ha
   const fallbackLanguage = useLanguage().language
   const admin = audience === 'admin'

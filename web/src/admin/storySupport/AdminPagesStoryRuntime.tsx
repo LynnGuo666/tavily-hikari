@@ -88,6 +88,7 @@ import {
   type TokenLogRequestKindQuickBilling,
   type TokenLogRequestKindQuickProtocol,
 } from '../../tokenLogRequestKinds'
+import type React from 'react'
 
 import AdminShell, { AdminShellSidebarUtility, type AdminNavItem, type AdminNavTarget } from '../AdminShell'
 import AdminJobTriggerMenu from '../AdminJobTriggerMenu'
@@ -2027,7 +2028,7 @@ function MonthlyBrokenCountTrigger({
   onOpen?: (() => void) | null
   ariaLabel: string
   className?: string | null
-}): JSX.Element {
+}): React.JSX.Element {
   const primary = formatNumber(Math.max(0, count))
   if (count <= 0 || !onOpen) {
     return <span className={`admin-table-value-primary${className ? ` ${className}` : ''}`}>{primary}</span>
@@ -2079,7 +2080,7 @@ function StoryMonthlyBrokenKeyValue({
   copiedLabel: string
   copied: boolean
   onCopy: () => void | Promise<void>
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="monthly-broken-key-value">
       <JobKeyLink
@@ -2120,7 +2121,7 @@ function StoryMonthlyBrokenDrawer({
   label: string
   items: MonthlyBrokenKeyDetail[]
   onOpenChange: (open: boolean) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const admin = useAdminTranslations()
   const users = admin.users
   const keyStrings = admin.keys
@@ -2265,7 +2266,7 @@ function MonthlyBrokenDrawerStoryCanvas({
 }: {
   label: string
   items: MonthlyBrokenKeyDetail[]
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <AdminPageFrame
       activeModule="users"
@@ -2598,7 +2599,7 @@ function StoryAdminUsersSortableHeader<Field extends string>({
   activeField: Field
   activeOrder: SortDirection
   onToggle: (field: Field) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const isActive = activeField === field
   const ariaSort = !isActive ? 'none' : activeOrder === 'asc' ? 'ascending' : 'descending'
   const SortIndicatorIcon = !isActive ? ArrowUpDown : activeOrder === 'asc' ? ArrowUp : ArrowDown
@@ -2652,7 +2653,7 @@ function StoryUserTagBadge({
 }: {
   tag: Pick<AdminUserTagBinding, 'displayName' | 'icon' | 'systemKey' | 'effectKind'> & { source?: string | null }
   users: AdminTranslations['users']
-}): JSX.Element {
+}): React.JSX.Element {
   const iconSrc = getUserTagIconSrc(tag.icon)
   const isSystem = isSystemUserTag(tag)
   const isBlockAll = tag.effectKind === 'block_all'
@@ -2684,7 +2685,7 @@ function StoryUserTagBadgeList({
   users: AdminTranslations['users']
   emptyLabel: string
   limit?: number
-}): JSX.Element {
+}): React.JSX.Element {
   if (tags.length === 0) {
     return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
   }
@@ -2702,7 +2703,7 @@ function StoryUserTagBadgeList({
 
 type StoryTagCardMode = 'view' | 'edit' | 'new'
 
-function StoryUserTagEffectToggle({ users, active }: { users: AdminTranslations['users']; active: 'quota_delta' | 'block_all' }): JSX.Element {
+function StoryUserTagEffectToggle({ users, active }: { users: AdminTranslations['users']; active: 'quota_delta' | 'block_all' }): React.JSX.Element {
   return (
     <div className="user-tag-effect-toggle" role="group" aria-label={users.catalog.fields.effect}>
       {([
@@ -2731,7 +2732,7 @@ function StoryUserTagCatalogCard({
   tag?: AdminUserTag | null
   users: AdminTranslations['users']
   mode?: StoryTagCardMode
-}): JSX.Element {
+}): React.JSX.Element {
   const isNewCard = mode === 'new'
   const isEditing = mode === 'edit' || mode === 'new'
   const draft = tag ?? {
@@ -2983,7 +2984,7 @@ function buildRequestStoryTokenDetail(id: string): {
   }
 }
 
-function StoryKeyDetailsCanvas({ id, logs }: { id: string; logs: RequestLog[] }): JSX.Element {
+function StoryKeyDetailsCanvas({ id, logs }: { id: string; logs: RequestLog[] }): React.JSX.Element {
   useLayoutEffect(() => {
     const originalFetch = window.fetch.bind(window)
     const key = [...MOCK_KEYS_WITH_QUARANTINE, ...MOCK_KEYS].find((item) => item.id === id) ?? MOCK_KEYS[0]
@@ -3177,7 +3178,7 @@ export function AdminPageFrame({
   showDefaultShellChrome = true,
   showRechargesNav = false,
   actions, introActions, introOverride, sidebarUtilityActions,
-}: AdminPageFrameProps): JSX.Element {
+}: AdminPageFrameProps): React.JSX.Element {
   const admin = useAdminTranslations()
   const { language } = useLanguage()
   const isStackedAdminLayout = useAdminStackedLayout()
@@ -3355,7 +3356,7 @@ export function AdminPageFrame({
   )
 }
 
-export function DashboardPageCanvas({ beforeIntro }: { beforeIntro?: ReactNode } = {}): JSX.Element {
+export function DashboardPageCanvas({ beforeIntro }: { beforeIntro?: ReactNode } = {}): React.JSX.Element {
   const admin = useAdminTranslations()
 
   const totalRequests = MOCK_KEYS.reduce((sum, item) => sum + item.total_requests, 0)
@@ -3616,7 +3617,7 @@ export function DashboardPageCanvas({ beforeIntro }: { beforeIntro?: ReactNode }
   )
 }
 
-function TokensPageCanvas(): JSX.Element {
+function TokensPageCanvas(): React.JSX.Element {
   const admin = useAdminTranslations()
   const tokenStrings = admin.tokens
   const tokenToolbar = (
@@ -3781,7 +3782,7 @@ function RankingsPageCanvas({
   snapshot?: React.ComponentProps<typeof AdminUserRankingsPage>['snapshot']
   loading?: React.ComponentProps<typeof AdminUserRankingsPage>['loading']
   connectionState?: React.ComponentProps<typeof AdminUserRankingsPage>['connectionState']
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
   const { language } = useLanguage()
   const rankingsHeaderMeta = (
@@ -3819,7 +3820,7 @@ function PressurePageCanvas({
   snapshot?: AnalysisPressureSnapshot | null
   loading?: boolean
   error?: string | null
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
   const { language } = useLanguage()
 
@@ -3853,7 +3854,7 @@ function KeysPageCanvas({
   bulkActionInFlight?: ApiKeyBulkAction | null
   bulkSyncProgress?: ApiKeyBulkSyncProgressState | null
   bulkFeedback?: { kind: 'success' | 'error'; message: string } | null
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
   const keyStrings = admin.keys
   const [selectedGroups, setSelectedGroups] = useState<string[]>([])
@@ -4423,7 +4424,7 @@ function RequestsPageCanvas({
   initialDrawerTarget = null,
 }: {
   initialDrawerTarget?: { kind: 'key' | 'token'; id: string } | null
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
   const { language } = useLanguage()
   const logStrings = admin.logs
@@ -4600,7 +4601,7 @@ function RequestsPageCanvas({
   )
 }
 
-function JobsPageCanvas(): JSX.Element {
+function JobsPageCanvas(): React.JSX.Element {
   const admin = useAdminTranslations()
   const jobsStrings = admin.jobs
   const keyStrings = admin.keys
@@ -4838,7 +4839,7 @@ function UsersPageCanvas({
 }: {
   initialQuery?: string
   defaultActiveUsersOnly?: boolean
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
   const { language } = useLanguage()
   const users = admin.users
@@ -5115,7 +5116,7 @@ function UsersUsagePageCanvas({
   initialDrawerUserId?: string
   initialQuery?: string
   defaultActiveUsersOnly?: boolean
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
   const { language } = useLanguage()
   const users = admin.users
@@ -5297,7 +5298,7 @@ function UnboundTokenUsagePageCanvas({
   initialDrawerTokenId?: string
   initialSortField?: AdminUnboundTokenUsageSortField | null
   initialSortOrder?: SortDirection | null
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
   const { language } = useLanguage()
   const users = admin.users
@@ -5694,7 +5695,7 @@ function UnboundTokenUsagePageCanvas({
   )
 }
 
-function UsersUsageTooltipProofCanvas(): JSX.Element {
+function UsersUsageTooltipProofCanvas(): React.JSX.Element {
   const { language } = useLanguage()
   const users = useAdminTranslations().users
   const dailySuccessLabel = language === 'zh' ? users.usage.table.dailySuccessRate : 'Daily'
@@ -5791,7 +5792,7 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
   )
 }
 
-function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCardMode }): JSX.Element {
+function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCardMode }): React.JSX.Element {
   const users = useAdminTranslations().users
   const cards: Array<AdminUserTag | null> = editorMode === 'new' ? [null, ...MOCK_TAG_CATALOG] : MOCK_TAG_CATALOG
   const editableTagId = 'team_lead'
@@ -5857,7 +5858,7 @@ function UserDetailPageCanvas({
   initialUsageSeries?: AdminUserUsageSeriesKey | 'ip'
   initialDetail?: AdminUserDetail
   initialTab?: UserDetailTabKey
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations(), users = admin.users
   const { language } = useLanguage()
   const [detail, setDetail] = useState<AdminUserDetail>(initialDetail)
@@ -6242,7 +6243,7 @@ function installStoryAnnouncementsFetchMock(): () => void {
   }
 }
 
-function AnnouncementsPageCanvas(): JSX.Element {
+function AnnouncementsPageCanvas(): React.JSX.Element {
   const { language } = useLanguage()
   const [ready, setReady] = useState(false)
 
@@ -6270,7 +6271,7 @@ function AnnouncementsPageCanvas(): JSX.Element {
   )
 }
 
-function RechargesPageCanvas(): JSX.Element {
+function RechargesPageCanvas(): React.JSX.Element {
   return (
     <AdminPageFrame activeModule="recharges" showRechargesNav>
       <AdminRechargeRecordsModule
@@ -6284,7 +6285,7 @@ function RechargesPageCanvas(): JSX.Element {
   )
 }
 
-function ProxySettingsPageCanvas(): JSX.Element {
+function ProxySettingsPageCanvas(): React.JSX.Element {
   const admin = useAdminTranslations()
 
   return (
@@ -6383,7 +6384,7 @@ function SystemSettingsPageCanvas({
   activeModule = 'system-settings',
 }: {
   activeModule?: AdminNavTarget
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const admin = useAdminTranslations()
 
   return (
@@ -6437,7 +6438,7 @@ function SystemSettingsPageCanvas({
   )
 }
 
-function SystemSettingsStatusPageCanvas(): JSX.Element {
+function SystemSettingsStatusPageCanvas(): React.JSX.Element {
   const admin = useAdminTranslations()
 
   return (
@@ -6504,7 +6505,7 @@ const systemSettingsMcpSessionBindingsPage: AdminMcpSessionBindingsPage = {
   activeMatchingCount: systemSettingsMcpSessionBindingsItems.filter((item) => item.status === 'active').length,
 }
 
-function SystemSettingsMcpSessionBindingsPageCanvas(): JSX.Element {
+function SystemSettingsMcpSessionBindingsPageCanvas(): React.JSX.Element {
   const { language } = useLanguage()
 
   return (
@@ -6544,7 +6545,7 @@ function SystemSettingsMcpSessionBindingsPageCanvas(): JSX.Element {
   )
 }
 
-function SystemSettingsAdminPageCanvas({ scopeMismatch = false }: { scopeMismatch?: boolean } = {}): JSX.Element {
+function SystemSettingsAdminPageCanvas({ scopeMismatch = false }: { scopeMismatch?: boolean } = {}): React.JSX.Element {
   const admin = useAdminTranslations()
 
   useEffect(() => installStoryAdminSecurityFetchMock(scopeMismatch), [scopeMismatch])

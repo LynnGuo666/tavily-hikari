@@ -1,5 +1,6 @@
 import { type CSSProperties, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import type React from 'react'
 
 import type { AdminTranslations } from '../i18n'
 import { Icon } from '../lib/icons'
@@ -51,7 +52,7 @@ export function ApiKeyBulkSyncProgressBubble({
   progress,
   className,
   style,
-}: ApiKeyBulkSyncProgressBubbleProps): JSX.Element {
+}: ApiKeyBulkSyncProgressBubbleProps): React.JSX.Element {
   return (
     <div
       className={`rounded-2xl border border-primary/25 bg-popover/98 px-4 py-3 text-popover-foreground shadow-md backdrop-blur ${className ?? ''}`}
@@ -170,7 +171,7 @@ export function AnchoredApiKeyBulkSyncProgressBubble({
   className,
   fallbackPosition,
   onDismiss,
-}: AnchoredApiKeyBulkSyncProgressBubbleProps): JSX.Element | null {
+}: AnchoredApiKeyBulkSyncProgressBubbleProps): React.JSX.Element | null {
   const { layerRef, position } = useAnchoredFloatingLayer<HTMLDivElement>({
     open: Boolean(anchorEl),
     anchorEl,

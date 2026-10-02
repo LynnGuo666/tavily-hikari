@@ -103,7 +103,7 @@ function formatNumber(value: number): string {
   return numberFormatter.format(value)
 }
 
-function PublicHome(): JSX.Element {
+function PublicHome(): React.JSX.Element {
   // No default token on public page. Start empty.
   const strings = useTranslate()
   const publicStrings = strings.public
@@ -521,7 +521,7 @@ function PublicHome(): JSX.Element {
     return 'neutral'
   }
 
-  const renderLogDetails = (log: PublicTokenLog): JSX.Element => (
+  const renderLogDetails = (log: PublicTokenLog): React.JSX.Element => (
     <div className="flex flex-col gap-1.5 px-4 py-3 text-sm">
       <div className="flex flex-wrap gap-2">
         <span className="font-medium text-muted-foreground">Request</span>
@@ -544,7 +544,7 @@ function PublicHome(): JSX.Element {
     </div>
   )
 
-  const renderLogsEmptyState = (): JSX.Element => {
+  const renderLogsEmptyState = (): React.JSX.Element => {
     if (!hasTokenInfo) {
       return <p className="px-4 py-8 text-center text-sm text-muted-foreground">{publicStrings.logs.empty.noToken}</p>
     }

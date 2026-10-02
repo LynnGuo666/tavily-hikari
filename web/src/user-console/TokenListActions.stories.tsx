@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import TokenListActions from './TokenListActions'
 import { EN } from './text'
@@ -45,7 +46,7 @@ const defaultArgs = {
   canReset: true,
 }
 
-function renderActions(copyState: TokenSecretCopyState, canReset = true): JSX.Element {
+function renderActions(copyState: TokenSecretCopyState, canReset = true): React.JSX.Element {
   return (
     <TokenListActions
       tokenId="k8eH"

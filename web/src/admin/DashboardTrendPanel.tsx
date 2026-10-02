@@ -2,6 +2,7 @@ import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Toggle } from '@/components/ui/toggle'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
 
 import type { DashboardHourlyRequestWindow, DashboardRollupIntegrityStatus } from '../api'
 import SegmentedTabs from '@/components/SegmentedTabs'
@@ -64,7 +65,7 @@ function DashboardChartSeriesButton({
   label: string
   color: string
   onClick: () => void
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Toggle
       variant="outline"
@@ -109,7 +110,7 @@ export default function DashboardTrendPanel({
   initialVisibleCreditSeries?: ReadonlyArray<DashboardCreditSeriesId>
   chartPersistenceKey?: string | null
   chartLabelTimeZone?: string | null
-}): JSX.Element {
+}): React.JSX.Element {
   const legacyChartPersistenceKeys = useMemo(
     () => (
       chartPersistenceKey === 'admin.dashboard.hourly-request-charts.v2'

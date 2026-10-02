@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import KeyStickyPanels from './KeyStickyPanels'
 import { stickyNodesStoryData, stickyUsersStoryData, stickyUsersStoryPerPage, stickyUsersStoryTotal } from './keyStickyStoryData'
@@ -13,7 +14,7 @@ function StickyPanelsCanvas(props: {
   stickyNodesError?: string | null
   stickyUsers?: typeof stickyUsersStoryData
   stickyNodes?: typeof stickyNodesStoryData
-}): JSX.Element {
+}): React.JSX.Element {
   const [page, setPage] = useState(props.stickyUsersPage ?? 1)
 
   return (

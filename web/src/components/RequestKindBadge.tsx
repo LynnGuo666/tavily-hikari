@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react'
+import type React from 'react'
 
 import { cn } from '../lib/utils'
 
@@ -120,7 +121,7 @@ export function RequestKindBadge({
   className,
   title,
   ...props
-}: RequestKindBadgeProps): JSX.Element {
+}: RequestKindBadgeProps): React.JSX.Element {
   const safeLabel = requestKindLabel.trim() || requestKindKey?.trim() || '—'
   const tone = resolveRequestKindBadgeTone(requestKindKey, safeLabel)
   const { source, detail } = splitRequestKindLabel(safeLabel)

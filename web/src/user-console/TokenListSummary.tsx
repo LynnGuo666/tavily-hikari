@@ -1,4 +1,5 @@
 import type { EN } from './text'
+import type React from 'react'
 
 type TokenText = typeof EN.tokens
 
@@ -16,7 +17,7 @@ export default function TokenListSummary({
   enabled,
   dailySuccess,
   formatNumber,
-}: TokenListSummaryProps): JSX.Element {
+}: TokenListSummaryProps): React.JSX.Element {
   return (
     <div
       className="user-console-section-meta user-console-md-up flex flex-wrap items-center gap-x-6 gap-y-2 text-sm"

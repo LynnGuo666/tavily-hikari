@@ -1,4 +1,5 @@
 import { useCallback, useId, useMemo, useState } from 'react'
+import type React from 'react'
 
 import type { AdminTranslations } from '../i18n'
 import { Icon } from '../lib/icons'
@@ -100,7 +101,7 @@ export default function AdminRecentRequestsRequestKindFilter({
   onRequestKindQuickFiltersChange,
   onToggleRequestKind,
   onClearRequestKinds,
-}: AdminRecentRequestsRequestKindFilterProps): JSX.Element {
+}: AdminRecentRequestsRequestKindFilterProps): React.JSX.Element {
   const [requestKindFilterOpen, setRequestKindFilterOpen] = useState(false)
   const triggerId = useId()
 

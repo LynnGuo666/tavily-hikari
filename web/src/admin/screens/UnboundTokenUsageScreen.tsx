@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { TableBody, TableRow, TableCell, TableHeader, TableHead } from '@/components/ui/table'
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import AdminLoadingRegion from '../../components/AdminLoadingRegion'
 import AdminTablePagination from '../../components/AdminTablePagination'
@@ -75,7 +76,7 @@ export function UnboundTokenUsageScreen({
   formatStackedTimestamp,
   formatMonthlyBrokenStackValue,
   pagination,
-}: UnboundTokenUsageScreenProps): JSX.Element {
+}: UnboundTokenUsageScreenProps): React.JSX.Element {
   const usageDailyRateLabel =
     language === 'zh' ? unboundTokenUsageStrings.table.dailySuccessRate : 'Daily'
   const usageMonthlyRateLabel =

@@ -8,6 +8,7 @@ import SegmentedTabs from '@/components/SegmentedTabs'
 import { useTheme } from '../theme'
 import type { AdminUserIpTimelineEntry, AdminUserUsageSeries, AdminUserUsageSeriesKey, AdminUserUsageSeriesQuotaPoint } from '../api'
 import type { AdminTranslations } from '../i18n'
+import type React from 'react'
 
 const USAGE_TAB_ORDER = ['rate5m', 'businessCalls1h', 'dailyCredits', 'monthlyCredits', 'ip'] as const
 const USAGE_SERIES_KEYS = new Set<AdminUserUsageSeriesKey>(['rate5m', 'businessCalls1h', 'dailyCredits', 'monthlyCredits'])
@@ -179,7 +180,7 @@ export function UserDetailSharedUsagePanel({
   description,
   initialSeriesCache,
   onSeriesCacheChange,
-}: UserDetailSharedUsagePanelProps): JSX.Element {
+}: UserDetailSharedUsagePanelProps): React.JSX.Element {
   const { resolvedTheme } = useTheme()
   const [activeSeries, setActiveSeries] = useState<AdminUserUsagePanelTab>(initialSeries)
   const [seriesCache, setSeriesCache] = useState<Partial<Record<AdminUserUsageSeriesKey, AdminUserUsageSeries>>>(

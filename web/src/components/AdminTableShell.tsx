@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import type { QueryLoadState } from '../admin/queryLoadState'
 import { cn } from '../lib/utils'
@@ -29,7 +30,7 @@ export default function AdminTableShell({
   errorLabel,
   minHeight,
   skeletonRows,
-}: AdminTableShellProps): JSX.Element {
+}: AdminTableShellProps): React.JSX.Element {
   return (
     <AdminLoadingRegion
       className={cn('table-wrapper overflow-hidden rounded-lg border', className)}

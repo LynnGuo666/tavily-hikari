@@ -1,6 +1,7 @@
 import { Icon } from '../lib/icons'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import type React from 'react'
 
 import { ADMIN_USER_CONSOLE_HREF } from '../lib/adminUserConsoleEntry'
 
@@ -14,7 +15,7 @@ export default function AdminReturnToConsoleLink({
   label,
   href = ADMIN_USER_CONSOLE_HREF,
   className,
-}: AdminReturnToConsoleLinkProps): JSX.Element {
+}: AdminReturnToConsoleLinkProps): React.JSX.Element {
   const classes = cn('admin-return-link', className)
 
   return (

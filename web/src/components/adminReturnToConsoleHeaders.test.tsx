@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import { LanguageProvider } from '../i18n'
 import { ADMIN_USER_CONSOLE_HREF } from '../lib/adminUserConsoleEntry'
@@ -7,7 +8,7 @@ import { ThemeProvider } from '../theme'
 import AdminPanelHeader from './AdminPanelHeader'
 import TokenUsageHeader from './TokenUsageHeader'
 
-function renderWithProviders(node: JSX.Element): string {
+function renderWithProviders(node: React.JSX.Element): string {
   return renderToStaticMarkup(
     <LanguageProvider>
       <ThemeProvider>{node}</ThemeProvider>

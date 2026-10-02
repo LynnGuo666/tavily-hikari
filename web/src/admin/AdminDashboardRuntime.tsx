@@ -361,6 +361,7 @@ import {
   type TokenLogRequestKindQuickProtocol,
 } from '../tokenLogRequestKinds'
 import { finalizeForwardProxyRevalidate } from './forwardProxyRevalidate'
+import type React from 'react'
 
 const LazyAdminRecentRequestsPanel = lazy(() => import('../components/AdminRecentRequestsPanel'))
 const LazyApiKeysValidationDialog = lazy(async () =>
@@ -438,7 +439,7 @@ function AdminLazyBoundary({
   children: ReactNode
   loadingLabel: ReactNode
   minHeight?: number | string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Suspense
       fallback={
@@ -691,7 +692,7 @@ function MonthlyBrokenCountTrigger({
   onOpen?: (() => void) | null
   ariaLabel: string
   className?: string | null
-}): JSX.Element {
+}): React.JSX.Element {
   const primary = formatNumber(Math.max(0, count))
   if (count <= 0 || !onOpen) {
     return <span className={`admin-table-value-primary${className ? ` ${className}` : ''}`}>{primary}</span>
@@ -763,7 +764,7 @@ function MonthlyBrokenKeyValue({
   copyState: 'loading' | 'copied' | null | undefined
   onOpenKey?: (id: string) => void
   onCopy: (anchorEl: HTMLButtonElement) => void | Promise<void>
-}): JSX.Element {
+}): React.JSX.Element {
   const copyText = copyState === 'copied' ? copiedLabel : copyLabel
   return (
     <div className="monthly-broken-key-value">
@@ -1156,7 +1157,7 @@ function UserTagBadge({
 }: {
   tag: UserTagLike
   usersStrings: AdminTranslations['users']
-}): JSX.Element {
+}): React.JSX.Element {
   const iconSrc = getUserTagIconSrc(tag.icon)
   const isSystem = isSystemUserTag(tag)
   const isBlockAll = tag.effectKind === 'block_all'
@@ -1188,7 +1189,7 @@ function UserTagBadgeList({
   usersStrings: AdminTranslations['users']
   emptyLabel: string
   limit?: number
-}): JSX.Element {
+}): React.JSX.Element {
   if (tags.length === 0) {
     return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
   }
@@ -1405,7 +1406,7 @@ function rebalanceMarkerLabel(log: RequestLog, strings: AdminTranslations): stri
   return strings.logDetails.apiRebalanceMode
 }
 
-function RebalanceGatewayMarker(): JSX.Element {
+function RebalanceGatewayMarker(): React.JSX.Element {
   return (
     <span className="log-key-pill__marker" aria-hidden="true">
       <svg viewBox="0 0 16 16" focusable="false">
@@ -1428,7 +1429,7 @@ function TokenOwnerValue({
   emptyLabel: string
   onOpenUser: (userId: string) => void
   compact?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   if (!owner) {
     return <span className="token-owner-empty">{emptyLabel}</span>
   }
@@ -1458,7 +1459,7 @@ function AdminTableValueStack({
   secondary?: string | null
   primaryClassName?: string | null
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className={`admin-table-value-stack${className ? ` ${className}` : ''}`}>
       <span className={`admin-table-value-primary${primaryClassName ? ` ${primaryClassName}` : ''}`}>{primary}</span>
@@ -1483,7 +1484,7 @@ function AdminUsersSortableHeader<Field extends string>({
   activeField: Field | null
   activeOrder: SortDirection | null
   onToggle: (field: Field) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const isActive = activeField === field
   const ariaSort = !isActive ? 'none' : activeOrder === 'asc' ? 'ascending' : 'descending'
   const SortIndicatorIcon = !isActive ? ArrowUpDown : activeOrder === 'asc' ? ArrowUp : ArrowDown
@@ -1760,7 +1761,7 @@ type AdminTokenFilterDraft = {
   quotaState: AdminTokenQuotaStateFilter
 }
 
-function AdminDashboard(): JSX.Element {
+function AdminDashboard(): React.JSX.Element {
   const [route, setRoute] = useState<AdminPathRoute>(() => parseAdminPath(window.location.pathname))
   const offline = useOfflineState()
   const [locationSearch, setLocationSearch] = useState(() => window.location.search)
@@ -7985,7 +7986,7 @@ function AdminDashboard(): JSX.Element {
     ? [null, ...sortedTagCatalog]
     : sortedTagCatalog
 
-  const renderUserTagSummaryPanel = (): JSX.Element => (
+  const renderUserTagSummaryPanel = (): React.JSX.Element => (
     <Card className="surface panel">
       <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
         <div>
@@ -8044,7 +8045,7 @@ function AdminDashboard(): JSX.Element {
     </Card>
   )
 
-  const renderUserTagEffectToggle = (): JSX.Element => (
+  const renderUserTagEffectToggle = (): React.JSX.Element => (
     <div className="user-tag-effect-toggle" role="group" aria-label={usersStrings.catalog.fields.effect}>
       {([
         ['quota_delta', usersStrings.catalog.effectKinds.quotaDelta],
@@ -8068,7 +8069,7 @@ function AdminDashboard(): JSX.Element {
     </div>
   )
 
-  const renderUserTagCatalogCard = (tag: AdminUserTag | null): JSX.Element => {
+  const renderUserTagCatalogCard = (tag: AdminUserTag | null): React.JSX.Element => {
     const isNewCard = tag == null
     const isEditing = isNewCard
       ? activeUserTagEditorId === NEW_USER_TAG_CARD_ID
@@ -8280,7 +8281,7 @@ function AdminDashboard(): JSX.Element {
     )
   }
 
-  const renderUserTagCatalogIndexPage = (): JSX.Element => (
+  const renderUserTagCatalogIndexPage = (): React.JSX.Element => (
     <AdminShell
       activeItem={activeNavItem}
       navItems={navItems}
@@ -8428,7 +8429,7 @@ function AdminDashboard(): JSX.Element {
     />
   )
 
-  const renderAdminGlobalOverlayHost = (): JSX.Element => (
+  const renderAdminGlobalOverlayHost = (): React.JSX.Element => (
     <>
       <Drawer
         open={monthlyBrokenDrawer != null}
@@ -8991,7 +8992,7 @@ function AdminDashboard(): JSX.Element {
     </>
   )
 
-  const renderAdminPageWithGlobalOverlays = (pageShell: JSX.Element): JSX.Element => (
+  const renderAdminPageWithGlobalOverlays = (pageShell: React.JSX.Element): React.JSX.Element => (
     <AdminOverlayHost overlays={renderAdminGlobalOverlayHost()}>{pageShell}</AdminOverlayHost>
   )
 
@@ -9097,7 +9098,7 @@ function AdminDashboard(): JSX.Element {
   const showSystemSettingsStatus = showSystemSettings && systemSettingsView === 'status'
   const showSystemSettingsAdmin = showSystemSettings && systemSettingsView === 'admin'
 
-  const renderMcpSessionBindingsHeaderTabs = (): JSX.Element => (
+  const renderMcpSessionBindingsHeaderTabs = (): React.JSX.Element => (
     <McpSessionBindingsStatusTabs
       language={language}
       value={mcpSessionBindingsRouteQuery.status ?? 'active'}
@@ -9657,7 +9658,7 @@ function AdminDashboard(): JSX.Element {
   }: {
     title: string
     description: string
-    searchControls: JSX.Element
+    searchControls: React.JSX.Element
     filterStatusText?: string | null
     filterStatusTestId?: string
   }) => (
@@ -11942,7 +11943,7 @@ function AdminDashboard(): JSX.Element {
                   const queuedSummary = `${formatTimestampWithMs(queued)} · ${formatRelativeTime(queued)}`
                   const finishedSummary =
                     finished != null ? `${formatTimestampWithMs(finished)} · ${formatRelativeTime(finished)}` : null
-                  const rows: JSX.Element[] = []
+                  const rows: React.JSX.Element[] = []
 
                   rows.push(
                     <TableRow key={j.id}>
@@ -12666,7 +12667,7 @@ interface LogRowProps {
   onOpenToken?: (id: string) => void
 }
 
-function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenToken }: LogRowProps): JSX.Element {
+function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenToken }: LogRowProps): React.JSX.Element {
   const requestButtonLabel = expanded ? strings.logs.toggles.hide : strings.logs.toggles.show
   const tokenId = log.auth_token_id ?? null
   const isRebalanceGateway = isRebalanceGatewayLog(log)
@@ -12791,7 +12792,7 @@ function LogDetails({
   log: RequestLog
   strings: AdminTranslations
   language: 'en' | 'zh'
-}): JSX.Element {
+}): React.JSX.Element {
   const query = log.query ? `?${log.query}` : ''
   const requestLine = `${log.method} ${log.path}${query}`
   const forwarded = (log.forwarded_headers ?? []).filter((value) => value.trim().length > 0)
@@ -12883,7 +12884,7 @@ export function KeyDetails({
   onBack: () => void
   onOpenUser: (userId: string) => void
   onOpenToken?: (tokenId: string) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const { language } = useLanguage()
   const translations = useTranslate()
   const adminStrings = translations.admin

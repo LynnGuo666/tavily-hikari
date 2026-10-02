@@ -1,6 +1,7 @@
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { useMemo } from 'react'
+import type React from 'react'
 
 import type { AdminUserDetail } from '../api'
 import type { AdminRechargeTranslations } from '../i18n/adminRechargeTranslationTypes'
@@ -27,7 +28,7 @@ export function UserRechargeQuotaCalendar({
   language,
   formatNumber,
   embedded = false,
-}: UserRechargeQuotaCalendarProps): JSX.Element {
+}: UserRechargeQuotaCalendarProps): React.JSX.Element {
   const entitlements = detail.recharge?.entitlements ?? []
   const rows = useMemo(() => buildRechargeMonthRows(entitlements), [entitlements])
   const tagDelta = detail.quotaBreakdown

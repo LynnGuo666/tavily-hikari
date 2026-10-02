@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { CircleAlertIcon, HouseIcon, KeyRoundIcon, LoaderCircleIcon, PauseCircleIcon } from 'lucide-react'
+import type React from 'react'
 
 import BrandLockup from './BrandLockup'
 
@@ -42,7 +43,7 @@ function HeroMetric({
   title: string
   value: string
   loading: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="flex flex-col gap-1.5 rounded-lg border p-4">
       <p className="text-xs font-medium text-muted-foreground">{title}</p>
@@ -75,7 +76,7 @@ function PublicHomeHeroCard({
   onLinuxDoLogin,
   onTokenAccessClick,
   onAdminActionClick,
-}: PublicHomeHeroCardProps): JSX.Element {
+}: PublicHomeHeroCardProps): React.JSX.Element {
   const showAuthStatus = showAuthStatusLoading || showAuthStatusUnavailable
   const shouldShowActions = showAuthStatus || showLinuxDoLogin || showTokenAccessButton || showAdminAction
   const authStatusText = showAuthStatusUnavailable

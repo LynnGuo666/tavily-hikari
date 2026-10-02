@@ -60,6 +60,7 @@ import {
   type TokenLogRequestKindOption,
   uniqueSelectedRequestKinds,
 } from '../tokenLogRequestKinds'
+import type React from 'react'
 
 
 const emptyRequestLogFacets: RequestLogFacets = {
@@ -199,7 +200,7 @@ function TokenOwnerValue({
   owner: TokenOwnerSummary | null
   emptyLabel: string
   onOpenUser?: (userId: string) => void
-}): JSX.Element {
+}): React.JSX.Element {
   if (!owner) {
     return <span className="token-owner-empty text-xs text-muted-foreground">{emptyLabel}</span>
   }
@@ -237,7 +238,7 @@ interface QuotaStatCardProps {
   description: string
 }
 
-function QuotaStatCard({ label, used, limit, resetAt, description }: QuotaStatCardProps): JSX.Element {
+function QuotaStatCard({ label, used, limit, resetAt, description }: QuotaStatCardProps): React.JSX.Element {
   const shouldShowReset = used > 0 && typeof resetAt === 'number' && resetAt * 1000 > Date.now()
   let resetLabel = 'Not used yet'
   if (shouldShowReset) {
@@ -415,7 +416,7 @@ export default function TokenDetail({
   onOpenKey?: (keyId: string) => void
   onOpenUser?: (userId: string) => void
   onSecretRotated?: (id: string, token: string) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const translations = useTranslate()
   const { language } = useLanguage()
   const tokenStrings = translations.admin.tokens

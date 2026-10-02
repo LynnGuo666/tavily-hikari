@@ -1,6 +1,7 @@
 import { type FocusEvent, type MouseEvent, useEffect, useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
+import type React from 'react'
 
 import { selectAllReadonlyText } from '../lib/clipboard'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
@@ -37,7 +38,7 @@ export default function ManualCopyBubble({
   multiline = false,
   className,
   onClose,
-}: ManualCopyBubbleProps): JSX.Element | null {
+}: ManualCopyBubbleProps): React.JSX.Element | null {
   const fieldId = useId()
   const titleId = useId()
   const fieldRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null)

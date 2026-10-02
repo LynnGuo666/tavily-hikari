@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type React from 'react'
 
 import { cn } from '../lib/utils'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,7 @@ interface AdminNavButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   active?: boolean
 }
 
-export default function AdminNavButton({ icon, active = false, className, children, ...props }: AdminNavButtonProps): JSX.Element {
+export default function AdminNavButton({ icon, active = false, className, children, ...props }: AdminNavButtonProps): React.JSX.Element {
   return (
     <Button
       type="button"

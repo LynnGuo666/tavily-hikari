@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom'
 import { type CSSProperties, useCallback, useMemo, useState } from 'react'
+import type React from 'react'
 
 import { Icon } from '../lib/icons'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
@@ -101,7 +102,7 @@ export default function ConnectivityChecksPanel({
   anyProbeRunning = false,
   onMcpClick,
   onApiClick,
-}: ConnectivityChecksPanelProps): JSX.Element {
+}: ConnectivityChecksPanelProps): React.JSX.Element {
   const [mcpButtonEl, setMcpButtonEl] = useState<HTMLButtonElement | null>(null)
   const [apiButtonEl, setApiButtonEl] = useState<HTMLButtonElement | null>(null)
   const handleMcpButtonRef = useCallback((node: HTMLButtonElement | null) => {
@@ -193,7 +194,7 @@ export default function ConnectivityChecksPanel({
     )
   }, [probeBubble, probeBubbleLayerRef, probeBubblePosition, stepStatusText])
 
-  const renderProbeBubble = (anchor: ProbeBubbleAnchor): JSX.Element | null => {
+  const renderProbeBubble = (anchor: ProbeBubbleAnchor): React.JSX.Element | null => {
     if (!probeBubble?.visible || probeBubble.anchor !== anchor || !probeBubbleNode) {
       return null
     }

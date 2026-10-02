@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useEffect, useRef, useState } from 'react'
+import type React from 'react'
 
 import ForwardProxySettingsModule, {
   ForwardProxyCandidateDialog,
@@ -315,7 +316,7 @@ function StoryCanvas({
   saveError = null,
   saving = false,
   initialNodeView = 'pool',
-}: StoryCanvasProps): JSX.Element {
+}: StoryCanvasProps): React.JSX.Element {
   const strings = useTranslate().admin.proxySettings
   const [previewOpen, setPreviewOpen] = useState(dialogPreview != null)
   const [storySavedAt, setStorySavedAt] = useState(forwardProxyStorySavedAt)
@@ -436,7 +437,7 @@ function StoryCanvas({
   )
 }
 
-function RevalidateProgressBubbleProof(): JSX.Element {
+function RevalidateProgressBubbleProof(): React.JSX.Element {
   const strings = useTranslate().admin.proxySettings
 
   return (
@@ -541,7 +542,7 @@ function RevalidateProgressBubbleProof(): JSX.Element {
   )
 }
 
-function StatusDetailBubbleProof(): JSX.Element {
+function StatusDetailBubbleProof(): React.JSX.Element {
   const strings = useTranslate().admin.proxySettings
   const rootRef = useRef<HTMLDivElement | null>(null)
 
@@ -670,7 +671,7 @@ function StatusDetailBubbleProof(): JSX.Element {
   )
 }
 
-function ErrorStatisticsChartBubbleProof(): JSX.Element {
+function ErrorStatisticsChartBubbleProof(): React.JSX.Element {
   const rootRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {

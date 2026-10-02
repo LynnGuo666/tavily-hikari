@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
+import type React from 'react'
 
 import { Input } from '@/components/ui/input'
 
@@ -34,7 +35,7 @@ export default function QuotaRangeField({
   inputAriaLabel,
   disabled = false,
   onInputChange,
-}: QuotaRangeFieldProps): JSX.Element {
+}: QuotaRangeFieldProps): React.JSX.Element {
   return (
     <label className="form-control quota-control">
       <span className="label-text">{label}</span>

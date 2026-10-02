@@ -38,6 +38,7 @@ import {
   normalizeRechargeMonths,
   normalizeRechargeSelection,
 } from './rechargeControls'
+import type React from 'react'
 
 const DEFAULT_RECHARGE_MAX_CREDITS = 20_000
 const DEFAULT_RECHARGE_MAX_MONTHS = 12
@@ -182,7 +183,7 @@ export default function RechargePanel({
   showSummary = true,
   showOrders = true,
   ordersLimit = 3,
-}: RechargePanelProps): JSX.Element {
+}: RechargePanelProps): React.JSX.Element {
   const [previewOpen, setPreviewOpen] = useState(false)
   const viewportMode = useViewportMode()
   const unitCredits = config?.unitCredits ?? DEFAULT_RECHARGE_UNIT_CREDITS
@@ -495,7 +496,7 @@ function RechargePreviewColumnLabel({
 }: {
   label: string
   hint: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <AnchoredInfoDisclosure
       className="user-console-recharge-preview-column-label text-xs font-medium text-muted-foreground underline decoration-dotted underline-offset-4"
@@ -508,7 +509,7 @@ function RechargePreviewColumnLabel({
   )
 }
 
-function RechargePreviewFieldHelp({ text }: { text: RechargePanelText }): JSX.Element {
+function RechargePreviewFieldHelp({ text }: { text: RechargePanelText }): React.JSX.Element {
   return (
     <div className="user-console-recharge-preview-field-help flex flex-col gap-1.5 text-left">
       <p><strong className="font-semibold">{text.previewCurrentQuota}</strong>{text.previewCurrentQuotaHint}</p>
@@ -518,7 +519,7 @@ function RechargePreviewFieldHelp({ text }: { text: RechargePanelText }): JSX.El
   )
 }
 
-function RechargePreviewMobileHelp({ text }: { text: RechargePanelText }): JSX.Element {
+function RechargePreviewMobileHelp({ text }: { text: RechargePanelText }): React.JSX.Element {
   return (
     <AnchoredInfoDisclosure
       className="user-console-recharge-preview-help-trigger flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted"
@@ -584,7 +585,7 @@ function RechargePreviewBody({
   credits: number
   months: number
   rows: RechargePreviewMonth[]
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="user-console-recharge-preview flex flex-col gap-4">
       <div className="user-console-recharge-preview-summary grid grid-cols-3 gap-3 rounded-lg border border-border bg-muted/30 p-4 text-sm">

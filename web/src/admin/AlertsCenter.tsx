@@ -56,6 +56,7 @@ import {
 import { Input } from '@/components/ui/input'
 import SegmentedTabs from '@/components/SegmentedTabs'
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import type React from 'react'
 const EMPTY_ALERT_EVENTS_PAGE: AlertsPage<AlertEvent> = {
   items: [],
   total: 0,
@@ -476,7 +477,7 @@ export default function AlertsCenter({
   initialGroupsPage = null,
   disableAutoLoad = false,
   inlineTabsVariant = 'all',
-}: AlertsCenterProps): JSX.Element {
+}: AlertsCenterProps): React.JSX.Element {
   const copy = useMemo(() => defaultCopy(language), [language])
   const searchState = useMemo<AlertsSearchState>(
     () => ({

@@ -2,6 +2,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } f
 import { Area, ComposedChart, CartesianGrid, Line, YAxis } from 'recharts'
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import type {
   UserDashboardOverview,
@@ -40,7 +41,7 @@ function ProgressChart({
   card: UserDashboardProgressCard | null
   accentId: keyof typeof CHART_ACCENT_COLOR
   language: Language
-}): JSX.Element {
+}): React.JSX.Element {
   const config = {
     value: { label: language === 'zh' ? '已用' : 'Used', color: CHART_ACCENT_COLOR[accentId] },
     limitValue: { label: language === 'zh' ? '上限' : 'Limit', color: 'var(--muted-foreground)' },
@@ -109,7 +110,7 @@ function SummaryCard({
   marker: string
   tone: 'success' | 'failure' | 'month'
   formatNumber: (value: number) => string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Card
       className={cn(
@@ -171,7 +172,7 @@ function ProgressCard({
   accent: 'request' | 'hour' | 'day' | 'month'
   marker: string
   formatNumber: (value: number) => string
-}): JSX.Element {
+}): React.JSX.Element {
   const fillRatio = !loading && card && card.limit > 0
     ? Math.max(0, Math.min(1, card.used / card.limit))
     : null
@@ -217,7 +218,7 @@ export default function UserDashboardOverview({
   language,
   requestRateLabel,
   formatNumber,
-}: UserDashboardOverviewProps): JSX.Element {
+}: UserDashboardOverviewProps): React.JSX.Element {
   const summary = overview?.summary ?? null
   const progress = overview?.progress ?? null
   const markerText = language === 'zh'

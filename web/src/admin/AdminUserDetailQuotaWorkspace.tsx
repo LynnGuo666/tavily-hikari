@@ -28,6 +28,7 @@ import type { AdminRechargeTranslations } from '../i18n/adminRechargeTranslation
 import { useEffect, useState } from 'react'
 import { UserDetailQuotaBreakdown } from './UserDetailQuotaBreakdown'
 import { UserRechargeQuotaCalendar } from './UserRechargeQuotaCalendar'
+import type React from 'react'
 
 type EntitlementScopeFilter = AccountEntitlementScopeKind | 'all'
 
@@ -122,7 +123,7 @@ export function AdminUserDetailQuotaWorkspace({
   onCreateEntitlement,
   onFetchEntitlements,
   onRefreshDetail,
-}: AdminUserDetailQuotaWorkspaceProps): JSX.Element {
+}: AdminUserDetailQuotaWorkspaceProps): React.JSX.Element {
   const defaultMonth = formatMonthInput(detail.entitlements.currentMonthStart || Math.floor(Date.now() / 1000))
   const [entitlementForm, setEntitlementForm] = useState<EntitlementFormState>(() => ({
     scopeKind: 'base',

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, within } from 'storybook/test'
+import type React from 'react'
 
 import type { Profile } from '../api'
 import { installDemoRuntime } from '../api/demo'
@@ -60,7 +61,7 @@ function AdminLoginStory({
   profile = baseProfile,
   profileUnavailable = false,
   showUpdateBanner = false,
-}: AdminLoginStoryProps): JSX.Element {
+}: AdminLoginStoryProps): React.JSX.Element {
   window.localStorage.setItem('tavily-hikari-demo-mode', 'true')
   window.history.replaceState({}, '', path)
   installAdminLoginStoryRuntime(profile, profileUnavailable)

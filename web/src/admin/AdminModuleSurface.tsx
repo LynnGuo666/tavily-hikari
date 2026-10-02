@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import { cn } from '../lib/utils'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
@@ -15,7 +16,7 @@ export default function AdminModuleSurface({
   className,
   toolbar,
   toolbarClassName,
-}: AdminModuleSurfaceProps): JSX.Element {
+}: AdminModuleSurfaceProps): React.JSX.Element {
   return (
     <Card className={cn('surface panel admin-module-surface', className)}>
       {toolbar ? (

@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Icon } from '../lib/icons'
 import { USER_CONSOLE_LOGIN_START_PATH } from './oauthCallback'
 import type { EN } from './text'
+import type React from 'react'
 
 type AccessText = Pick<typeof EN, 'unavailable' | 'loggedOut' | 'loginRequired'>
 
@@ -13,7 +14,7 @@ interface AccessStatePanelProps {
   onHome: () => void
 }
 
-export default function AccessStatePanel({ state, text, onHome }: AccessStatePanelProps): JSX.Element {
+export default function AccessStatePanel({ state, text, onHome }: AccessStatePanelProps): React.JSX.Element {
   const model = state === 'unavailable'
     ? { icon: 'mdi:account-off-outline', copy: text.unavailable, action: onHome }
     : state === 'logged_out'

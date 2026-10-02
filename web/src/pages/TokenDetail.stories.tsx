@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { addons } from 'storybook/preview-api'
 import { SELECT_STORY } from 'storybook/internal/core-events'
 import { ChartColumnIncreasing } from 'lucide-react'
+import type React from 'react'
 
 import type { RequestLog, RequestLogsCatalog, RequestLogsListPage } from '../api'
 import AdminShell, { type AdminNavItem } from '../admin/AdminShell'
@@ -789,7 +790,7 @@ export function TokenDetailStoryCanvas({
   detail?: StoryTokenDetail;
   mode?: StoryMode;
   dataset?: StoryDataset;
-}): JSX.Element {
+}): React.JSX.Element {
   const [ready, setReady] = useState(false);
 
   useLayoutEffect(() => {

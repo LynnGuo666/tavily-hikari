@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import SegmentedTabs from '../components/SegmentedTabs'
 import { Button } from '@/components/ui/button'
@@ -55,7 +56,7 @@ export default function TokenLogsHeader({
   pushIssue,
   pushStatusText,
   onFilterChange,
-}: TokenLogsHeaderProps): JSX.Element {
+}: TokenLogsHeaderProps): React.JSX.Element {
   return (
     <div className="user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
       <h2 className="text-base font-semibold">{title}</h2>

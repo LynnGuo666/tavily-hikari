@@ -1,4 +1,5 @@
 import '../../test/happydom'
+import type React from 'react'
 
 import { afterEach, describe, expect, it } from 'bun:test'
 import { act, useState } from 'react'
@@ -107,7 +108,7 @@ describe('SystemSettingsModule interactions', () => {
     document.body.appendChild(container)
     const root = createRoot(container)
 
-    function Harness(): JSX.Element {
+    function Harness(): React.JSX.Element {
       return (
         <SystemSettingsModule
           strings={strings}
@@ -148,7 +149,7 @@ describe('SystemSettingsModule interactions', () => {
     document.body.appendChild(container)
     const root = createRoot(container)
 
-    function Harness(): JSX.Element {
+    function Harness(): React.JSX.Element {
       const [settings, setSettings] = useState<SystemSettings>(initialSettings)
       return (
         <SystemSettingsModule
@@ -193,7 +194,7 @@ describe('SystemSettingsModule interactions', () => {
     document.body.appendChild(container)
     const root = createRoot(container)
 
-    function Harness(): JSX.Element {
+    function Harness(): React.JSX.Element {
       const [displayDensity, setDisplayDensity] = useState<AdminDisplayDensity>('comfortable')
       return (
         <SystemSettingsModule
@@ -238,7 +239,7 @@ describe('SystemSettingsModule interactions', () => {
     document.body.appendChild(container)
     const root = createRoot(container)
 
-    function Harness(): JSX.Element {
+    function Harness(): React.JSX.Element {
       const [settings, setSettings] = useState<SystemSettings>(initialSettings)
       return (
         <SystemSettingsModule
@@ -290,7 +291,7 @@ describe('SystemSettingsModule interactions', () => {
     document.body.appendChild(container)
     const root = createRoot(container)
 
-    function Harness(): JSX.Element {
+    function Harness(): React.JSX.Element {
       const [settings, setSettings] = useState<SystemSettings>(initialSettings)
       return (
         <SystemSettingsModule

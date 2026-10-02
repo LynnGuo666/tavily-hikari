@@ -1,3 +1,4 @@
+import type React from 'react'
 interface MarkdownEditorStorybookProps {
   id?: string
   name?: string
@@ -24,7 +25,7 @@ export default function MarkdownEditorStorybook({
   readOnly = false,
   className,
   onChange,
-}: MarkdownEditorStorybookProps): JSX.Element {
+}: MarkdownEditorStorybookProps): React.JSX.Element {
   return (
     <div
       className={[

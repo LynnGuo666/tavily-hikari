@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import meta, * as systemSettingsStories from './SystemSettingsModule.stories'
 
@@ -26,7 +27,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the limit-help story with four field-level triggers and unambiguous copy', () => {
-    const renderStory = systemSettingsStories.LimitHelpTooltips.render as (() => JSX.Element) | undefined
+    const renderStory = systemSettingsStories.LimitHelpTooltips.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -42,7 +43,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the applying story without Storybook runtime helpers', () => {
-    const renderStory = systemSettingsStories.Applying.render as (() => JSX.Element) | undefined
+    const renderStory = systemSettingsStories.Applying.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -50,7 +51,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the help bubble story in the forced-open state', () => {
-    const renderStory = systemSettingsStories.HelpBubbleOpen.render as (() => JSX.Element) | undefined
+    const renderStory = systemSettingsStories.HelpBubbleOpen.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -59,7 +60,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the request-rate story without redundant current-value copy', () => {
-    const renderStory = systemSettingsStories.RequestRateEdited.render as (() => JSX.Element) | undefined
+    const renderStory = systemSettingsStories.RequestRateEdited.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -68,7 +69,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the blocked-key base limit story without redundant current-value copy', () => {
-    const renderStory = systemSettingsStories.BlockedKeyBaseConfigured.render as (() => JSX.Element) | undefined
+    const renderStory = systemSettingsStories.BlockedKeyBaseConfigured.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -77,7 +78,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the API rebalance story without rollout controls', () => {
-    const renderStory = systemSettingsStories.ApiRebalanceEnabled.render as (() => JSX.Element) | undefined
+    const renderStory = systemSettingsStories.ApiRebalanceEnabled.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -87,7 +88,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the fixed project id story with the configured Control MCP UA', () => {
-    const renderStory = systemSettingsStories.FixedProjectIdAndControlUa.render as (() => JSX.Element) | undefined
+    const renderStory = systemSettingsStories.FixedProjectIdAndControlUa.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -98,7 +99,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
 
   it('renders the comparison-only reconciliation story without redundant current-state copy', () => {
     const renderStory =
-      systemSettingsStories.ComparisonOnlyReconciliation.render as (() => JSX.Element) | undefined
+      systemSettingsStories.ComparisonOnlyReconciliation.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))
@@ -106,7 +107,7 @@ describe('SystemSettingsModule Storybook proofs', () => {
   })
 
   it('renders the default story without redundant current-state copy', () => {
-    const renderStory = meta.render as (() => JSX.Element) | undefined
+    const renderStory = meta.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import { EN } from '../i18n/translations/en'
 import { ZH } from '../i18n/translations/zh'
@@ -23,7 +24,7 @@ describe('UpdateAvailableBanner Storybook proofs', () => {
   })
 
   it('renders ready and loading state copy from the shared translations', () => {
-    const renderStory = meta.render as ((args: typeof meta.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof meta.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const readyMarkup = renderToStaticMarkup(createElement(renderStory!, meta.args))

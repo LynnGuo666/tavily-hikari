@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react'
 import { createPortal } from 'react-dom'
+import type React from 'react'
 
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
 import { Button } from '@/components/ui/button'
@@ -33,7 +34,7 @@ export function AnchoredInfoDisclosure({
   onMouseLeave,
   type = 'button',
   ...buttonProps
-}: AnchoredInfoDisclosureProps): JSX.Element {
+}: AnchoredInfoDisclosureProps): React.JSX.Element {
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const pointerHoverRef = useRef(false)
   const pinnedRef = useRef(false)

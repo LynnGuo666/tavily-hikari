@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import QuotaRangeField from './QuotaRangeField'
 
-function QuotaRangeFieldStory(): JSX.Element {
+function QuotaRangeFieldStory(): React.JSX.Element {
   const [sliderValue, setSliderValue] = useState(3)
   const [inputValue, setInputValue] = useState('1000')
 

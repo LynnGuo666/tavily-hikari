@@ -1,5 +1,6 @@
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import type { QueryLoadState } from '../admin/queryLoadState'
 import { isBlockingLoadState, isRefreshingLoadState } from '../admin/queryLoadState'
@@ -24,7 +25,7 @@ export default function AdminLoadingRegion({
   errorLabel,
   minHeight = 220,
   skeletonRows = 4,
-}: AdminLoadingRegionProps): JSX.Element {
+}: AdminLoadingRegionProps): React.JSX.Element {
   const blocking = isBlockingLoadState(loadState)
   const refreshing = isRefreshingLoadState(loadState)
   const errored = loadState === 'error'

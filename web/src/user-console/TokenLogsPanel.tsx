@@ -11,6 +11,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
+import type React from 'react'
 
 interface TokenLogsPanelText {
   logs: string
@@ -66,7 +67,7 @@ export default function TokenLogsPanel({
   formatTimestamp,
   formatLogCredits,
   statusTone,
-}: TokenLogsPanelProps): JSX.Element {
+}: TokenLogsPanelProps): React.JSX.Element {
   const renderDesktopRows = (keyPrefix: string) =>
     logs.map((log, index) => (
       <TableRow key={`${keyPrefix}-${log.id}-${index}`}>
@@ -105,7 +106,7 @@ export default function TokenLogsPanel({
       </TableRow>
     ))
 
-  const renderLogsTable = (tableClassName: string, keyPrefix: string): JSX.Element => (
+  const renderLogsTable = (tableClassName: string, keyPrefix: string): React.JSX.Element => (
     <Table className={tableClassName}>
       <TableHeader>
         <TableRow>

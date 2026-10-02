@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import DateTimeRangeField from './DateTimeRangeField'
 
-function DateTimeRangeFieldStory(): JSX.Element {
+function DateTimeRangeFieldStory(): React.JSX.Element {
   const [createdFrom, setCreatedFrom] = useState('2026-07-13')
   const [createdTo, setCreatedTo] = useState('2026-07-14')
 
@@ -27,7 +28,7 @@ function DateTimeRangeFieldStory(): JSX.Element {
   )
 }
 
-function MonthRangeFieldStory(): JSX.Element {
+function MonthRangeFieldStory(): React.JSX.Element {
   const [startMonth, setStartMonth] = useState('2026-07')
   const [endMonth, setEndMonth] = useState('2026-09')
 

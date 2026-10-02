@@ -29,7 +29,7 @@ export default function MarkdownContent({
   compact = false,
   inline = false,
   compactWrap = false,
-}: MarkdownContentProps): JSX.Element {
+}: MarkdownContentProps): React.JSX.Element {
   const classes = [
     'markdown-content',
     compact ? 'markdown-content-compact' : null,

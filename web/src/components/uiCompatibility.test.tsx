@@ -1,4 +1,5 @@
 import '../../test/happydom'
+import type React from 'react'
 
 import { afterEach, describe, expect, it } from 'bun:test'
 import { act, createRef, useState } from 'react'
@@ -20,7 +21,7 @@ afterEach(async () => {
   document.body.innerHTML = ''
 })
 
-function mount(element: JSX.Element) {
+function mount(element: React.JSX.Element) {
   const container = document.createElement('div')
   document.body.appendChild(container)
   root = createRoot(container)

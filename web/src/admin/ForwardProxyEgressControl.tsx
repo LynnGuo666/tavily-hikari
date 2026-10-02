@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import type React from 'react'
 
 import type { AdminTranslations } from '../i18n'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
@@ -33,7 +34,7 @@ function ForwardProxyAnchoredProgressBubble({
   anchorEl: HTMLElement | null
   strings: AdminTranslations['proxySettings']
   progress: ForwardProxyDialogProgressState
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   const { layerRef: bubbleRef, position } = useAnchoredFloatingLayer<HTMLDivElement>({
     open: Boolean(anchorEl),
     anchorEl,
@@ -85,7 +86,7 @@ export default function ForwardProxyEgressControl({
   onUrlChange,
   onUrlBlur,
   onRequireUrl,
-}: ForwardProxyEgressControlProps): JSX.Element {
+}: ForwardProxyEgressControlProps): React.JSX.Element {
   const switchAnchorRef = useRef<HTMLDivElement | null>(null)
   const switchRef = useRef<HTMLButtonElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)

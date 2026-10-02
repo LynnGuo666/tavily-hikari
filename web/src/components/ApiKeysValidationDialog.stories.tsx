@@ -9,7 +9,7 @@ import {
   type KeysValidationState,
 } from "./ApiKeysValidationDialog";
 
-function ModalHarness(props: { initial: KeysValidationState }): JSX.Element {
+function ModalHarness(props: { initial: KeysValidationState }): React.JSX.Element {
   const [open, setOpen] = useState(true);
   const [state, setState] = useState<KeysValidationState>(props.initial);
 
@@ -270,7 +270,7 @@ function staggerVisibleRegistrationBubbles(): void {
   });
 }
 
-function RegistrationIpPreviewCanvas(): JSX.Element {
+function RegistrationIpPreviewCanvas(): React.JSX.Element {
   const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -415,7 +415,7 @@ export const AssignedProxyMatchKinds: Story = {
     },
   },
   render: (args) => {
-    function AssignedProxyMatchKindsCanvas(): JSX.Element {
+    function AssignedProxyMatchKindsCanvas(): React.JSX.Element {
       const timeoutRef = useRef<number | null>(null);
 
       useEffect(() => {

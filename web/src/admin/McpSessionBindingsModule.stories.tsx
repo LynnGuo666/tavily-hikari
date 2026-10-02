@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useMemo, useState, type ComponentProps } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
+import type React from 'react'
 
 import McpSessionBindingsModule from './McpSessionBindingsModule'
 import type {
@@ -82,7 +83,7 @@ function buildPage(
   }
 }
 
-function StoryCanvas(args: Partial<StoryArgs> & { initialItems?: AdminMcpSessionBindingListItem[] } = {}): JSX.Element {
+function StoryCanvas(args: Partial<StoryArgs> & { initialItems?: AdminMcpSessionBindingListItem[] } = {}): React.JSX.Element {
   const [query, setQuery] = useState<AdminMcpSessionBindingsPathContext>(args.query ?? { status: 'active', page: 1 })
   const [items, setItems] = useState<AdminMcpSessionBindingListItem[]>(args.initialItems ?? SAMPLE_ITEMS)
   const page = useMemo(() => buildPage(items, query), [items, query])

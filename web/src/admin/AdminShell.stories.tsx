@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ChartColumnIncreasing } from 'lucide-react'
 import { useState } from 'react'
+import type React from 'react'
 
 import AdminCompactIntro from '../components/AdminCompactIntro'
 import AdminPanelHeader from '../components/AdminPanelHeader'
@@ -15,7 +16,7 @@ import { translations, useLanguage, useTranslate, type AdminTranslations } from 
 import { Icon } from '../lib/icons'
 import AdminShell, { AdminShellSidebarUtility, type AdminNavItem, type AdminNavTarget } from './AdminShell'
 
-function navIcon(name: string): JSX.Element {
+function navIcon(name: string): React.JSX.Element {
   return <Icon icon={name} width={18} height={18} />
 }
 
@@ -45,7 +46,7 @@ function buildNavItems(admin: AdminTranslations): AdminNavItem[] {
 
 const DEFAULT_NAV_ITEMS = buildNavItems(translations.en.admin)
 
-function LayoutBody(props: { title: string; description: string }): JSX.Element {
+function LayoutBody(props: { title: string; description: string }): React.JSX.Element {
   return (
     <>
       <section className="surface panel">
@@ -116,7 +117,7 @@ function LayoutBody(props: { title: string; description: string }): JSX.Element 
   )
 }
 
-function PanelHeaderLayoutStory(): JSX.Element {
+function PanelHeaderLayoutStory(): React.JSX.Element {
   const { language } = useLanguage()
   const admin = useTranslate().admin
   const [activeModule, setActiveModule] = useState<AdminNavTarget>('jobs')
@@ -188,7 +189,7 @@ function PanelHeaderLayoutStory(): JSX.Element {
   )
 }
 
-function TokenUsageLayoutStory(): JSX.Element {
+function TokenUsageLayoutStory(): React.JSX.Element {
   const { language } = useLanguage()
   const admin = useTranslate().admin
   const [activeModule, setActiveModule] = useState<AdminNavTarget>('tokens')

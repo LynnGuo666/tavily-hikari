@@ -1,5 +1,6 @@
 import AppFooter from './AppFooter'
 import { buildOctoRillReleaseLink, formatVersionDisplay } from '../lib/releaseLinks'
+import type React from 'react'
 
 import type { VersionInfo } from '../api'
 
@@ -28,7 +29,7 @@ export default function UserConsoleFooter({
     | { status: 'loading' }
     | { status: 'error' }
     | { status: 'ready'; value: VersionInfo | null }
-}): JSX.Element {
+}): React.JSX.Element {
   const release = versionState.status === 'ready'
     ? buildUserConsoleFooterRelease(versionState.value)
     : null

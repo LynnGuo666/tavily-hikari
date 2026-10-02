@@ -1,4 +1,5 @@
 import { useId, useMemo } from 'react'
+import type React from 'react'
 
 import type { Language } from '../i18n'
 import type { AdminMcpSessionBindingsStatusView } from './routes'
@@ -33,7 +34,7 @@ export default function McpSessionBindingsStatusTabs({
   language,
   value,
   onChange,
-}: McpSessionBindingsStatusTabsProps): JSX.Element {
+}: McpSessionBindingsStatusTabsProps): React.JSX.Element {
   const labelId = useId()
   const copy = useMemo(() => copyFor(language), [language])
 

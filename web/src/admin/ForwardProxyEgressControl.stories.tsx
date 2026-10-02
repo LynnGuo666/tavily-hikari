@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { themes } from 'storybook/theming'
+import type React from 'react'
 
 import ForwardProxyEgressControl from './ForwardProxyEgressControl'
 import ForwardProxyProgressBubble from './ForwardProxyProgressBubble'
@@ -228,7 +229,7 @@ function StorySurface({
   children: ReactNode
   compact?: boolean
   wide?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="min-h-[360px] w-full bg-[radial-gradient(circle_at_top,hsl(var(--legacy-primary)/0.14),transparent_35%),linear-gradient(180deg,hsl(224_42%_13%),hsl(225_41%_9%))] px-6 py-8 text-foreground">
       <div
@@ -246,7 +247,7 @@ function StorySurface({
   )
 }
 
-function ChineseStoryFrame({ children }: { children: ReactNode }): JSX.Element {
+function ChineseStoryFrame({ children }: { children: ReactNode }): React.JSX.Element {
   return <LanguageProvider initialLanguage="zh">{children}</LanguageProvider>
 }
 
@@ -254,7 +255,7 @@ function StaticScenario({
   state,
 }: {
   state: ScenarioState
-}): JSX.Element {
+}): React.JSX.Element {
   const strings = useTranslate().admin.proxySettings
 
   return (
@@ -276,7 +277,7 @@ function StaticScenario({
   )
 }
 
-function InteractiveControlPanel(): JSX.Element {
+function InteractiveControlPanel(): React.JSX.Element {
   const strings = useTranslate().admin.proxySettings
   const [state, setState] = useState<ScenarioState>(buildEditableScenario())
   const timerRefs = useRef<number[]>([])
@@ -453,7 +454,7 @@ function InteractiveControlPanel(): JSX.Element {
   )
 }
 
-function InteractiveDefaultStory(): JSX.Element {
+function InteractiveDefaultStory(): React.JSX.Element {
   return (
     <StorySurface compact>
       <InteractiveControlPanel />
@@ -461,7 +462,7 @@ function InteractiveDefaultStory(): JSX.Element {
   )
 }
 
-function GalleryStory(): JSX.Element {
+function GalleryStory(): React.JSX.Element {
   const strings = useTranslate().admin.proxySettings
   const fieldStates = useMemo(
     () => [
@@ -604,7 +605,7 @@ function GalleryStory(): JSX.Element {
   )
 }
 
-function DocsPage(): JSX.Element {
+function DocsPage(): React.JSX.Element {
   return (
     <ChineseStoryFrame>
       <div className="sb-unstyled">
@@ -670,11 +671,11 @@ export const SavingWithBubble: Story = {
   },
 }
 
-function SavingScenarioWrapper(): JSX.Element {
+function SavingScenarioWrapper(): React.JSX.Element {
   return <StaticScenario state={buildSavingScenario(useTranslate().admin.proxySettings)} />
 }
 
-function FailedScenarioWrapper(): JSX.Element {
+function FailedScenarioWrapper(): React.JSX.Element {
   return <StaticScenario state={buildFailedScenario(useTranslate().admin.proxySettings)} />
 }
 

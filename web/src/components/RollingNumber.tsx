@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
+import type React from 'react'
 
 export interface RollingNumberProps {
   value: number | null | undefined
@@ -184,7 +185,7 @@ function RollingDigitColumn({
   cell: RollingNumberDigitCell
   digitHeight: number
   columnIndex: number
-}): JSX.Element {
+}): React.JSX.Element {
   const [isActive, setIsActive] = useState(!cell.animate)
 
   useEffect(() => {
@@ -231,7 +232,7 @@ function RollingDigitColumn({
   )
 }
 
-export default function RollingNumber({ value, loading, className }: RollingNumberProps): JSX.Element {
+export default function RollingNumber({ value, loading, className }: RollingNumberProps): React.JSX.Element {
   const [digitHeight, setDigitHeight] = useState<number>(0)
   const probeRef = useRef<HTMLSpanElement | null>(null)
   const previousValueRef = useRef<number | null | undefined>(value ?? null)

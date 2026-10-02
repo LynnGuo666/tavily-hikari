@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ClipboardEvent, KeyboardEvent } from 'react'
+import type React from 'react'
 
 import {
   confirmAdminTotp,
@@ -83,7 +84,7 @@ function TotpCodeInput({
   ariaLabel,
   autoFocus = false,
   disabled = false,
-}: TotpCodeInputProps): JSX.Element {
+}: TotpCodeInputProps): React.JSX.Element {
   const inputsRef = useRef<Array<HTMLInputElement | null>>([])
   const digits = Array.from({ length: 6 }, (_, index) => value[index] ?? '')
 
@@ -172,7 +173,7 @@ export default function AdminSecuritySettingsModule({
   initialPasskeys,
   initialPasswordStatus,
   disableAutoLoad = false,
-}: AdminSecuritySettingsModuleProps): JSX.Element {
+}: AdminSecuritySettingsModuleProps): React.JSX.Element {
   const language = strings.subnav.admin === '管理员' ? 'zh' : 'en'
   const copy = strings.admin
   const [totpStatus, setTotpStatus] = useState<AdminTotpStatus | null>(initialTotpStatus ?? null)

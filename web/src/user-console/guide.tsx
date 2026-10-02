@@ -16,6 +16,7 @@ import {
   TAVILY_SEARCH_DOC_URL,
   VSCODE_DOC_URL,
 } from './runtime'
+import type React from 'react'
 
 export type GuideCopyState = 'idle' | 'copied' | 'error'
 
@@ -57,7 +58,7 @@ export function GuideCodeSample({
   onCopy: (sampleKey: string, snippet: string) => void
   sample: GuideSample
   sampleKey: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="mockup-code guide-code-shell relative overflow-hidden rounded-lg border border-border bg-muted/40">
       <span className="guide-lang-badge badge badge-outline badge-sm absolute top-2 left-2 z-10 rounded-md border border-border bg-background/80 px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
@@ -107,7 +108,7 @@ export function MobileGuideDropdown({
   active: GuideKey
   onChange: (id: GuideKey) => void
   labels: { id: GuideKey, label: string }[]
-}): JSX.Element {
+}): React.JSX.Element {
   const current = labels.find((l) => l.id === active)
   return (
     <DropdownMenu>

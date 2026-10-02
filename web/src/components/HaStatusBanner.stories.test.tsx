@@ -1,4 +1,5 @@
 import '../../test/happydom'
+import type React from 'react'
 
 import { describe, expect, it } from 'bun:test'
 import { act } from 'react'
@@ -11,7 +12,7 @@ import HaStatusBanner from './HaStatusBanner'
 import { LanguageProvider, translations } from '../i18n'
 import { ThemeProvider } from '../theme'
 
-async function renderIntoDom(element: JSX.Element): Promise<string> {
+async function renderIntoDom(element: React.JSX.Element): Promise<string> {
   const container = document.createElement('div')
   document.body.appendChild(container)
   const root = createRoot(container)
@@ -26,7 +27,7 @@ async function renderIntoDom(element: JSX.Element): Promise<string> {
   return text
 }
 
-async function renderNodeOrigins(element: JSX.Element): Promise<string[]> {
+async function renderNodeOrigins(element: React.JSX.Element): Promise<string[]> {
   const container = document.createElement('div')
   document.body.appendChild(container)
   const root = createRoot(container)
@@ -54,7 +55,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders service node rows with the master switch action', () => {
-    const renderStory = meta.render as ((args: typeof stories.StandbyAdmin.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.StandbyAdmin.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -81,7 +82,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders planned cutover inventory and timeline affordances for the ready story', () => {
-    const renderStory = meta.render as ((args: typeof stories.PlannedCutoverReady.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.PlannedCutoverReady.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -109,7 +110,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('keeps the source configuration entry on the main HA panel', () => {
-    const renderStory = meta.render as ((args: typeof stories.FullMasterAdmin.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.FullMasterAdmin.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -133,7 +134,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('keeps the local node row non-clickable while peer rows still open detail', () => {
-    const renderStory = meta.render as ((args: typeof stories.PlannedCutoverReady.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.PlannedCutoverReady.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -163,7 +164,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('keeps lag-blocked standby reasons visible instead of falling back to configured', () => {
-    const renderStory = meta.render as ((args: typeof stories.PlannedCutoverReady.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.PlannedCutoverReady.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -187,7 +188,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders compact admin attention without node inventory actions', () => {
-    const renderStory = meta.render as ((args: typeof stories.StandbyAdmin.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.StandbyAdmin.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -217,7 +218,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders missing-peer diagnostics in the panel and compact admin views', () => {
-    const renderStory = meta.render as ((args: typeof stories.MissingPeerDiagnostics.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.MissingPeerDiagnostics.args) => React.JSX.Element) | undefined
     const status = stories.MissingPeerDiagnostics.args?.status
     expect(renderStory).toBeDefined()
     expect(status).toBeDefined()
@@ -345,7 +346,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders the origin group source settings dialog story in the browser runtime', async () => {
-    const renderStory = stories.OriginGroupSourceDialog.render as (() => JSX.Element) | undefined
+    const renderStory = stories.OriginGroupSourceDialog.render as (() => React.JSX.Element) | undefined
     const text = await renderIntoDom(renderStory?.() ?? <></>)
 
     expect(text).toContain(translations.zh.admin.systemSettings.ha.sourceKindOriginGroup)
@@ -358,7 +359,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders the direct source settings dialog story in the browser runtime', async () => {
-    const renderStory = stories.DirectSourceDialog.render as (() => JSX.Element) | undefined
+    const renderStory = stories.DirectSourceDialog.render as (() => React.JSX.Element) | undefined
     const text = await renderIntoDom(renderStory?.() ?? <></>)
 
     expect(text).toContain(translations.zh.admin.systemSettings.ha.sourceKindDirect)
@@ -366,7 +367,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders node inventory origins from node source configuration instead of live route or peer public origin', async () => {
-    const renderStory = meta.render as ((args: typeof stories.FullMasterAdmin.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.FullMasterAdmin.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const status = {
@@ -418,7 +419,7 @@ describe('HaStatusBanner Storybook proofs', () => {
   })
 
   it('renders the dedicated proof story with distinct route and node-config targets', async () => {
-    const renderStory = meta.render as ((args: typeof stories.NodeSourceConfigProof.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.NodeSourceConfigProof.args) => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const text = await renderIntoDom(

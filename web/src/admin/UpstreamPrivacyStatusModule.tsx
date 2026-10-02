@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useId, useMemo } from 'react'
+import type React from 'react'
 
 import type { QueryLoadState } from './queryLoadState'
 import type { Language, AdminTranslations } from '../i18n'
@@ -200,7 +201,7 @@ export default function UpstreamPrivacyStatusModule({
   autoRefreshEnabled,
   onAutoRefreshChange,
   onOpenMcpSessionBindings,
-}: UpstreamPrivacyStatusModuleProps): JSX.Element {
+}: UpstreamPrivacyStatusModuleProps): React.JSX.Element {
   const autoRefreshLabelId = useId()
   const timestampFormatter = useMemo(
     () =>
@@ -1039,7 +1040,7 @@ export default function UpstreamPrivacyStatusModule({
   )
 }
 
-function HeaderList({ title, items }: { title: string; items: string[] }): JSX.Element {
+function HeaderList({ title, items }: { title: string; items: string[] }): React.JSX.Element {
   return (
     <div className="upstream-privacy-header-list flex min-w-0 flex-col gap-2">
       <strong>{title}</strong>
@@ -1066,7 +1067,7 @@ function KeyActivityChart({
   points: UpstreamKeyActivityPoint[]
   emptyLabel: string
   numberFormatter: Intl.NumberFormat
-}): JSX.Element {
+}): React.JSX.Element {
   const maxCount = points.reduce((max, point) => Math.max(max, point.count), 0)
 
   return (
@@ -1109,7 +1110,7 @@ function ReconciliationProgressMeter({
   total: number
   supportingText?: string
   numberFormatter: Intl.NumberFormat
-}): JSX.Element {
+}): React.JSX.Element {
   const boundedCompleted = Math.max(0, Math.min(completed, total))
   const percentage = total <= 0 ? 0 : Math.round((boundedCompleted / total) * 100)
   return (
@@ -1134,7 +1135,7 @@ function PrivacyStat({
   value: string
   supportingText?: string
   monospace?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <article className="upstream-privacy-stat flex min-w-0 flex-col gap-1 rounded-lg border p-3 [&_span]:text-xs [&_span]:text-muted-foreground [&_strong]:break-all [&_strong]:tabular-nums [&_small]:break-all [&_small]:text-xs [&_small]:text-muted-foreground">
       <span>{label}</span>
@@ -1152,7 +1153,7 @@ function PrivacyDetail({
   label: string
   value: string
   monospace?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="upstream-privacy-detail min-w-0 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:break-all">
       <dt>{label}</dt>

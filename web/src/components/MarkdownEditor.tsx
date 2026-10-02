@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Crepe, CrepeFeature } from '@milkdown/crepe'
 import { replaceAll } from '@milkdown/kit/utils'
+import type React from 'react'
 
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '../lib/utils'
@@ -81,7 +82,7 @@ export default function MarkdownEditor({
   readOnly = false,
   className,
   onChange,
-}: MarkdownEditorProps): JSX.Element {
+}: MarkdownEditorProps): React.JSX.Element {
   const rootRef = useRef<HTMLDivElement | null>(null)
   const editorRef = useRef<Crepe | null>(null)
   const onChangeRef = useRef(onChange)

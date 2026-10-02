@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
+import type React from 'react'
 
 export default function RequestLogDetailSection({ title, children, className }: {
   title: ReactNode
   children: ReactNode
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Card size="sm" className={cn('min-w-0 gap-3 shadow-none', className)}>
       <CardHeader className="border-b">

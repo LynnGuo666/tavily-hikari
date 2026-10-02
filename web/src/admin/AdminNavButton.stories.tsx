@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import { Icon } from '../lib/icons'
 import AdminNavButton from './AdminNavButton'
 
-function navIcon(name: string): JSX.Element {
+function navIcon(name: string): React.JSX.Element {
   return <Icon icon={name} width={18} height={18} />
 }
 

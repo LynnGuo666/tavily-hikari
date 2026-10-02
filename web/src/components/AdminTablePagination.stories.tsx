@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import AdminTablePagination from './AdminTablePagination'
 
-function PaginationStory(): JSX.Element {
+function PaginationStory(): React.JSX.Element {
   const [page, setPage] = useState(2)
   const [perPage, setPerPage] = useState(20)
   const totalPages = 6

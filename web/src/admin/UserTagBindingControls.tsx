@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
+import type React from 'react'
 
 export type UserTagBindingOption = {
   id: string
@@ -28,7 +29,7 @@ export function UserTagBindingControls({
   onSelectedTagIdChange,
   placeholder,
   selectedTagId,
-}: UserTagBindingControlsProps): JSX.Element {
+}: UserTagBindingControlsProps): React.JSX.Element {
   const isBusy = disabled ?? false
 
   return (

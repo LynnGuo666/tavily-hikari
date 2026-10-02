@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import { LanguageProvider } from '../i18n'
 import { ThemeProvider } from '../theme'
@@ -8,7 +9,7 @@ import meta, * as heroStories from './PublicHomeHeroCard.stories'
 
 function renderHeroStory(story: { args?: Record<string, unknown> }): string {
   const render = meta.render as
-    | ((args: Record<string, unknown>) => JSX.Element)
+    | ((args: Record<string, unknown>) => React.JSX.Element)
     | undefined
   expect(render).toBeDefined()
   return renderToStaticMarkup(

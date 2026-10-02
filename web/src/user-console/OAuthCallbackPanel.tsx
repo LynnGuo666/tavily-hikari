@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { Icon } from '../lib/icons'
 import type { OAuthCallbackPanelModel, OAuthCallbackStepState, OAuthCallbackTone } from './oauthCallback'
+import type React from 'react'
 
 interface OAuthCallbackPanelProps {
   model: OAuthCallbackPanelModel
@@ -56,7 +57,7 @@ export default function OAuthCallbackPanel({
   model,
   onRestart,
   onHome,
-}: OAuthCallbackPanelProps): JSX.Element {
+}: OAuthCallbackPanelProps): React.JSX.Element {
   return (
     <Card
       className="surface panel access-panel oauth-callback-panel mx-auto w-full max-w-xl gap-0 py-0"

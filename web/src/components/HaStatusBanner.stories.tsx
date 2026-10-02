@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import {
   normalizeHaStatus,
@@ -299,7 +300,7 @@ const cutoverSuccessStatus: HaStatus = {
   ],
 }
 
-function StoryFrame({ children }: { children: JSX.Element }): JSX.Element {
+function StoryFrame({ children }: { children: React.JSX.Element }): React.JSX.Element {
   return (
     <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gap: 18 }}>
       {children}
@@ -307,7 +308,7 @@ function StoryFrame({ children }: { children: JSX.Element }): JSX.Element {
   )
 }
 
-function StateGallery(): JSX.Element {
+function StateGallery(): React.JSX.Element {
   return (
     <StoryFrame>
       <>

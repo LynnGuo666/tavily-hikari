@@ -1,6 +1,7 @@
 import { type PropsWithChildren, type ReactNode } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
+import type React from 'react'
 
 interface AdminSidebarUtilityCardProps extends PropsWithChildren {
   title?: ReactNode
@@ -15,7 +16,7 @@ interface AdminSidebarUtilityStackProps extends PropsWithChildren {
 export function AdminSidebarUtilityStack({
   children,
   className,
-}: AdminSidebarUtilityStackProps): JSX.Element {
+}: AdminSidebarUtilityStackProps): React.JSX.Element {
   const classes = cn('admin-sidebar-utility-stack flex flex-col gap-3', className)
 
   return <div className={classes}>{children}</div>
@@ -26,7 +27,7 @@ export function AdminSidebarUtilityCard({
   description,
   className,
   children,
-}: AdminSidebarUtilityCardProps): JSX.Element {
+}: AdminSidebarUtilityCardProps): React.JSX.Element {
   const classes = cn('admin-sidebar-utility-card', className)
 
   return (

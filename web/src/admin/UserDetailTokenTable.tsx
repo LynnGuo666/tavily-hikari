@@ -5,6 +5,7 @@ import type { AdminTranslations } from '../i18n'
 import { StatusBadge } from '../components/StatusBadge'
 import { Button } from '@/components/ui/button'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
+import type React from 'react'
 
 interface UserDetailTokenTableProps {
   tokens: AdminUserTokenSummary[]
@@ -24,7 +25,7 @@ export function UserDetailTokenTable({
   onViewToken,
   onDeleteToken,
   deletingTokenId = null,
-}: UserDetailTokenTableProps): JSX.Element {
+}: UserDetailTokenTableProps): React.JSX.Element {
   if (tokens.length === 0) {
     return <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.noTokens}</EmptyDescription></Empty>
   }

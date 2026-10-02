@@ -1,4 +1,5 @@
 import { Icon } from '../lib/icons'
+import type React from 'react'
 
 import AdminReturnToConsoleLink from './AdminReturnToConsoleLink'
 import ThemeToggle from './ThemeToggle'
@@ -26,7 +27,7 @@ interface TokenUsageHeaderProps {
   onFocusChange: (value: TokenLeaderboardFocus) => void
 }
 
-export default function TokenUsageHeader(props: TokenUsageHeaderProps): JSX.Element {
+export default function TokenUsageHeader(props: TokenUsageHeaderProps): React.JSX.Element {
   const visualPreset = props.visualPreset ?? 'panel'
   const controlsDisabled = props.controlsDisabled ?? false
   const activePeriodLabel = props.periodOptions.find((option) => option.value === props.period)?.label

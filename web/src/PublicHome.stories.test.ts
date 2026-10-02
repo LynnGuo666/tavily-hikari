@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import meta, * as publicHomeStories from './PublicHome.stories'
 import { LanguageProvider } from './i18n'
@@ -30,7 +31,7 @@ describe('PublicHome Storybook proofs', () => {
 
   it('renders the public metrics hero with an explicit UTC monthly label', () => {
     const renderStory = meta.render as
-      | ((args: typeof publicHomeStories.TokenModalOpen.args) => JSX.Element)
+      | ((args: typeof publicHomeStories.TokenModalOpen.args) => React.JSX.Element)
       | undefined
     expect(renderStory).toBeDefined()
 

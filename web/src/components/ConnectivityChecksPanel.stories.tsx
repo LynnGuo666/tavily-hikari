@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import ConnectivityChecksPanel, {
   type ProbeBubbleModel,
@@ -215,7 +216,7 @@ function ConnectivityScenarioCard({
   apiButtonLabel,
   probeBubble,
   anyProbeRunning,
-}: ConnectivityScenario): JSX.Element {
+}: ConnectivityScenario): React.JSX.Element {
   return (
     <article
       style={{
@@ -264,7 +265,7 @@ function ConnectivityScenarioCard({
   )
 }
 
-function ConnectivityChecksGallery(): JSX.Element {
+function ConnectivityChecksGallery(): React.JSX.Element {
   return (
     <div
       style={{
@@ -307,7 +308,7 @@ function ConnectivityChecksGallery(): JSX.Element {
   )
 }
 
-function ConnectivityChecksBubbleProof(): JSX.Element {
+function ConnectivityChecksBubbleProof(): React.JSX.Element {
   const bubbleProofScenario = scenarios.find((scenario) => scenario.title === 'MCP Full Sweep') ?? scenarios[2]
 
   return (

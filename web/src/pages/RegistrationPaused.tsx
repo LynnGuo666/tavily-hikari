@@ -1,4 +1,5 @@
 import { CircleAlertIcon, HouseIcon } from 'lucide-react'
+import type React from 'react'
 
 import BrandLockup from '../components/BrandLockup'
 import ThemeToggle from '../components/ThemeToggle'
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui/card'
 import { useTranslate } from '../i18n'
 
-function RegistrationPaused(): JSX.Element {
+function RegistrationPaused(): React.JSX.Element {
   const translations = useTranslate()
   const strings = translations.public.registrationPaused
 

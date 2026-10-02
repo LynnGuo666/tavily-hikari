@@ -1,5 +1,6 @@
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { useMemo, useState } from 'react'
+import type React from 'react'
 
 import type { Announcement } from '../api'
 import MarkdownContent from '../components/MarkdownContent'
@@ -76,7 +77,7 @@ function AnnouncementTitleMarkdown({
 }: {
   markdown: string
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return <MarkdownContent content={markdown} inline className={className} />
 }
 
@@ -89,7 +90,7 @@ export default function UserConsoleAnnouncements({
   historyOpen,
   onHistoryOpenChange,
   onCloseAnnouncement,
-}: UserConsoleAnnouncementsProps): JSX.Element {
+}: UserConsoleAnnouncementsProps): React.JSX.Element {
   const strings = text.announcements
   const viewportMode = useViewportMode()
   const drawerDirection = viewportMode === 'small' ? 'bottom' : 'right'
@@ -359,7 +360,7 @@ export default function UserConsoleAnnouncements({
 export function UserConsoleAnnouncementsSection({
   hidden,
   ...props
-}: UserConsoleAnnouncementsSectionProps): JSX.Element | null {
+}: UserConsoleAnnouncementsSectionProps): React.JSX.Element | null {
   if (hidden) return null
   return <UserConsoleAnnouncements {...props} />
 }

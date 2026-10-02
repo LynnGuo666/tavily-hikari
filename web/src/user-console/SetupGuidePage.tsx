@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -30,7 +31,7 @@ export default function SetupGuidePage({
   selectedTokenId,
   onTokenChange,
   guide,
-}: SetupGuidePageProps): JSX.Element {
+}: SetupGuidePageProps): React.JSX.Element {
   return (
     <Card className="surface panel user-console-setup-page gap-0 overflow-visible py-0">
       <CardHeader className="panel-header border-b user-console-setup-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">

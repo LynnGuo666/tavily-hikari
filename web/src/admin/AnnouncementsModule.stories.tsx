@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import AnnouncementsModule, { type AnnouncementRouteMode } from './AnnouncementsModule'
 import type { Announcement } from '../api'
@@ -127,7 +128,7 @@ function AnnouncementsModuleStory({
   items?: Announcement[]
   initialMode?: 'list' | 'create'
   routeMode?: AnnouncementRouteMode
-}): JSX.Element {
+}): React.JSX.Element {
   const [ready, setReady] = useState(false)
   const [storyRouteMode, setStoryRouteMode] = useState<AnnouncementRouteMode>(
     routeMode ?? (initialMode === 'create' ? { kind: 'create' } : { kind: 'list' }),

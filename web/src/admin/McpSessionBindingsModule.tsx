@@ -2,6 +2,7 @@ import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
 
 import type {
   AdminMcpSessionBindingsPage,
@@ -244,7 +245,7 @@ export default function McpSessionBindingsModule({
   onOpenUser,
   onOpenToken,
   onOpenKey,
-}: McpSessionBindingsModuleProps): JSX.Element {
+}: McpSessionBindingsModuleProps): React.JSX.Element {
   const copy = useMemo(() => copyFor(language), [language])
   const formatter = useMemo(
     () =>
@@ -622,7 +623,7 @@ export default function McpSessionBindingsModule({
   )
 }
 
-function SummaryCard({ label, value }: { label: string; value: string }): JSX.Element {
+function SummaryCard({ label, value }: { label: string; value: string }): React.JSX.Element {
   return (
     <Card size="sm"><CardContent className="flex flex-col gap-1">
       <span>{label}</span>
@@ -635,7 +636,7 @@ function renderRelated(
   value: string | null,
   emptyLabel: string,
   onOpen: (id: string) => void,
-): JSX.Element {
+): React.JSX.Element {
   if (!value) return <span>{emptyLabel}</span>
   return (
     <Button

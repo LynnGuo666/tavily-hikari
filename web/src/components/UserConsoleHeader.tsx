@@ -11,6 +11,7 @@ import {
   SettingsIcon,
   SunIcon,
 } from 'lucide-react'
+import type React from 'react'
 
 import BrandLockup from './BrandLockup'
 import { Icon } from '../lib/icons'
@@ -102,13 +103,13 @@ const UTILITY_COPY = {
   },
 } as const
 
-function ThemeModeIcon({ mode }: { mode: ThemeMode }): JSX.Element {
+function ThemeModeIcon({ mode }: { mode: ThemeMode }): React.JSX.Element {
   if (mode === 'dark') return <MoonIcon aria-hidden="true" />
   if (mode === 'light') return <SunIcon aria-hidden="true" />
   return <MonitorIcon aria-hidden="true" />
 }
 
-function UserConsoleAvatar(props: UserConsoleAvatarProps): JSX.Element {
+function UserConsoleAvatar(props: UserConsoleAvatarProps): React.JSX.Element {
   const [broken, setBroken] = useState(false)
   const initial = props.displayName.trim().charAt(0).toUpperCase() || '?'
 
@@ -140,7 +141,7 @@ function UserConsoleAvatar(props: UserConsoleAvatarProps): JSX.Element {
 const AVATAR_BASE_CLASS = 'user-console-account-avatar-image size-6 shrink-0 overflow-hidden rounded-full'
 const AVATAR_FALLBACK_CLASS = `${AVATAR_BASE_CLASS} user-console-account-avatar-fallback flex items-center justify-center bg-muted text-xs font-semibold text-muted-foreground`
 
-function UserConsoleUtilityMenu(): JSX.Element {
+function UserConsoleUtilityMenu(): React.JSX.Element {
   const { language, setLanguage } = useLanguage()
   const { mode, setMode } = useTheme()
   const strings = useTranslate()
@@ -219,7 +220,7 @@ function UserConsoleAnnouncementsTrigger({
   announcementsLabel?: string | null
   announcementCount?: number
   onOpenAnnouncements?: () => void
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   if (!onOpenAnnouncements || !announcementsLabel) {
     return null
   }
@@ -241,7 +242,7 @@ function UserConsoleAnnouncementsTrigger({
   )
 }
 
-function UserConsoleAccountMenu(props: UserConsoleAccountMenuProps): JSX.Element | null {
+function UserConsoleAccountMenu(props: UserConsoleAccountMenuProps): React.JSX.Element | null {
   const hasAdminAction = Boolean(props.adminHref && props.adminActionLabel)
   const accountName = props.sessionDisplayName ?? props.adminLabel
   const accountMeta = [props.sessionProviderLabel, props.isAdmin ? props.adminLabel : null]
@@ -330,7 +331,7 @@ function UserConsoleAccountMenu(props: UserConsoleAccountMenuProps): JSX.Element
   )
 }
 
-export default function UserConsoleHeader(props: UserConsoleHeaderProps): JSX.Element {
+export default function UserConsoleHeader(props: UserConsoleHeaderProps): React.JSX.Element {
   const desktopSummary = props.subtitle
 
   return (

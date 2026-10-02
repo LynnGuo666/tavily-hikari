@@ -9,6 +9,7 @@ import {
   DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 import type { AdminTranslations } from '../i18n'
 import { MANUAL_JOB_ACTIONS } from './jobFilters'
+import type React from 'react'
 
 interface AdminJobTriggerMenuProps {
   disabled: boolean
@@ -24,7 +25,7 @@ export default function AdminJobTriggerMenu({
   strings,
   labelForJobType,
   onTrigger,
-}: AdminJobTriggerMenuProps): JSX.Element {
+}: AdminJobTriggerMenuProps): React.JSX.Element {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

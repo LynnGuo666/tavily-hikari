@@ -1,5 +1,6 @@
 import AppFooter from './AppFooter'
 import { buildOctoRillReleaseLink, formatVersionDisplay } from '../lib/releaseLinks'
+import type React from 'react'
 
 export default function PublicHomeFooter({
   versionLabel,
@@ -7,7 +8,7 @@ export default function PublicHomeFooter({
 }: {
   versionLabel: string
   version: string | null
-}): JSX.Element {
+}): React.JSX.Element {
   const release = buildOctoRillReleaseLink(version)
   const displayVersion = formatVersionDisplay(version)
 

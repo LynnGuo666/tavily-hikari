@@ -2,6 +2,7 @@ import SegmentedTabs from '../components/SegmentedTabs'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useId, useMemo } from 'react'
+import type React from 'react'
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
@@ -98,7 +99,7 @@ function RankingsSemanticList({
   title: string
   rows: AdminUserRankingRow[]
   strings: AdminTranslations['rankings']
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div id={id} className="sr-only">
       <p>{title}</p>
@@ -113,7 +114,7 @@ function RankingsSemanticList({
   )
 }
 
-function RankingsChartCard({ title, description, rows, strings, color, onSelectUser }: RankingsChartCardProps): JSX.Element {
+function RankingsChartCard({ title, description, rows, strings, color, onSelectUser }: RankingsChartCardProps): React.JSX.Element {
   const descriptionId = useId()
   const compact = useViewportMode() === 'small'
   const data = rows.map((row) => ({ ...row, name: `${row.rank}. ${formatDisplayName(row, strings.userFallback)}` }))
@@ -151,7 +152,7 @@ function RankingsLoadingCard({
   title: string
   description: string
   strings: AdminTranslations['rankings']
-}): JSX.Element {
+}): React.JSX.Element {
   const compact = useViewportMode() === 'small'
   const chartHeight = rankingChartHeight(RANKING_SLOT_COUNT, compact)
   const skeletonRows = Array.from({ length: RANKING_SLOT_COUNT }, (_, index) => ({
@@ -347,7 +348,7 @@ export function RankingsMeta({
   snapshot,
   connectionState,
   language,
-}: RankingsMetaProps): JSX.Element {
+}: RankingsMetaProps): React.JSX.Element {
   const lastUpdated =
     snapshot && !snapshot.stale && snapshot.generatedAt > 0
       ? formatTimestamp(snapshot.generatedAt, language)
@@ -417,7 +418,7 @@ export default function AdminUserRankingsPage({
   onTabChange?: (tab: RankingTabKey) => void
   onSelectUser?: (userId: string) => void
   showHeader?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   const primaryColor = 'var(--chart-1)'
   const creditColor = 'var(--chart-2)'
   const uniqueIpColor = 'var(--chart-3)'

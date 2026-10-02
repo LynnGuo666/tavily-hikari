@@ -3,6 +3,7 @@ import type { AdminUserQuotaBreakdownEntry } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
 import type { AdminTranslations } from '../i18n'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
+import type React from 'react'
 
 interface UserDetailQuotaBreakdownProps {
   entries: AdminUserQuotaBreakdownEntry[]
@@ -60,7 +61,7 @@ export function UserDetailQuotaBreakdown({
   language,
   formatQuotaLimitValue,
   formatSignedQuotaDelta,
-}: UserDetailQuotaBreakdownProps): JSX.Element {
+}: UserDetailQuotaBreakdownProps): React.JSX.Element {
   const formatBreakdownValue = (entry: AdminUserQuotaBreakdownEntry, isAbsoluteRow: boolean, value: number) =>
     isAbsoluteRow ? formatQuotaLimitValue(value) : formatSignedQuotaDelta(value)
 

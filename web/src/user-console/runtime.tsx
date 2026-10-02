@@ -1,5 +1,5 @@
 import { Empty, EmptyDescription } from '@/components/ui/empty'
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { type JSX, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../lib/icons'
 import CherryStudioMock from '../components/CherryStudioMock'
 import ConnectivityChecksPanel, {

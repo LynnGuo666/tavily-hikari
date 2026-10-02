@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import { LanguageProvider } from '../i18n'
 import { ThemeProvider } from '../theme'
@@ -21,7 +22,7 @@ describe('AdminRecentRequestsPanel Storybook proofs', () => {
   })
 
   it('renders the catalog loading story with the retention-safe fallback copy', () => {
-    const renderStory = panelStories.CatalogLoading.render as (() => JSX.Element) | undefined
+    const renderStory = panelStories.CatalogLoading.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -38,7 +39,7 @@ describe('AdminRecentRequestsPanel Storybook proofs', () => {
   })
 
   it('renders API rebalance rows with explicit marker and effect labels', () => {
-    const renderStory = panelStories.RebalanceMarkers.render as (() => JSX.Element) | undefined
+    const renderStory = panelStories.RebalanceMarkers.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -59,7 +60,7 @@ describe('AdminRecentRequestsPanel Storybook proofs', () => {
   })
 
   it('renders the desktop request-kind proof with the 2x2 filter structure copy', () => {
-    const renderStory = panelStories.RequestKindDesktopExpanded.render as (() => JSX.Element) | undefined
+    const renderStory = panelStories.RequestKindDesktopExpanded.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -78,7 +79,7 @@ describe('AdminRecentRequestsPanel Storybook proofs', () => {
   })
 
   it('keeps the mobile drawer proof available for button-style quick filters', () => {
-    const renderStory = panelStories.RequestKindMobileDrawer.render as (() => JSX.Element) | undefined
+    const renderStory = panelStories.RequestKindMobileDrawer.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
   })
 })

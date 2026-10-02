@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { useEffect, useState, type KeyboardEvent } from 'react'
+import type React from 'react'
 
 import {
   type AdminUserListStats,
@@ -219,7 +220,7 @@ function SystemSettingsHelpBubble({
 }: {
   strings: AdminTranslations['systemSettings']
   open?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <TooltipProvider>
       <Tooltip {...(open == null ? {} : { open })}>
@@ -260,7 +261,7 @@ function SystemSettingsFieldHelp({
   helpLabel: string
   hint: string
   testId: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -296,7 +297,7 @@ export default function SystemSettingsModule({
   onDisplayDensityChange = () => {},
   onOpenMcpSessionBindings,
   onApply,
-}: SystemSettingsModuleProps): JSX.Element {
+}: SystemSettingsModuleProps): React.JSX.Element {
   const [draftRequestRateLimit, setDraftRequestRateLimit] = useState(() =>
     settings ? String(settings.requestRateLimit) : '100',
   )

@@ -1,5 +1,6 @@
 import RequestLogDetailSection from '@/components/RequestLogDetailSection'
 import type { RequestLog } from '../api'
+import type React from 'react'
 
 type Language = 'en' | 'zh'
 
@@ -9,7 +10,7 @@ export default function RequestIpDiagnostics({
 }: {
   log: RequestLog
   language: Language
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   const ipHeaders = (log.ip_headers ?? []).filter(
     (item) => item.name.trim().length > 0 || item.value.trim().length > 0,
   )

@@ -1,4 +1,5 @@
 import '../../test/happydom'
+import type React from 'react'
 
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
@@ -48,7 +49,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the sync-progress story with the progress bubble copy', () => {
-    const renderStory = adminPageStories.KeysSyncUsageInProgress.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.KeysSyncUsageInProgress.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -64,7 +65,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the retained-selection story with completion feedback', () => {
-    const renderStory = adminPageStories.KeysSelectionRetainedAfterSync.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.KeysSelectionRetainedAfterSync.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -80,7 +81,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the temporary isolation filter story with the filtered badge and count', () => {
-    const renderStory = adminPageStories.KeysTemporaryIsolationFilter.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.KeysTemporaryIsolationFilter.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -98,7 +99,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the requests page story with retention-based copy instead of page-count copy', () => {
-    const renderStory = adminPageStories.Requests.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Requests.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -117,7 +118,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the rankings route story with the active nav icon and rankings shell', () => {
-    const renderStory = adminPageStories.Rankings.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Rankings.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -135,7 +136,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the rankings dimension route story inside the same three-metric rankings shell', () => {
-    const renderStory = adminPageStories.RankingsDimension.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.RankingsDimension.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -153,7 +154,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the rankings empty route story with the redesigned empty stage', () => {
-    const renderStory = adminPageStories.RankingsEmpty.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.RankingsEmpty.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -169,7 +170,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the rankings loading route story with live header copy and card-only skeletons', () => {
-    const renderStory = adminPageStories.RankingsLoading.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.RankingsLoading.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -186,7 +187,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the pressure route story with analysis nav active state and chart shells', () => {
-    const renderStory = adminPageStories.Pressure.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Pressure.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -206,7 +207,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the recharge page story with full-width filters and recharge navigation', () => {
-    const renderStory = adminPageStories.Recharges.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Recharges.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -224,7 +225,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the users usage story with the dedicated comparison column', () => {
-    const renderStory = adminPageStories.UsersUsage.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.UsersUsage.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -241,7 +242,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the jobs story with manual trigger controls and source labels', () => {
-    const renderStory = adminPageStories.Jobs.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Jobs.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -261,7 +262,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the jobs story in Chinese with the dedicated jobs action spacing hook', () => {
-    const renderStory = adminPageStories.Jobs.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Jobs.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -279,7 +280,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the alerts story with key exhaustion and job failure groups', () => {
-    const renderStory = adminPageStories.Alerts.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Alerts.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -299,7 +300,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('keeps the tokens story shell chrome available', () => {
-    const renderStory = adminPageStories.Tokens.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.Tokens.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -319,12 +320,12 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders user tables with one sortable 7-day IP count column', () => {
-    const renderUsersStory = adminPageStories.Users.render as (() => JSX.Element) | undefined
-    const renderUsageStory = adminPageStories.UsersUsage.render as (() => JSX.Element) | undefined
+    const renderUsersStory = adminPageStories.Users.render as (() => React.JSX.Element) | undefined
+    const renderUsageStory = adminPageStories.UsersUsage.render as (() => React.JSX.Element) | undefined
     expect(renderUsersStory).toBeDefined()
     expect(renderUsageStory).toBeDefined()
 
-    const renderMarkup = (renderStory: () => JSX.Element) =>
+    const renderMarkup = (renderStory: () => React.JSX.Element) =>
       renderToStaticMarkup(
         createElement(
           LanguageProvider,
@@ -346,23 +347,23 @@ describe('AdminPages Storybook proofs', () => {
 
   it('renders active-only user stories with the default filter hint and search fallback hint', () => {
     const renderUsersActiveOnly = adminPageStories.UsersActiveOnlyDefault.render as
-      | (() => JSX.Element)
+      | (() => React.JSX.Element)
       | undefined
     const renderUsersSearchAll = adminPageStories.UsersActiveOnlySearchAll.render as
-      | (() => JSX.Element)
+      | (() => React.JSX.Element)
       | undefined
     const renderUsageActiveOnly = adminPageStories.UsersUsageActiveOnlyDefault.render as
-      | (() => JSX.Element)
+      | (() => React.JSX.Element)
       | undefined
     const renderUsageSearchAll = adminPageStories.UsersUsageActiveOnlySearchAll.render as
-      | (() => JSX.Element)
+      | (() => React.JSX.Element)
       | undefined
     expect(renderUsersActiveOnly).toBeDefined()
     expect(renderUsersSearchAll).toBeDefined()
     expect(renderUsageActiveOnly).toBeDefined()
     expect(renderUsageSearchAll).toBeDefined()
 
-    const renderMarkup = (renderStory: () => JSX.Element) =>
+    const renderMarkup = (renderStory: () => React.JSX.Element) =>
       renderToStaticMarkup(
         createElement(
           LanguageProvider,
@@ -393,7 +394,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the system settings page story with a bundled navigation icon', () => {
-    const renderStory = adminPageStories.SystemSettings.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.SystemSettings.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -416,7 +417,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the system settings admin child nav item as active', () => {
-    const renderStory = adminPageStories.SystemSettingsAdmin.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.SystemSettingsAdmin.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -437,7 +438,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the system settings status child nav item as active', () => {
-    const renderStory = adminPageStories.SystemSettingsStatus.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.SystemSettingsStatus.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -455,7 +456,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the system settings HA page with node inventory and active child nav', () => {
-    const renderStory = adminPageStories.SystemSettingsHa.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.SystemSettingsHa.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -475,7 +476,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders abnormal HA attention on dashboard without the full node panel', () => {
-    const renderStory = adminPageStories.DashboardHaAttention.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.DashboardHaAttention.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -493,7 +494,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the user detail story with compact card fallbacks for tokens', () => {
-    const renderStory = adminPageStories.UserDetailCompact.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.UserDetailCompact.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -510,7 +511,7 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the user detail stories with business 1h summary and tab affordances', () => {
-    const renderStory = adminPageStories.UserDetailBusinessCalls1h.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.UserDetailBusinessCalls1h.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(
@@ -529,14 +530,14 @@ describe('AdminPages Storybook proofs', () => {
   })
 
   it('renders the user detail stories with add and delete token controls', () => {
-    const renderStory = adminPageStories.UserDetailTokensTab.render as (() => JSX.Element) | undefined
-    const renderQuotaStory = adminPageStories.UserDetailQuotaTab.render as (() => JSX.Element) | undefined
-    const renderSingleStory = adminPageStories.UserDetailSingleTokenGuard.render as (() => JSX.Element) | undefined
+    const renderStory = adminPageStories.UserDetailTokensTab.render as (() => React.JSX.Element) | undefined
+    const renderQuotaStory = adminPageStories.UserDetailQuotaTab.render as (() => React.JSX.Element) | undefined
+    const renderSingleStory = adminPageStories.UserDetailSingleTokenGuard.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
     expect(renderQuotaStory).toBeDefined()
     expect(renderSingleStory).toBeDefined()
 
-    const renderMarkup = (renderFn: () => JSX.Element) =>
+    const renderMarkup = (renderFn: () => React.JSX.Element) =>
       renderToStaticMarkup(
         createElement(
           LanguageProvider,

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 export const ADMIN_OVERLAY_HOST_TEST_ID = 'admin-overlay-host'
 
@@ -8,7 +9,7 @@ export default function AdminOverlayHost({
 }: {
   children: ReactNode
   overlays?: ReactNode
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <>
       {children}

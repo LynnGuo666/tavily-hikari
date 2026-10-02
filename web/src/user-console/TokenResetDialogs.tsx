@@ -12,6 +12,7 @@ import { selectAllReadonlyText } from '../lib/clipboard'
 import type { TokenSecretCopyState } from '../components/TokenSecretField'
 import type { RefObject } from 'react'
 import type { EN } from './text'
+import type React from 'react'
 
 type UserConsoleText = typeof EN
 
@@ -22,7 +23,7 @@ interface TokenResetDialogsProps {
   resetTokenError: string | null
   resetResultToken: string | null
   resetResultCopyState: TokenSecretCopyState
-  resetResultFieldRef: RefObject<HTMLTextAreaElement>
+  resetResultFieldRef: RefObject<HTMLTextAreaElement | null>
   formatTemplate: (template: string, values: Record<string, string | number>) => string
   onCloseResetTokenDialog: () => void
   onResetToken: () => void
@@ -43,7 +44,7 @@ export default function TokenResetDialogs({
   onResetToken,
   onCloseResetResult,
   onCopyResetResultToken,
-}: TokenResetDialogsProps): JSX.Element {
+}: TokenResetDialogsProps): React.JSX.Element {
   return (
     <>
       <Dialog open={resetTokenId != null} onOpenChange={(open) => {

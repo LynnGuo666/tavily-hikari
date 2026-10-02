@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import meta, * as systemStatusStories from './UpstreamPrivacyStatusModule.stories'
 import UpstreamPrivacyStatusModule from './UpstreamPrivacyStatusModule'
@@ -67,7 +68,7 @@ describe('SystemStatusModule Storybook proofs', () => {
   })
 
   it('renders the gallery story with the state matrix and error fallback', () => {
-    const renderStory = systemStatusStories.Gallery.render as (() => JSX.Element) | undefined
+    const renderStory = systemStatusStories.Gallery.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(createElement(renderStory!))

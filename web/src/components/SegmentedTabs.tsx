@@ -40,7 +40,7 @@ export default function SegmentedTabs<T extends string = string>({
   disabled = false,
   collapseMode = 'auto',
   smallViewportBehavior,
-}: SegmentedTabsProps<T>): JSX.Element {
+}: SegmentedTabsProps<T>): React.JSX.Element {
   const viewportMode = useViewportMode()
   const effectiveSmallViewportBehavior =
     smallViewportBehavior ?? (collapseMode === 'never' ? 'buttons' : 'select')

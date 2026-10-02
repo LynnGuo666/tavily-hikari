@@ -1,4 +1,5 @@
 import { AlertTriangle, DownloadCloud, Loader2, RefreshCw } from 'lucide-react'
+import type React from 'react'
 
 import type { PublicTranslations } from '../i18n'
 import type { PwaUpdateStatus } from '../pwa/runtime'
@@ -25,7 +26,7 @@ export default function UpdateAvailableBanner({
   loading,
   onUpdate,
   onDismiss,
-}: UpdateAvailableBannerProps): JSX.Element {
+}: UpdateAvailableBannerProps): React.JSX.Element {
   const isActivating = status === 'activating'
   const isFailed = status === 'activation-failed'
   const isPreparing = loading && !isActivating
@@ -80,7 +81,7 @@ export function ConnectedUpdateAvailableBanner({
 }: {
   className?: string
   strings: PublicTranslations['updateBanner']
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   const updateBanner = useUpdateAvailable()
 
   if (!updateBanner.visible) {

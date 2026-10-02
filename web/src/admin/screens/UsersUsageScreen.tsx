@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { TableBody, TableRow, TableCell, TableHeader, TableHead } from '@/components/ui/table'
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import AdminLoadingRegion from '../../components/AdminLoadingRegion'
 import AdminTableShell from '../../components/AdminTableShell'
@@ -90,7 +91,7 @@ export function UsersUsageScreen({
   formatAdminUserListMeta,
   formatMonthlyBrokenStackValue,
   pagination,
-}: UsersUsageScreenProps): JSX.Element {
+}: UsersUsageScreenProps): React.JSX.Element {
   const usageDailyRateLabel = language === 'zh' ? usersStrings.usage.table.dailySuccessRate : 'Daily'
   const usageMonthlyRateLabel = language === 'zh' ? usersStrings.usage.table.monthlySuccessRate : 'Monthly'
 

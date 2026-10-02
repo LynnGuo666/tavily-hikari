@@ -2,6 +2,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import type React from 'react'
 
 import {
   archiveAnnouncement,
@@ -284,7 +285,7 @@ function AnnouncementBodyEditor({
   strings: AnnouncementCopy
   saving: boolean
   onChangeDraft: (draft: AnnouncementDraft) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const textarea = (
     <TextareaFallback
       id="announcement-body-editor"
@@ -339,7 +340,7 @@ function MilkdownPreviewContent({
   value: string
   label: string
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <LazyMarkdownEditor
       value={value}
@@ -380,7 +381,7 @@ function AnnouncementEditorPanel({
   onBack: () => void
   onChangeDraft: (draft: AnnouncementDraft) => void
   onSubmit: (action: AnnouncementSubmitAction) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const saving = submittingAction != null
   const isPublishedEdit = mode.kind === 'edit' && mode.status === 'published'
   const [bodyMode, setBodyMode] = useState<AnnouncementBodyMode>('split')
@@ -485,7 +486,7 @@ function AnnouncementListPrimaryCopy({
   item,
 }: {
   item: Announcement
-}): JSX.Element {
+}): React.JSX.Element {
   const parsed = parseAnnouncementContent(item.content)
   if (!parsed.titleMarkdown) {
     return <span className="announcements-summary-text text-sm text-muted-foreground">{parsed.summary}</span>
@@ -519,7 +520,7 @@ function TextareaFallback({
   rows: number
   disabled: boolean
   onChange: (value: string) => void
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Textarea
       id={id}
@@ -549,13 +550,13 @@ interface LazyMarkdownEditorProps {
   readOnly?: boolean
   className?: string
   onChange: (value: string) => void
-  fallback: JSX.Element
+  fallback: React.JSX.Element
 }
 
 function LazyMarkdownEditor({
   fallback,
   ...editorProps
-}: LazyMarkdownEditorProps): JSX.Element {
+}: LazyMarkdownEditorProps): React.JSX.Element {
   return (
     <Suspense fallback={fallback}>
       <MarkdownEditor {...editorProps} />
@@ -587,7 +588,7 @@ function AnnouncementsListPanel({
   onEdit: (item: Announcement) => void
   onPreview: (item: Announcement) => void
   onAct: (id: string, action: 'publish' | 'archive') => void
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="announcements-list">
       <div className="announcements-list-header">
@@ -769,7 +770,7 @@ function AnnouncementUserPreview({
   item: Announcement | null
   language: Language
   onClose: () => void
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   if (!item) return null
 
   return (
@@ -796,7 +797,7 @@ export default function AnnouncementsModule({
   onNavigate,
   headerActionSlotId,
   showListCreateAction = true,
-}: AnnouncementsModuleProps): JSX.Element {
+}: AnnouncementsModuleProps): React.JSX.Element {
   const strings = useMemo(() => copy(language), [language])
   const [uncontrolledRouteMode, setUncontrolledRouteMode] = useState<AnnouncementRouteMode>(
     () => initialMode === 'create' ? { kind: 'create' } : { kind: 'list' },

@@ -1,5 +1,6 @@
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
+import type React from 'react'
 
 export default function DebugInfoSharingToggle({
   shared,
@@ -19,7 +20,7 @@ export default function DebugInfoSharingToggle({
     debugSharingSaving: string
   }
   onChange: (shared: boolean) => void
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="access-stat user-console-debug-sharing rounded-lg border border-border bg-card p-4">
       <div className="flex items-start gap-3 text-sm">

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ChartColumnIncreasing } from 'lucide-react'
 import { useLayoutEffect, useState } from 'react'
+import type React from 'react'
 
 import { KeyDetails } from '../AdminDashboard'
 import type {
@@ -294,7 +295,7 @@ function KeyDetailRouteSurface({
   detailMock = keyDetailMock,
 }: {
   detailMock?: ApiKeyStats
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const adminStrings = useTranslate().admin
 
   const navItems: AdminNavItem[] = [
@@ -334,7 +335,7 @@ function KeyDetailRouteStoryCanvas({
   detailMock = keyDetailMock,
 }: {
   detailMock?: ApiKeyStats
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const [ready, setReady] = useState(false)
 
   useLayoutEffect(() => {

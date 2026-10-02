@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import type { RequestRate } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
@@ -47,7 +48,7 @@ function QuotaStatCard({
   used: number
   limit: number
   formatNumber: (value: number) => string
-}): JSX.Element {
+}): React.JSX.Element {
   const ratio = quotaRatio(used, limit)
 
   return (
@@ -84,7 +85,7 @@ export default function DashboardQuotaGrid({
   monthlyLimit,
   formatNumber,
   language,
-}: DashboardQuotaGridProps): JSX.Element {
+}: DashboardQuotaGridProps): React.JSX.Element {
   const helpLabels: Record<'hourly' | 'daily' | 'monthly', ReactNode> = {
     hourly: (
       <UsageMetricLabel label={text.hourly} kind="businessCalls1h" language={language} className="quota-stat-label" />

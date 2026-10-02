@@ -1,5 +1,6 @@
 import { useId, type ReactNode } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+import type React from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Field, FieldLabel } from '@/components/ui/field'
@@ -41,7 +42,7 @@ export default function AdminTablePagination({
   onPrevious,
   onNext,
   onPerPageChange,
-}: AdminTablePaginationProps): JSX.Element {
+}: AdminTablePaginationProps): React.JSX.Element {
   const perPageId = useId()
   const hasPerPageControl = typeof perPage === 'number' && typeof onPerPageChange === 'function'
   const resolvedPerPageOptions =

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { GithubIcon } from 'lucide-react'
+import type React from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -13,7 +14,7 @@ interface AppFooterProps {
   className?: string
 }
 
-export default function AppFooter({ title, githubLabel, githubAria, version, className }: AppFooterProps): JSX.Element {
+export default function AppFooter({ title, githubLabel, githubAria, version, className }: AppFooterProps): React.JSX.Element {
   return (
     <footer className={cn('app-footer mt-6 flex flex-col gap-3 text-sm text-muted-foreground', className)}>
       <Separator />

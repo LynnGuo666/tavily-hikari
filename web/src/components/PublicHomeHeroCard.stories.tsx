@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import { useTranslate } from '../i18n'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -13,7 +14,7 @@ type HeroStoryArgs = Omit<
 const ADMIN_LABEL = '__ADMIN_LABEL__'
 const LOGIN_LABEL = '__LOGIN_LABEL__'
 
-function HeroStory(args: HeroStoryArgs): JSX.Element {
+function HeroStory(args: HeroStoryArgs): React.JSX.Element {
   const strings = useTranslate().public
   const resolvedAdminLabel = (() => {
     if (args.adminActionLabel === ADMIN_LABEL) return strings.adminButton

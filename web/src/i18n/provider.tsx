@@ -1,4 +1,5 @@
 import { createContext, type ReactNode, useContext, useMemo, useState } from 'react'
+import type React from 'react'
 
 import type { Language, LanguageContextValue, TranslationShape } from './types'
 import { translations } from './translations'
@@ -44,7 +45,7 @@ export function LanguageProvider({
 }: {
   children: ReactNode
   initialLanguage?: Language
-}): JSX.Element {
+}): React.JSX.Element {
   const [language, setLanguageState] = useState<Language>(
     () => initialLanguage ?? readStoredLanguage() ?? detectBrowserLanguage() ?? DEFAULT_LANGUAGE,
   )

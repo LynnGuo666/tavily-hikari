@@ -1,5 +1,6 @@
 import type { StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
+import type React from 'react'
 
 import type { AlertCatalog, AlertEvent, AlertGroup, AlertsPage } from '../../api'
 import AlertsCenter from '../AlertsCenter'
@@ -333,7 +334,7 @@ function AlertsPageCanvas({
 }: {
   inlineTabsVariant?: 'all' | 'mobile'
   stale?: boolean
-} = {}): JSX.Element {
+} = {}): React.JSX.Element {
   const { language } = useLanguage()
   const [search, setSearch] = useState(alertsPath({ view: 'groups' }).replace('/admin/alerts', ''))
   const currentView = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search).get('view') === 'events'

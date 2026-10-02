@@ -1,5 +1,6 @@
 import { AnchoredInfoDisclosure } from "@/components/anchored-info-disclosure"
 import { cn } from '../lib/utils'
+import type React from 'react'
 
 export type UsageMetricHelpKind = 'businessCalls1h' | 'dailyCredits' | 'monthlyCredits'
 
@@ -35,7 +36,7 @@ export function UsageMetricLabel({
   kind: UsageMetricHelpKind
   language: 'en' | 'zh'
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   if (typeof document === 'undefined') {
     return <span className={cn(className)}>{label}</span>
   }

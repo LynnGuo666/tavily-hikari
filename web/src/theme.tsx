@@ -1,4 +1,5 @@
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 export type ResolvedTheme = 'light' | 'dark'
@@ -50,7 +51,7 @@ function applyTheme(resolvedTheme: ResolvedTheme): void {
   root.style.colorScheme = resolvedTheme
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }): JSX.Element {
+export function ThemeProvider({ children }: { children: ReactNode }): React.JSX.Element {
   const [mode, setModeState] = useState<ThemeMode>(() => readStoredThemeMode() ?? 'light')
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolveTheme(readStoredThemeMode() ?? 'light'))
 

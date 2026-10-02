@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
+import type React from 'react'
 
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
@@ -34,7 +35,7 @@ function SystemSettingsCanvas(props: {
   adminDefaultActiveUsersOnly?: boolean
   userListStats?: AdminUserListStats
   activeUpstreamMcpSessions?: number
-}): JSX.Element {
+}): React.JSX.Element {
   const [displayDensity, setDisplayDensity] = useState<AdminDisplayDensity>(props.displayDensity ?? 'comfortable')
   const [allowRegistration, setAllowRegistration] = useState(false)
   const [currentSettings, setCurrentSettings] = useState<SystemSettings>({

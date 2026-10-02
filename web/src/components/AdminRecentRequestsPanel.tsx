@@ -50,6 +50,7 @@ import {
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useViewportMode } from '../lib/responsive'
+import type React from 'react'
 type Language = 'en' | 'zh'
 type RecentRequestsVariant = 'admin' | 'token'
 type RecentRequestsOutcomeFilterKind = 'result' | 'keyEffect' | 'bindingEffect' | 'selectionEffect'
@@ -412,9 +413,9 @@ function renderEffectBadges(
   strings: AdminTranslations,
   language: Language,
   className?: string,
-): JSX.Element {
+): React.JSX.Element {
   const badgeClassName = className ? `${className} recent-requests-effect-badge` : 'recent-requests-effect-badge'
-  const badges: JSX.Element[] = []
+  const badges: React.JSX.Element[] = []
   if (hasExplicitEffect(log.key_effect_code)) {
     badges.push(
       <StatusBadge
@@ -533,7 +534,7 @@ function renderOutcomeFacetLabel(
   kind: RecentRequestsOutcomeFilterKind,
   value: string,
   strings: AdminTranslations,
-): JSX.Element {
+): React.JSX.Element {
   const tone =
     kind === 'result'
       ? statusTone(value)
@@ -566,7 +567,7 @@ function RecentRequestDetails({
   strings: AdminTranslations
   language: Language
   formatTime: (ts: number | null) => string
-}): JSX.Element {
+}): React.JSX.Element {
   const forwarded = (log.forwarded_headers ?? []).filter((value) => value.trim().length > 0)
   const dropped = (log.dropped_headers ?? []).filter((value) => value.trim().length > 0)
   const cleanedBodySummary = (
@@ -783,7 +784,7 @@ export default function AdminRecentRequestsPanel({
   onOpenKey,
   onOpenToken,
   loadLogBodies,
-}: AdminRecentRequestsPanelProps): JSX.Element {
+}: AdminRecentRequestsPanelProps): React.JSX.Element {
   const filterId = useId()
   const [expandedLogs, setExpandedLogs] = useState<Set<number>>(() => new Set())
   const [logBodiesById, setLogBodiesById] = useState<Record<number, LogBodiesLoadState>>({})

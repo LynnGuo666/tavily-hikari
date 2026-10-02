@@ -1,5 +1,6 @@
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { CircleAlert } from 'lucide-react'
+import type React from 'react'
 
 import type {
   HaSourceKind,
@@ -106,7 +107,7 @@ export default function HaSourceSettingsDialog({
   onSaved,
   submitSourceSettings = updateAdminHaSourceSettings,
   dialogPortalContainer,
-}: HaSourceSettingsDialogProps): JSX.Element {
+}: HaSourceSettingsDialogProps): React.JSX.Element {
   const submitFailureRef = useRef<HTMLDivElement | null>(null)
   const directHostInputRef = useRef<HTMLInputElement | null>(null)
   const directPortInputRef = useRef<HTMLInputElement | null>(null)

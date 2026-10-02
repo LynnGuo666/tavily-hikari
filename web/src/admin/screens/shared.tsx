@@ -1,5 +1,6 @@
 import { TableHead } from '@/components/ui/table'
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 
@@ -20,7 +21,7 @@ export function AdminTableValueStack({
   primary,
   secondary,
   primaryClassName,
-}: StackedValue): JSX.Element {
+}: StackedValue): React.JSX.Element {
   return (
     <div className="admin-table-value-stack flex flex-col gap-1">
       <span className={`admin-table-value-primary${primaryClassName ? ` ${primaryClassName}` : ''}`}>
@@ -41,7 +42,7 @@ export function MonthlyBrokenCountTrigger({
   onOpen?: (() => void) | null
   ariaLabel: string
   className?: string | null
-}): JSX.Element {
+}): React.JSX.Element {
   const primary = String(Math.max(0, count))
   if (count <= 0 || !onOpen) {
     return <span className={`admin-table-value-primary${className ? ` ${className}` : ''}`}>{primary}</span>
@@ -74,7 +75,7 @@ export function AdminUsersSortableHeader<Field extends string>({
   activeField: Field | null
   activeOrder: SortDirection | null
   onToggle: (field: Field) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const isActive = activeField === field
   const ariaSort = !isActive ? 'none' : activeOrder === 'asc' ? 'ascending' : 'descending'
   const SortIndicatorIcon = !isActive ? ArrowUpDown : activeOrder === 'asc' ? ArrowUp : ArrowDown
@@ -123,7 +124,7 @@ export function UsagePageIntro({
   searchControls: ReactNode
   filterStatusText?: string | null
   filterStatusTestId?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <>
       <div className="hidden md:block">
@@ -168,7 +169,7 @@ export function UserTagBadge({
 }: {
   tag: UserTagLike
   usersStrings: AdminTranslations['users']
-}): JSX.Element {
+}): React.JSX.Element {
   const iconSrc = getUserTagIconSrc(tag.icon)
   const isSystem = isSystemUserTag(tag)
   const isBlockAll = tag.effectKind === 'block_all'
@@ -200,7 +201,7 @@ export function UserTagBadgeList({
   usersStrings: AdminTranslations['users']
   emptyLabel: string
   limit?: number
-}): JSX.Element {
+}): React.JSX.Element {
   if (tags.length === 0) {
     return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
   }

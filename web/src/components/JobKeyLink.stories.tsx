@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import { keyDetailPath } from '../admin/routes'
 import { LanguageProvider, useTranslate } from '../i18n'
 
 import JobKeyLink from './JobKeyLink'
 
-function StoryShell({ children }: { children: ReactNode }): JSX.Element {
+function StoryShell({ children }: { children: ReactNode }): React.JSX.Element {
   return (
     <LanguageProvider>
       <div
@@ -28,7 +29,7 @@ function StoryShell({ children }: { children: ReactNode }): JSX.Element {
   )
 }
 
-function JobKeyLinkShowcaseCanvas(): JSX.Element {
+function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
   const { admin } = useTranslate()
   const detailPath = keyDetailPath('7QZ5')
 
@@ -159,7 +160,7 @@ function JobKeyLinkShowcaseCanvas(): JSX.Element {
   )
 }
 
-function JobKeyLinkBubbleProofCanvas(): JSX.Element {
+function JobKeyLinkBubbleProofCanvas(): React.JSX.Element {
   const { admin } = useTranslate()
 
   return (

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import OAuthCallbackPanel from './OAuthCallbackPanel'
 import UserConsoleHeader from '../components/UserConsoleHeader'
@@ -67,7 +68,7 @@ function buildModel(state: OAuthCallbackScenario): OAuthCallbackPanelModel {
   })
 }
 
-function ScenarioCard({ scenario }: { scenario: OAuthCallbackScenario }): JSX.Element {
+function ScenarioCard({ scenario }: { scenario: OAuthCallbackScenario }): React.JSX.Element {
   return (
     <article
       style={{
@@ -101,7 +102,7 @@ function ScenarioCard({ scenario }: { scenario: OAuthCallbackScenario }): JSX.El
   )
 }
 
-function SingleStateFrame({ model }: SingleStateFrameProps): JSX.Element {
+function SingleStateFrame({ model }: SingleStateFrameProps): React.JSX.Element {
   return (
     <main
       className="app-shell public-home user-console-shell"
@@ -150,7 +151,7 @@ function SingleStateFrame({ model }: SingleStateFrameProps): JSX.Element {
   )
 }
 
-function OAuthCallbackGallery(): JSX.Element {
+function OAuthCallbackGallery(): React.JSX.Element {
   return (
     <div
       style={{

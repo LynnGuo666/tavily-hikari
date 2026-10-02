@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import type React from 'react'
 
 export type BrandLockupVariant = 'full' | 'compact' | 'responsive'
 
@@ -17,7 +18,7 @@ function BrandAsset({
   stem: string
   sizeClassName: string
   className?: string
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <>
       <img
@@ -43,7 +44,7 @@ export default function BrandLockup({
   variant = 'full',
   className,
   markClassName,
-}: BrandLockupProps): JSX.Element {
+}: BrandLockupProps): React.JSX.Element {
   return (
     <span className={cn('inline-flex items-center', className)} role="img" aria-label={title}>
       {variant === 'compact' ? (

@@ -52,6 +52,7 @@ import {
 import ForwardProxyEgressControl from './ForwardProxyEgressControl'
 import ForwardProxyProgressBubble from './ForwardProxyProgressBubble'
 import type { QueryLoadState } from './queryLoadState'
+import type React from 'react'
 
 const numberFormatter = new Intl.NumberFormat()
 const decimalFormatter = new Intl.NumberFormat(undefined, {
@@ -513,7 +514,7 @@ function getWindowColumnClassName(index: number): string {
   return 'min-w-[5.5rem] text-center'
 }
 
-function RequestTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyActivityBucket[]; scaleMax: number }): JSX.Element {
+function RequestTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyActivityBucket[]; scaleMax: number }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
   const data = buckets.map((bucket) => ({ label: formatTimeRange(bucket.bucketStart, bucket.bucketEnd), success: bucket.successCount, failure: bucket.failureCount }))
   return <ChartContainer config={{ success: { label: 'Success', color: 'var(--chart-1)' }, failure: { label: 'Failure', color: 'var(--chart-2)' } }} className="h-16 w-40 aspect-auto">
@@ -526,7 +527,7 @@ function RequestTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyActivity
   </ChartContainer>
 }
 
-function formatErrorWindow(windowStats: ForwardProxyErrorWindowStats): JSX.Element {
+function formatErrorWindow(windowStats: ForwardProxyErrorWindowStats): React.JSX.Element {
   if (windowStats.totalCount <= 0) {
     return <span className="text-muted-foreground">—</span>
   }
@@ -540,7 +541,7 @@ function formatErrorWindow(windowStats: ForwardProxyErrorWindowStats): JSX.Eleme
   )
 }
 
-function ErrorActivityCell({ buckets }: { buckets: ForwardProxyErrorActivityBucket[] }): JSX.Element {
+function ErrorActivityCell({ buckets }: { buckets: ForwardProxyErrorActivityBucket[] }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
   const kinds = [...new Set(buckets.flatMap((bucket) => bucket.errors.map((item) => item.kind)))].sort()
   const config: ChartConfig = { success: { label: 'Success', color: 'var(--chart-1)' } }
@@ -555,7 +556,7 @@ function ErrorActivityCell({ buckets }: { buckets: ForwardProxyErrorActivityBuck
   </ChartContainer>
 }
 
-function ErrorPieCell({ distribution }: { distribution: ForwardProxyErrorKindCount[] }): JSX.Element {
+function ErrorPieCell({ distribution }: { distribution: ForwardProxyErrorKindCount[] }): React.JSX.Element {
   if (!distribution.some((item) => item.count > 0)) return <span>—</span>
   const config = Object.fromEntries(distribution.map((item, index) => [item.kind, { label: formatErrorKind(item.kind), color: `var(--chart-${index % 5 + 1})` }])) satisfies ChartConfig
   const data = distribution.map((item) => ({ ...item, fill: `var(--color-${item.kind})` }))
@@ -567,7 +568,7 @@ function ErrorPieCell({ distribution }: { distribution: ForwardProxyErrorKindCou
   </ChartContainer>
 }
 
-function WeightTrendCell({ buckets, scale }: { buckets: ForwardProxyWeightBucket[]; scale: WeightTrendScale }): JSX.Element {
+function WeightTrendCell({ buckets, scale }: { buckets: ForwardProxyWeightBucket[]; scale: WeightTrendScale }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
   return <ChartContainer config={{ lastWeight: { label: 'Weight', color: 'var(--chart-1)' } }} className="h-16 w-40 aspect-auto">
     <AreaChart accessibilityLayer data={buckets.map((bucket) => ({ ...bucket, label: formatTimeRange(bucket.bucketStart, bucket.bucketEnd) }))}>
@@ -781,7 +782,7 @@ function ForwardProxyStatusDetailBubble({
   onClose: () => void
   onPointerEnter: () => void
   onPointerLeave: () => void
-}): JSX.Element | null {
+}): React.JSX.Element | null {
   const { layerRef: bubbleRef, position } = useAnchoredFloatingLayer<HTMLDivElement>({
     open: Boolean(state),
     anchorEl: state?.anchorEl ?? null,
@@ -929,7 +930,7 @@ function ForwardProxyValidationNodeTable({
   previewMode: boolean
   saving: boolean
   onAddManualEntry: (entry: ForwardProxyValidationEntry) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const [detailBubble, setDetailBubble] = useState<ForwardProxyStatusBubbleState | null>(null)
   const closeTimerRef = useRef<number | null>(null)
 
@@ -1112,7 +1113,7 @@ export function ForwardProxyCandidateDialog({
   onAddSubscription: () => void
   onAddManualBatch: () => void
   onAddManualEntry: (entry: ForwardProxyValidationEntry) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const hasLiveSubscriptionRows = dialogIsSubscription && dialogValidating && liveRows.length > 0
   const showProgress =
     progress != null
@@ -1345,7 +1346,7 @@ export default function ForwardProxySettingsModule({
   initialNodeView = 'pool',
   dialogPreview = null,
   onDialogPreviewClose,
-}: ForwardProxySettingsModuleProps): JSX.Element {
+}: ForwardProxySettingsModuleProps): React.JSX.Element {
   const mergedNodes = buildMergedNodes(settings, stats)
   const nodeRows = mergedNodes.map((node) => ({
     node,

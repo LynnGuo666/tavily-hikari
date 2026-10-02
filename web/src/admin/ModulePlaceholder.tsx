@@ -1,4 +1,5 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import type React from 'react'
 interface ModulePlaceholderProps {
   title: string
   description: string
@@ -11,7 +12,7 @@ export default function ModulePlaceholder({
   description,
   sections,
   comingSoonLabel,
-}: ModulePlaceholderProps): JSX.Element {
+}: ModulePlaceholderProps): React.JSX.Element {
   return (
     <Card className="surface panel module-placeholder">
       <CardHeader className="panel-header border-b">

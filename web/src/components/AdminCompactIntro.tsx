@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import type React from 'react'
 
 interface AdminCompactIntroProps {
   title: ReactNode
@@ -15,7 +16,7 @@ export default function AdminCompactIntro({
   meta,
   actions,
   className,
-}: AdminCompactIntroProps): JSX.Element {
+}: AdminCompactIntroProps): React.JSX.Element {
   const classes = cn('admin-compact-intro flex flex-wrap items-end justify-between gap-4', actions && 'admin-compact-intro--with-actions', className)
 
   return (

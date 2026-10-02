@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import TokenSecretField, { type TokenSecretCopyState } from './TokenSecretField'
 
-function TokenSecretFieldStory(props: { visible?: boolean; copyState?: TokenSecretCopyState; copyDisabled?: boolean }): JSX.Element {
+function TokenSecretFieldStory(props: { visible?: boolean; copyState?: TokenSecretCopyState; copyDisabled?: boolean }): React.JSX.Element {
   const [value, setValue] = useState('tvly-demo-token-123456')
   const [visible, setVisible] = useState(props.visible ?? false)
 

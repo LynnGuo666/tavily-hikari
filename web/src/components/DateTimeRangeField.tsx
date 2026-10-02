@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type React from 'react'
 
 import { cn } from '../lib/utils'
 
@@ -41,7 +42,7 @@ export default function DateTimeRangeField({
   className,
   onStartChange,
   onEndChange,
-}: DateTimeRangeFieldProps): JSX.Element {
+}: DateTimeRangeFieldProps): React.JSX.Element {
   return (
     <FieldSet className={cn('date-time-range-field min-w-0 gap-2', className)}>
       <FieldLegend variant="label" className={cn('date-time-range-field__label mb-0', hideLabel && 'sr-only')}>{label}</FieldLegend>

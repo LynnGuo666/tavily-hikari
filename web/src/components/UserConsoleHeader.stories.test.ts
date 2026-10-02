@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 
 import { LanguageProvider } from '../i18n'
@@ -8,7 +9,7 @@ import { ThemeProvider } from '../theme'
 import meta, * as headerStories from './UserConsoleHeader.stories'
 
 function renderStory(story: {
-  render?: ((args: Record<string, unknown>) => JSX.Element) | undefined
+  render?: ((args: Record<string, unknown>) => React.JSX.Element) | undefined
   args?: Record<string, unknown>
   globals?: { language?: 'en' | 'zh' }
 }): string {
@@ -17,7 +18,7 @@ function renderStory(story: {
     ...(story.args ?? {}),
   }
   const render = story.render
-    ?? (meta.render as ((args: Record<string, unknown>) => JSX.Element) | undefined)
+    ?? (meta.render as ((args: Record<string, unknown>) => React.JSX.Element) | undefined)
     ?? ((resolvedArgs) => createElement(meta.component, resolvedArgs))
 
   return renderToStaticMarkup(

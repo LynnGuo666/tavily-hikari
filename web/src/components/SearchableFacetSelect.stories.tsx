@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import SearchableFacetSelect, { type SearchableFacetSelectOption } from './SearchableFacetSelect'
 
@@ -12,7 +13,7 @@ const keyOptions: SearchableFacetSelectOption[] = [
   { value: 'Vn7D', count: 4 },
 ]
 
-function StorySurface(props: { children: ReactNode }): JSX.Element {
+function StorySurface(props: { children: ReactNode }): React.JSX.Element {
   return (
     <div
       style={{
@@ -34,7 +35,7 @@ function SearchableFacetSelectDemo(props: {
   initialValue?: string | null
   allLabel?: string
   searchPlaceholder?: string
-}): JSX.Element {
+}): React.JSX.Element {
   const { options = keyOptions, initialValue = null, allLabel = 'All', searchPlaceholder = 'Filter keys' } = props
   const [value, setValue] = useState<string | null>(initialValue)
   const summary = value ? options.find((option) => option.value === value)?.value ?? value : allLabel
@@ -72,7 +73,7 @@ function SearchableFacetSelectDemo(props: {
   )
 }
 
-function GalleryStory(): JSX.Element {
+function GalleryStory(): React.JSX.Element {
   const longList = Array.from({ length: 14 }, (_, index) => ({
     value: `k${String(index + 1).padStart(2, '0')}X`,
     count: (index % 5) + 1,

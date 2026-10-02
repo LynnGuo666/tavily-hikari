@@ -1,6 +1,7 @@
 import type { RequestLog } from '../api'
 import type { AdminTranslations } from '../i18n'
 import type { StatusTone } from './StatusBadge'
+import type React from 'react'
 
 type Language = 'en' | 'zh'
 
@@ -22,7 +23,7 @@ export function rebalanceMarkerLabel(log: RequestLog, strings: AdminTranslations
   return isApiRebalanceLog(log) ? strings.logDetails.apiRebalanceMode : ''
 }
 
-export function RebalanceGatewayMarker(): JSX.Element {
+export function RebalanceGatewayMarker(): React.JSX.Element {
   return (
     <span className="log-key-pill__marker inline-flex shrink-0 items-center" aria-hidden="true">
       <svg viewBox="0 0 16 16" focusable="false" className="size-4">

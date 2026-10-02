@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import type React from 'react'
 
 import type { AdminTranslations } from '../i18n'
 import { Icon } from '../lib/icons'
@@ -16,7 +17,7 @@ export default function ForwardProxyProgressBubble({
   progress,
   className,
   style,
-}: ForwardProxyProgressBubbleProps): JSX.Element {
+}: ForwardProxyProgressBubbleProps): React.JSX.Element {
   const title =
     progress.action === 'validate'
       ? strings.progress.titleValidate

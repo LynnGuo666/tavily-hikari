@@ -4,6 +4,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
 
 import {
   fetchAdminRecharges,
@@ -65,7 +66,7 @@ export default function AdminRechargeRecordsModule({
   disableAutoLoad = false,
   onOpenUser,
   onOpenSystemSettings,
-}: AdminRechargeRecordsModuleProps): JSX.Element {
+}: AdminRechargeRecordsModuleProps): React.JSX.Element {
   const strings = useTranslate().admin.recharges
   const [data, setData] = useState<AdminRechargeListResponse | null>(initialData ?? null)
   const [loadState, setLoadState] = useState<QueryLoadState>(initialData ? 'ready' : 'initial_loading')
@@ -415,7 +416,7 @@ export function AdminRechargeRefundDialog({
   onClose,
   onExecuteRefund,
   onOpenSystemSettings,
-}: AdminRechargeRefundDialogProps): JSX.Element {
+}: AdminRechargeRefundDialogProps): React.JSX.Element {
   return (
     <Dialog open={refundTarget != null} onOpenChange={(open) => { if (!open) onClose() }}>
       <DialogContent>
@@ -450,7 +451,7 @@ export function AdminRechargeRefundDialogBody({
   onExecuteRefund,
   onOpenSystemSettings,
   chrome = 'dialog',
-}: AdminRechargeRefundDialogProps): JSX.Element {
+}: AdminRechargeRefundDialogProps): React.JSX.Element {
   const strings = useTranslate().admin.recharges
   const refundDialogNeedsStatus = totpStatus == null
   const refundDialogUnavailable = totpStatus?.available === false

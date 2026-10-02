@@ -1,4 +1,5 @@
 import type { MouseEvent } from 'react'
+import type React from 'react'
 
 import { keyDetailPath } from '../admin/routes'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -25,7 +26,7 @@ export default function JobKeyLink({
   onOpenKey,
   showBubble = true,
   bubbleOpen,
-}: JobKeyLinkProps): JSX.Element {
+}: JobKeyLinkProps): React.JSX.Element {
   if (!keyId) {
     return <>—</>
   }

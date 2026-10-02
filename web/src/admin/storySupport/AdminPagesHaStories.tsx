@@ -1,4 +1,5 @@
 import type { StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import type { HaStatus } from '../../api'
 import HaStatusBanner from '../../components/HaStatusBanner'
@@ -136,7 +137,7 @@ const systemSettingsHaStatus: HaStatus = {
   plannedCutoverEligible: false,
 }
 
-function DashboardHaAttentionPageCanvas(): JSX.Element {
+function DashboardHaAttentionPageCanvas(): React.JSX.Element {
   const { language } = useLanguage()
   const admin = useTranslate().admin
   return (
@@ -156,7 +157,7 @@ function DashboardHaAttentionPageCanvas(): JSX.Element {
   )
 }
 
-function SystemSettingsHaPageCanvas(): JSX.Element {
+function SystemSettingsHaPageCanvas(): React.JSX.Element {
   const { language } = useLanguage()
   const admin = useTranslate().admin
   return (

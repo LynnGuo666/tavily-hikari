@@ -191,7 +191,7 @@ function SyncGlobals(props: {
   language: Language
   themeMode: ThemeMode
   children: React.ReactNode
-}): JSX.Element {
+}): React.JSX.Element {
   const { language, setLanguage } = useLanguage()
   const { mode, setMode } = useTheme()
 

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import type { AnalysisCurrentUserPressureDistribution, AnalysisPressureSnapshot } from '../api'
 import type { AdminTranslations, Language } from '../i18n'
+import type React from 'react'
 
 export type ActiveUserPressureDistributionPoint = { pressure: number; userCount: number }
 
@@ -65,7 +66,7 @@ export interface PressureAnalysisScreenProps {
   onRetry: () => void
 }
 
-export default function PressureAnalysisScreen({ snapshot, loading, error, language, strings, onRetry }: PressureAnalysisScreenProps): JSX.Element {
+export default function PressureAnalysisScreen({ snapshot, loading, error, language, strings, onRetry }: PressureAnalysisScreenProps): React.JSX.Element {
   const current24hAverage = averagePressure(snapshot?.server24h.current.map((point) => point.pressure) ?? [])
   const current24hData = snapshot?.server24h.current.map((point, index) => ({
     timestamp: point.displayBucketStart,

@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react'
 import { CrownIcon, RefreshCwIcon } from 'lucide-react'
+import type React from 'react'
 
 import AdminReturnToConsoleLink from './AdminReturnToConsoleLink'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -24,7 +25,7 @@ interface AdminPanelHeaderProps {
   extraActions?: ReactNode
 }
 
-export default function AdminPanelHeader(props: AdminPanelHeaderProps): JSX.Element {
+export default function AdminPanelHeader(props: AdminPanelHeaderProps): React.JSX.Element {
   return (
     <section
       className={cn(

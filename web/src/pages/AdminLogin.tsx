@@ -1,6 +1,7 @@
 import type { FormEvent, ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { EyeIcon, EyeOffIcon, HouseIcon, KeyRoundIcon } from 'lucide-react'
+import type React from 'react'
 
 import {
   fetchProfile,
@@ -34,7 +35,7 @@ import { useOfflineState } from '../pwa/useOfflineState'
 type LoginState = 'checking' | 'ready' | 'submitting'
 type SubmitAction = 'password' | 'passkey' | 'reset'
 
-function HintAlert({ title, children }: { title?: string; children: ReactNode }): JSX.Element {
+function HintAlert({ title, children }: { title?: string; children: ReactNode }): React.JSX.Element {
   return (
     <Alert className="border-warning/40 bg-warning/10 text-warning-foreground">
       {title ? <AlertTitle className="text-warning">{title}</AlertTitle> : null}
@@ -43,7 +44,7 @@ function HintAlert({ title, children }: { title?: string; children: ReactNode })
   )
 }
 
-function AdminLogin({ updateBanner }: { updateBanner?: ReactNode } = {}): JSX.Element {
+function AdminLogin({ updateBanner }: { updateBanner?: ReactNode } = {}): React.JSX.Element {
   const strings = useTranslate()
   const ui = strings.public.adminLogin
   const offline = useOfflineState()

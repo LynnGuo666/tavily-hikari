@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import type React from 'react'
 
 import type {
   RechargeConfig,
@@ -272,7 +273,7 @@ function QuotaStrip({
   quota: BillingQuota
   tone?: 'hero' | 'table' | 'micro'
   muted?: boolean
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className={cn(
       'user-console-billing-quota-strip grid shrink-0 grid-cols-3 gap-2 text-right tabular-nums [&>div]:flex [&>div]:min-w-0 [&>div]:flex-col [&_span]:text-xs [&_span]:font-normal [&_span]:text-muted-foreground',
@@ -307,7 +308,7 @@ function SummaryRow({
   description?: string | null
   quota: BillingQuota
   badge?: string | null
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <li className="user-console-billing-summary-row flex flex-wrap items-center justify-between gap-3 px-4 py-4">
       <div className="user-console-billing-summary-row-copy min-w-0">
@@ -328,7 +329,7 @@ function TimelineQuotaRow({
 }: {
   label: string
   quota: BillingQuota
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <div className="user-console-billing-timeline-row flex items-center justify-between gap-2 text-xs">
       <span className="user-console-billing-timeline-row-label text-muted-foreground">{label}</span>
@@ -347,7 +348,7 @@ function TimelineNavButton({
   label: string
   disabled: boolean
   onClick: () => void
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <Button
       type="button"
@@ -394,7 +395,7 @@ function TimelineCard({
   index: number
   selected: boolean
   onSelect: (index: number) => void
-}): JSX.Element {
+}): React.JSX.Element {
   const monthLabel = formatMonthLabel(month.monthStart, language)
   const phaseLabel = resolveTimelinePhaseLabel(month, currentMonthStart, text)
   const rechargeBadge = month.recharge.credits > 0
@@ -454,7 +455,7 @@ export default function BillingPage({
   onCreditsChange,
   onMonthsChange,
   onCreateOrder,
-}: BillingPageProps): JSX.Element {
+}: BillingPageProps): React.JSX.Element {
   const viewportMode = useViewportMode()
   const timelineViewportRef = useRef<HTMLDivElement | null>(null)
   const [timelineVisibleCount, setTimelineVisibleCount] = useState<1 | 2 | 3>(1)

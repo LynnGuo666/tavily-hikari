@@ -1,4 +1,5 @@
 import '../../test/happydom'
+import type React from 'react'
 
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
@@ -17,7 +18,7 @@ describe('HaNodeDetailPanel Storybook proofs', () => {
   })
 
   it('keeps the selected peer detail free of current-node EdgeOne configuration', () => {
-    const renderStory = meta.render as ((args: typeof stories.Default.args) => JSX.Element) | undefined
+    const renderStory = meta.render as ((args: typeof stories.Default.args) => React.JSX.Element) | undefined
 
     const markup = renderToStaticMarkup(
       createElement(

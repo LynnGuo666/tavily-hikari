@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import type React from 'react'
 
 import meta, * as forwardProxyStories from './ForwardProxySettingsModule.stories'
 import { LanguageProvider } from '../i18n'
@@ -23,7 +24,7 @@ describe('ForwardProxySettingsModule Storybook proofs', () => {
   })
 
   it('renders the status detail bubble proof without throwing outside Storybook runtime', () => {
-    const renderStory = forwardProxyStories.StatusDetailBubble.render as (() => JSX.Element) | undefined
+    const renderStory = forwardProxyStories.StatusDetailBubble.render as (() => React.JSX.Element) | undefined
     expect(renderStory).toBeDefined()
 
     const markup = renderToStaticMarkup(

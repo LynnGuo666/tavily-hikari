@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import type React from 'react'
 
 import type {
   RechargeConfig,
@@ -601,7 +602,7 @@ function BillingPageStory({
   quote = rechargeQuote,
   busy = false,
   error = null,
-}: BillingPageStoryProps): JSX.Element {
+}: BillingPageStoryProps): React.JSX.Element {
   return (
     <LanguageProvider>
       <ThemeProvider>

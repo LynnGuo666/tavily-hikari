@@ -20,6 +20,7 @@ import {
 import { cn } from '@/lib/utils'
 import { createContext, type PropsWithChildren, type ReactNode, useCallback, useContext, useState } from 'react'
 import { createPortal } from 'react-dom'
+import type React from 'react'
 
 import type { AdminAnalysisView, AdminModuleId } from './routes'
 
@@ -65,7 +66,7 @@ function AdminSidebarNavigation({
   navItems,
   onSelectItem,
   onUtilityHostChange,
-}: AdminSidebarNavigationProps): JSX.Element {
+}: AdminSidebarNavigationProps): React.JSX.Element {
   const { isMobile, setOpenMobile } = useSidebar()
 
   const handleSelectItem = useCallback(
@@ -151,7 +152,7 @@ export default function AdminShell({
   skipToContentLabel,
   onSelectItem,
   children,
-}: AdminShellProps): JSX.Element {
+}: AdminShellProps): React.JSX.Element {
   const [sidebarUtilityHost, setSidebarUtilityHost] = useState<HTMLDivElement | null>(null)
 
   return (
@@ -182,7 +183,7 @@ export default function AdminShell({
   )
 }
 
-export function AdminShellSidebarUtility({ children }: PropsWithChildren): JSX.Element | null {
+export function AdminShellSidebarUtility({ children }: PropsWithChildren): React.JSX.Element | null {
   const host = useContext(AdminSidebarUtilityContext)
 
   if (!host) {

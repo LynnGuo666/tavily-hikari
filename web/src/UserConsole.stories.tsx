@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import type {
   Announcement,
@@ -1318,7 +1319,7 @@ function UserConsoleStory(
     copyRecoveryMode?: CopyRecoveryMode
     guideRevealMode?: GuideRevealMode
   },
-): JSX.Element {
+): React.JSX.Element {
   const [ready, setReady] = useState(false)
   const storyState = useMemo(
     () => resolveStoryState(args),

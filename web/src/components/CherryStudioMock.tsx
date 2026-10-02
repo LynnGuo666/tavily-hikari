@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLanguage, useTranslate } from '../i18n'
 
-function TavilyLogo({ className = 'h-5 w-5' }: { className?: string }): JSX.Element {
+function TavilyLogo({ className = 'h-5 w-5' }: { className?: string }): React.JSX.Element {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -43,7 +43,7 @@ interface CherryStudioMockProps {
   apiKeyExample: string
 }
 
-function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): JSX.Element {
+function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.Element {
   const { language } = useLanguage()
   const strings = useTranslate()
   const t = strings.public.cherryMock

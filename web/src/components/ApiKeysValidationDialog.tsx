@@ -209,7 +209,7 @@ function RegistrationIpIndicator(props: {
   ipLabel: string;
   regionLabel: string;
   proxyLabelText: string;
-}): JSX.Element {
+}): React.JSX.Element {
   const triggerRef = React.useRef<HTMLSpanElement | null>(null);
   const [open, setOpen] = React.useState(false);
   const region = props.region?.trim() ?? null;
@@ -308,7 +308,7 @@ export interface ApiKeysValidationDialogProps {
   onImportValid: () => void;
 }
 
-export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): JSX.Element {
+export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): React.JSX.Element {
   const adminStrings = useTranslate().admin;
   const viewportMode = useViewportMode();
   const keyStrings = adminStrings.keys;

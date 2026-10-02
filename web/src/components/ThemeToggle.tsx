@@ -1,4 +1,5 @@
 import { CheckIcon, MonitorIcon, MoonIcon, SunIcon } from 'lucide-react'
+import type React from 'react'
 
 import { useLanguage } from '../i18n'
 import { type ThemeMode, useTheme } from '../theme'
@@ -20,13 +21,13 @@ const labels = {
   },
 } as const
 
-function ThemeIcon({ mode }: { mode: ThemeMode }): JSX.Element {
+function ThemeIcon({ mode }: { mode: ThemeMode }): React.JSX.Element {
   if (mode === 'dark') return <MoonIcon aria-hidden="true" />
   if (mode === 'light') return <SunIcon aria-hidden="true" />
   return <MonitorIcon aria-hidden="true" />
 }
 
-export default function ThemeToggle(): JSX.Element {
+export default function ThemeToggle(): React.JSX.Element {
   const { language } = useLanguage()
   const copy = labels[language]
   const { mode, setMode } = useTheme()

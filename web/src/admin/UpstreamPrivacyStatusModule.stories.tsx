@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState, type ComponentProps } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
+import type React from 'react'
 
 import UpstreamPrivacyStatusModule from './UpstreamPrivacyStatusModule'
 import type { UpstreamPrivacyStatus } from '../api'
@@ -516,7 +517,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-function renderWithStatus(status: UpstreamPrivacyStatus | null, overrides?: Partial<StoryArgs>): JSX.Element {
+function renderWithStatus(status: UpstreamPrivacyStatus | null, overrides?: Partial<StoryArgs>): React.JSX.Element {
   return (
     <UpstreamPrivacyStatusModule
       strings={translations.zh.admin.systemSettings.privacy}
@@ -532,7 +533,7 @@ function renderWithStatus(status: UpstreamPrivacyStatus | null, overrides?: Part
   )
 }
 
-function renderEvidenceSurface(child: JSX.Element): JSX.Element {
+function renderEvidenceSurface(child: React.JSX.Element): React.JSX.Element {
   return (
     <div
       data-testid="upstream-privacy-evidence-surface"
@@ -547,7 +548,7 @@ function renderEvidenceSurface(child: JSX.Element): JSX.Element {
   )
 }
 
-function InteractionCanvas(args: StoryArgs): JSX.Element {
+function InteractionCanvas(args: StoryArgs): React.JSX.Element {
   const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(args.autoRefreshEnabled)
 
   return (

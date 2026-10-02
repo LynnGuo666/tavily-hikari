@@ -1,4 +1,5 @@
 import { Icon } from '../lib/icons'
+import type React from 'react'
 
 import { languageOptions, type Language, useLanguage, useTranslate } from '../i18n'
 import { Button } from '@/components/ui/button'
@@ -9,7 +10,7 @@ const LANGUAGE_META: Record<Language, { icon: string; short: string }> = {
   zh: { icon: 'circle-flags:cn', short: '中文' },
 }
 
-function LanguageSwitcher(): JSX.Element {
+function LanguageSwitcher(): React.JSX.Element {
   const { language, setLanguage } = useLanguage()
   const strings = useTranslate()
   const activeMeta = LANGUAGE_META[language]

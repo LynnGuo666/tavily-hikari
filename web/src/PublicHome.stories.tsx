@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import type React from 'react'
 
 import PublicHomeHeroCard from './components/PublicHomeHeroCard'
 import LanguageSwitcher from './components/LanguageSwitcher'
@@ -42,7 +43,7 @@ const publicGuideTabs = [
   { id: 'other', label: 'HTTP API' },
 ] as const
 
-function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): JSX.Element {
+function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): React.JSX.Element {
   const strings = useTranslate().public
   const [open, setOpen] = useState(true)
   const [tokenDraft, setTokenDraft] = useState('')
@@ -138,7 +139,7 @@ function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): JSX.Element {
   )
 }
 
-function PublicHomeMobileGuideMenuProof(): JSX.Element {
+function PublicHomeMobileGuideMenuProof(): React.JSX.Element {
   const active = guideProofLabels[0]
 
   return (
@@ -216,7 +217,7 @@ function PublicHomeMobileGuideMenuProof(): JSX.Element {
   )
 }
 
-function PublicHomeGuideTokenRevealedProof(): JSX.Element {
+function PublicHomeGuideTokenRevealedProof(): React.JSX.Element {
   const strings = useTranslate().public
   const activeGuide = 'other'
   const exampleToken = 'th-a1b2-1234567890abcdef'

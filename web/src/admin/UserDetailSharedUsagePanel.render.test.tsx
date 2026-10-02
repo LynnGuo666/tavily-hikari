@@ -1,4 +1,5 @@
 import '../../test/happydom'
+import type React from 'react'
 
 import { afterEach, describe, expect, it } from 'bun:test'
 import { act, type ComponentProps } from 'react'
@@ -368,7 +369,7 @@ describe('UserDetailSharedUsagePanel loading behavior', () => {
 
 describe('UserDetailSharedUsagePanel theme behavior', () => {
   it('refreshes its theme-bound chart state when the admin theme changes', async () => {
-    function ThemeHarness(): JSX.Element {
+    function ThemeHarness(): React.JSX.Element {
       const { setMode } = useTheme()
       return (
         <>

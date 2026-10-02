@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import type { TokenSecretCopyState } from '../components/TokenSecretField'
 import type { EN } from './text'
+import type React from 'react'
 
 type TokenText = typeof EN.tokens
 
@@ -39,7 +40,7 @@ export default function TokenListActions({
   isCopyIntentKey,
   canReset,
   className = '',
-}: TokenListActionsProps): JSX.Element {
+}: TokenListActionsProps): React.JSX.Element {
   const copyLabel = copyState === 'copied' ? text.copied : copyState === 'error' ? text.copyFailed : text.copy
 
   return (
