@@ -1,10 +1,11 @@
-import { Icon } from '../lib/icons'
 import type { InputHTMLAttributes, KeyboardEvent as ReactKeyboardEvent, Ref } from 'react'
+import { CheckIcon, CircleAlertIcon, CopyIcon, EyeIcon, EyeOffIcon } from 'lucide-react'
 
 import { isCopyIntentKey } from '../lib/clipboard'
-import { cn } from '../lib/utils'
-import { Button } from './ui-legacy/button'
-import { Input } from './ui-legacy/input'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group'
+import { Spinner } from '@/components/ui/spinner'
 
 export type TokenSecretCopyState = 'idle' | 'copied' | 'error'
 
@@ -59,7 +60,6 @@ export default function TokenSecretField({
   copyErrorLabel,
   wrapperClassName,
   rowClassName,
-  shellClassName,
   inputClassName,
   copyButtonClassName,
   copyDisabled = false,
@@ -68,71 +68,59 @@ export default function TokenSecretField({
   onBlur,
   ...inputProps
 }: TokenSecretFieldProps): JSX.Element {
-  const copyVariant = copyState === 'copied' ? 'success' : copyState === 'error' ? 'warning' : 'outline'
   const displayValue = !visible && hiddenDisplayValue != null ? hiddenDisplayValue : value
-  const copyStateClassName =
-    copyState === 'copied'
-      ? 'token-copy-button-success'
-      : copyState === 'error'
-        ? 'token-copy-button-warning'
-        : 'token-copy-button-outline'
-  const copyIcon =
-    copyState === 'copied'
-      ? 'mdi:check'
-      : copyState === 'error'
-        ? 'mdi:alert-circle-outline'
-        : 'mdi:content-copy'
-  const copyText = copyState === 'copied' ? copiedLabel : copyState === 'error' ? copyErrorLabel : copyLabel
+  const copied = copyState === 'copied'
+  const failed = copyState === 'error'
   const shouldMaskValue = !visible && hiddenDisplayValue == null
+  const copyText = copied ? copiedLabel : failed ? copyErrorLabel : copyLabel
+
   const handleCopyIntentKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
     if (!isCopyIntentKey(event.key)) return
     void onCopyIntent?.()
   }
 
   return (
-    <div className={cn('token-input-wrapper', wrapperClassName)}>
-      <label htmlFor={inputId} className="token-label">
+    <div className={cn('flex w-full flex-col gap-2', wrapperClassName)}>
+      <label htmlFor={inputId} className="text-sm font-medium text-foreground">
         {label}
       </label>
-      <div className={cn('token-input-row', rowClassName)}>
-        <div className={cn('token-input-shell', shellClassName)}>
-          <Input
+      <div className={cn('flex flex-wrap items-center gap-2', rowClassName)}>
+        <InputGroup className={cn(shouldMaskValue && 'font-mono tracking-widest')}>
+          <InputGroupInput
             {...inputProps}
             id={inputId}
             ref={inputRef}
-            className={cn('token-input', shouldMaskValue && 'masked', inputClassName, className)}
+            className={inputClassName}
             type="text"
-            value={displayValue}
+            value={shouldMaskValue ? '•'.repeat(Math.min(value.length, 32)) : displayValue}
             onChange={(event) => onValueChange(event.target.value)}
             onBlur={onBlur}
             aria-label={inputProps['aria-label'] ?? label}
           />
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="token-visibility-button h-8 w-8 rounded-md p-1 shadow-none"
-            onClick={onToggleVisibility}
-            aria-label={visible ? visibilityHideLabel : visibilityShowLabel}
-            aria-busy={visibilityBusy ? 'true' : undefined}
-            disabled={visibilityBusy}
-          >
-            {visibilityBusy ? (
-              <span aria-hidden="true" className="token-visibility-spinner" />
-            ) : (
-              <Icon
-                icon={visible ? 'mdi:eye-off-outline' : 'mdi:eye-outline'}
-                aria-hidden="true"
-                className="token-visibility-icon"
-              />
-            )}
-            <span className="sr-only">{visibilityIconAlt}</span>
-          </Button>
-        </div>
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              type="button"
+              size="icon-sm"
+              onClick={onToggleVisibility}
+              aria-label={visible ? visibilityHideLabel : visibilityShowLabel}
+              aria-busy={visibilityBusy ? 'true' : undefined}
+              disabled={visibilityBusy}
+            >
+              {visibilityBusy ? (
+                <Spinner className="size-3.5" />
+              ) : visible ? (
+                <EyeOffIcon aria-hidden="true" />
+              ) : (
+                <EyeIcon aria-hidden="true" />
+              )}
+              <span className="sr-only">{visibilityIconAlt}</span>
+            </InputGroupButton>
+          </InputGroupAddon>
+        </InputGroup>
         <Button
           type="button"
-          variant={copyVariant}
-          className={cn('token-copy-button', copyStateClassName, copyButtonClassName)}
+          variant={copied ? 'default' : failed ? 'destructive' : 'outline'}
+          className={cn(copyButtonClassName)}
           onPointerEnter={() => void onCopyIntent?.()}
           onPointerLeave={() => onCopyIntentCancel?.()}
           onBlur={() => onCopyIntentCancel?.()}
@@ -142,8 +130,10 @@ export default function TokenSecretField({
           aria-label={copyAriaLabel}
           disabled={copyDisabled}
         >
-          <Icon icon={copyIcon} aria-hidden="true" className="token-copy-icon" />
-          <span>{copyText}</span>
+          {copied ? <CheckIcon data-icon="inline-start" /> : null}
+          {failed ? <CircleAlertIcon data-icon="inline-start" /> : null}
+          {!copied && !failed ? <CopyIcon data-icon="inline-start" /> : null}
+          {copyText}
         </Button>
       </div>
     </div>

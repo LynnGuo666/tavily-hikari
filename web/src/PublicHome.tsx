@@ -1,7 +1,6 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Icon, getGuideClientIconName } from './lib/icons'
+import { CheckIcon, ChevronDownIcon, ChevronRightIcon, CopyIcon, EyeIcon, EyeOffIcon, KeyRoundIcon } from 'lucide-react'
 import { StatusBadge, type StatusTone } from './components/StatusBadge'
-import CherryStudioMock from './components/CherryStudioMock'
 import {
   buildPublicEventsUrl,
   createBrowserTodayWindow,
@@ -23,27 +22,25 @@ import OfflineStatusBanner from './components/OfflineStatusBanner'
 import ThemeToggle from './components/ThemeToggle'
 import UpdateAvailableBanner from './components/UpdateAvailableBanner'
 import useUpdateAvailable from './hooks/useUpdateAvailable'
-import RollingNumber from './components/RollingNumber'
 import PublicHomeFooter from './components/PublicHomeFooter'
 import PublicHomeHeroCard from './components/PublicHomeHeroCard'
 import TokenSecretField from './components/TokenSecretField'
-import { Button } from './components/ui-legacy/button'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-} from './components/ui-legacy/dialog'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './components/ui-legacy/dropdown-menu'
+} from '@/components/ui/dialog'
+import { Progress } from '@/components/ui/progress'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLanguage, useTranslate, type Language } from './i18n'
 import { copyText, selectAllReadonlyText } from './lib/clipboard'
-import { useResponsiveModes } from './lib/responsive'
 import { useOfflineState } from './pwa/useOfflineState'
 
 type GuideLanguage = 'toml' | 'json' | 'bash'
@@ -97,7 +94,6 @@ const GUIDE_KEY_ORDER: GuideKey[] = [
   'cherryStudio',
   'other',
 ]
-const PRIMARY_GUIDE_KEYS = new Set<GuideKey>(['codex', 'hikariCli', 'claude', 'vscode'])
 
 const numberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
@@ -138,7 +134,6 @@ function PublicHome(): JSX.Element {
   const pageRef = useRef<HTMLElement>(null)
   const accessTokenFieldRef = useRef<HTMLInputElement | null>(null)
   const accessTokenModalFieldRef = useRef<HTMLInputElement | null>(null)
-  const { viewportMode, contentMode, isCompactLayout } = useResponsiveModes(pageRef)
   const [recentTokenUsage, setRecentTokenUsage] = useState<TokenMetrics | null>(null)
   const [userTokenHydrationDone, setUserTokenHydrationDone] = useState(false)
   const [todayWindow, setTodayWindow] = useState(() => createBrowserTodayWindow())
@@ -290,7 +285,7 @@ function PublicHome(): JSX.Element {
     }
   }, [token, todayWindow])
 
-  // Fallback polling: if token metrics未就绪或 SSE 不返回 token 段，定期补一次拉取
+  // Fallback polling: if token metrics not ready or SSE lacks the token segment, refresh periodically
   useEffect(() => {
     if (!token || !isFullToken(token)) return
     let active = true
@@ -304,7 +299,6 @@ function PublicHome(): JSX.Element {
         // ignore
       }
     }
-    // 先补一次
     tick()
     const id = window.setInterval(tick, 6000)
     return () => {
@@ -346,8 +340,6 @@ function PublicHome(): JSX.Element {
     () => GUIDE_KEY_ORDER.map((id) => ({ id, label: publicStrings.guide.tabs[id] ?? id })),
     [publicStrings.guide.tabs],
   )
-  const primaryGuideTabs = guideTabs.filter((tab) => PRIMARY_GUIDE_KEYS.has(tab.id))
-  const secondaryGuideTabs = guideTabs.filter((tab) => !PRIMARY_GUIDE_KEYS.has(tab.id))
 
   const copyGuideSample = useCallback(async (sampleKey: string, snippet: string) => {
     const result = await copyText(guideSnippetToPlainText(snippet))
@@ -529,455 +521,425 @@ function PublicHome(): JSX.Element {
     return 'neutral'
   }
 
+  const renderLogDetails = (log: PublicTokenLog): JSX.Element => (
+    <div className="flex flex-col gap-1.5 px-4 py-3 text-sm">
+      <div className="flex flex-wrap gap-2">
+        <span className="font-medium text-muted-foreground">Request</span>
+        <span className="font-mono text-xs leading-5">{`${log.method} ${log.path}${log.query ? `?${log.query}` : ''}`}</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <span className="font-medium text-muted-foreground">Response</span>
+        <span className="text-xs leading-5">{`${publicStrings.logs.table.httpStatus}: ${log.http_status ?? '—'} · ${publicStrings.logs.table.mcpStatus}: ${log.mcp_status ?? '—'}`}</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <span className="font-medium text-muted-foreground">Outcome</span>
+        <span className="text-xs leading-5">{log.result_status}</span>
+      </div>
+      {log.error_message ? (
+        <div className="flex flex-wrap gap-2">
+          <span className="font-medium text-muted-foreground">Error</span>
+          <span className="text-xs leading-5 text-destructive">{log.error_message}</span>
+        </div>
+      ) : null}
+    </div>
+  )
+
+  const renderLogsEmptyState = (): JSX.Element => {
+    if (!hasTokenInfo) {
+      return <p className="px-4 py-8 text-center text-sm text-muted-foreground">{publicStrings.logs.empty.noToken}</p>
+    }
+    if (invalidToken) {
+      return <p className="px-4 py-8 text-center text-sm text-muted-foreground">{publicStrings.logs.empty.hint}</p>
+    }
+    if (publicLogsLoading) {
+      return <p className="px-4 py-8 text-center text-sm text-muted-foreground">{publicStrings.logs.empty.loading}</p>
+    }
+    return <p className="px-4 py-8 text-center text-sm text-muted-foreground">{publicStrings.logs.empty.none}</p>
+  }
+
   return (
-    <main
-      ref={pageRef}
-      className={`app-shell public-home viewport-${viewportMode} content-${contentMode}${
-        isCompactLayout ? ' is-compact-layout' : ''
-      }`}
-    >
-      {updateBanner.visible ? (
-        <UpdateAvailableBanner
-          strings={publicStrings.updateBanner}
-          currentVersion={updateBanner.currentVersion}
-          availableVersion={updateBanner.availableVersion}
-          status={updateBanner.status}
-          loading={updateBanner.loading}
-          onUpdate={updateBanner.applyUpdate}
-          onDismiss={updateBanner.dismiss}
+    <main ref={pageRef} className="min-h-svh bg-background text-foreground">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
+        {updateBanner.visible ? (
+          <UpdateAvailableBanner
+            strings={publicStrings.updateBanner}
+            currentVersion={updateBanner.currentVersion}
+            availableVersion={updateBanner.availableVersion}
+            status={updateBanner.status}
+            loading={updateBanner.loading}
+            onUpdate={updateBanner.applyUpdate}
+            onDismiss={updateBanner.dismiss}
+          />
+        ) : null}
+        <PublicHomeHeroCard
+          publicStrings={publicStrings}
+          metrics={metrics}
+          availableKeys={availableKeys}
+          totalKeys={totalKeys}
+          error={error}
+          showLinuxDoLogin={showLinuxDoLogin}
+          showRegistrationPausedNotice={showRegistrationPausedNotice}
+          showTokenAccessButton={hideTokenPanels && !showAuthStatusLoading && !showAuthStatusUnavailable}
+          showAdminAction={isAdmin || builtinAuthEnabled || passkeyAuthEnabled}
+          adminActionLabel={isAdmin ? publicStrings.adminButton : publicStrings.adminLoginButton}
+          topControls={(
+            <>
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </>
+          )}
+          metricsLoading={metricsLoading}
+          summaryLoading={summaryLoading}
+          showAuthStatusLoading={showAuthStatusLoading}
+          showAuthStatusUnavailable={showAuthStatusUnavailable}
+          onLinuxDoLogin={() => startLinuxDoLogin(token)}
+          onTokenAccessClick={openTokenAccessDialog}
+          onAdminActionClick={() => { window.location.href = isAdmin ? '/admin' : '/login' }}
         />
-      ) : null}
-      <PublicHomeHeroCard
-        publicStrings={publicStrings}
-        metrics={metrics}
-        availableKeys={availableKeys}
-        totalKeys={totalKeys}
-        error={error}
-        showLinuxDoLogin={showLinuxDoLogin}
-        showRegistrationPausedNotice={showRegistrationPausedNotice}
-        showTokenAccessButton={hideTokenPanels && !showAuthStatusLoading && !showAuthStatusUnavailable}
-        showAdminAction={isAdmin || builtinAuthEnabled || passkeyAuthEnabled}
-        adminActionLabel={isAdmin ? publicStrings.adminButton : publicStrings.adminLoginButton}
-        topControls={(
+        {offline.isOffline ? (
+          <OfflineStatusBanner
+            title="Offline shell loaded"
+            description="The page frame is available, but live metrics, profile checks, and sign-in actions need the network."
+          />
+        ) : null}
+        {!hideTokenPanels && (
           <>
-            <ThemeToggle />
-            <LanguageSwitcher />
-          </>
-        )}
-        metricsLoading={metricsLoading}
-        summaryLoading={summaryLoading}
-        showAuthStatusLoading={showAuthStatusLoading}
-        showAuthStatusUnavailable={showAuthStatusUnavailable}
-        onLinuxDoLogin={() => startLinuxDoLogin(token)}
-        onTokenAccessClick={openTokenAccessDialog}
-        onAdminActionClick={() => { window.location.href = isAdmin ? '/admin' : '/login' }}
-      />
-      {offline.isOffline ? (
-        <OfflineStatusBanner
-          title="Offline shell loaded"
-          description="The page frame is available, but live metrics, profile checks, and sign-in actions need the network."
-        />
-      ) : null}
-      {!hideTokenPanels && (
-        <>
-          <section className="surface panel access-panel">
-            <div className="access-panel-grid">
-              <header className="panel-header" style={{ marginBottom: 8 }}>
-                <h2>{publicStrings.accessPanel.title}</h2>
-              </header>
-              <div className="access-stats">
-                {/* Group 1: usage counts */}
-                <div className="access-stat">
-                  <div className="access-stat-title">{publicStrings.accessPanel.stats.dailySuccess}</div>
-                  <p><RollingNumber value={tokenMetricsPending ? null : tokenMetrics?.dailySuccess ?? 0} /></p>
-                </div>
-                <div className="access-stat">
-                  <div className="access-stat-title">{publicStrings.accessPanel.stats.dailyFailure}</div>
-                  <p><RollingNumber value={tokenMetricsPending ? null : tokenMetrics?.dailyFailure ?? 0} /></p>
-                </div>
-                <div className="access-stat">
-                  <div className="access-stat-title">{publicStrings.accessPanel.stats.monthlySuccess}</div>
-                  <p><RollingNumber value={tokenMetricsPending ? null : tokenMetrics?.monthlySuccess ?? 0} /></p>
-                </div>
-              </div>
-              <div className="access-stats">
-                {/* Group 2: rolling quota limits, styled similar to admin quick stats */}
-                <div className="access-stat quota-stat-card">
-                  <div className="quota-stat-label">{publicStrings.accessPanel.stats.hourlyLimit}</div>
-                  <div className="quota-stat-value">
-                    {formatNumber(recentTokenUsage?.quotaHourlyUsed ?? 0)}
-                    <span>/ {formatNumber(recentTokenUsage?.quotaHourlyLimit ?? TOKEN_HOURLY_LIMIT)}</span>
+            <Card>
+              <CardHeader>
+                <CardTitle>{publicStrings.accessPanel.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-6">
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="flex flex-col gap-1.5 rounded-lg border p-4">
+                    <p className="text-xs font-medium text-muted-foreground">{publicStrings.accessPanel.stats.dailySuccess}</p>
+                    {tokenMetricsPending ? (
+                      <Skeleton className="h-7 w-14" />
+                    ) : (
+                      <p className="font-mono text-xl font-semibold tabular-nums">{formatNumber(tokenMetrics?.dailySuccess ?? 0)}</p>
+                    )}
                   </div>
-                  <div className="quota-stat-description">Rolling 1-hour window</div>
-                </div>
-                <div className="access-stat quota-stat-card">
-                  <div className="quota-stat-label">{publicStrings.accessPanel.stats.dailyLimit}</div>
-                  <div className="quota-stat-value">
-                    {formatNumber(recentTokenUsage?.quotaDailyUsed ?? 0)}
-                    <span>/ {formatNumber(recentTokenUsage?.quotaDailyLimit ?? TOKEN_DAILY_LIMIT)}</span>
+                  <div className="flex flex-col gap-1.5 rounded-lg border p-4">
+                    <p className="text-xs font-medium text-muted-foreground">{publicStrings.accessPanel.stats.dailyFailure}</p>
+                    {tokenMetricsPending ? (
+                      <Skeleton className="h-7 w-14" />
+                    ) : (
+                      <p className="font-mono text-xl font-semibold tabular-nums">{formatNumber(tokenMetrics?.dailyFailure ?? 0)}</p>
+                    )}
                   </div>
-                  <div className="quota-stat-description">Server-local calendar day</div>
-                </div>
-                <div className="access-stat quota-stat-card">
-                  <div className="quota-stat-label">{publicStrings.accessPanel.stats.monthlyLimit}</div>
-                  <div className="quota-stat-value">
-                    {formatNumber(recentTokenUsage?.quotaMonthlyUsed ?? 0)}
-                    <span>/ {formatNumber(recentTokenUsage?.quotaMonthlyLimit ?? TOKEN_MONTHLY_LIMIT)}</span>
+                  <div className="flex flex-col gap-1.5 rounded-lg border p-4">
+                    <p className="text-xs font-medium text-muted-foreground">{publicStrings.accessPanel.stats.monthlySuccess}</p>
+                    {tokenMetricsPending ? (
+                      <Skeleton className="h-7 w-14" />
+                    ) : (
+                      <p className="font-mono text-xl font-semibold tabular-nums">{formatNumber(tokenMetrics?.monthlySuccess ?? 0)}</p>
+                    )}
                   </div>
-                  <div className="quota-stat-description">UTC calendar month</div>
                 </div>
-              </div>
-              <div className="access-token-box">
+
+                {([
+                  {
+                    label: publicStrings.accessPanel.stats.hourlyLimit,
+                    used: recentTokenUsage?.quotaHourlyUsed ?? 0,
+                    limit: recentTokenUsage?.quotaHourlyLimit ?? TOKEN_HOURLY_LIMIT,
+                    description: 'Rolling 1-hour window',
+                  },
+                  {
+                    label: publicStrings.accessPanel.stats.dailyLimit,
+                    used: recentTokenUsage?.quotaDailyUsed ?? 0,
+                    limit: recentTokenUsage?.quotaDailyLimit ?? TOKEN_DAILY_LIMIT,
+                    description: 'Server-local calendar day',
+                  },
+                  {
+                    label: publicStrings.accessPanel.stats.monthlyLimit,
+                    used: recentTokenUsage?.quotaMonthlyUsed ?? 0,
+                    limit: recentTokenUsage?.quotaMonthlyLimit ?? TOKEN_MONTHLY_LIMIT,
+                    description: 'UTC calendar month',
+                  },
+                ] as const).map((quota) => (
+                  <div key={quota.label} className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-sm font-medium">{quota.label}</p>
+                      <p className="font-mono text-sm tabular-nums text-muted-foreground">
+                        {formatNumber(quota.used)}
+                        <span className="text-muted-foreground/70"> / {formatNumber(quota.limit)}</span>
+                      </p>
+                    </div>
+                    <Progress value={quota.limit > 0 ? Math.min(100, (quota.used / quota.limit) * 100) : 0} />
+                    <p className="text-xs text-muted-foreground">{quota.description}</p>
+                  </div>
+                ))}
+
                 <TokenSecretField
                   inputId="access-token"
                   inputRef={accessTokenFieldRef}
                   name="not-a-login-field"
+                  label={publicStrings.accessToken.label}
                   value={token}
                   visible={tokenVisible}
                   copyState={copyState}
-                  onValueChange={setToken}
-                  onBlur={(event) => persistToken(event.target.value)}
-                  onToggleVisibility={() => setTokenVisible((prev) => !prev)}
-                  onCopy={() => handleCopyToken(token)}
-                  label={publicStrings.accessToken.label}
-                  placeholder={publicStrings.accessToken.placeholder}
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck={false}
-                  aria-autocomplete="none"
-                  inputMode="text"
-                  data-1p-ignore="true"
-                  data-lpignore="true"
-                  data-form-type="other"
+                  onValueChange={(value) => { setToken(value); setTokenDraft(value); setInvalidToken(false) }}
+                  onToggleVisibility={() => setTokenVisible((visible) => !visible)}
+                  onCopy={(button) => void handleCopyToken(token || button.parentElement?.querySelector<HTMLInputElement>('#access-token')?.value || '')}
                   visibilityShowLabel={publicStrings.accessToken.toggle.show}
                   visibilityHideLabel={publicStrings.accessToken.toggle.hide}
                   visibilityIconAlt={publicStrings.accessToken.toggle.iconAlt}
-                  copyAriaLabel={publicStrings.copyToken.iconAlt}
+                  copyAriaLabel={publicStrings.copyToken.copy}
                   copyLabel={publicStrings.copyToken.copy}
                   copiedLabel={publicStrings.copyToken.copied}
                   copyErrorLabel={publicStrings.copyToken.error}
+                  placeholder={publicStrings.accessToken.placeholder}
+                  autoComplete="off"
+                  spellCheck={false}
                 />
-              </div>
-            </div>
-          </section>
-          <section className="surface panel">
-            <div className="panel-header">
-              <div>
-                <h2>{publicStrings.logs.title}</h2>
-                <p className="panel-description">{publicStrings.logs.description}</p>
-              </div>
-            </div>
-            {!hasValidTokenForLogs ? (
-              <div className="table-wrapper">
-                <div className="empty-state alert">
-                  <p style={{ margin: 0 }}>
-                    {publicStrings.logs.empty.noToken}{' '}
-                    <span style={{ opacity: 0.9 }}>{publicStrings.logs.empty.hint}</span>
-                  </p>
-                </div>
-              </div>
-            ) : publicLogsLoading ? (
-              <div className="table-wrapper">
-                <div className="empty-state alert">{publicStrings.logs.empty.loading}</div>
-              </div>
-            ) : publicLogs.length === 0 ? (
-              <div className="table-wrapper">
-                <div className="empty-state alert">{publicStrings.logs.empty.none}</div>
-              </div>
-            ) : (
-              <>
-                <div className="table-wrapper public-logs-md-up">
-                  <table className="token-detail-table">
-                    <thead>
-                      <tr>
-                        <th>{publicStrings.logs.table.time}</th>
-                        <th>{publicStrings.logs.table.httpStatus}</th>
-                        <th>{publicStrings.logs.table.mcpStatus}</th>
-                        <th>{publicStrings.logs.table.result}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {publicLogs.map((log) => (
-                        <React.Fragment key={log.id}>
-                          <tr>
-                            <td>{formatTimestamp(log.created_at)}</td>
-                            <td>{log.http_status ?? '—'}</td>
-                            <td>{log.mcp_status ?? '—'}</td>
-                            <td>
-                              <button
-                                type="button"
-                                className={`log-result-button${expandedPublicLogs.has(log.id) ? ' log-result-button-active' : ''}`}
-                                onClick={() => togglePublicLog(log.id)}
-                                aria-expanded={expandedPublicLogs.has(log.id)}
-                                aria-controls={`plog-${log.id}`}
-                                aria-label={expandedPublicLogs.has(log.id) ? publicStrings.logs.toggles.hide : publicStrings.logs.toggles.show}
-                                title={expandedPublicLogs.has(log.id) ? publicStrings.logs.toggles.hide : publicStrings.logs.toggles.show}
-                              >
-                                <StatusBadge tone={statusTone(log.result_status)}>
-                                  {log.result_status}
-                                </StatusBadge>
-                                <Icon
-                                  icon={expandedPublicLogs.has(log.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'}
-                                  width={18}
-                                  height={18}
-                                  className="log-result-icon"
-                                />
-                              </button>
-                            </td>
-                          </tr>
-                          {expandedPublicLogs.has(log.id) && (
-                            <tr className="log-details-row">
-                              <td colSpan={4} id={`plog-${log.id}`}>
-                                <div className="log-details-panel">
-                                  <div className="log-details-summary">
-                                    <div>
-                                      <span className="log-details-label">Request</span>
-                                      <span className="log-details-value">{`${log.method} ${log.path}${log.query ? `?${log.query}` : ''}`}</span>
-                                    </div>
-                                    <div>
-                                      <span className="log-details-label">Response</span>
-                                      <span className="log-details-value">{`${publicStrings.logs.table.httpStatus}: ${log.http_status ?? '—'} · ${publicStrings.logs.table.mcpStatus}: ${log.mcp_status ?? '—'}`}</span>
-                                    </div>
-                                    <div>
-                                      <span className="log-details-label">Outcome</span>
-                                      <span className="log-details-value">{log.result_status}</span>
-                                    </div>
-                                    {log.error_message && (
-                                      <div>
-                                        <span className="log-details-label">Error</span>
-                                        <span className="log-details-value">{log.error_message}</span>
-                                      </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>{publicStrings.logs.title}</CardTitle>
+                <CardDescription>{publicStrings.logs.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {hasValidTokenForLogs && publicLogs.length > 0 ? (
+                  <>
+                    {/* Desktop table */}
+                    <div className="hidden overflow-hidden rounded-lg border md:block">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="w-10" />
+                            <TableHead>{publicStrings.logs.table.time}</TableHead>
+                            <TableHead>Request</TableHead>
+                            <TableHead>{publicStrings.logs.table.result}</TableHead>
+                            <TableHead className="text-right">{publicStrings.logs.table.httpStatus}</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {publicLogs.map((log) => {
+                            const expanded = expandedPublicLogs.has(log.id)
+                            return (
+                              <React.Fragment key={log.id}>
+                                <TableRow
+                                  className="cursor-pointer"
+                                  onClick={() => togglePublicLog(log.id)}
+                                  aria-expanded={expanded}
+                                >
+                                  <TableCell className="w-10">
+                                    {expanded ? (
+                                      <ChevronDownIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+                                    ) : (
+                                      <ChevronRightIcon className="size-4 text-muted-foreground" aria-hidden="true" />
                                     )}
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="public-log-mobile-list public-logs-md-down">
-                  {publicLogs.map((log) => (
-                    <article key={log.id} className="user-console-mobile-card">
-                      <div className="user-console-mobile-kv">
-                        <span>{publicStrings.logs.table.time}</span>
-                        <strong>{formatTimestamp(log.created_at)}</strong>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>{publicStrings.logs.table.httpStatus}</span>
-                        <strong>{log.http_status ?? '—'}</strong>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>{publicStrings.logs.table.mcpStatus}</span>
-                        <strong>{log.mcp_status ?? '—'}</strong>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>{publicStrings.logs.table.result}</span>
-                        <StatusBadge className="user-console-mobile-status" tone={statusTone(log.result_status)}>
-                          {log.result_status}
-                        </StatusBadge>
-                      </div>
-                      <div className="user-console-mobile-kv">
-                        <span>Request</span>
-                        <strong>{`${log.method} ${log.path}${log.query ? `?${log.query}` : ''}`}</strong>
-                      </div>
-                      {log.error_message && (
-                        <div className="user-console-mobile-kv">
-                          <span>Error</span>
-                          <strong>{log.error_message}</strong>
-                        </div>
-                      )}
-                    </article>
-                  ))}
-                </div>
-              </>
-            )}
-          </section>
-        </>
-      )}
-      <section className="surface panel public-home-guide">
-        <h2>{publicStrings.guide.title}</h2>
-        {/* Mobile: compact dropdown menu with icons */}
-        {isCompactLayout && (
-          <div className="guide-select" aria-label="Client selector (mobile)">
-            <MobileGuideDropdown
-              active={activeGuide}
-              onChange={(id) => setActiveGuide(id)}
-              labels={guideTabs}
-            />
-          </div>
+                                  </TableCell>
+                                  <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
+                                    {formatTimestamp(log.created_at)}
+                                  </TableCell>
+                                  <TableCell className="max-w-[24rem] truncate font-mono text-xs">
+                                    {`${log.method} ${log.path}`}
+                                  </TableCell>
+                                  <TableCell>
+                                    <StatusBadge tone={statusTone(log.result_status)}>{log.result_status}</StatusBadge>
+                                  </TableCell>
+                                  <TableCell className="text-right font-mono text-xs tabular-nums">
+                                    {log.http_status ?? '—'}
+                                  </TableCell>
+                                </TableRow>
+                                {expanded ? (
+                                  <TableRow>
+                                    <TableCell colSpan={5} className="bg-muted/30 p-0">
+                                      {renderLogDetails(log)}
+                                    </TableCell>
+                                  </TableRow>
+                                ) : null}
+                              </React.Fragment>
+                            )
+                          })}
+                        </TableBody>
+                      </Table>
+                    </div>
+
+                    {/* Mobile cards */}
+                    <div className="flex flex-col gap-3 md:hidden">
+                      {publicLogs.map((log) => {
+                        const expanded = expandedPublicLogs.has(log.id)
+                        return (
+                          <div key={log.id} className="rounded-lg border">
+                            <button
+                              type="button"
+                              className="flex w-full flex-col gap-2 p-3 text-left"
+                              onClick={() => togglePublicLog(log.id)}
+                              aria-expanded={expanded}
+                            >
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="truncate font-mono text-xs">{`${log.method} ${log.path}`}</span>
+                                <StatusBadge tone={statusTone(log.result_status)}>{log.result_status}</StatusBadge>
+                              </div>
+                              <span className="text-xs text-muted-foreground">{formatTimestamp(log.created_at)}</span>
+                            </button>
+                            {expanded ? <div className="border-t">{renderLogDetails(log)}</div> : null}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  renderLogsEmptyState()
+                )}
+              </CardContent>
+            </Card>
+          </>
         )}
-        {!isCompactLayout && (
-          <div className="guide-tabs">
-            {primaryGuideTabs.map((tab) => (
-              <button
-                key={tab.id}
+
+        <Card>
+          <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3">
+            <div className="flex flex-col gap-1.5">
+              <CardTitle>{publicStrings.guide.title}</CardTitle>
+              <CardDescription>{guideDescription.title}</CardDescription>
+            </div>
+            {canRevealGuideToken ? (
+              <Button
                 type="button"
-                className={`guide-tab${activeGuide === tab.id ? ' active' : ''}`}
-                onClick={() => setActiveGuide(tab.id)}
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setRevealedGuideToken(guideTokenVisible ? null : token)
+                }}
+                aria-pressed={guideTokenVisible}
               >
-                {tab.label}
-              </button>
-            ))}
-            <MobileGuideDropdown
-              active={secondaryGuideTabs.some((tab) => tab.id === activeGuide) ? activeGuide : secondaryGuideTabs[0]?.id ?? 'other'}
-              onChange={(id) => setActiveGuide(id)}
-              labels={secondaryGuideTabs}
-              triggerClassName="guide-more-trigger"
-              triggerLabel={secondaryGuideTabs.some((tab) => tab.id === activeGuide) ? undefined : language === 'zh' ? '更多客户端' : 'More clients'}
-            />
-          </div>
-        )}
-        <div className="guide-panel">
-          <div className="guide-panel-header">
-            <h3>{guideDescription.title}</h3>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="guide-token-toggle"
-              disabled={!canRevealGuideToken}
-              aria-pressed={guideTokenVisible}
-              aria-label={guideTokenToggleLabel}
-              title={guideTokenToggleLabel}
-              onClick={() => setRevealedGuideToken(guideTokenVisible ? null : token)}
-            >
-              <Icon
-                icon={guideTokenVisible ? 'mdi:eye-off-outline' : 'mdi:eye-outline'}
-                width={16}
-                height={16}
-                aria-hidden="true"
+                {guideTokenVisible ? <EyeOffIcon data-icon="inline-start" /> : <EyeIcon data-icon="inline-start" />}
+                {guideTokenToggleLabel}
+              </Button>
+            ) : null}
+          </CardHeader>
+          <CardContent className="flex flex-col gap-6">
+            <Tabs value={activeGuide} onValueChange={(value) => setActiveGuide(value as GuideKey)}>
+              <TabsList className="h-auto flex-wrap">
+                {guideTabs.map((tab) => (
+                  <TabsTrigger key={tab.id} value={tab.id}>
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+
+            <div className="flex flex-col gap-4">
+              <ol className="flex list-decimal flex-col gap-2 pl-5 text-sm leading-6 [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-xs">
+                {guideDescription.steps.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ol>
+
+              {resolveGuideSamples(guideDescription).map((sample) => {
+                const sampleKey = `${guideDescription.title}-${sample.title}`
+                const sampleCopyState = guideCopyState[sampleKey]
+                return (
+                  <div key={sampleKey} className="overflow-hidden rounded-lg border">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted/40 px-3 py-2">
+                      <p className="text-sm font-medium">{sample.title}</p>
+                      <div className="flex items-center gap-2">
+                        {sample.language ? (
+                          <span className="rounded bg-background px-1.5 py-0.5 font-mono text-[11px] uppercase text-muted-foreground">
+                            {sample.language}
+                          </span>
+                        ) : null}
+                        {sample.reference ? (
+                          <a
+                            href={sample.reference.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs text-primary underline-offset-4 hover:underline"
+                          >
+                            {sample.reference.label}
+                          </a>
+                        ) : null}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => void copyGuideSample(sampleKey, sample.snippet)}
+                        >
+                          {sampleCopyState === 'copied' ? (
+                            <CheckIcon data-icon="inline-start" />
+                          ) : (
+                            <CopyIcon data-icon="inline-start" />
+                          )}
+                          {sampleCopyState === 'copied' ? 'Copied' : 'Copy'}
+                        </Button>
+                      </div>
+                    </div>
+                    <pre className="overflow-x-auto bg-muted/30 p-3 text-xs leading-relaxed">
+                      <code dangerouslySetInnerHTML={{ __html: sample.snippet }} />
+                    </pre>
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+
+        <PublicHomeFooter versionLabel={publicStrings.footer.version} version={updateBanner.currentBackendVersion} />
+
+        <Dialog
+          open={isTokenAccessDialogOpen}
+          onOpenChange={(open) => {
+            if (open) {
+              setIsTokenAccessDialogOpen(true)
+              return
+            }
+            closeTokenAccessDialog()
+          }}
+        >
+          <DialogContent className="max-w-xl">
+            <DialogHeader>
+              <DialogTitle>{publicStrings.tokenAccess.dialog.title}</DialogTitle>
+              <DialogDescription>{publicStrings.tokenAccess.dialog.description}</DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col gap-4">
+              <TokenSecretField
+                inputId="access-token-modal"
+                inputRef={accessTokenModalFieldRef}
+                name="not-a-login-field"
+                label={publicStrings.accessToken.label}
+                value={tokenDraft}
+                visible={tokenVisible}
+                copyState={copyState}
+                onValueChange={setTokenDraft}
+                onToggleVisibility={() => setTokenVisible((visible) => !visible)}
+                onCopy={(button) => void handleCopyToken(tokenDraft || button.parentElement?.querySelector<HTMLInputElement>('#access-token-modal')?.value || '')}
+                visibilityShowLabel={publicStrings.accessToken.toggle.show}
+                visibilityHideLabel={publicStrings.accessToken.toggle.hide}
+                visibilityIconAlt={publicStrings.accessToken.toggle.iconAlt}
+                copyAriaLabel={publicStrings.copyToken.copy}
+                copyLabel={publicStrings.copyToken.copy}
+                copiedLabel={publicStrings.copyToken.copied}
+                copyErrorLabel={publicStrings.copyToken.error}
+                placeholder={publicStrings.accessToken.placeholder}
+                autoComplete="off"
+                spellCheck={false}
               />
-              <span>{guideTokenToggleLabel}</span>
-            </Button>
-          </div>
-          <ol>
-            {guideDescription.steps.map((step, index) => (
-              <li key={index}>{step}</li>
-            ))}
-          </ol>
-          {resolveGuideSamples(guideDescription).map((sample) => {
-            const sampleKey = `${activeGuide}:${guideDescription.title}:${sample.title}`
-            const currentCopyState = guideCopyState[sampleKey] ?? 'idle'
-            const copyLabel = currentCopyState === 'copied'
-              ? publicStrings.copyToken.copied
-              : currentCopyState === 'error'
-                ? publicStrings.copyToken.error
-                : publicStrings.copyToken.copy
-            return (
-              <div className="guide-sample" key={`${guideDescription.title}-${sample.title}`}>
-                <p className="guide-sample-title">{sample.title}</p>
-                <div className="mockup-code relative guide-code-shell">
-                  <span className="guide-lang-badge badge badge-outline badge-sm">
-                    {(sample.language ?? 'code').toUpperCase()}
-                  </span>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className={`guide-copy-button${currentCopyState === 'copied' ? ' copied' : currentCopyState === 'error' ? ' error' : ''}`}
-                    aria-label={copyLabel}
-                    title={copyLabel}
-                    onClick={() => void copyGuideSample(sampleKey, sample.snippet)}
-                  >
-                    <Icon
-                      icon={currentCopyState === 'copied' ? 'mdi:check' : 'mdi:content-copy'}
-                      width={14}
-                      height={14}
-                      aria-hidden="true"
-                    />
-                    <span>{copyLabel}</span>
-                  </Button>
-                  <pre>
-                    <code dangerouslySetInnerHTML={{ __html: sample.snippet }} />
-                  </pre>
-                </div>
-                {sample.reference ? (
-                  <p className="guide-reference">
-                    {publicStrings.guide.dataSourceLabel}
-                    <a href={sample.reference.url} target="_blank" rel="noreferrer">
-                      {sample.reference.label}
-                    </a>
-                  </p>
-                ) : null}
+              <p className="text-sm text-muted-foreground">{publicStrings.tokenAccess.dialog.loginHint}</p>
+            </div>
+            <DialogFooter className="gap-2 sm:justify-between">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => startLinuxDoLogin(tokenDraft)}
+              >
+                <KeyRoundIcon data-icon="inline-start" />
+                {publicStrings.linuxDoLogin.button}
+              </Button>
+              <div className="flex gap-2">
+                <Button type="button" variant="ghost" onClick={closeTokenAccessDialog}>
+                  {publicStrings.tokenAccess.dialog.actions.cancel}
+                </Button>
+                <Button type="button" onClick={confirmTokenAccessDialog} disabled={!isFullToken(tokenDraft.trim())}>
+                  {publicStrings.tokenAccess.dialog.actions.confirm}
+                </Button>
               </div>
-            )
-          })}
-        </div>
-        {activeGuide === 'cherryStudio' && <CherryStudioMock apiKeyExample={exampleToken} />}
-      </section>
-      <PublicHomeFooter versionLabel={publicStrings.footer.version} version={updateBanner.currentBackendVersion} />
-      <Dialog
-        open={isTokenAccessDialogOpen}
-        onOpenChange={(open) => {
-          if (open) {
-            setIsTokenAccessDialogOpen(true)
-            return
-          }
-          closeTokenAccessDialog()
-        }}
-      >
-        <DialogContent className="token-access-modal max-w-xl">
-          <DialogHeader>
-            <DialogTitle>{publicStrings.tokenAccess.dialog.title}</DialogTitle>
-            <DialogDescription>{publicStrings.tokenAccess.dialog.description}</DialogDescription>
-          </DialogHeader>
-          <TokenSecretField
-            inputId="access-token-modal"
-            inputRef={accessTokenModalFieldRef}
-            name="not-a-login-field"
-            value={tokenDraft}
-            visible={tokenVisible}
-            copyState={copyState}
-            onValueChange={setTokenDraft}
-            onToggleVisibility={() => setTokenVisible((prev) => !prev)}
-            onCopy={() => handleCopyToken(tokenDraft.trim())}
-            label={publicStrings.accessToken.label}
-            placeholder={publicStrings.accessToken.placeholder}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            aria-autocomplete="none"
-            inputMode="text"
-            data-1p-ignore="true"
-            data-lpignore="true"
-            data-form-type="other"
-            visibilityShowLabel={publicStrings.accessToken.toggle.show}
-            visibilityHideLabel={publicStrings.accessToken.toggle.hide}
-            visibilityIconAlt={publicStrings.accessToken.toggle.iconAlt}
-            copyAriaLabel={publicStrings.copyToken.iconAlt}
-            copyLabel={publicStrings.copyToken.copy}
-            copiedLabel={publicStrings.copyToken.copied}
-            copyErrorLabel={publicStrings.copyToken.error}
-            copyDisabled={tokenDraft.trim().length === 0}
-          />
-          <p className="opacity-80" style={{ marginTop: 14, marginBottom: 0 }}>
-            {publicStrings.tokenAccess.dialog.loginHint}{' '}
-            <a
-              href="/auth/linuxdo"
-              className="link"
-              onClick={(event) => {
-                event.preventDefault()
-                startLinuxDoLogin(tokenDraft)
-              }}
-            >
-              {publicStrings.linuxDoLogin.button}
-            </a>
-          </p>
-          <div className="modal-action">
-            <Button type="button" variant="outline" onClick={closeTokenAccessDialog}>
-              {publicStrings.tokenAccess.dialog.actions.cancel}
-            </Button>
-            <Button type="button" onClick={confirmTokenAccessDialog} disabled={!isFullToken(tokenDraft.trim())}>
-              {publicStrings.tokenAccess.dialog.actions.confirm}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </main>
   )
 }
@@ -992,58 +954,6 @@ export const __testables = {
   buildGuideContent,
 }
 
-function MobileGuideDropdown({
-  active,
-  onChange,
-  labels,
-  triggerClassName = 'w-full',
-  triggerLabel,
-}: {
-  active: GuideKey
-  onChange: (id: GuideKey) => void
-  labels: { id: GuideKey, label: string }[]
-  triggerClassName?: string
-  triggerLabel?: string
-}): JSX.Element {
-  const current = labels.find((l) => l.id === active)
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button type="button" variant="outline" size="sm" className={`${triggerClassName} justify-between md:h-10`}>
-          <span className="inline-flex items-center gap-2">
-            <Icon
-              icon={getGuideClientIconName(active)}
-              width={18}
-              height={18}
-              aria-hidden="true"
-              style={{ color: '#475569' }}
-            />
-            {triggerLabel ?? current?.label ?? active}
-          </span>
-          <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" style={{ color: '#647589' }} />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="guide-select-menu p-1">
-        {labels.map((tab) => (
-          <DropdownMenuItem
-            key={tab.id}
-            className={`flex items-center gap-2 ${tab.id === active ? 'bg-accent/45 text-accent-foreground' : ''}`}
-            onSelect={() => onChange(tab.id)}
-          >
-              <Icon
-                icon={getGuideClientIconName(tab.id)}
-                width={16}
-                height={16}
-                aria-hidden="true"
-                style={{ color: '#475569' }}
-              />
-              <span className="truncate">{tab.label}</span>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
 function buildGuideContent(language: Language, baseUrl: string, prettyToken: string): Record<GuideKey, GuideContent> {
   const isEnglish = language === 'en'
   const codexSnippet = buildCodexSnippet(baseUrl)
