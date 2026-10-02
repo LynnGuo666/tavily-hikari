@@ -1,7 +1,13 @@
+import { Field, FieldLabel, FieldGroup } from '@/components/ui/field'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
+import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import DateTimeRangeField from '../components/DateTimeRangeField'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 import {
   Dialog,
   DialogContent,
@@ -194,18 +200,18 @@ export function AdminUserDetailQuotaWorkspace({
   }
 
   return (
-    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-detail-quota-workspace" id="user-detail-quota">
-      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+    <Card className="surface panel user-detail-quota-workspace" id="user-detail-quota">
+      <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
         <div>
-          <h2>{usersStrings.quota.title}</h2>
-          <p className="panel-description text-sm text-muted-foreground">{usersStrings.quota.description}</p>
+          <CardTitle role="heading" aria-level={2}>{usersStrings.quota.title}</CardTitle>
+          <CardDescription className="panel-description">{usersStrings.quota.description}</CardDescription>
         </div>
-      </div>
+      </CardHeader>
 
       {hasBlockAllTag && (
-        <div className="alert border-warning/40 bg-warning/10 text-warning" role="status">
+        <Alert className="border-warning/40 bg-warning/10 text-warning" role="status"><AlertDescription>
           {usersStrings.effectiveQuota.blockAllNotice}
-        </div>
+        </AlertDescription></Alert>
       )}
 
       <div className="user-detail-quota-breakdown">
@@ -252,13 +258,12 @@ export function AdminUserDetailQuotaWorkspace({
                 <DialogTitle>{rechargeStrings.entitlementCreate}</DialogTitle>
                 <DialogDescription>{rechargeStrings.entitlementDescription}</DialogDescription>
               </DialogHeader>
-              <div className="user-detail-entitlement-form user-detail-entitlement-form--dialog">
-                <label>
-                  <span>{rechargeStrings.entitlementScope}</span>
-                  <select
+              <FieldGroup className="user-detail-entitlement-form user-detail-entitlement-form--dialog grid gap-4 sm:grid-cols-2">
+                <Field data-disabled={entitlementBusy}>
+                  <FieldLabel htmlFor="user-entitlement-scope">{rechargeStrings.entitlementScope}</FieldLabel>
+                  <Select
                     value={entitlementForm.scopeKind}
-                    onChange={(event) => {
-                      const value = event.target.value
+                    onValueChange={(value) => {
                       setEntitlementForm((current) => ({
                         ...current,
                         scopeKind: value === 'permanent' ? 'permanent' : value === 'month' ? 'month' : 'base',
@@ -266,21 +271,24 @@ export function AdminUserDetailQuotaWorkspace({
                     }}
                     disabled={entitlementBusy}
                   >
-                    <option value="base">{rechargeStrings.entitlementScopeBase}</option>
-                    <option value="month">{rechargeStrings.entitlementScopeMonth}</option>
-                    <option value="permanent">{rechargeStrings.entitlementScopePermanent}</option>
-                  </select>
-                </label>
-                <label>
-                  <span>{rechargeStrings.entitlementMonth}</span>
-                  <input
-                    className="input input-bordered"
+                    <SelectTrigger id="user-entitlement-scope" className="w-full"><SelectValue /></SelectTrigger>
+                    <SelectContent><SelectGroup>
+                    <SelectItem value="base">{rechargeStrings.entitlementScopeBase}</SelectItem>
+                    <SelectItem value="month">{rechargeStrings.entitlementScopeMonth}</SelectItem>
+                    <SelectItem value="permanent">{rechargeStrings.entitlementScopePermanent}</SelectItem>
+                    </SelectGroup></SelectContent>
+                  </Select>
+                </Field>
+                <Field data-disabled={entitlementBusy || entitlementForm.scopeKind !== 'month'}>
+                  <FieldLabel htmlFor="user-entitlement-month">{rechargeStrings.entitlementMonth}</FieldLabel>
+                  <Input
+                    id="user-entitlement-month"
                     type="month"
                     value={entitlementForm.month}
                     onChange={(event) => setEntitlementForm((current) => ({ ...current, month: event.target.value }))}
                     disabled={entitlementBusy || entitlementForm.scopeKind !== 'month'}
                   />
-                </label>
+                </Field>
                 <EntitlementDeltaField
                   name="businessCalls1hDelta"
                   label={usersStrings.quota.hourly}
@@ -302,20 +310,20 @@ export function AdminUserDetailQuotaWorkspace({
                   disabled={entitlementBusy}
                   onChange={(value) => setEntitlementForm((current) => ({ ...current, monthlyCreditsDelta: value }))}
                 />
-                <label className="user-detail-entitlement-note">
-                  <span>{rechargeStrings.entitlementBackendNote}</span>
-                  <textarea value={entitlementForm.backendNote} onChange={(event) => setEntitlementForm((current) => ({ ...current, backendNote: event.target.value }))} disabled={entitlementBusy} />
-                </label>
-                <label className="user-detail-entitlement-note">
-                  <span>{rechargeStrings.entitlementFrontendNote}</span>
-                  <textarea value={entitlementForm.frontendNote} onChange={(event) => setEntitlementForm((current) => ({ ...current, frontendNote: event.target.value }))} disabled={entitlementBusy} />
-                </label>
+                <Field className="user-detail-entitlement-note" data-disabled={entitlementBusy}>
+                  <FieldLabel htmlFor="user-entitlement-backend-note">{rechargeStrings.entitlementBackendNote}</FieldLabel>
+                  <Textarea id="user-entitlement-backend-note" value={entitlementForm.backendNote} onChange={(event) => setEntitlementForm((current) => ({ ...current, backendNote: event.target.value }))} disabled={entitlementBusy} />
+                </Field>
+                <Field className="user-detail-entitlement-note" data-disabled={entitlementBusy}>
+                  <FieldLabel htmlFor="user-entitlement-frontend-note">{rechargeStrings.entitlementFrontendNote}</FieldLabel>
+                  <Textarea id="user-entitlement-frontend-note" value={entitlementForm.frontendNote} onChange={(event) => setEntitlementForm((current) => ({ ...current, frontendNote: event.target.value }))} disabled={entitlementBusy} />
+                </Field>
                 <div className="user-detail-entitlement-dialog-actions">
                   <Button type="button" onClick={() => void submitEntitlement()} disabled={entitlementBusy}>
                     {entitlementBusy ? rechargeStrings.entitlementSaving : rechargeStrings.entitlementCreate}
                   </Button>
                 </div>
-              </div>
+              </FieldGroup>
               {entitlementError && <p className="admin-recharge-dialog-error" role="status">{entitlementError}</p>}
             </DialogContent>
           </Dialog>
@@ -331,10 +339,12 @@ export function AdminUserDetailQuotaWorkspace({
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="start">
-              <SelectItem value="all">{rechargeStrings.entitlementScopeAll}</SelectItem>
-              <SelectItem value="base">{rechargeStrings.entitlementScopeBase}</SelectItem>
-              <SelectItem value="month">{rechargeStrings.entitlementScopeMonth}</SelectItem>
-              <SelectItem value="permanent">{rechargeStrings.entitlementScopePermanent}</SelectItem>
+              <SelectGroup>
+                <SelectItem value="all">{rechargeStrings.entitlementScopeAll}</SelectItem>
+                <SelectItem value="base">{rechargeStrings.entitlementScopeBase}</SelectItem>
+                <SelectItem value="month">{rechargeStrings.entitlementScopeMonth}</SelectItem>
+                <SelectItem value="permanent">{rechargeStrings.entitlementScopePermanent}</SelectItem>
+              </SelectGroup>
             </SelectContent>
           </Select>
           <DateTimeRangeField
@@ -366,7 +376,7 @@ export function AdminUserDetailQuotaWorkspace({
           formatSignedQuotaDelta={formatSignedQuotaDelta}
         />
       </div>
-    </section>
+    </Card>
   )
 }
 
@@ -386,9 +396,9 @@ function EntitlementDeltaField({
   const parsedValue = parseSignedDeltaInput(value)
   const inputId = `${name}-entitlement-delta`
   return (
-    <div className="user-detail-entitlement-delta-control">
+    <Field className="user-detail-entitlement-delta-control" data-disabled={disabled}>
       <div className="user-detail-entitlement-delta-head">
-        <label htmlFor={inputId}>{label}</label>
+        <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
         <Input
           id={inputId}
           type="text"
@@ -422,7 +432,7 @@ function EntitlementDeltaField({
         aria-valuetext={String(parsedValue)}
         disabled={disabled}
       />
-    </div>
+    </Field>
   )
 }
 
@@ -437,44 +447,44 @@ function EntitlementTable({
   locale: string
   formatSignedQuotaDelta: (value: number) => string
 }) {
-  if (items.length === 0) return <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.entitlementEmpty}</div>
+  if (items.length === 0) return <Empty className="empty-state"><EmptyDescription>{strings.entitlementEmpty}</EmptyDescription></Empty>
   return (
     <div className="table-scroll-shell admin-recharge-quota-table-scroll" data-table-density="compact">
-      <table className="admin-recharge-quota-table user-detail-entitlement-table" data-table-density="compact">
-        <thead>
-          <tr>
-            <th>{strings.entitlementScope}</th>
-            <th>{strings.monthColumn}</th>
-            <th>{strings.entitlementDeltaColumns}</th>
-            <th>{strings.entitlementSource}</th>
-            <th>{strings.entitlementNotes}</th>
-            <th>{strings.entitlementActor}</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="admin-recharge-quota-table user-detail-entitlement-table" data-table-density="compact">
+        <TableHeader>
+          <TableRow>
+            <TableHead>{strings.entitlementScope}</TableHead>
+            <TableHead>{strings.monthColumn}</TableHead>
+            <TableHead>{strings.entitlementDeltaColumns}</TableHead>
+            <TableHead>{strings.entitlementSource}</TableHead>
+            <TableHead>{strings.entitlementNotes}</TableHead>
+            <TableHead>{strings.entitlementActor}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {items.map((item) => (
-            <tr key={item.id}>
-              <td>{formatEntitlementScope(item.scopeKind, strings)}</td>
-              <td>{item.scopeKind === 'month' ? formatMonth(item.monthStart, locale) : '—'}</td>
-              <td>
+            <TableRow key={item.id}>
+              <TableCell>{formatEntitlementScope(item.scopeKind, strings)}</TableCell>
+              <TableCell>{item.scopeKind === 'month' ? formatMonth(item.monthStart, locale) : '—'}</TableCell>
+              <TableCell>
                 <div className="token-compact-pair">
                   <span>{formatSignedQuotaDelta(item.businessCalls1hDelta)}</span>
                   <span>{formatSignedQuotaDelta(item.dailyCreditsDelta)}</span>
                   <span>{formatSignedQuotaDelta(item.monthlyCreditsDelta)}</span>
                 </div>
-              </td>
-              <td>{item.sourceKind}</td>
-              <td>
+              </TableCell>
+              <TableCell>{item.sourceKind}</TableCell>
+              <TableCell>
                 <div className="token-compact-pair">
                   <span>{item.backendNote}</span>
                   <span>{item.frontendNote}</span>
                 </div>
-              </td>
-              <td>{item.actorDisplayName || item.actorUserId || '—'}</td>
-            </tr>
+              </TableCell>
+              <TableCell>{item.actorDisplayName || item.actorUserId || '—'}</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   )
 }
@@ -572,8 +582,8 @@ function buildSignedDeltaSliderTrack(value: number): string {
   const current = toSignedDeltaSliderPercent(value)
   const start = Math.min(zero, current)
   const end = Math.max(zero, current)
-  const activeColor = value < 0 ? 'hsl(var(--legacy-destructive) / 0.46)' : 'hsl(var(--legacy-primary) / 0.5)'
-  return `linear-gradient(to right, hsl(var(--legacy-muted) / 0.5) 0% ${start}%, ${activeColor} ${start}% ${end}%, hsl(var(--legacy-muted) / 0.5) ${end}% 100%)`
+  const activeColor = value < 0 ? 'color-mix(in oklab, var(--destructive) 46%, transparent)' : 'color-mix(in oklab, var(--primary) 50%, transparent)'
+  return `linear-gradient(to right, color-mix(in oklab, var(--muted) 50%, transparent) 0% ${start}%, ${activeColor} ${start}% ${end}%, color-mix(in oklab, var(--muted) 50%, transparent) ${end}% 100%)`
 }
 
 function buildFallbackQuotaBreakdown(

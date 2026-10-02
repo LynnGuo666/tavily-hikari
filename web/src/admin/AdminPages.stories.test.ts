@@ -384,9 +384,9 @@ describe('AdminPages Storybook proofs', () => {
     expect(usageActiveOnlyMarkup).toContain('默认仅展示近 90 天内调用过接口的活跃用户。')
     expect(usageActiveOnlyMarkup).not.toContain('Charlie Li')
     expect(usageActiveOnlyMarkup.indexOf('data-testid="users-filter-status"')).toBeGreaterThan(-1)
-    expect(usageActiveOnlyMarkup.indexOf('<section class="surface panel flex')).toBeGreaterThan(-1)
+    expect(usageActiveOnlyMarkup.indexOf('data-slot="card"')).toBeGreaterThan(-1)
     expect(usageActiveOnlyMarkup.indexOf('data-testid="users-filter-status"')).toBeLessThan(
-      usageActiveOnlyMarkup.indexOf('<section class="surface panel flex'),
+      usageActiveOnlyMarkup.indexOf('data-slot="card"'),
     )
     expect(usageSearchAllMarkup).toContain('搜索已扩展到全部用户集合，避免遗漏非活跃用户。')
     expect(usageSearchAllMarkup).toContain('Charlie Li')
@@ -525,7 +525,7 @@ describe('AdminPages Storybook proofs', () => {
     expect(markup).toContain('36')
     expect(markup).toContain('34')
     expect(markup).toContain('2')
-    expect(markup).toContain('上限')
+    expect(markup).toContain('data-active-series="businessCalls1h"')
   })
 
   it('renders the user detail stories with add and delete token controls', () => {

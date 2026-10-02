@@ -8,6 +8,8 @@ services:
       PROXY_PORT: 8787
       PROXY_DB_PATH: /srv/app/data/tavily_proxy.db
       WEB_STATIC_DIR: /srv/app/web
+      ADMIN_AUTH_BUILTIN_ENABLED: "true"
+      ADMIN_AUTH_BUILTIN_PASSWORD: ${ADMIN_AUTH_BUILTIN_PASSWORD:?set ADMIN_AUTH_BUILTIN_PASSWORD in .env}
     ports:
       - "8787:8787"
     volumes:

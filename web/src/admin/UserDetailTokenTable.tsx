@@ -1,9 +1,10 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Icon } from '../lib/icons'
 import type { AdminUserTokenSummary } from '../api'
 import type { AdminTranslations } from '../i18n'
 import { StatusBadge } from '../components/StatusBadge'
 import { Button } from '@/components/ui/button'
-import { Table } from '@/components/ui/table'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 
 interface UserDetailTokenTableProps {
   tokens: AdminUserTokenSummary[]
@@ -25,31 +26,31 @@ export function UserDetailTokenTable({
   deletingTokenId = null,
 }: UserDetailTokenTableProps): JSX.Element {
   if (tokens.length === 0) {
-    return <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.noTokens}</div>
+    return <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.noTokens}</EmptyDescription></Empty>
   }
 
   return (
     <>
       <div className="hidden md:flex">
-        <Table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-user-tokens-table">
-          <thead>
-            <tr>
-              <th>{`${usersStrings.tokens.table.id} · ${usersStrings.tokens.table.note}`}</th>
-              <th>{`${usersStrings.tokens.table.status} · ${usersStrings.tokens.table.lastUsed}`}</th>
-              <th>{`${usersStrings.tokens.table.totalRequests} · ${usersStrings.tokens.table.createdAt}`}</th>
-              <th>{`${usersStrings.tokens.table.successDaily} · ${usersStrings.tokens.table.successMonthly}`}</th>
-              <th>{usersStrings.tokens.table.actions}</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="admin-user-tokens-table">
+          <TableHeader>
+            <TableRow>
+              <TableHead>{`${usersStrings.tokens.table.id} · ${usersStrings.tokens.table.note}`}</TableHead>
+              <TableHead>{`${usersStrings.tokens.table.status} · ${usersStrings.tokens.table.lastUsed}`}</TableHead>
+              <TableHead>{`${usersStrings.tokens.table.totalRequests} · ${usersStrings.tokens.table.createdAt}`}</TableHead>
+              <TableHead>{`${usersStrings.tokens.table.successDaily} · ${usersStrings.tokens.table.successMonthly}`}</TableHead>
+              <TableHead>{usersStrings.tokens.table.actions}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {tokens.map((token) => {
               const successDailyText = `${formatNumber(token.dailySuccess)} / ${formatNumber(token.dailyFailure)}`
               const canDelete = tokens.length > 1
               const isDeleting = deletingTokenId === token.tokenId
               const deleteLabel = canDelete ? usersStrings.tokens.actions.delete : usersStrings.tokens.actions.deleteDisabled
               return (
-                <tr key={token.tokenId}>
-                  <td>
+                <TableRow key={token.tokenId}>
+                  <TableCell>
                     <div className="token-compact-pair">
                       <div className="token-compact-field">
                         <code className="token-compact-value">{token.tokenId}</code>
@@ -58,8 +59,8 @@ export function UserDetailTokenTable({
                         <span className="token-compact-value">{token.note || '—'}</span>
                       </div>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div className="token-compact-pair">
                       <div className="token-compact-field">
                         <StatusBadge tone={token.enabled ? 'success' : 'neutral'}>
@@ -70,8 +71,8 @@ export function UserDetailTokenTable({
                         <span className="token-compact-value">{formatTimestamp(token.lastUsedAt)}</span>
                       </div>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div className="token-compact-pair">
                       <div className="token-compact-field">
                         <span className="token-compact-label">{usersStrings.tokens.table.totalRequests}</span>
@@ -82,8 +83,8 @@ export function UserDetailTokenTable({
                         <span className="token-compact-value">{formatTimestamp(token.createdAt)}</span>
                       </div>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div className="token-compact-pair">
                       <div className="token-compact-field">
                         <span className="token-compact-label">{usersStrings.tokens.table.successDaily}</span>
@@ -94,8 +95,8 @@ export function UserDetailTokenTable({
                         <span className="token-compact-value">{formatNumber(token.monthlySuccess)}</span>
                       </div>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div className="admin-user-token-actions">
                       <Button
                         type="button"
@@ -121,11 +122,11 @@ export function UserDetailTokenTable({
                         <Icon icon={isDeleting ? 'mdi:progress-helper' : 'mdi:trash-outline'} width={16} height={16} />
                       </Button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               )
             })}
-          </tbody>
+          </TableBody>
         </Table>
       </div>
 

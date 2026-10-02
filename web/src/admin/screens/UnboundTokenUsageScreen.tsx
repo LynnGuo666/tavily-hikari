@@ -1,3 +1,7 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { TableBody, TableRow, TableCell, TableHeader, TableHead } from '@/components/ui/table'
 import type { ReactNode } from 'react'
 
 import AdminLoadingRegion from '../../components/AdminLoadingRegion'
@@ -85,7 +89,7 @@ export function UnboundTokenUsageScreen({
         searchControls={searchControls}
       />
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         <AdminTableShell
           className="overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table"
@@ -95,19 +99,19 @@ export function UnboundTokenUsageScreen({
           minHeight={360}
         >
           {items.length === 0 ? (
-            <tbody>
-              <tr>
-                <td colSpan={10}>
-                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{unboundTokenUsageStrings.empty.none}</div>
-                </td>
-              </tr>
-            </tbody>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={10}>
+                  <Empty className="empty-state"><EmptyDescription>{unboundTokenUsageStrings.empty.none}</EmptyDescription></Empty>
+                </TableCell>
+              </TableRow>
+            </TableBody>
           ) : (
             <>
-              <thead>
-                <tr>
-                  <th>{unboundTokenUsageStrings.table.identity}</th>
-                  <th>{unboundTokenUsageStrings.table.status}</th>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{unboundTokenUsageStrings.table.identity}</TableHead>
+                  <TableHead>{unboundTokenUsageStrings.table.status}</TableHead>
                   <AdminUsersSortableHeader
                     label={unboundTokenUsageStrings.table.hourlyAny}
                     field="hourlyAnyUsed"
@@ -166,9 +170,9 @@ export function UnboundTokenUsageScreen({
                     activeOrder={activeSortOrder}
                     onToggle={onToggleSort}
                   />
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {items.map((item) => {
                   const requestRate = resolveRequestRate(item, 'token')
                   const requestRateMetric = formatQuotaStackValue(requestRate.used, requestRate.limit)
@@ -190,42 +194,42 @@ export function UnboundTokenUsageScreen({
                     language,
                   )
                   return (
-                    <tr key={item.tokenId} data-token-row={item.tokenId}>
-                      <td className="admin-users-identity-cell">
-                        <button
+                    <TableRow key={item.tokenId} data-token-row={item.tokenId}>
+                      <TableCell className="admin-users-identity-cell">
+                        <Button
                           type="button"
-                          className="link-button admin-users-identity-button"
+                          variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
                           data-token-identity={item.tokenId}
                           onClick={() => onOpenToken(item.tokenId)}
                         >
                           <strong>{item.tokenId}</strong>
-                        </button>
+                        </Button>
                         <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
                           {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StatusBadge tone={item.enabled ? 'success' : 'neutral'}>
                           {item.enabled ? usersStrings.status.enabled : usersStrings.status.disabled}
                         </StatusBadge>
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...requestRateMetric} />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...hourlyMetric} />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...dailyQuotaMetric} />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...monthlyQuotaMetric} />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         {monthlyBrokenMetric == null ? (
                           <AdminTableValueStack primary="—" />
                         ) : (
-                          <div className="admin-table-value-stack">
+                          <div className="admin-table-value-stack flex flex-col gap-1">
                             <MonthlyBrokenCountTrigger
                               count={item.monthlyBrokenCount ?? 0}
                               onOpen={() => onOpenMonthlyBrokenDrawer(item.tokenId, item.tokenId)}
@@ -235,20 +239,20 @@ export function UnboundTokenUsageScreen({
                             <span className="admin-table-value-secondary">{monthlyBrokenMetric.secondary}</span>
                           </div>
                         )}
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...dailySuccessMetric} />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...monthlySuccessMetric} />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...formatStackedTimestamp(item.lastUsedAt, language)} />
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   )
                 })}
-              </tbody>
+              </TableBody>
             </>
           )}
         </AdminTableShell>
@@ -261,7 +265,7 @@ export function UnboundTokenUsageScreen({
           minHeight={260}
         >
           {items.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{unboundTokenUsageStrings.empty.none}</div>
+            <Empty className="empty-state"><EmptyDescription>{unboundTokenUsageStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             items.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
@@ -270,13 +274,13 @@ export function UnboundTokenUsageScreen({
                   <div className="admin-mobile-identity-block">
                     <div className="admin-mobile-identity-row">
                       <span className="admin-mobile-identity-label">{unboundTokenUsageStrings.table.identity}</span>
-                      <button
+                      <Button
                         type="button"
-                        className="link-button admin-users-mobile-link"
+                        variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
                         onClick={() => onOpenToken(item.tokenId)}
                       >
                         <strong>{item.tokenId}</strong>
-                      </button>
+                      </Button>
                     </div>
                     <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta">
                       {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
@@ -309,13 +313,13 @@ export function UnboundTokenUsageScreen({
                     {item.monthlyBrokenCount == null || item.monthlyBrokenLimit == null ? (
                       <strong>—</strong>
                     ) : item.monthlyBrokenCount > 0 ? (
-                      <button
+                      <Button
                         type="button"
-                        className="link-button"
+                        variant="link" size="sm" className="h-auto p-0"
                         onClick={() => onOpenMonthlyBrokenDrawer(item.tokenId, item.tokenId)}
                       >
                         <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
-                      </button>
+                      </Button>
                     ) : (
                       <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
                     )}
@@ -339,7 +343,7 @@ export function UnboundTokenUsageScreen({
         </AdminLoadingRegion>
 
         {pagination}
-      </section>
+      </Card>
     </>
   )
 }

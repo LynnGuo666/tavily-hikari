@@ -1,3 +1,4 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { useMemo, useState } from 'react'
 
 import type { Announcement } from '../api'
@@ -281,9 +282,9 @@ export default function UserConsoleAnnouncements({
           </DrawerHeader>
           <div className="user-console-announcement-history-list flex flex-col gap-3 overflow-y-auto p-4 pt-0">
             {historyAnnouncements.length === 0 ? (
-              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">
+              <Empty className="empty-state rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>
                 {strings.emptyHistory}
-              </div>
+              </EmptyDescription></Empty>
             ) : (
               historyAnnouncements.map((item) => {
                 const parsed = parseAnnouncementContent(item.content)

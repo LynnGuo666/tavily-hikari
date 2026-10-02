@@ -889,7 +889,7 @@ function PublicHome(): JSX.Element {
             closeTokenAccessDialog()
           }}
         >
-          <DialogContent className="max-w-xl">
+          <DialogContent className="sm:max-w-xl">
             <DialogHeader>
               <DialogTitle>{publicStrings.tokenAccess.dialog.title}</DialogTitle>
               <DialogDescription>{publicStrings.tokenAccess.dialog.description}</DialogDescription>

@@ -1,3 +1,7 @@
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { Icon } from '../../lib/icons'
 import type { StoryObj } from '@storybook/react-vite'
 import { addons } from 'storybook/preview-api'
@@ -62,11 +66,11 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { UserTagBindingControls } from '../UserTagBindingControls'
-import { Card } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { translations, useLanguage, type AdminTranslations } from '../../i18n'
 import { KeyDetails } from '../../AdminDashboard'
@@ -2143,35 +2147,35 @@ function StoryMonthlyBrokenDrawer({
     <Drawer open={open} onOpenChange={onOpenChange} shouldScaleBackground={false}>
       <DrawerContent className="request-entity-drawer-content-fit">
         <div className="request-entity-drawer-body-fit">
-          <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-            <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+          <Card className="surface panel">
+            <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
               <div>
-                <h2>{users.brokenKeys.drawerTitle}</h2>
-                <p className="panel-description text-sm text-muted-foreground">
+                <CardTitle role="heading" aria-level={2}>{users.brokenKeys.drawerTitle}</CardTitle>
+                <CardDescription className="panel-description">
                   {users.brokenKeys.drawerDescription.replace('{label}', label)}
-                </p>
+                </CardDescription>
               </div>
-            </div>
+            </CardHeader>
             {items.length === 0 ? (
-              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{users.brokenKeys.empty}</div>
+              <Empty className="empty-state"><EmptyDescription>{users.brokenKeys.empty}</EmptyDescription></Empty>
             ) : (
               <>
                 <div className="table-wrapper overflow-hidden rounded-lg border hidden md:flex">
-                  <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b">
-                    <thead>
-                      <tr>
-                        <th>{users.brokenKeys.table.key}</th>
-                        <th>{users.brokenKeys.table.status}</th>
-                        <th>{users.brokenKeys.table.reason}</th>
-                        <th>{users.brokenKeys.table.latestBreakAt}</th>
-                        <th>{users.brokenKeys.table.breaker}</th>
-                        <th>{users.brokenKeys.table.relatedUsers}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <Table >
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{users.brokenKeys.table.key}</TableHead>
+                        <TableHead>{users.brokenKeys.table.status}</TableHead>
+                        <TableHead>{users.brokenKeys.table.reason}</TableHead>
+                        <TableHead>{users.brokenKeys.table.latestBreakAt}</TableHead>
+                        <TableHead>{users.brokenKeys.table.breaker}</TableHead>
+                        <TableHead>{users.brokenKeys.table.relatedUsers}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                       {items.map((item) => (
-                        <tr key={`${item.keyId}:${item.latestBreakAt}`}>
-                          <td>
+                        <TableRow key={`${item.keyId}:${item.latestBreakAt}`}>
+                          <TableCell>
                             <StoryMonthlyBrokenKeyValue
                               keyId={item.keyId}
                               ungroupedLabel={keyStrings.groups.ungrouped}
@@ -2181,25 +2185,25 @@ function StoryMonthlyBrokenDrawer({
                               copied={copiedKeyId === item.keyId}
                               onCopy={() => handleCopy(item.keyId)}
                             />
-                          </td>
-                          <td>
+                          </TableCell>
+                          <TableCell>
                             <StatusBadge tone={item.currentStatus === 'quarantined' ? 'warning' : 'error'}>
                               {admin.statuses[item.currentStatus] ?? item.currentStatus}
                             </StatusBadge>
-                          </td>
-                          <td>{item.reasonSummary || item.reasonCode || users.brokenKeys.noReason}</td>
-                          <td>{formatTimestamp(item.latestBreakAt)}</td>
-                          <td>{formatMonthlyBrokenBreaker(item, users.brokenKeys)}</td>
-                          <td>
+                          </TableCell>
+                          <TableCell>{item.reasonSummary || item.reasonCode || users.brokenKeys.noReason}</TableCell>
+                          <TableCell>{formatTimestamp(item.latestBreakAt)}</TableCell>
+                          <TableCell>{formatMonthlyBrokenBreaker(item, users.brokenKeys)}</TableCell>
+                          <TableCell>
                             {formatMonthlyBrokenRelatedUsers(
                               item.relatedUsers,
                               users.brokenKeys.noRelatedUsers,
                             )}
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
                 <div className="flex flex-col gap-3 md:hidden flex md:hidden">
                   {items.map((item) => (
@@ -2248,7 +2252,7 @@ function StoryMonthlyBrokenDrawer({
                 </div>
               </>
             )}
-          </section>
+          </Card>
         </div>
       </DrawerContent>
     </Drawer>
@@ -2267,15 +2271,15 @@ function MonthlyBrokenDrawerStoryCanvas({
       activeModule="users"
       overlays={<StoryMonthlyBrokenDrawer open label={label} items={items} onOpenChange={() => undefined} />}
     >
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
-            <h2>Blocked-key Drawer Sandbox</h2>
-            <p className="panel-description text-sm text-muted-foreground">Focused Storybook surface for verifying adaptive drawer height.</p>
+            <CardTitle role="heading" aria-level={2}>Blocked-key Drawer Sandbox</CardTitle>
+            <CardDescription className="panel-description">Focused Storybook surface for verifying adaptive drawer height.</CardDescription>
           </div>
-        </div>
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">Background reference only. Use the open drawer to inspect sizing.</div>
-      </section>
+        </CardHeader>
+        <Empty className="empty-state"><EmptyDescription>Background reference only. Use the open drawer to inspect sizing.</EmptyDescription></Empty>
+      </Card>
     </AdminPageFrame>
   )
 }
@@ -2616,7 +2620,7 @@ function StoryAdminUsersSortableHeader<Field extends string>({
     </Button>
   )
   return (
-    <th aria-sort={ariaSort}>
+    <TableHead aria-sort={ariaSort}>
       {hasTooltip ? (
         <Tooltip>
           <TooltipTrigger asChild>{trigger}</TooltipTrigger>
@@ -2625,7 +2629,7 @@ function StoryAdminUsersSortableHeader<Field extends string>({
       ) : (
         trigger
       )}
-    </th>
+    </TableHead>
   )
 }
 
@@ -2842,9 +2846,9 @@ function StoryUserTagCatalogCard({
 
       <div className="user-tag-catalog-body">
         {isBlockAll ? (
-          <div className="alert border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note">
+          <Alert className="border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note"><AlertDescription>
             {users.catalog.blockDescription}
-          </div>
+          </AlertDescription></Alert>
         ) : (
           <dl className="user-tag-catalog-delta-grid">
             {([
@@ -3290,19 +3294,19 @@ export function AdminPageFrame({
             <AdminShellSidebarUtility>
               <AdminSidebarUtilityStack>
                 <AdminSidebarUtilityCard>
-                  <div className="admin-sidebar-utility-toolbar">
+                  <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
                     <ThemeToggle />
                     <LanguageSwitcher />
                   </div>
-                  <div className="admin-sidebar-utility-meta">
-                    <div className="user-badge user-badge-admin" title="Ops Admin">
-                      <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />
+                  <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+                    <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
+                      <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
                       <span>Ops Admin</span>
                     </div>
                   </div>
                 </AdminSidebarUtilityCard>
                 <AdminSidebarUtilityCard>
-                  <div className="admin-sidebar-utility-actions">
+                  <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
                     {sidebarUtilityActions ?? <>
                       <AdminReturnToConsoleLink label={admin.header.returnToConsole} href="/console" className="admin-sidebar-utility-action" />
                       <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
@@ -3617,74 +3621,74 @@ function TokensPageCanvas(): JSX.Element {
   const tokenStrings = admin.tokens
   const tokenToolbar = (
     <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--tokens">
-      <button
+      <Button
         type="button"
-        className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 admin-token-toolbar-secondary-action"
+        variant="outline" size="sm" className="admin-token-toolbar-secondary-action"
         aria-label={tokenStrings.actions.viewLeaderboard}
       >
         <Icon icon="mdi:chart-timeline-variant" width={16} height={16} aria-hidden="true" />
         <span>{tokenStrings.actions.viewLeaderboard}</span>
-      </button>
+      </Button>
       <div className="flex flex-wrap items-center gap-2 admin-module-toolbar-actions--tokens">
-        <input
+        <Input
           type="text"
-          className="input input-bordered"
+
           readOnly
           value="marketing-ab-test"
           aria-label={tokenStrings.notePlaceholder}
         />
-        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50">
+        <Button type="button" variant="default" size="sm">
           {tokenStrings.newToken}
-        </button>
-        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
+        </Button>
+        <Button type="button" variant="outline" size="sm">
           {tokenStrings.batchCreate}
-        </button>
+        </Button>
       </div>
     </div>
   )
 
   return (
     <AdminPageFrame activeModule="tokens" introActions={tokenToolbar}>
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         <div className="block md:hidden">
           {tokenToolbar}
         </div>
         <div className="token-filters-bar">
           <div className="token-filter-search">
-            <input type="text" className="input input-bordered" readOnly value="legacy" aria-label={tokenStrings.filters.searchPlaceholder} />
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs">
+            <Input type="text"  readOnly value="legacy" aria-label={tokenStrings.filters.searchPlaceholder} />
+            <Button type="button" variant="outline" size="xs">
               <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
               {tokenStrings.filters.search}
-            </button>
+            </Button>
           </div>
           {[
             `${tokenStrings.groups.label}: legacy`,
             `${tokenStrings.filters.owner}: ${tokenStrings.filters.ownerUnbound}`,
             `${tokenStrings.filters.quota}: ${tokenStrings.filters.quotaAll}`,
             `${tokenStrings.filters.status}: ${tokenStrings.filters.statusFrozen}`,
-          ].map((label) => <button key={label} type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs token-filter-select">{label}</button>)}
-          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs">{tokenStrings.filters.clear}</button>
+          ].map((label) => <Button key={label} type="button" variant="outline" size="xs" className="token-filter-select">{label}</Button>)}
+          <Button type="button" variant="ghost" size="xs">{tokenStrings.filters.clear}</Button>
         </div>
 
         <div className="table-wrapper overflow-hidden rounded-lg border admin-users-usage-table-wrapper">
-          <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b tokens-table">
-            <thead>
-              <tr>
-                <th className="token-select-col"><input type="checkbox" className="token-selection-checkbox" checked readOnly aria-label="selected page" /></th>
-                <th className="token-id-col">{tokenStrings.table.id}</th>
-                <th>{tokenStrings.table.owner}</th>
-                <th>{tokenStrings.table.note}</th>
-                <th>{tokenStrings.table.usage}</th>
-                <th>{tokenStrings.table.quota}</th>
-                <th>{tokenStrings.table.lastUsed}</th>
-                <th>{tokenStrings.table.actions}</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table className="tokens-table">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="token-select-col"><Checkbox className="token-selection-checkbox" checked disabled aria-label="selected page" /></TableHead>
+                <TableHead className="token-id-col">{tokenStrings.table.id}</TableHead>
+                <TableHead>{tokenStrings.table.owner}</TableHead>
+                <TableHead>{tokenStrings.table.note}</TableHead>
+                <TableHead>{tokenStrings.table.usage}</TableHead>
+                <TableHead>{tokenStrings.table.quota}</TableHead>
+                <TableHead>{tokenStrings.table.lastUsed}</TableHead>
+                <TableHead>{tokenStrings.table.actions}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {MOCK_TOKENS.map((token) => (
-                <tr key={token.id}>
-                  <td className="token-select-col"><input type="checkbox" className="token-selection-checkbox" checked={token.id === 'Lt2R' || token.id === 'Q4sE'} readOnly aria-label={token.id} /></td>
-                  <td className="token-id-col">
+                <TableRow key={token.id}>
+                  <TableCell className="token-select-col"><Checkbox className="token-selection-checkbox" checked={token.id === 'Lt2R' || token.id === 'Q4sE'} disabled aria-label={token.id} /></TableCell>
+                  <TableCell className="token-id-col">
                     <div className="token-id-cell">
                       <code className="token-id-code">{token.id}</code>
                       <span className="token-status-slot" aria-hidden={token.enabled ? true : undefined} title={token.enabled ? undefined : tokenStrings.statusBadges.disabled}>
@@ -3693,53 +3697,53 @@ function TokensPageCanvas(): JSX.Element {
                         )}
                       </span>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div className="token-owner-block">
                       {token.owner ? (
-                        <button
+                        <Button
                           type="button"
-                          className="link-button token-owner-trigger"
+                          variant="link" size="sm" className="h-auto p-0 token-owner-trigger"
                           onClick={() => openAdminStory('admin-pages--user-detail')}
                         >
                           <span className="token-owner-link">{token.owner.displayName || token.owner.userId}</span>
                           {token.owner.username ? <span className="token-owner-secondary">@{token.owner.username}</span> : null}
-                        </button>
+                        </Button>
                       ) : (
                         <span className="token-owner-empty">{tokenStrings.owner.unbound}</span>
                       )}
                     </div>
-                  </td>
-                  <td>{token.note ?? '—'}</td>
-                  <td>{formatNumber(token.total_requests)}</td>
-                  <td>
+                  </TableCell>
+                  <TableCell>{token.note ?? '—'}</TableCell>
+                  <TableCell>{formatNumber(token.total_requests)}</TableCell>
+                  <TableCell>
                     <StatusBadge tone={tokenQuotaTone(token.quota_state)}>{tokenStrings.quotaStates[token.quota_state]}</StatusBadge>
-                  </td>
-                  <td>{formatTimestamp(token.last_used_at)}</td>
-                  <td className="jobs-message-cell">
+                  </TableCell>
+                  <TableCell>{formatTimestamp(token.last_used_at)}</TableCell>
+                  <TableCell className="jobs-message-cell">
                     <div className="table-actions">
-                      <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-circle inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" aria-label={tokenStrings.actions.copy}>
+                      <Button type="button" variant="ghost" size="icon-sm" aria-label={tokenStrings.actions.copy}>
                         C
-                      </button>
-                      <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-circle inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" aria-label={tokenStrings.actions.share}>
+                      </Button>
+                      <Button type="button" variant="ghost" size="icon-sm" aria-label={tokenStrings.actions.share}>
                         S
-                      </button>
-                      <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-circle inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" aria-label={tokenStrings.actions.delete}>
+                      </Button>
+                      <Button type="button" variant="ghost" size="icon-sm" aria-label={tokenStrings.actions.delete}>
                         D
-                      </button>
+                      </Button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
 
         <div className="table-pagination">
           <span className="panel-description text-sm text-muted-foreground">{tokenStrings.pagination.page.replace('{page}', '1').replace('{total}', '3')}</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{tokenStrings.pagination.prev}</button>
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{tokenStrings.pagination.next}</button>
+            <Button type="button" variant="outline" size="sm">{tokenStrings.pagination.prev}</Button>
+            <Button type="button" variant="outline" size="sm">{tokenStrings.pagination.next}</Button>
           </div>
         </div>
         <div className="token-bulk-action-panel" role="region" aria-live="polite">
@@ -3759,10 +3763,10 @@ function TokensPageCanvas(): JSX.Element {
                 {label}
               </button>
             ))}
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs token-bulk-clear-action">{tokenStrings.bulk.clear}</button>
+            <Button type="button" variant="ghost" size="xs" className="token-bulk-clear-action">{tokenStrings.bulk.clear}</Button>
           </div>
         </div>
-      </section>
+      </Card>
     </AdminPageFrame>
   )
 }
@@ -3943,28 +3947,28 @@ function KeysPageCanvas({
 
   return (
     <AdminPageFrame activeModule="keys">
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ flexWrap: 'wrap', gap: 12, alignItems: 'flex-start' }}>
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b" style={{ flexWrap: 'wrap', gap: 12, alignItems: 'flex-start' }}>
           <div style={{ flex: '1 1 320px', minWidth: 240 }}>
-            <h2>{keyStrings.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{keyStrings.description}</p>
+            <CardTitle role="heading" aria-level={2}>{keyStrings.title}</CardTitle>
+            <CardDescription className="panel-description">{keyStrings.description}</CardDescription>
           </div>
           <div style={{ ...keysQuickAddCardStyle, marginLeft: 'auto' }}>
             <div style={keysQuickAddActionsStyle}>
-              <input
+              <Input
                 type="text"
-                className="input input-bordered"
+
                 readOnly
                 value="tvly-prod-******"
                 aria-label={keyStrings.placeholder}
                 style={{ flex: '1 1 260px', minWidth: 260, maxWidth: '100%' }}
               />
-              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50 px-2.5 py-1 text-xs" style={{ whiteSpace: 'nowrap' }}>
+              <Button type="button" variant="default" size="xs" style={{ whiteSpace: 'nowrap' }}>
                 {keyStrings.addButton}
-              </button>
+              </Button>
             </div>
           </div>
-        </div>
+        </CardHeader>
 
         <div style={keysUtilityRowStyle}>
           <div style={keysFilterClusterStyle}>
@@ -3996,30 +4000,32 @@ function KeysPageCanvas({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
-                <DropdownMenuLabel>{keyStrings.groups.label}</DropdownMenuLabel>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  disabled={selectedGroups.length === 0}
-                  onSelect={(event) => {
-                    event.preventDefault()
-                    setSelectedGroups([])
-                  }}
-                >
-                  {keyStrings.filters.clearGroups}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {groupOptions.map((option) => (
-                  <DropdownMenuCheckboxItem
-                    key={option.value || '__ungrouped__'}
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>{keyStrings.groups.label}</DropdownMenuLabel>
+                  <DropdownMenuItem
                     className="cursor-pointer"
-                    checked={selectedGroups.includes(option.value)}
-                    onSelect={(event) => event.preventDefault()}
-                    onCheckedChange={() => setSelectedGroups((current) => toggleSelection(current, option.value))}
+                    disabled={selectedGroups.length === 0}
+                    onSelect={(event) => {
+                      event.preventDefault()
+                      setSelectedGroups([])
+                    }}
                   >
-                    <span>{option.label}</span>
-                    <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
-                  </DropdownMenuCheckboxItem>
-                ))}
+                    {keyStrings.filters.clearGroups}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {groupOptions.map((option) => (
+                    <DropdownMenuCheckboxItem
+                      key={option.value || '__ungrouped__'}
+                      className="cursor-pointer"
+                      checked={selectedGroups.includes(option.value)}
+                      onSelect={(event) => event.preventDefault()}
+                      onCheckedChange={() => setSelectedGroups((current) => toggleSelection(current, option.value))}
+                    >
+                      <span>{option.label}</span>
+                      <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
@@ -4035,30 +4041,32 @@ function KeysPageCanvas({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
-                <DropdownMenuLabel>{keyStrings.filters.status}</DropdownMenuLabel>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  disabled={selectedStatuses.length === 0}
-                  onSelect={(event) => {
-                    event.preventDefault()
-                    setSelectedStatuses([])
-                  }}
-                >
-                  {keyStrings.filters.clearStatuses}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {statusOptions.map((option) => (
-                  <DropdownMenuCheckboxItem
-                    key={option.value}
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>{keyStrings.filters.status}</DropdownMenuLabel>
+                  <DropdownMenuItem
                     className="cursor-pointer"
-                    checked={selectedStatuses.includes(option.value)}
-                    onSelect={(event) => event.preventDefault()}
-                    onCheckedChange={() => setSelectedStatuses((current) => toggleSelection(current, option.value))}
+                    disabled={selectedStatuses.length === 0}
+                    onSelect={(event) => {
+                      event.preventDefault()
+                      setSelectedStatuses([])
+                    }}
                   >
-                    <span>{option.label}</span>
-                    <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
-                  </DropdownMenuCheckboxItem>
-                ))}
+                    {keyStrings.filters.clearStatuses}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {statusOptions.map((option) => (
+                    <DropdownMenuCheckboxItem
+                      key={option.value}
+                      className="cursor-pointer"
+                      checked={selectedStatuses.includes(option.value)}
+                      onSelect={(event) => event.preventDefault()}
+                      onCheckedChange={() => setSelectedStatuses((current) => toggleSelection(current, option.value))}
+                    >
+                      <span>{option.label}</span>
+                      <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
@@ -4074,30 +4082,32 @@ function KeysPageCanvas({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-72">
-                <DropdownMenuLabel>{keyStrings.filters.region}</DropdownMenuLabel>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  disabled={selectedRegions.length === 0}
-                  onSelect={(event) => {
-                    event.preventDefault()
-                    setSelectedRegions([])
-                  }}
-                >
-                  {keyStrings.filters.clearRegions}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {regionOptions.map((option) => (
-                  <DropdownMenuCheckboxItem
-                    key={option.value}
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>{keyStrings.filters.region}</DropdownMenuLabel>
+                  <DropdownMenuItem
                     className="cursor-pointer"
-                    checked={selectedRegions.includes(option.value)}
-                    onSelect={(event) => event.preventDefault()}
-                    onCheckedChange={() => setSelectedRegions((current) => toggleSelection(current, option.value))}
+                    disabled={selectedRegions.length === 0}
+                    onSelect={(event) => {
+                      event.preventDefault()
+                      setSelectedRegions([])
+                    }}
                   >
-                    <span>{option.label}</span>
-                    <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
-                  </DropdownMenuCheckboxItem>
-                ))}
+                    {keyStrings.filters.clearRegions}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {regionOptions.map((option) => (
+                    <DropdownMenuCheckboxItem
+                      key={option.value}
+                      className="cursor-pointer"
+                      checked={selectedRegions.includes(option.value)}
+                      onSelect={(event) => event.preventDefault()}
+                      onCheckedChange={() => setSelectedRegions((current) => toggleSelection(current, option.value))}
+                    >
+                      <span>{option.label}</span>
+                      <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -4179,75 +4189,73 @@ function KeysPageCanvas({
         ) : null}
 
         <div className="table-wrapper overflow-hidden rounded-lg border">
-          <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b api-keys-table api-keys-table--admin">
-            <thead>
-              <tr>
-                <th style={{ width: 52 }}>
+          <Table className="api-keys-table api-keys-table--admin">
+            <TableHeader>
+              <TableRow>
+                <TableHead style={{ width: 52 }}>
                   <label style={keySelectionCheckboxLabelStyle}>
-                    <input
-                      type="checkbox"
-                      checked={allVisibleKeysSelected}
+                    <Checkbox
+                      checked={selectedVisibleKeyCount > 0 && !allVisibleKeysSelected ? 'indeterminate' : allVisibleKeysSelected}
                       aria-label={keyStrings.selection.selectAll}
-                      onChange={(event) =>
-                        setSelectedKeyIds(event.currentTarget.checked ? pagedKeys.map((item) => item.id) : [])
+                      onCheckedChange={(checked) =>
+                        setSelectedKeyIds(checked === true ? pagedKeys.map((item) => item.id) : [])
                       }
                     />
                   </label>
-                </th>
-                <th>
+                </TableHead>
+                <TableHead>
                   <div style={tableHeaderStackStyle}>
                     <span style={tableFieldStyle}>{keyStrings.table.keyId}</span>
                     <span style={tableSecondaryFieldStyle}>{keyStrings.groups.label}</span>
                   </div>
-                </th>
-                <th>
+                </TableHead>
+                <TableHead>
                   <div style={tableHeaderStackStyle}>
                     <span style={tableFieldStyle}>{keyStrings.table.registration}</span>
                     <span style={tableSecondaryFieldStyle}>{keyStrings.table.registrationRegion}</span>
                   </div>
-                </th>
-                <th>
+                </TableHead>
+                <TableHead>
                   <div style={tableHeaderStackStyle}>
                     <span style={tableFieldStyle}>{keyStrings.table.status}</span>
                     <span style={tableSecondaryFieldStyle} aria-hidden="true">&nbsp;</span>
                   </div>
-                </th>
-                <th>
+                </TableHead>
+                <TableHead>
                   <div style={tableHeaderStackStyle}>
                     <span style={tableFieldStyle}>{keyStrings.table.success}</span>
                     <span style={tableSecondaryFieldStyle}>{keyStrings.table.errors}</span>
                   </div>
-                </th>
-                <th>
+                </TableHead>
+                <TableHead>
                   <div style={tableHeaderStackStyle}>
                     <span style={tableFieldStyle}>{keyStrings.table.quotaLeft}</span>
                     <span style={tableSecondaryFieldStyle} aria-hidden="true">&nbsp;</span>
                   </div>
-                </th>
-                <th>
+                </TableHead>
+                <TableHead>
                   <div style={tableHeaderStackStyle}>
                     <span style={tableFieldStyle}>{keyStrings.table.lastUsed}</span>
                     <span style={tableSecondaryFieldStyle}>{keyStrings.table.statusChanged}</span>
                   </div>
-                </th>
-                <th>
+                </TableHead>
+                <TableHead>
                   <div style={tableHeaderStackStyle}>
                     <span style={tableFieldStyle}>{keyStrings.table.actions}</span>
                     <span style={tableSecondaryFieldStyle} aria-hidden="true">&nbsp;</span>
                   </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {pagedKeys.map((item) => (
-                <tr key={item.id}>
-                  <td>
+                <TableRow key={item.id}>
+                  <TableCell>
                     <label style={keySelectionCheckboxLabelStyle}>
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={selectedKeyIds.includes(item.id)}
                         aria-label={`${keyStrings.selection.selectRow}: ${item.id}`}
-                        onChange={() =>
+                        onCheckedChange={() =>
                           setSelectedKeyIds((current) =>
                             current.includes(item.id)
                               ? current.filter((value) => value !== item.id)
@@ -4256,14 +4264,14 @@ function KeysPageCanvas({
                         }
                       />
                     </label>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div style={tableStackStyle}>
                       <div style={tableInlineFieldStyle}>
                         <code>{item.id}</code>
-                        <button
+                        <Button
                           type="button"
-                          className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 btn-xs btn-circle"
+                          variant="ghost" size="icon-sm" className="btn-xs"
                           aria-label={keyStrings.actions.copy}
                           title={keyStrings.actions.copy}
                           style={{
@@ -4278,20 +4286,20 @@ function KeysPageCanvas({
                           }}
                         >
                           <Icon icon="mdi:content-copy" width={18} height={18} aria-hidden="true" />
-                        </button>
+                        </Button>
                       </div>
                       <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>{formatKeyGroupName(item.group, keyStrings.groups.ungrouped)}</span>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div style={tableStackStyle}>
                       <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>{formatRegistrationValue(item.registration_ip)}</span>
                       <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>
                         {formatRegistrationValue(item.registration_region)}
                       </span>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div style={tableStackStyle}>
                       <span style={tableFieldStyle}>
                         <StatusBadge tone={keyStatusTone(keyBadgeStatus(item))}>
@@ -4299,27 +4307,27 @@ function KeysPageCanvas({
                         </StatusBadge>
                       </span>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div style={tableStackStyle}>
                       <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>{formatNumber(item.success_count)}</span>
                       <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>{formatNumber(item.error_count)}</span>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>
                       {item.quota_remaining != null && item.quota_limit != null
                         ? `${formatNumber(item.quota_remaining)} / ${formatNumber(item.quota_limit)}`
                         : '—'}
                     </span>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div style={tableStackStyle}>
                       <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>{formatTimestamp(item.last_used_at)}</span>
                       <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>{formatTimestamp(item.status_changed_at)}</span>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <div className="table-actions api-keys-actions">
                       {item.quarantine ? (
                         <Button
@@ -4376,11 +4384,11 @@ function KeysPageCanvas({
                         <Icon icon="mdi:eye-outline" width={18} height={18} />
                       </Button>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
         {filteredKeys.length > perPage ? (
           <AdminTablePagination
@@ -4406,7 +4414,7 @@ function KeysPageCanvas({
             }}
           />
         ) : null}
-      </section>
+      </Card>
     </AdminPageFrame>
   )
 }
@@ -4636,11 +4644,11 @@ function JobsPageCanvas(): JSX.Element {
 
   return (
     <AdminPageFrame activeModule="jobs">
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{jobsStrings.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{jobsStrings.description}</p>
+            <CardTitle role="heading" aria-level={2}>{jobsStrings.title}</CardTitle>
+            <CardDescription className="panel-description">{jobsStrings.description}</CardDescription>
           </div>
           <div className="flex flex-wrap items-end gap-3 admin-jobs-actions">
             <AdminJobTriggerMenu
@@ -4681,26 +4689,26 @@ function JobsPageCanvas(): JSX.Element {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </div>
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" role="status" style={{ marginBottom: 16 }}>
+        </CardHeader>
+        <Empty className="empty-state" role="status" style={{ marginBottom: 16 }}><EmptyDescription>
           {jobTriggerNotice}
-        </div>
+        </EmptyDescription></Empty>
 
         <div className="table-wrapper overflow-hidden rounded-lg border jobs-module-table-wrapper">
-          <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b jobs-module-table">
-            <thead>
-              <tr>
-                <th>{jobsStrings.table.id}</th>
-                <th>{jobsStrings.table.type}</th>
-                <th>{jobsStrings.table.key}</th>
-                <th>{jobsStrings.table.status}</th>
-                <th>{jobsStrings.table.source}</th>
-                <th>{jobsStrings.table.attempt}</th>
-                <th>{jobsStrings.table.started}</th>
-                <th>{jobsStrings.table.message}</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table className="jobs-module-table">
+            <TableHeader>
+              <TableRow>
+                <TableHead>{jobsStrings.table.id}</TableHead>
+                <TableHead>{jobsStrings.table.type}</TableHead>
+                <TableHead>{jobsStrings.table.key}</TableHead>
+                <TableHead>{jobsStrings.table.status}</TableHead>
+                <TableHead>{jobsStrings.table.source}</TableHead>
+                <TableHead>{jobsStrings.table.attempt}</TableHead>
+                <TableHead>{jobsStrings.table.started}</TableHead>
+                <TableHead>{jobsStrings.table.message}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {visibleJobs.map((job) => {
                 const expanded = expandedJobs.has(job.id)
                 const hasMessage = Boolean(job.message?.trim())
@@ -4709,24 +4717,24 @@ function JobsPageCanvas(): JSX.Element {
 
                 return (
                   <Fragment key={job.id}>
-                    <tr>
-                      <td>{job.id}</td>
-                      <td>{jobTypeText}</td>
-                      <td>
+                    <TableRow>
+                      <TableCell>{job.id}</TableCell>
+                      <TableCell>{jobTypeText}</TableCell>
+                      <TableCell>
                         <JobKeyLink
                           keyId={job.key_id}
                           keyGroup={job.key_group}
                           ungroupedLabel={keyStrings.groups.ungrouped}
                           detailLabel={keyStrings.actions.details}
                         />
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StatusBadge tone={keyStatusTone(job.status)}>{admin.statuses[job.status] ?? job.status}</StatusBadge>
-                      </td>
-                      <td>{jobSourceLabel(job.trigger_source, jobsStrings)}</td>
-                      <td>{job.attempt}</td>
-                      <td>{formatTimestamp(job.started_at ?? job.queued_at)}</td>
-                      <td className="jobs-message-cell">
+                      </TableCell>
+                      <TableCell>{jobSourceLabel(job.trigger_source, jobsStrings)}</TableCell>
+                      <TableCell>{job.attempt}</TableCell>
+                      <TableCell>{formatTimestamp(job.started_at ?? job.queued_at)}</TableCell>
+                      <TableCell className="jobs-message-cell">
                         {hasMessage ? (
                           <button
                             type="button"
@@ -4747,11 +4755,11 @@ function JobsPageCanvas(): JSX.Element {
                         ) : (
                           '—'
                         )}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                     {expanded && hasMessage && (
-                      <tr className="log-details-row">
-                        <td colSpan={8} id={`storybook-job-details-${job.id}`}>
+                      <TableRow className="log-details-row">
+                        <TableCell colSpan={8} id={`storybook-job-details-${job.id}`}>
                           <div className="log-details-panel">
                             <div className="log-details-summary">
                               <div>
@@ -4791,35 +4799,35 @@ function JobsPageCanvas(): JSX.Element {
                               </section>
                             </div>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     )}
                   </Fragment>
                 )
               })}
               {visibleJobs.length === 0 ? (
-                <tr>
-                  <td colSpan={8}>
-                    <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{jobsStrings.empty.none}</div>
-                  </td>
-                </tr>
+                <TableRow>
+                  <TableCell colSpan={8}>
+                    <Empty className="empty-state"><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
+                  </TableCell>
+                </TableRow>
               ) : null}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
 
         <div className="table-pagination">
           <span className="panel-description text-sm text-muted-foreground">{jobsStrings.description} (1 / 2)</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
+            <Button type="button" variant="outline" size="sm">
               {admin.tokens.pagination.prev}
-            </button>
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
+            </Button>
+            <Button type="button" variant="outline" size="sm">
               {admin.tokens.pagination.next}
-            </button>
+            </Button>
           </div>
         </div>
-      </section>
+      </Card>
     </AdminPageFrame>
   )
 }
@@ -4889,11 +4897,11 @@ function UsersPageCanvas({
 
   return (
     <AdminPageFrame activeModule="users">
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div className="block md:hidden">
-            <h2>{users.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{users.description}</p>
+            <CardTitle role="heading" aria-level={2}>{users.title}</CardTitle>
+            <CardDescription className="panel-description">{users.description}</CardDescription>
           </div>
           <div className="users-search-controls">
             <Input
@@ -4914,7 +4922,7 @@ function UsersPageCanvas({
               </Button>
             )}
           </div>
-        </div>
+        </CardHeader>
         {usersFilterStatusText && (
           <p className="panel-description text-sm text-muted-foreground" data-testid="users-filter-status">
             {usersFilterStatusText}
@@ -4923,14 +4931,14 @@ function UsersPageCanvas({
 
         <div className="table-wrapper overflow-hidden rounded-lg border">
           {filteredUsers.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{users.empty.none}</div>
+            <Empty className="empty-state"><EmptyDescription>{users.empty.none}</EmptyDescription></Empty>
           ) : (
-            <table className={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}>
-              <thead>
-                <tr>
-                  <th>{users.table.user}</th>
-                  <th>{users.table.status}</th>
-                  <th>{users.table.tags}</th>
+            <Table className={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{users.table.user}</TableHead>
+                  <TableHead>{users.table.status}</TableHead>
+                  <TableHead>{users.table.tags}</TableHead>
                   <StoryAdminUsersSortableHeader
                     label={users.table.daily}
                     field="dailyCreditsUsed"
@@ -4938,7 +4946,7 @@ function UsersPageCanvas({
                     activeOrder={effectiveSortOrder}
                     onToggle={toggleSort}
                   />
-                  {showShadowDailyUsageColumn ? <th>{users.table.shadowDaily}</th> : null}
+                  {showShadowDailyUsageColumn ? <TableHead>{users.table.shadowDaily}</TableHead> : null}
                   <StoryAdminUsersSortableHeader
                     label={users.table.monthly}
                     field="monthlyCreditsUsed"
@@ -4967,9 +4975,9 @@ function UsersPageCanvas({
                     activeOrder={effectiveSortOrder}
                     onToggle={toggleSort}
                   />
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {sortedUsers.map((item) => {
                   const dailyQuotaMetric = formatQuotaStackValue(item.dailyCreditsUsed, item.dailyCreditsLimit)
                   const shadowDailyUsage = buildShadowDailyUsageStack({
@@ -4989,88 +4997,88 @@ function UsersPageCanvas({
                   const lastActivityMetric = formatStackedTimestamp(item.lastActivity, language)
                   const lastLoginMetric = formatStackedTimestamp(item.lastLoginAt, language)
                   return (
-                  <tr key={item.userId}>
-                    <td className="admin-users-identity-cell">
-                      <button
+                  <TableRow key={item.userId}>
+                    <TableCell className="admin-users-identity-cell">
+                      <Button
                         type="button"
-                        className="link-button admin-users-identity-button"
+                        variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
                         aria-label={users.actions.view}
                         onClick={() => openAdminStory('admin-pages--user-detail')}
                       >
                         <strong>{item.displayName || item.username || item.userId}</strong>
-                      </button>
+                      </Button>
                       <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
                         <code>{item.userId}</code>
                         {item.username ? ` · @${item.username}` : ''}
                       </div>
-                    </td>
-                    <td>
+                    </TableCell>
+                    <TableCell>
                       <StatusBadge tone={item.active ? 'success' : 'neutral'}>
                         {item.active ? users.status.active : users.status.inactive}
                       </StatusBadge>
-                    </td>
-                    <td className="admin-users-tags-cell">
+                    </TableCell>
+                    <TableCell className="admin-users-tags-cell">
                       <StoryUserTagBadgeList tags={item.tags} users={users} emptyLabel={users.userTags.empty} />
-                    </td>
-                    <td className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack">
+                    </TableCell>
+                    <TableCell className="admin-users-compact-cell">
+                      <div className="admin-table-value-stack flex flex-col gap-1">
                         <span className={`admin-table-value-primary${dailyQuotaMetric.primaryClassName ? ` ${dailyQuotaMetric.primaryClassName}` : ''}`}>{dailyQuotaMetric.primary}</span>
                         <span className="admin-table-value-secondary">{dailyQuotaMetric.secondary}</span>
                       </div>
-                    </td>
+                    </TableCell>
                     {showShadowDailyUsageColumn ? (
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className={`admin-table-value-primary${shadowDailyUsage.primaryClassName ? ` ${shadowDailyUsage.primaryClassName}` : ''}`}>{shadowDailyUsage.primary}</span>
                           {shadowDailyUsage.secondary ? (
                             <span className="admin-table-value-secondary">{shadowDailyUsage.secondary}</span>
                           ) : null}
                         </div>
-                      </td>
+                      </TableCell>
                     ) : null}
-                    <td className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack">
+                    <TableCell className="admin-users-compact-cell">
+                      <div className="admin-table-value-stack flex flex-col gap-1">
                         <span className={`admin-table-value-primary${monthlyQuotaMetric.primaryClassName ? ` ${monthlyQuotaMetric.primaryClassName}` : ''}`}>{monthlyQuotaMetric.primary}</span>
                         <span className="admin-table-value-secondary">{monthlyQuotaMetric.secondary}</span>
                       </div>
-                    </td>
-                    <td className="admin-users-compact-cell">
+                    </TableCell>
+                    <TableCell className="admin-users-compact-cell">
                       <span className="admin-table-value-primary">{formatNumber(item.recentIpCount7d)}</span>
-                    </td>
-                    <td className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack">
+                    </TableCell>
+                    <TableCell className="admin-users-compact-cell">
+                      <div className="admin-table-value-stack flex flex-col gap-1">
                         <span className="admin-table-value-primary">{lastActivityMetric.primary}</span>
                         {lastActivityMetric.secondary && (
                           <span className="admin-table-value-secondary">{lastActivityMetric.secondary}</span>
                         )}
                       </div>
-                    </td>
-                    <td className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack">
+                    </TableCell>
+                    <TableCell className="admin-users-compact-cell">
+                      <div className="admin-table-value-stack flex flex-col gap-1">
                         <span className="admin-table-value-primary">{lastLoginMetric.primary}</span>
                         {lastLoginMetric.secondary && (
                           <span className="admin-table-value-secondary">{lastLoginMetric.secondary}</span>
                         )}
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 )})}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           )}
         </div>
-      </section>
+      </Card>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
-            <h2>{users.catalog.summaryTitle}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{users.catalog.summaryDescription}</p>
+            <CardTitle role="heading" aria-level={2}>{users.catalog.summaryTitle}</CardTitle>
+            <CardDescription className="panel-description">{users.catalog.summaryDescription}</CardDescription>
           </div>
-          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
+          <Button type="button" variant="outline" size="sm">
             {users.userTags.manageCatalog}
-          </button>
-        </div>
+          </Button>
+        </CardHeader>
         <div className="user-tag-summary-grid">
           {MOCK_TAG_CATALOG.map((tag) => {
             const isSystem = tag.systemKey != null
@@ -5094,7 +5102,7 @@ function UsersPageCanvas({
             )
           })}
         </div>
-      </section>
+      </Card>
     </AdminPageFrame>
   )
 }
@@ -5214,19 +5222,19 @@ function UsersUsagePageCanvas({
       <AdminShellSidebarUtility>
         <AdminSidebarUtilityStack>
           <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-toolbar">
+            <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
               <ThemeToggle />
               <LanguageSwitcher />
             </div>
-            <div className="admin-sidebar-utility-meta">
-              <div className="user-badge user-badge-admin" title="Ops Admin">
-                <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />
+            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+              <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
+                <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
                 <span>Ops Admin</span>
               </div>
             </div>
           </AdminSidebarUtilityCard>
           <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-actions">
+            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={admin.header.returnToConsole}
                 href="/console"
@@ -5394,20 +5402,20 @@ function UnboundTokenUsagePageCanvas({
         />
       }
     >
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         <div className="hidden md:block">
           <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-selected-token>{selectedTokenId ? `Opened ${selectedTokenId}` : 'No token opened yet'}</p>
         </div>
 
         <div className="table-wrapper overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex">
           {pagedItems.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{errorMessage ?? strings.empty.none}</div>
+            <Empty className="empty-state"><EmptyDescription>{errorMessage ?? strings.empty.none}</EmptyDescription></Empty>
           ) : (
-            <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table">
-              <thead>
-                <tr>
-                  <th>{strings.table.identity}</th>
-                  <th>{strings.table.status}</th>
+            <Table className="admin-users-usage-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{strings.table.identity}</TableHead>
+                  <TableHead>{strings.table.status}</TableHead>
                   <StoryAdminUsersSortableHeader
                     label={strings.table.hourlyAny}
                     field="hourlyAnyUsed"
@@ -5466,9 +5474,9 @@ function UnboundTokenUsagePageCanvas({
                     activeOrder={effectiveSortOrder}
                     onToggle={toggleSort}
                   />
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {pagedItems.map((item) => {
                   const requestRate = resolveRequestRate(item, 'token')
                   const requestRateMetric = formatQuotaStackValue(requestRate.used, requestRate.limit)
@@ -5483,56 +5491,56 @@ function UnboundTokenUsagePageCanvas({
                   const monthlySuccessMetric = formatSuccessRateStackValue(item.monthlySuccess, item.monthlyFailure, language)
                   const lastUsedMetric = formatStackedTimestamp(item.lastUsedAt, language)
                   return (
-                    <tr key={item.tokenId} data-token-row={item.tokenId}>
-                      <td className="admin-users-identity-cell">
-                        <button
+                    <TableRow key={item.tokenId} data-token-row={item.tokenId}>
+                      <TableCell className="admin-users-identity-cell">
+                        <Button
                           type="button"
-                          className="link-button admin-users-identity-button"
+                          variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
                           data-token-identity={item.tokenId}
                           onClick={() => setSelectedTokenId(item.tokenId)}
                         >
                           <strong>{item.tokenId}</strong>
-                        </button>
+                        </Button>
                         <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
                           {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StatusBadge tone={item.enabled ? 'success' : 'neutral'}>
                           {item.enabled ? users.status.enabled : users.status.disabled}
                         </StatusBadge>
-                      </td>
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className={`admin-table-value-primary${requestRateMetric.primaryClassName ? ` ${requestRateMetric.primaryClassName}` : ''}`}>{requestRateMetric.primary}</span>
                           <span className="admin-table-value-secondary">{requestRateMetric.secondary}</span>
                         </div>
-                      </td>
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className={`admin-table-value-primary${hourlyMetric.primaryClassName ? ` ${hourlyMetric.primaryClassName}` : ''}`}>{hourlyMetric.primary}</span>
                           <span className="admin-table-value-secondary">{hourlyMetric.secondary}</span>
                         </div>
-                      </td>
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className={`admin-table-value-primary${dailyQuotaMetric.primaryClassName ? ` ${dailyQuotaMetric.primaryClassName}` : ''}`}>{dailyQuotaMetric.primary}</span>
                           <span className="admin-table-value-secondary">{dailyQuotaMetric.secondary}</span>
                         </div>
-                      </td>
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className={`admin-table-value-primary${monthlyQuotaMetric.primaryClassName ? ` ${monthlyQuotaMetric.primaryClassName}` : ''}`}>{monthlyQuotaMetric.primary}</span>
                           <span className="admin-table-value-secondary">{monthlyQuotaMetric.secondary}</span>
                         </div>
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         {monthlyBrokenMetric == null ? (
-                          <div className="admin-table-value-stack">
+                          <div className="admin-table-value-stack flex flex-col gap-1">
                             <span className="admin-table-value-primary">—</span>
                           </div>
                         ) : (
-                          <div className="admin-table-value-stack">
+                          <div className="admin-table-value-stack flex flex-col gap-1">
                             <MonthlyBrokenCountTrigger
                               count={item.monthlyBrokenCount ?? 0}
                               onOpen={() =>
@@ -5546,38 +5554,38 @@ function UnboundTokenUsagePageCanvas({
                             <span className="admin-table-value-secondary">{monthlyBrokenMetric.secondary}</span>
                           </div>
                         )}
-                      </td>
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className="admin-table-value-primary">{dailySuccessMetric.primary}</span>
                           <span className="admin-table-value-secondary">{dailySuccessMetric.secondary}</span>
                         </div>
-                      </td>
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className="admin-table-value-primary">{monthlySuccessMetric.primary}</span>
                           <span className="admin-table-value-secondary">{monthlySuccessMetric.secondary}</span>
                         </div>
-                      </td>
-                      <td className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
+                        <div className="admin-table-value-stack flex flex-col gap-1">
                           <span className="admin-table-value-primary">{lastUsedMetric.primary}</span>
                           {lastUsedMetric.secondary && (
                             <span className="admin-table-value-secondary">{lastUsedMetric.secondary}</span>
                           )}
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   )
                 })}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           )}
         </div>
 
         <div className="flex flex-col gap-3 md:hidden flex md:hidden">
           {pagedItems.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{errorMessage ?? strings.empty.none}</div>
+            <Empty className="empty-state"><EmptyDescription>{errorMessage ?? strings.empty.none}</EmptyDescription></Empty>
           ) : (
             pagedItems.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
@@ -5586,13 +5594,13 @@ function UnboundTokenUsagePageCanvas({
                 <div className="admin-mobile-identity-block">
                   <div className="admin-mobile-identity-row">
                     <span className="admin-mobile-identity-label">{strings.table.identity}</span>
-                    <button
+                    <Button
                       type="button"
-                      className="link-button admin-users-mobile-link"
+                      variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
                       onClick={() => setSelectedTokenId(item.tokenId)}
                     >
                       <strong>{item.tokenId}</strong>
-                    </button>
+                    </Button>
                   </div>
                   <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta">
                     {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
@@ -5625,9 +5633,9 @@ function UnboundTokenUsagePageCanvas({
                   {item.monthlyBrokenCount == null || item.monthlyBrokenLimit == null ? (
                     <strong>—</strong>
                   ) : item.monthlyBrokenCount > 0 ? (
-                    <button
+                    <Button
                       type="button"
-                      className="link-button"
+                      variant="link" size="sm" className="h-auto p-0"
                       onClick={() =>
                         setMonthlyBrokenDrawer({
                           label: item.tokenId,
@@ -5635,7 +5643,7 @@ function UnboundTokenUsagePageCanvas({
                         })}
                     >
                       <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
-                    </button>
+                    </Button>
                   ) : (
                     <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
                   )}
@@ -5681,7 +5689,7 @@ function UnboundTokenUsagePageCanvas({
             onNext={() => setPage((current) => Math.min(totalPages, current + 1))}
           />
         )}
-      </section>
+      </Card>
     </AdminPageFrame>
   )
 }
@@ -5698,16 +5706,16 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
 
   return (
     <div style={{ display: 'grid', gap: 20, maxWidth: 840, margin: '0 auto' }}>
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>Users usage tooltip proof</h2>
-            <p className="panel-description text-sm text-muted-foreground">
+            <CardTitle role="heading" aria-level={2}>Users usage tooltip proof</CardTitle>
+            <CardDescription className="panel-description">
               The table shell is intentionally clipped to reproduce the original overlap bug. Shared tooltips must
               render above the sticky header and scroll frame.
-            </p>
+            </CardDescription>
           </div>
-        </div>
+        </CardHeader>
         <div
           style={{
             overflow: 'hidden',
@@ -5719,12 +5727,12 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
           }}
         >
           <div className="table-wrapper overflow-hidden rounded-lg border" style={{ maxHeight: 180, overflow: 'auto' }}>
-            <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table">
-              <thead>
-                <tr>
-                  <th>{users.usage.table.user}</th>
-                  <th>{users.usage.table.status}</th>
-                  <th aria-sort="descending">
+            <Table className="admin-users-usage-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{users.usage.table.user}</TableHead>
+                  <TableHead>{users.usage.table.status}</TableHead>
+                  <TableHead aria-sort="descending">
                     <Tooltip open>
                       <TooltipTrigger asChild>
                         <Button type="button" variant="ghost" size="sm" className="admin-table-sort-button is-active">
@@ -5734,8 +5742,8 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
                       </TooltipTrigger>
                       <TooltipContent side="top">{dailySuccessTooltip}</TooltipContent>
                     </Tooltip>
-                  </th>
-                  <th aria-sort="descending">
+                  </TableHead>
+                  <TableHead aria-sort="descending">
                     <Tooltip open>
                       <TooltipTrigger asChild>
                         <Button type="button" variant="ghost" size="sm" className="admin-table-sort-button is-active">
@@ -5745,40 +5753,40 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
                       </TooltipTrigger>
                       <TooltipContent side="top">{monthlySuccessTooltip}</TooltipContent>
                     </Tooltip>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
                     <div className="admin-users-identity-cell">
                       <strong>unclejimao</strong>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     <StatusBadge tone="success">{users.status.active}</StatusBadge>
-                  </td>
-                  <td>
-                    <div className="admin-table-value-stack">
+                  </TableCell>
+                  <TableCell>
+                    <div className="admin-table-value-stack flex flex-col gap-1">
                       <span className="admin-table-value-primary">97.5%</span>
                       <span className="admin-table-value-secondary">{dailyFailureText}</span>
                     </div>
-                  </td>
-                  <td>
-                    <div className="admin-table-value-stack">
+                  </TableCell>
+                  <TableCell>
+                    <div className="admin-table-value-stack flex flex-col gap-1">
                       <span className="admin-table-value-primary">94.1%</span>
                       <span className="admin-table-value-secondary">{monthlyFailureText}</span>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan={4} style={{ height: 120 }} />
-                </tr>
-              </tbody>
-            </table>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={4} style={{ height: 120 }} />
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
         </div>
-      </section>
+      </Card>
     </div>
   )
 }
@@ -5796,30 +5804,30 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
           description={users.catalog.description}
           actions={
             <div className="user-tag-page-actions">
-              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{users.catalog.backToUsers}</button>
-              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50" disabled={editorMode === 'new'}>
+              <Button type="button" variant="outline" size="sm">{users.catalog.backToUsers}</Button>
+              <Button type="button" variant="default" size="sm" disabled={editorMode === 'new'}>
                 {users.catalog.actions.create}
-              </button>
+              </Button>
             </div>
           }
         />
       </div>
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 block md:hidden">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <Card className="surface panel block md:hidden">
+        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
-            <h2>{users.catalog.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{users.catalog.description}</p>
+            <CardTitle role="heading" aria-level={2}>{users.catalog.title}</CardTitle>
+            <CardDescription className="panel-description">{users.catalog.description}</CardDescription>
           </div>
           <div className="user-tag-page-actions">
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{users.catalog.backToUsers}</button>
-            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50" disabled={editorMode === 'new'}>
+            <Button type="button" variant="outline" size="sm">{users.catalog.backToUsers}</Button>
+            <Button type="button" variant="default" size="sm" disabled={editorMode === 'new'}>
               {users.catalog.actions.create}
-            </button>
+            </Button>
           </div>
-        </div>
-      </section>
+        </CardHeader>
+      </Card>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         <div className="user-tag-catalog-grid">
           {cards.map((tag, index) => {
             const mode: StoryTagCardMode = editorMode === 'new' && index === 0
@@ -5837,7 +5845,7 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
             )
           })}
         </div>
-      </section>
+      </Card>
     </AdminPageFrame>
   )
 }
@@ -5921,13 +5929,13 @@ function UserDetailPageCanvas({
     >
       {activeTab === 'account' && (
       <>
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{users.detail.identityTitle}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{users.detail.identityDescription}</p>
+            <CardTitle role="heading" aria-level={2}>{users.detail.identityTitle}</CardTitle>
+            <CardDescription className="panel-description">{users.detail.identityDescription}</CardDescription>
           </div>
-        </div>
+        </CardHeader>
         <dl className="user-detail-definition-grid">
           <div className="user-detail-definition-grid__item--wide">
             <dt>{users.detail.userId}</dt>
@@ -5981,17 +5989,17 @@ function UserDetailPageCanvas({
             <dd>{formatNumber(detail.recentIpCount7d)}</dd>
           </div>
         </dl>
-      </section>
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+      </Card>
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
-            <h2>{users.userTags.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{users.userTags.description}</p>
+            <CardTitle role="heading" aria-level={2}>{users.userTags.title}</CardTitle>
+            <CardDescription className="panel-description">{users.userTags.description}</CardDescription>
           </div>
-          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
+          <Button type="button" variant="outline" size="sm">
             {users.userTags.manageCatalog}
-          </button>
-        </div>
+          </Button>
+        </CardHeader>
         <div className="user-tag-binding-toolbar">
           <div className="user-tag-binding-summary">
             <div className="user-tag-binding-summary-top">
@@ -6039,9 +6047,9 @@ function UserDetailPageCanvas({
                       {tag.source === 'system_linuxdo' ? users.userTags.sourceSystem : users.userTags.sourceManual}
                     </StatusBadge>
                   </div>
-                  <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" disabled={isSystem}>
+                  <Button type="button" variant="ghost" size="xs" disabled={isSystem}>
                     {isSystem ? users.userTags.readOnly : users.userTags.unbindAction}
-                  </button>
+                  </Button>
                 </div>
                 <div className="token-compact-pair">
                   <div className="token-compact-field">
@@ -6061,7 +6069,7 @@ function UserDetailPageCanvas({
             )
           })}
         </div>
-      </section>
+      </Card>
       </>
       )}
       {activeTab === 'quota' && (
@@ -6137,7 +6145,7 @@ function UserDetailPageCanvas({
       />
       )}
       {activeTab === 'activity' && (
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         <UserDetailSharedUsagePanel
           usersStrings={users}
           language={language}
@@ -6156,20 +6164,20 @@ function UserDetailPageCanvas({
             return MOCK_USER_USAGE_SERIES[series]
           }}
         />
-      </section>
+      </Card>
       )}
       {activeTab === 'account' && (
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{users.detail.tokensTitle}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{users.detail.tokensDescription}</p>
+            <CardTitle role="heading" aria-level={2}>{users.detail.tokensTitle}</CardTitle>
+            <CardDescription className="panel-description">{users.detail.tokensDescription}</CardDescription>
           </div>
           <Button type="button" variant="secondary" size="sm" onClick={addToken}>
             <Icon icon="mdi:key-plus" width={16} height={16} />
             <span>{users.detail.addToken}</span>
           </Button>
-        </div>
+        </CardHeader>
         <div className="table-wrapper overflow-hidden rounded-lg border">
           <UserDetailTokenTable
             tokens={detail.tokens}
@@ -6180,7 +6188,7 @@ function UserDetailPageCanvas({
             onDeleteToken={deleteToken}
           />
         </div>
-      </section>
+      </Card>
       )}
     </AdminPageFrame>
   )
@@ -7240,75 +7248,14 @@ export const UserDetailSharedUsageTooltip: Story = {
   },
   play: async ({ canvasElement }) => {
     await new Promise((resolve) => window.setTimeout(resolve, 120))
-    const canvas = canvasElement.querySelector<HTMLCanvasElement>('.admin-user-shared-usage-chart canvas')
-    const usagePanel = canvasElement.querySelector<HTMLElement>('.admin-user-shared-usage-panel')
-    if (!canvas || !usagePanel) {
-      throw new Error('Expected the tooltip proof story to render the shared usage chart canvas.')
-    }
-
-    const rect = canvas.getBoundingClientRect()
-    const clientX = rect.left + rect.width * 0.72
-    const clientY = rect.top + rect.height * 0.32
-    const pointerTarget = canvas.ownerDocument.elementFromPoint(clientX, clientY) ?? canvas
-
-    pointerTarget.dispatchEvent(
-      new MouseEvent('mousemove', {
-        bubbles: true,
-        cancelable: true,
-        clientX,
-        clientY,
-      }),
-    )
+    const chart = canvasElement.querySelector<SVGElement>('.admin-user-shared-usage-panel [data-slot="chart"] .recharts-surface')
+    if (!chart) throw new Error('Expected the shared usage shadcn chart.')
+    chart.focus()
+    chart.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
     await new Promise((resolve) => window.setTimeout(resolve, 80))
-
-    const hoverTooltip = canvasElement.querySelector<HTMLElement>('.admin-user-shared-usage-tooltip')
-    const tooltipOpenWhileHovering = usagePanel.getAttribute('data-tooltip-open')
-    if (
-      !hoverTooltip?.textContent?.includes('压力') ||
-      !hoverTooltip.textContent.includes('上限') ||
-      tooltipOpenWhileHovering !== 'true'
-    ) {
-      throw new Error('Expected hovering the shared usage chart to open the floating detail bubble.')
-    }
-
-    const outsidePlotClientY = rect.top + 6
-    pointerTarget.dispatchEvent(
-      new MouseEvent('mousemove', {
-        bubbles: true,
-        cancelable: true,
-        clientX,
-        clientY: outsidePlotClientY,
-      }),
-    )
-    await new Promise((resolve) => window.setTimeout(resolve, 80))
-
-    const tooltipOpenAfterLeaving = usagePanel.getAttribute('data-tooltip-open')
-    if (tooltipOpenAfterLeaving !== 'false') {
-      throw new Error('Expected hover tooltip to disappear after leaving the plot area vertically.')
-    }
-
-    pointerTarget.dispatchEvent(
-      new MouseEvent('mousemove', {
-        bubbles: true,
-        cancelable: true,
-        clientX,
-        clientY,
-      }),
-    )
-    await new Promise((resolve) => window.setTimeout(resolve, 80))
-
-    pointerTarget.dispatchEvent(
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-        clientX,
-        clientY,
-      }),
-    )
-    await new Promise((resolve) => window.setTimeout(resolve, 80))
-
-    if (usagePanel.dataset.tooltipPinned !== 'true') {
-      throw new Error('Expected clicking the shared usage chart to pin the floating detail bubble.')
+    const tooltip = canvasElement.querySelector('.recharts-tooltip-wrapper')
+    if (!tooltip?.textContent?.includes('压力') || !tooltip.textContent.includes('上限')) {
+      throw new Error('Expected the default chart tooltip to expose pressure and historical limits.')
     }
   },
 }
@@ -7714,8 +7661,8 @@ export const UserDetailIpUsage: Story = {
       throw new Error('Expected the user detail IP story to open the IP usage tab.')
     }
 
-    if (!canvasElement.querySelector('.admin-user-ip-gantt-chart canvas')) {
-      throw new Error('Expected the user detail IP story to render the Chart.js IP Gantt chart.')
+    if (!canvasElement.querySelector('.admin-user-ip-gantt-chart .recharts-surface')) {
+      throw new Error('Expected the user detail IP story to render the shadcn IP timeline chart.')
     }
 
     for (const expected of ['203.0.113.7', '最近 24 小时', '最近 7 天']) {

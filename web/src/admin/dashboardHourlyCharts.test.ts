@@ -3,7 +3,6 @@ import { describe, expect, it } from 'bun:test'
 import {
   buildDashboardHourlyRequestWindowFixture,
   buildAggregatedHourlySlots,
-  buildDashboardAreaStackLayers,
   buildHourlyBucketLookup,
   buildHourlyRangeSlots,
   createDashboardHourlyChartPreferences,
@@ -11,8 +10,6 @@ import {
   DASHBOARD_REALTIME_BUCKET_SECONDS,
   DASHBOARD_REALTIME_RETAINED_BUCKETS,
   DASHBOARD_REALTIME_VISIBLE_BUCKETS,
-  DASHBOARD_AREA_CHART_STACK_ID,
-  DASHBOARD_AREA_CHART_TENSION,
   DASHBOARD_RESULT_SERIES_ORDER,
   DASHBOARD_TYPE_SERIES_ORDER,
   DASHBOARD_CREDIT_SERIES_ORDER,
@@ -21,8 +18,6 @@ import {
   formatDashboardRealtimeWindowLabel,
   getHourlyBucketsInRange,
   buildRollingHourlyWindow,
-  getDashboardHourlyBarChartKey,
-  getCurrentPartialHourHighlightIndex,
   getVisibleHourlyBuckets,
   getVisibleHourlyWindow,
   readDashboardHourlyChartPreferences,
@@ -206,79 +201,6 @@ describe('dashboardHourlyCharts helpers', () => {
   it('migrates removed delta chart preferences to credit modes', () => {
     expect(createDashboardHourlyChartPreferences({ chartMode: 'resultsDelta' }).chartMode).toBe('credits')
     expect(createDashboardHourlyChartPreferences({ chartMode: 'typesDelta' }).chartMode).toBe('creditsArea')
-  })
-
-  it('highlights only the current partial hour in absolute bar modes', () => {
-    const slots = [
-      { bucketStart: 100, bucket: null },
-      { bucketStart: 200, bucket: null },
-      { bucketStart: 300, bucket: null },
-    ]
-
-    expect(getCurrentPartialHourHighlightIndex('results', slots)).toBe(2)
-    expect(getCurrentPartialHourHighlightIndex('types', slots)).toBe(2)
-    expect(getCurrentPartialHourHighlightIndex('credits', slots)).toBe(2)
-    expect(getCurrentPartialHourHighlightIndex('resultsArea', slots)).toBeNull()
-    expect(getCurrentPartialHourHighlightIndex('typesArea', slots)).toBeNull()
-    expect(getCurrentPartialHourHighlightIndex('creditsArea', slots)).toBeNull()
-    expect(getCurrentPartialHourHighlightIndex('results', [])).toBeNull()
-  })
-
-  it('changes the bar chart instance key when current partial-hour marking changes', () => {
-    const slots = [
-      { bucketStart: 100, bucket: null },
-      { bucketStart: 200, bucket: null },
-      { bucketStart: 300, bucket: null },
-    ]
-
-    expect(getDashboardHourlyBarChartKey('results', slots)).toBe('results:current-partial-hour-2:3')
-    expect(getDashboardHourlyBarChartKey('types', slots)).toBe('types:current-partial-hour-2:3')
-    expect(getDashboardHourlyBarChartKey('credits', slots)).toBe('credits:current-partial-hour-2:3')
-    expect(getDashboardHourlyBarChartKey('typesArea', slots)).toBe('typesArea:no-current-partial-hour:3')
-    expect(getDashboardHourlyBarChartKey('results', [])).toBe('results:no-current-partial-hour:0')
-  })
-
-  it('includes the marker style token in the bar chart instance key', () => {
-    const slots = [
-      { bucketStart: 100, bucket: null },
-      { bucketStart: 200, bucket: null },
-    ]
-
-    expect(getDashboardHourlyBarChartKey('results', slots, 'light-marker')).toBe(
-      'results:current-partial-hour-1:2:light-marker',
-    )
-    expect(getDashboardHourlyBarChartKey('results', slots, 'dark-marker')).toBe(
-      'results:current-partial-hour-1:2:dark-marker',
-    )
-  })
-
-  it('builds non-overlapping stacked area fill targets for all visible result series', () => {
-    const layers = buildDashboardAreaStackLayers(DASHBOARD_RESULT_SERIES_ORDER)
-
-    expect(layers.map((layer) => layer.seriesId)).toEqual([...DASHBOARD_RESULT_SERIES_ORDER])
-    expect(layers.every((layer) => layer.type === 'line')).toBe(true)
-    expect(layers.map((layer) => layer.fill)).toEqual(['origin', '-1', '-1', '-1', '-1', '-1'])
-    expect(layers.every((layer) => layer.stack === DASHBOARD_AREA_CHART_STACK_ID)).toBe(true)
-    expect(layers.every((layer) => layer.tension === DASHBOARD_AREA_CHART_TENSION)).toBe(true)
-    expect(layers.every((layer) => layer.borderWidth === 2)).toBe(true)
-    expect(layers.every((layer) => layer.pointRadius === 0)).toBe(true)
-    expect(layers.every((layer) => layer.pointHoverRadius === 3)).toBe(true)
-    expect(layers.every((layer) => layer.spanGaps === false)).toBe(true)
-  })
-
-  it('rebuilds stacked area fill targets from the currently visible type series only', () => {
-    const visibleWithoutMiddle = DASHBOARD_TYPE_SERIES_ORDER.filter((seriesId) => seriesId !== 'mcpBillable')
-
-    const layers = buildDashboardAreaStackLayers(visibleWithoutMiddle)
-
-    expect(layers.map((layer) => layer.seriesId)).toEqual([
-      'mcpNonBillable',
-      'apiNonBillable',
-      'apiBillable',
-    ])
-    expect(layers.map((layer) => layer.fill)).toEqual(['origin', '-1', '-1'])
-    expect(layers.map((layer) => layer.stack)).toEqual(['area', 'area', 'area'])
-    expect(layers.map((layer) => layer.tension)).toEqual([0.18, 0.18, 0.18])
   })
 
   it('round-trips persisted chart preferences and preserves explicit empty absolute selections', () => {

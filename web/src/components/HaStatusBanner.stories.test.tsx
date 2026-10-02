@@ -152,9 +152,14 @@ describe('HaStatusBanner Storybook proofs', () => {
       ),
     )
 
-    expect(markup).toContain('<strong>node-a</strong><span>当前管理节点</span>')
-    expect(markup).toContain('class="ha-node-link"><strong>node-b</strong></button>')
-    expect(markup).not.toContain('class="ha-node-link"><strong>node-a</strong></button>')
+    const container = document.createElement('div')
+    container.innerHTML = markup
+    expect(container.querySelector('table thead')).not.toBeNull()
+    expect(container.querySelectorAll('table tbody tr')).toHaveLength(1 + (stories.PlannedCutoverReady.args?.status?.peerNodes?.length ?? 0))
+    expect(container.querySelector('.ha-node-identity')?.textContent).toContain('当前管理节点')
+    const peerLinks = Array.from(container.querySelectorAll('.ha-node-link'), (node) => node.textContent)
+    expect(peerLinks).toContain('node-b')
+    expect(peerLinks).not.toContain('node-a')
   })
 
   it('keeps lag-blocked standby reasons visible instead of falling back to configured', () => {

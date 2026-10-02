@@ -80,7 +80,7 @@ async function mountRankingsPageWithProps({
 }
 
 function chartTitles(container: HTMLElement): string[] {
-  return Array.from(container.querySelectorAll<HTMLElement>('.admin-ranking-card h3'))
+  return Array.from(container.querySelectorAll<HTMLElement>('.admin-ranking-card [data-slot=card-title]'))
     .map((title) => title.textContent?.trim() ?? '')
 }
 
@@ -121,42 +121,15 @@ describe('AdminUserRankingsPage rendering contracts', () => {
     })
   })
 
-  it('propagates hover and focus state through the interactive hit layer and forwards user clicks', async () => {
+  it('uses default charts and accessible user buttons to forward user selections', async () => {
     const { container, root, selectedUsers } = await mountRankingsPage('last24h')
-
-    const hitTargets = Array.from(container.querySelectorAll<HTMLButtonElement>('.admin-ranking-chart-hit-target'))
-    expect(hitTargets.length).toBeGreaterThan(0)
-    const firstTarget = hitTargets[0]
+    expect(container.querySelectorAll('[data-slot="chart"]')).toHaveLength(3)
+    expect(container.querySelector('canvas')).toBeNull()
+    const firstTarget = container.querySelector<HTMLButtonElement>('.admin-ranking-chart-shell button')
     expect(firstTarget).not.toBeNull()
-
-    await act(async () => {
-      firstTarget.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }))
-    })
-    await flushEffects()
-    expect(container.querySelectorAll('.admin-ranking-chart-hit-target.is-interactive').length).toBeGreaterThanOrEqual(1)
-
-    await act(async () => {
-      firstTarget.focus()
-    })
-    await flushEffects()
-    expect(container.querySelectorAll('.admin-ranking-chart-hit-target.is-interactive').length).toBeGreaterThanOrEqual(1)
-
-    await act(async () => {
-      firstTarget.click()
-    })
-    expect(selectedUsers).toHaveLength(1)
-    expect(selectedUsers[0]).toBe('usr_alice_chen')
-
-    await act(async () => {
-      firstTarget.dispatchEvent(new MouseEvent('mouseout', { bubbles: true }))
-      firstTarget.blur()
-    })
-    await flushEffects()
-    expect(container.querySelectorAll('.admin-ranking-chart-hit-target.is-interactive').length).toBe(0)
-
-    await act(async () => {
-      root.unmount()
-    })
+    await act(async () => { firstTarget!.focus(); firstTarget!.click() })
+    expect(selectedUsers).toEqual(['usr_alice_chen'])
+    await act(async () => { root.unmount() })
   })
 
   it('shows a stale hint and suppresses misleading last-updated text for stale fallback snapshots without a fresh timestamp', async () => {

@@ -1,3 +1,4 @@
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import React from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "../lib/icons";
@@ -543,9 +544,9 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): JS
         {props.state ? (
           <>
             {props.state.importError && (
-              <div className="alert border-destructive/30 bg-destructive/10 text-destructive mb-3">
+              <Alert className="mb-3" variant="destructive"><AlertDescription>
                 {props.state.importError}
-              </div>
+              </AlertDescription></Alert>
             )}
 
             {props.state.importReport && (
@@ -807,9 +808,9 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): JS
           </div>
         )}
         {props.state?.importWarning && (
-          <div className="alert border-warning/40 bg-warning/10 text-warning mb-2 text-sm">
+          <Alert className="border-warning/40 bg-warning/10 text-warning mb-2"><AlertDescription>
             {props.state.importWarning}
-          </div>
+          </AlertDescription></Alert>
         )}
 
         <div className="key-validation-footer-actions flex flex-wrap items-center justify-between gap-2">
@@ -864,7 +865,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): JS
 
   return (
     <Dialog open={props.open} onOpenChange={handleOpenChange}>
-      <DialogContent className="key-validation-modal key-validation-modal-box max-w-5xl gap-0 p-0 sm:max-h-[min(calc(100dvh-4rem),calc(100vh-4rem))] [&>button]:hidden">
+      <DialogContent className="key-validation-modal key-validation-modal-box sm:max-w-5xl gap-0 p-0 sm:max-h-[min(calc(100dvh-4rem),calc(100vh-4rem))] [&>button]:hidden">
         {content}
       </DialogContent>
     </Dialog>

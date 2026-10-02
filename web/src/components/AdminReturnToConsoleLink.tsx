@@ -1,4 +1,6 @@
 import { Icon } from '../lib/icons'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 import { ADMIN_USER_CONSOLE_HREF } from '../lib/adminUserConsoleEntry'
 
@@ -13,12 +15,14 @@ export default function AdminReturnToConsoleLink({
   href = ADMIN_USER_CONSOLE_HREF,
   className,
 }: AdminReturnToConsoleLinkProps): JSX.Element {
-  const classes = ['admin-return-link', className].filter(Boolean).join(' ')
+  const classes = cn('admin-return-link', className)
 
   return (
-    <a href={href} className={classes} aria-label={label}>
-      <Icon icon="mdi:monitor-dashboard" width={16} height={16} aria-hidden="true" />
+    <Button asChild variant="outline" size="sm" className={classes}>
+    <a href={href} aria-label={label}>
+      <Icon icon="mdi:monitor-dashboard" data-icon="inline-start" aria-hidden="true" />
       <span>{label}</span>
     </a>
+    </Button>
   )
 }

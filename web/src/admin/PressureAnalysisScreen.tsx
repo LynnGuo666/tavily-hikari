@@ -1,53 +1,14 @@
 import { useMemo } from 'react'
-
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Filler,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-  type ChartData,
-  type ChartOptions,
-  type ScriptableContext,
-} from 'chart.js'
-import { Line } from 'react-chartjs-2'
-
-import type {
-  AnalysisCurrentUserPressureDistribution,
-  AnalysisPressureMovingAverageKey,
-  AnalysisPressureSnapshot,
-} from '../api'
-import type { AdminTranslations, Language } from '../i18n'
+import { Area, AreaChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from '@/components/ui/chart'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Button } from '@/components/ui/button'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
+import type { AnalysisCurrentUserPressureDistribution, AnalysisPressureSnapshot } from '../api'
+import type { AdminTranslations, Language } from '../i18n'
 
-ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Filler, Tooltip, Legend)
-
-export type ActiveUserPressureDistributionPoint = {
-  pressure: number
-  userCount: number
-}
-
-function readChartColorVar(name: string, fallback: string): string {
-  if (typeof document === 'undefined') return fallback
-  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-  if (value.length === 0) return fallback
-  return value.startsWith('hsl(') || value.startsWith('rgb(') ? value : `hsl(${value})`
-}
-
-function withOpacity(color: string, opacity: number): string {
-  if (color.startsWith('hsl(') && color.endsWith(')')) {
-    const body = color
-      .slice(4, -1)
-      .split('/')
-      .shift()
-      ?.trim() ?? ''
-    return `hsl(${body} / ${opacity})`
-  }
-  return color
-}
+export type ActiveUserPressureDistributionPoint = { pressure: number; userCount: number }
 
 function formatNumber(language: Language, value: number): string {
   return new Intl.NumberFormat(language === 'zh' ? 'zh-CN' : 'en-US').format(value)
@@ -95,178 +56,6 @@ function averagePressure(values: number[]): number {
   return values.reduce((sum, value) => sum + value, 0) / values.length
 }
 
-function buildPressureLineOptions(
-  language: Language,
-  tooltipLabelFormatter: (value: number) => string,
-): ChartOptions<'line'> {
-  const tickColor = readChartColorVar('--dashboard-chart-tick', '#635f69')
-  const legendColor = readChartColorVar('--muted-foreground', '#635f69')
-  const gridColor = readChartColorVar('--border', '#d7dfec')
-  return {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    plugins: {
-      legend: {
-        labels: {
-          color: legendColor,
-          boxWidth: 18,
-          boxHeight: 8,
-          usePointStyle: false,
-        },
-      },
-      tooltip: {
-        callbacks: {
-          title(items) {
-            const first = items[0]
-            if (!first) return ''
-            return tooltipLabelFormatter(Number(first.label))
-          },
-          label(context) {
-            const value = typeof context.raw === 'number' ? context.raw : 0
-            return `${context.dataset.label ?? ''}: ${formatNumber(language, value)}`
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          color: tickColor,
-          callback: function callback(value) {
-            const label = typeof this.getLabelForValue === 'function'
-              ? this.getLabelForValue(Number(value))
-              : String(value)
-            return tooltipLabelFormatter(Number(label))
-          },
-          maxRotation: 0,
-          autoSkip: true,
-          maxTicksLimit: 8,
-        },
-        grid: {
-          color: withOpacity(gridColor, 0.34),
-          drawTicks: false,
-        },
-      },
-      y: {
-        beginAtZero: true,
-        ticks: {
-          color: tickColor,
-        },
-        grid: {
-          color: withOpacity(gridColor, 0.5),
-          drawTicks: false,
-        },
-      },
-    },
-  }
-}
-
-function buildUserPressureDistributionOptions(
-  language: Language,
-  labels: {
-    xAxisLabel: string
-    yAxisLabel: string
-    pressureLabel: string
-    userCountLabel: string
-  },
-): ChartOptions<'line'> {
-  const tickColor = readChartColorVar('--dashboard-chart-tick', '#635f69')
-  const legendColor = readChartColorVar('--muted-foreground', '#635f69')
-  const gridColor = readChartColorVar('--border', '#d7dfec')
-  return {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: {
-      mode: 'nearest',
-      intersect: false,
-    },
-    plugins: {
-      legend: {
-        labels: {
-          color: legendColor,
-          boxWidth: 18,
-          boxHeight: 8,
-          usePointStyle: false,
-        },
-      },
-      tooltip: {
-        callbacks: {
-          title(items) {
-            const first = items[0]
-            if (!first) return ''
-            const pressure = typeof first.parsed.x === 'number' ? first.parsed.x : 0
-            return `${labels.pressureLabel}: ${formatNumber(language, pressure)}`
-          },
-          label(context) {
-            const userCount = typeof context.parsed.y === 'number' ? context.parsed.y : 0
-            return `${labels.userCountLabel}: ${formatNumber(language, userCount)}`
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        type: 'linear',
-        title: {
-          display: true,
-          text: labels.xAxisLabel,
-          color: legendColor,
-        },
-        ticks: {
-          color: tickColor,
-          callback(value) {
-            return formatNumber(language, Number(value))
-          },
-          maxRotation: 0,
-          autoSkip: true,
-          maxTicksLimit: 10,
-          precision: 0,
-        },
-        grid: {
-          color: withOpacity(gridColor, 0.34),
-          drawTicks: false,
-        },
-      },
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: labels.yAxisLabel,
-          color: legendColor,
-        },
-        ticks: {
-          color: tickColor,
-          precision: 0,
-        },
-        grid: {
-          color: withOpacity(gridColor, 0.5),
-          drawTicks: false,
-        },
-      },
-    },
-  }
-}
-
-function movingAverageColor(key: AnalysisPressureMovingAverageKey, fallback: string): string {
-  switch (key) {
-    case 'sma6h':
-      return readChartColorVar('--warning', fallback)
-    case 'sma24h':
-      return readChartColorVar('--success', fallback)
-    default:
-      return fallback
-  }
-}
-
-function pointRadius(context: ScriptableContext<'line'>): number {
-  const pointCount = context.chart.data.labels?.length ?? 0
-  return pointCount > 72 ? 0 : 2.5
-}
-
 export interface PressureAnalysisScreenProps {
   snapshot: AnalysisPressureSnapshot | null
   loading: boolean
@@ -276,253 +65,93 @@ export interface PressureAnalysisScreenProps {
   onRetry: () => void
 }
 
-export default function PressureAnalysisScreen({
-  snapshot,
-  loading,
-  error,
-  language,
-  strings,
-  onRetry,
-}: PressureAnalysisScreenProps): JSX.Element {
-  const currentColor = readChartColorVar('--primary', '#7c3aed')
-  const previousColor = readChartColorVar('--secondary', '#db2777')
-  const hourlyColor = readChartColorVar('--info', '#0ea5e9')
-  const averageColor = readChartColorVar('--muted-foreground', '#635f69')
-
-  const current24hLabels = useMemo(
-    () => snapshot?.server24h.current.map((point) => String(point.displayBucketStart)) ?? [],
-    [snapshot],
-  )
-  const current24hAverage = useMemo(
-    () => averagePressure(snapshot?.server24h.current.map((point) => point.pressure) ?? []),
-    [snapshot],
-  )
-  const current24hData = useMemo<ChartData<'line'>>(() => ({
-    labels: current24hLabels,
-    datasets: [
-      {
-        label: strings.charts.last24h.currentLabel,
-        data: snapshot?.server24h.current.map((point) => point.pressure) ?? [],
-        borderColor: currentColor,
-        backgroundColor: withOpacity(currentColor, 0.1),
-        pointRadius,
-        pointHoverRadius: 4,
-        cubicInterpolationMode: 'monotone',
-        tension: 0.32,
-        borderWidth: 2.6,
-      },
-      {
-        label: strings.charts.last24h.previousLabel,
-        data: snapshot?.server24h.previous.map((point) => point.pressure) ?? [],
-        borderColor: previousColor,
-        backgroundColor: withOpacity(previousColor, 0.08),
-        pointRadius: 0,
-        cubicInterpolationMode: 'monotone',
-        tension: 0.3,
-        borderWidth: 1.85,
-        borderDash: [6, 6],
-      },
-      {
-        label: `${strings.charts.last24h.averageLabel} (${formatNumber(language, Math.round(current24hAverage * 10) / 10)})`,
-        data: current24hLabels.map(() => current24hAverage),
-        borderColor: averageColor,
-        backgroundColor: withOpacity(averageColor, 0.04),
-        pointRadius: 0,
-        cubicInterpolationMode: 'monotone',
-        tension: 0,
-        borderWidth: 1.75,
-        borderDash: [4, 5],
-      },
-    ],
-  }), [
-    averageColor,
-    current24hAverage,
-    current24hLabels,
-    currentColor,
-    language,
-    previousColor,
-    snapshot,
-    strings.charts.last24h.averageLabel,
-    strings.charts.last24h.currentLabel,
-    strings.charts.last24h.previousLabel,
-  ])
-
-  const server7dLabels = useMemo(
-    () => snapshot?.server7d.points.map((point) => String(point.displayBucketStart)) ?? [],
-    [snapshot],
-  )
-  const server7dData = useMemo<ChartData<'line'>>(() => {
-    const movingAverageLabels = new Map<AnalysisPressureMovingAverageKey, string>([
-      ['sma6h', strings.charts.last7d.sma6hLabel],
-      ['sma24h', strings.charts.last7d.sma24hLabel],
-    ])
-    const movingAverageDatasets = (snapshot?.server7d.movingAverages ?? []).map((series) => ({
-      label: movingAverageLabels.get(series.key) ?? series.key,
-      data: series.points.map((point) => point.value),
-      borderColor: movingAverageColor(series.key, hourlyColor),
-      backgroundColor: withOpacity(movingAverageColor(series.key, hourlyColor), 0.08),
-      pointRadius: 0,
-      cubicInterpolationMode: 'monotone' as const,
-      tension: 0.26,
-      borderWidth: 1.8,
-      borderDash: [5, 5],
-    }))
-    return {
-      labels: server7dLabels,
-      datasets: [
-        {
-          label: strings.charts.last7d.seriesLabel,
-          data: snapshot?.server7d.points.map((point) => point.pressure) ?? [],
-          borderColor: hourlyColor,
-          backgroundColor: withOpacity(hourlyColor, 0.1),
-          pointRadius,
-          pointHoverRadius: 4,
-          cubicInterpolationMode: 'monotone',
-          tension: 0.28,
-          borderWidth: 2.25,
-        },
-        ...movingAverageDatasets,
-      ],
-    }
-  }, [
-    hourlyColor,
-    server7dLabels,
-    snapshot,
-    strings.charts.last7d.seriesLabel,
-    strings.charts.last7d.sma24hLabel,
-    strings.charts.last7d.sma6hLabel,
-  ])
-
-  const userDistributionPoints = useMemo(
-    () => buildActiveUserPressureDistribution(
-      snapshot?.currentUserDistribution ?? {
-        windowMinutes: 60,
-        rows: [],
-        summary: {
-          activeUsers: 0,
-          zeroPressureUsers: 0,
-          median: 0,
-          p90: 0,
-          peak: 0,
-          currentPressure: 0,
-          vsYesterdayDelta: 0,
-        },
-      },
-    ),
-    [snapshot],
-  )
-  const userDistributionData = useMemo<ChartData<'line'>>(() => ({
-    datasets: [
-      {
-        label: strings.charts.userDistribution.seriesLabel,
-        data: userDistributionPoints.map((point) => ({
-          x: point.pressure,
-          y: point.userCount,
-        })),
-        borderColor: currentColor,
-        backgroundColor: withOpacity(currentColor, 0.12),
-        pointRadius: 2.75,
-        pointHoverRadius: 4.5,
-        cubicInterpolationMode: 'monotone',
-        tension: 0.24,
-        borderWidth: 2.35,
-        fill: true,
-      },
-    ],
-  }), [currentColor, strings.charts.userDistribution.seriesLabel, userDistributionPoints])
-
-  if (loading && !snapshot) {
-    return (
-      <AdminLoadingRegion
-        loadState="initial_loading"
-        loadingLabel={strings.loading}
-        minHeight={420}
-      />
-    )
+export default function PressureAnalysisScreen({ snapshot, loading, error, language, strings, onRetry }: PressureAnalysisScreenProps): JSX.Element {
+  const current24hAverage = averagePressure(snapshot?.server24h.current.map((point) => point.pressure) ?? [])
+  const current24hData = snapshot?.server24h.current.map((point, index) => ({
+    timestamp: point.displayBucketStart,
+    current: point.pressure,
+    previous: snapshot.server24h.previous[index]?.pressure ?? null,
+    average: current24hAverage,
+  })) ?? []
+  const config24h = {
+    current: { label: strings.charts.last24h.currentLabel, color: 'var(--chart-1)' },
+    previous: { label: strings.charts.last24h.previousLabel, color: 'var(--chart-2)' },
+    average: { label: `${strings.charts.last24h.averageLabel} (${formatNumber(language, Math.round(current24hAverage * 10) / 10)})`, color: 'var(--chart-3)' },
+  } satisfies ChartConfig
+  const config7d: ChartConfig = {
+    pressure: { label: strings.charts.last7d.seriesLabel, color: 'var(--chart-1)' },
+    sma6h: { label: strings.charts.last7d.sma6hLabel, color: 'var(--chart-2)' },
+    sma24h: { label: strings.charts.last7d.sma24hLabel, color: 'var(--chart-3)' },
   }
+  const server7dData = snapshot?.server7d.points.map((point, index) => ({
+    timestamp: point.displayBucketStart,
+    pressure: point.pressure,
+    ...Object.fromEntries(snapshot.server7d.movingAverages.map((series) => [series.key, series.points[index]?.value ?? null])),
+  })) ?? []
+  const userDistributionPoints = useMemo(() => snapshot ? buildActiveUserPressureDistribution(snapshot.currentUserDistribution) : [], [snapshot])
+  const distributionConfig = {
+    userCount: { label: strings.charts.userDistribution.userCountLabel, color: 'var(--chart-1)' },
+  } satisfies ChartConfig
 
-  if (error && !snapshot) {
-    return (
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 pressure-analysis-empty-state" role="alert">
-        <h2>{strings.errorTitle}</h2>
-        <p className="panel-description text-sm text-muted-foreground">{error}</p>
-        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={onRetry}>
-          {strings.retry}
-        </button>
-      </section>
-    )
-  }
-
-  if (!snapshot) {
-    return (
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 pressure-analysis-empty-state">
-        <h2>{strings.emptyTitle}</h2>
-        <p className="panel-description text-sm text-muted-foreground">{strings.emptyDescription}</p>
-      </section>
-    )
-  }
-
+  if (loading && !snapshot) return <AdminLoadingRegion loadState="initial_loading" loadingLabel={strings.loading} minHeight={420} />
+  if (!snapshot) return (
+    <Card className="pressure-analysis-empty-state" role={error ? 'alert' : undefined}>
+      <CardHeader><CardTitle>{error ? strings.errorTitle : strings.emptyTitle}</CardTitle>
+        <CardDescription>{error ?? strings.emptyDescription}</CardDescription></CardHeader>
+      {error ? <CardContent><Button variant="outline" size="sm" onClick={onRetry}>{strings.retry}</Button></CardContent> : null}
+    </Card>
+  )
   return (
-    <div className="pressure-analysis-page" data-testid="pressure-analysis-screen">
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
-          <div>
-            <h2>{strings.charts.last24h.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{strings.charts.last24h.description}</p>
-          </div>
-        </div>
-        <div className="pressure-chart-shell pressure-chart-shell-line">
-          <Line
-            data={current24hData}
-            options={buildPressureLineOptions(language, (value) => formatAxisTime(language, value))}
-          />
-        </div>
-      </section>
-
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
-          <div>
-            <h2>{strings.charts.userDistribution.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{strings.charts.userDistribution.description}</p>
-          </div>
-        </div>
-        {userDistributionPoints.length === 0 ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.charts.userDistribution.empty}</div>
-        ) : (
-          <div
-            className="pressure-chart-shell pressure-chart-shell-distribution"
-            data-testid="pressure-distribution-chart"
-          >
-            <Line
-              data={userDistributionData}
-              options={buildUserPressureDistributionOptions(
-                language,
-                {
-                  xAxisLabel: strings.charts.userDistribution.xAxisLabel,
-                  yAxisLabel: strings.charts.userDistribution.yAxisLabel,
-                  pressureLabel: strings.charts.userDistribution.seriesLabel,
-                  userCountLabel: strings.charts.userDistribution.userCountLabel,
-                },
-              )}
-            />
-          </div>
-        )}
-      </section>
-
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
-          <div>
-            <h2>{strings.charts.last7d.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{strings.charts.last7d.description}</p>
-          </div>
-        </div>
-        <div className="pressure-chart-shell pressure-chart-shell-line">
-          <Line
-            data={server7dData}
-            options={buildPressureLineOptions(language, (value) => formatAxisHour(language, value))}
-          />
-        </div>
-      </section>
+    <div className="pressure-analysis-page flex min-w-0 flex-col gap-6" data-testid="pressure-analysis-screen">
+      <Card>
+        <CardHeader><CardTitle>{strings.charts.last24h.title}</CardTitle><CardDescription>{strings.charts.last24h.description}</CardDescription></CardHeader>
+        <CardContent>
+          <ChartContainer config={config24h} className="h-80 w-full aspect-auto">
+            <LineChart accessibilityLayer data={current24hData}>
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="timestamp" tickFormatter={(value) => formatAxisTime(language, value)} tickLine={false} axisLine={false} tickMargin={10} minTickGap={24} />
+              <YAxis tickLine={false} axisLine={false} width={40} />
+              <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => formatAxisTime(language, payload[0]?.payload.timestamp ?? 0)} />} />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Line dataKey="current" type="natural" stroke="var(--color-current)" strokeWidth={2} dot={false} />
+              <Line dataKey="previous" type="natural" stroke="var(--color-previous)" strokeWidth={2} dot={false} />
+              <Line dataKey="average" stroke="var(--color-average)" strokeWidth={2} dot={false} />
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader><CardTitle>{strings.charts.userDistribution.title}</CardTitle><CardDescription>{strings.charts.userDistribution.description}</CardDescription></CardHeader>
+        <CardContent>
+          {userDistributionPoints.length === 0 ? <Empty><EmptyDescription>{strings.charts.userDistribution.empty}</EmptyDescription></Empty> : (
+            <ChartContainer config={distributionConfig} className="h-80 w-full aspect-auto" data-testid="pressure-distribution-chart">
+              <AreaChart accessibilityLayer data={userDistributionPoints}>
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="pressure" type="number" tickLine={false} axisLine={false} tickMargin={10} />
+                <YAxis tickLine={false} axisLine={false} allowDecimals={false} width={40} />
+                <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => `${strings.charts.userDistribution.xAxisLabel}: ${payload[0]?.payload.pressure ?? 0}`} />} />
+                <Area dataKey="userCount" type="natural" fill="var(--color-userCount)" fillOpacity={0.4} stroke="var(--color-userCount)" />
+              </AreaChart>
+            </ChartContainer>
+          )}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader><CardTitle>{strings.charts.last7d.title}</CardTitle><CardDescription>{strings.charts.last7d.description}</CardDescription></CardHeader>
+        <CardContent>
+          <ChartContainer config={config7d} className="h-80 w-full aspect-auto">
+            <LineChart accessibilityLayer data={server7dData}>
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="timestamp" tickFormatter={(value) => formatAxisHour(language, value)} tickLine={false} axisLine={false} tickMargin={10} minTickGap={24} />
+              <YAxis tickLine={false} axisLine={false} width={40} />
+              <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => formatAxisHour(language, payload[0]?.payload.timestamp ?? 0)} />} />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Line dataKey="pressure" type="natural" stroke="var(--color-pressure)" strokeWidth={2} dot={false} />
+              {snapshot.server7d.movingAverages.map((series) => <Line key={series.key} dataKey={series.key} type="natural" stroke={`var(--color-${series.key})`} strokeWidth={2} dot={false} />)}
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </div>
   )
 }

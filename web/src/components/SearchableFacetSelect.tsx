@@ -1,9 +1,10 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { type ReactNode, useId, useMemo, useState } from 'react'
 
 import { Icon } from '../lib/icons'
 import { cn } from '../lib/utils'
-import { Input } from '@/components/ui/input'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Command, CommandInput, CommandList, CommandGroup, CommandItem, CommandSeparator } from '@/components/ui/command'
 
 export interface SearchableFacetSelectOption {
   value: string
@@ -25,6 +26,7 @@ export interface SearchableFacetSelectProps {
   disabled?: boolean
   align?: 'start' | 'center' | 'end'
   triggerClassName?: string
+  triggerId?: string
   contentClassName?: string
   labelVariant?: 'default' | 'mono'
   renderOptionLabel?: (option: SearchableFacetSelectOption) => ReactNode
@@ -44,24 +46,14 @@ export default function SearchableFacetSelect({
   disabled = false,
   align = 'end',
   triggerClassName,
+  triggerId,
   contentClassName,
   labelVariant = 'default',
   renderOptionLabel,
 }: SearchableFacetSelectProps): JSX.Element {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const inputRef = useRef<HTMLInputElement | null>(null)
-
-  useEffect(() => {
-    if (!open) {
-      setQuery('')
-      return
-    }
-    window.setTimeout(() => {
-      inputRef.current?.focus()
-      inputRef.current?.select()
-    }, 0)
-  }, [open])
+  const popupId = useId()
 
   const normalizedQuery = query.trim().toLowerCase()
   const filteredOptions = useMemo(() => {
@@ -79,7 +71,7 @@ export default function SearchableFacetSelect({
       <span
         className={cn(
           'searchable-facet-select__label',
-          labelVariant === 'mono' && 'searchable-facet-select__label--mono',
+          labelVariant === 'mono' && 'searchable-facet-select__label--mono font-mono',
         )}
       >
         {label}
@@ -87,80 +79,58 @@ export default function SearchableFacetSelect({
     )
   }
 
+  const selectValue = (nextValue: string | null) => {
+    onChange(nextValue)
+    setOpen(false)
+    setQuery('')
+  }
+
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
-        <button
+    <Popover open={open} onOpenChange={(nextOpen) => { setOpen(nextOpen); if (!nextOpen) setQuery('') }}>
+      <PopoverTrigger asChild>
+        <Button
           type="button"
-          className={cn('searchable-facet-select__trigger', triggerClassName)}
+          variant="outline"
+          id={triggerId}
+          role="combobox"
+          aria-expanded={open}
+          aria-haspopup="dialog"
+          aria-controls={open ? popupId : undefined}
+          className={cn('searchable-facet-select__trigger min-w-40 justify-between', triggerClassName)}
           aria-label={triggerAriaLabel}
           disabled={disabled}
         >
-          <span className="searchable-facet-select__summary">{summary}</span>
-          <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align={align}
-        className={cn('searchable-facet-select__content', contentClassName)}
-      >
-        <div className="searchable-facet-select__search-box">
-          <Input
-            ref={inputRef}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder={searchPlaceholder}
-            className="searchable-facet-select__input"
-            aria-label={searchAriaLabel}
-          />
-        </div>
-        <DropdownMenuSeparator />
-        <div className="searchable-facet-select__list" role="listbox" aria-label={listAriaLabel}>
-          <button
-            type="button"
-            className={cn('searchable-facet-select__option', !value && 'searchable-facet-select__option--active')}
-            onClick={() => {
-              onChange(null)
-              setOpen(false)
-            }}
-          >
-            <span className="searchable-facet-select__mark" aria-hidden="true">
-              {!value ? <Icon icon="mdi:check" width={16} height={16} /> : null}
-            </span>
-            <span className="searchable-facet-select__option-body">
-              <span className="searchable-facet-select__label">{allLabel}</span>
-            </span>
-          </button>
-          {filteredOptions.length === 0 ? (
-            <div className="searchable-facet-select__empty">{emptyLabel}</div>
-          ) : (
-            filteredOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                className={cn(
-                  'searchable-facet-select__option',
-                  value === option.value && 'searchable-facet-select__option--active',
-                )}
-                onClick={() => {
-                  onChange(option.value)
-                  setOpen(false)
-                }}
-              >
-                <span className="searchable-facet-select__mark" aria-hidden="true">
-                  {value === option.value ? <Icon icon="mdi:check" width={16} height={16} /> : null}
-                </span>
-                <span className="searchable-facet-select__option-body">
-                  {renderLabel(option)}
-                  {typeof option.count === 'number' ? (
-                    <span className="searchable-facet-select__count">{`x${option.count}`}</span>
-                  ) : null}
-                </span>
-              </button>
-            ))
-          )}
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <span className="searchable-facet-select__summary truncate">{summary}</span>
+          <Icon icon="mdi:chevron-down" data-icon="inline-end" aria-hidden="true" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent id={popupId} aria-label={listAriaLabel} align={align} className={cn('searchable-facet-select__content w-[max(16rem,var(--radix-popover-trigger-width))] max-w-[calc(100vw-2rem)] p-0', contentClassName)}>
+        <Command shouldFilter={false} label={listAriaLabel}>
+          <CommandInput value={query} onValueChange={setQuery} placeholder={searchPlaceholder} aria-label={searchAriaLabel} />
+          <CommandList label={listAriaLabel}>
+            <CommandGroup>
+              <CommandItem value="__all__" data-checked={!value} onSelect={() => selectValue(null)}>
+                {allLabel}
+              </CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            {filteredOptions.length === 0 ? (
+              <div role="status" className="px-3 py-6 text-center text-sm text-muted-foreground">{emptyLabel}</div>
+            ) : (
+              <CommandGroup>
+                {filteredOptions.map((option) => (
+                  <CommandItem key={option.value} value={option.value} data-checked={value === option.value} onSelect={() => selectValue(option.value)}>
+                    <span className="searchable-facet-select__option-body flex min-w-0 flex-1 items-center justify-between gap-2">
+                      {renderLabel(option)}
+                      {typeof option.count === 'number' ? <span className="searchable-facet-select__count text-xs text-muted-foreground">{`x${option.count}`}</span> : null}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   )
 }

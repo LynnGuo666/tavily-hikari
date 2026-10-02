@@ -178,5 +178,5 @@ export function buildQuotaSliderTrack(stages: readonly number[], used: number, d
   const draftRatio = toQuotaRatioPercent(stages, draftLimit)
   const start = Math.min(usedRatio, draftRatio)
   const end = Math.max(usedRatio, draftRatio)
-  return `linear-gradient(to right, hsl(var(--legacy-warning) / 0.34) 0% ${start}%, hsl(var(--legacy-primary) / 0.44) ${start}% ${end}%, hsl(var(--legacy-muted) / 0.5) ${end}% 100%)`
+  return `linear-gradient(to right, color-mix(in oklab, var(--warning) 34%, transparent) 0% ${start}%, color-mix(in oklab, var(--primary) 44%, transparent) ${start}% ${end}%, color-mix(in oklab, var(--muted) 50%, transparent) ${end}% 100%)`
 }

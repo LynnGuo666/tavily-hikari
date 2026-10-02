@@ -24,8 +24,8 @@ export function rebalanceMarkerLabel(log: RequestLog, strings: AdminTranslations
 
 export function RebalanceGatewayMarker(): JSX.Element {
   return (
-    <span className="log-key-pill__marker" aria-hidden="true">
-      <svg viewBox="0 0 16 16" focusable="false">
+    <span className="log-key-pill__marker inline-flex shrink-0 items-center" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false" className="size-4">
         <path
           d="M5 2.75a1.75 1.75 0 1 1-1 3.18V11a1 1 0 0 0 1 1h4.18a1.75 1.75 0 1 1 0 1.5H5A2.5 2.5 0 0 1 2.5 11V5.93A1.75 1.75 0 0 1 5 2.75m6 0a1.75 1.75 0 1 1-1 3.18V8a1 1 0 0 1-1 1H6.5v-1.5H8.5V5.93A1.75 1.75 0 0 1 11 2.75"
           fill="currentColor"

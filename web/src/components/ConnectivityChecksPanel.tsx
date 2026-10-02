@@ -3,6 +3,7 @@ import { type CSSProperties, useCallback, useMemo, useState } from 'react'
 
 import { Icon } from '../lib/icons'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
+import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 export type ProbeButtonState = 'idle' | 'running' | 'success' | 'partial' | 'failed'
@@ -138,38 +139,38 @@ export default function ConnectivityChecksPanel({
     return (
       <div
         ref={probeBubbleLayerRef}
-        className="user-console-probe-bubble layer-popover"
+        className="user-console-probe-bubble layer-popover fixed z-[1100] max-h-[calc(100dvh-2rem)] w-96 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-lg border bg-popover p-4 text-popover-foreground shadow-md"
         data-placement={probeBubblePosition?.placement ?? 'top'}
         role="status"
         aria-live="polite"
         style={bubbleStyle}
       >
-        <ul className="user-console-probe-bubble-list">
+        <ul className="user-console-probe-bubble-list flex flex-col gap-3">
           {probeBubble.items.map((item) => (
             (() => {
               const structuredLabel = resolveStructuredMcpToolCallLabel(item)
               return (
                 <li
                   key={item.id}
-                  className="user-console-probe-bubble-item"
+                  className="user-console-probe-bubble-item flex items-start gap-2"
                   aria-label={`${stepStatusText[item.status]} · ${item.label}${item.detail ? ` · ${item.detail}` : ''}`}
                 >
                   <Icon
                     icon={probeBubbleItemIcon(item.status)}
                     className={
-                      `user-console-probe-bubble-item-icon user-console-probe-bubble-item-icon-status-${item.status} `
-                      + `${item.status === 'running' ? 'is-spinning' : ''}`
+                      `mt-0.5 shrink-0 user-console-probe-bubble-item-icon user-console-probe-bubble-item-icon-status-${item.status} `
+                      + `${item.status === 'running' ? 'is-spinning motion-safe:animate-spin' : item.status === 'success' ? 'text-success' : item.status === 'failed' ? 'text-destructive' : item.status === 'blocked' ? 'text-warning' : 'text-muted-foreground'}`
                     }
                   />
-                  <div className="user-console-probe-bubble-item-copy">
+                  <div className="user-console-probe-bubble-item-copy flex min-w-0 flex-col gap-1 text-sm">
                     {structuredLabel ? (
-                      <strong className="user-console-probe-bubble-item-label user-console-probe-bubble-item-label-structured">
+                      <strong className="user-console-probe-bubble-item-label user-console-probe-bubble-item-label-structured flex flex-wrap gap-1">
                         {structuredLabel.prefix ? (
                           <span className="user-console-probe-bubble-item-label-text">
                             {structuredLabel.prefix}
                           </span>
                         ) : null}
-                        <code className="user-console-probe-bubble-item-tool">{structuredLabel.toolName}</code>
+                        <code className="user-console-probe-bubble-item-tool rounded bg-muted px-1 font-mono text-xs">{structuredLabel.toolName}</code>
                         {structuredLabel.suffix ? (
                           <span className="user-console-probe-bubble-item-label-text">
                             {structuredLabel.suffix}
@@ -180,7 +181,7 @@ export default function ConnectivityChecksPanel({
                       <strong className="user-console-probe-bubble-item-label">{item.label}</strong>
                     )}
                     {item.detail ? (
-                      <span className="user-console-probe-bubble-item-detail">{item.detail}</span>
+                      <span className="user-console-probe-bubble-item-detail break-words text-xs text-muted-foreground">{item.detail}</span>
                     ) : null}
                   </div>
                 </li>
@@ -205,60 +206,60 @@ export default function ConnectivityChecksPanel({
   }
 
   return (
-    <div className="user-console-probe-box">
-      <div className="user-console-probe-label-row">
-        <label className="token-label">{title}</label>
+    <div className="user-console-probe-box flex flex-col gap-2">
+      <div className="user-console-probe-label-row flex items-center gap-2">
+        <span className="token-label text-sm font-medium">{title}</span>
         <Tooltip>
           <TooltipTrigger asChild>
-            <button
+            <Button
               type="button"
-              className="user-console-probe-hint-trigger"
+              variant="ghost" size="icon-sm" className="user-console-probe-hint-trigger"
               aria-label={costHintAria}
             >
               <span className="user-console-probe-hint-visual" aria-hidden="true">
                 <Icon icon="mdi:help-circle-outline" />
               </span>
-            </button>
+            </Button>
           </TooltipTrigger>
           <TooltipContent className="max-w-[min(20rem,calc(100vw-2rem))]" side="top">
             {costHint}
           </TooltipContent>
         </Tooltip>
       </div>
-      <div className="user-console-probe-actions">
+      <div className="user-console-probe-actions flex flex-wrap gap-2">
         <div className="user-console-probe-action">
           {renderProbeBubble('mcp')}
-          <button
+          <Button
             ref={handleMcpButtonRef}
             type="button"
-            data-probe-kind="mcp"
+            data-probe-kind="mcp" size="sm" variant={mcpProbe.state === 'success' ? 'success' : mcpProbe.state === 'partial' ? 'warning' : mcpProbe.state === 'failed' ? 'destructive' : 'outline'}
             className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(mcpProbe.state)}`}
             onClick={onMcpClick}
             disabled={anyProbeRunning}
           >
             <Icon
               icon={probeButtonIcon(mcpProbe.state)}
-              className={`user-console-probe-btn-icon ${mcpProbe.state === 'running' ? 'is-spinning' : ''}`}
+              className={`user-console-probe-btn-icon ${mcpProbe.state === 'running' ? 'is-spinning motion-safe:animate-spin' : ''}`}
             />
             <span>{mcpButtonLabel}</span>
-          </button>
+          </Button>
         </div>
         <div className="user-console-probe-action">
           {renderProbeBubble('api')}
-          <button
+          <Button
             ref={handleApiButtonRef}
             type="button"
-            data-probe-kind="api"
+            data-probe-kind="api" size="sm" variant={apiProbe.state === 'success' ? 'success' : apiProbe.state === 'partial' ? 'warning' : apiProbe.state === 'failed' ? 'destructive' : 'outline'}
             className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(apiProbe.state)}`}
             onClick={onApiClick}
             disabled={anyProbeRunning}
           >
             <Icon
               icon={probeButtonIcon(apiProbe.state)}
-              className={`user-console-probe-btn-icon ${apiProbe.state === 'running' ? 'is-spinning' : ''}`}
+              className={`user-console-probe-btn-icon ${apiProbe.state === 'running' ? 'is-spinning motion-safe:animate-spin' : ''}`}
             />
             <span>{apiButtonLabel}</span>
-          </button>
+          </Button>
         </div>
       </div>
     </div>

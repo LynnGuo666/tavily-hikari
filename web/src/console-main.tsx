@@ -7,6 +7,7 @@ import { LanguageProvider } from './i18n'
 import { bootstrapOfflineShellDocument, registerPwaServiceWorker } from './pwa/runtime'
 import { ThemeProvider } from './theme'
 import UserConsole from './UserConsole'
+import AgentationToolbar from './components/AgentationToolbar'
 import './index.css'
 
 installDemoRuntime()
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <ThemeProvider>
         <TooltipProvider delayDuration={120} skipDelayDuration={250}>
           <UserConsole />
+          <AgentationToolbar />
         </TooltipProvider>
       </ThemeProvider>
     </LanguageProvider>

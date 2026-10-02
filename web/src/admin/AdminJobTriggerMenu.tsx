@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 import type { AdminTranslations } from '../i18n'
 import { MANUAL_JOB_ACTIONS } from './jobFilters'
 
@@ -36,20 +36,22 @@ export default function AdminJobTriggerMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
-        <DropdownMenuLabel>{strings.title}</DropdownMenuLabel>
-        {MANUAL_JOB_ACTIONS.map((jobType) => (
-          <DropdownMenuItem
-            key={jobType}
-            disabled={triggeringJobType != null}
-            onSelect={(event) => {
-              event.preventDefault()
-              onTrigger(jobType)
-            }}
-          >
-            <Icon icon="mdi:play-outline" width={16} height={16} aria-hidden="true" />
-            <span>{labelForJobType(jobType)}</span>
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{strings.title}</DropdownMenuLabel>
+          {MANUAL_JOB_ACTIONS.map((jobType) => (
+            <DropdownMenuItem
+              key={jobType}
+              disabled={triggeringJobType != null}
+              onSelect={(event) => {
+                event.preventDefault()
+                onTrigger(jobType)
+              }}
+            >
+              <Icon icon="mdi:play-outline" width={16} height={16} aria-hidden="true" />
+              <span>{labelForJobType(jobType)}</span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )

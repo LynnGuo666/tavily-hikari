@@ -623,11 +623,11 @@ describe('AlertsCenter loading behavior', () => {
       groupsLoader: async () => semanticGroups,
     })
 
-    expect(container.querySelector('.segmented-tab')).not.toBeNull()
-    expect(container.querySelector('.segmented-tabs-select-trigger')).toBeNull()
+    expect(container.querySelector('[data-slot=toggle-group-item]')).not.toBeNull()
+    expect(container.querySelector('.segmented-tabs [data-slot=select-trigger]')).toBeNull()
     expect(container.textContent).toContain('聚合告警')
     expect(container.textContent).toContain('事件记录')
-    const tabs = Array.from(container.querySelectorAll('.segmented-tab'))
+    const tabs = Array.from(container.querySelectorAll('[data-slot=toggle-group-item]'))
       .map((node) => node.textContent?.trim())
       .filter(Boolean)
     expect(tabs[0]).toContain('聚合告警')

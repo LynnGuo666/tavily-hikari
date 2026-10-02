@@ -1,8 +1,10 @@
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
+import { Area, ComposedChart, CartesianGrid, Line, YAxis } from 'recharts'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
 import type { ReactNode } from 'react'
 
 import type {
   UserDashboardOverview,
-  UserDashboardOverviewSeriesPoint,
   UserDashboardProgressCard,
 } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
@@ -30,221 +32,60 @@ interface UserDashboardOverviewProps {
   formatNumber: (value: number) => string
 }
 
-interface ChartSegment {
-  areaPath: string
-  linePath: string
-  lastPoint: { x: number, y: number } | null
-}
-
-interface ChartGeometry {
-  actualSegments: ChartSegment[]
-  limitPaths: string[]
-  width: number
-  height: number
-  hasData: boolean
-}
-
-const CHART_WIDTH = 320
-const CHART_HEIGHT = 148
-const CHART_INSET_TOP = 10
-const CHART_INSET_RIGHT = 10
-const CHART_INSET_BOTTOM = 10
-const CHART_INSET_LEFT = 10
-
-function chartPathForSegment(
-  points: Array<{ x: number, y: number }>,
-  baselineY: number,
-): ChartSegment | null {
-  if (points.length === 0) return null
-  const linePath = points
-    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
-    .join(' ')
-  const areaPath = `${linePath} L ${points[points.length - 1].x.toFixed(2)} ${baselineY.toFixed(2)} L ${points[0].x.toFixed(2)} ${baselineY.toFixed(2)} Z`
-  return {
-    areaPath,
-    linePath,
-    lastPoint: points[points.length - 1] ?? null,
-  }
-}
-
-function buildSeriesPaths(
-  points: UserDashboardOverviewSeriesPoint[],
-  pickValue: (point: UserDashboardOverviewSeriesPoint) => number | null,
-): string[] {
-  if (points.length === 0) return []
-  const maxValue = Math.max(
-    1,
-    ...points.flatMap((point) => {
-      const value = pickValue(point)
-      return typeof value === 'number' && Number.isFinite(value) ? [value] : []
-    }),
-  )
-  const plotWidth = CHART_WIDTH - CHART_INSET_LEFT - CHART_INSET_RIGHT
-  const plotHeight = CHART_HEIGHT - CHART_INSET_TOP - CHART_INSET_BOTTOM
-  const xStep = points.length > 1 ? plotWidth / (points.length - 1) : 0
-  const segments: string[] = []
-  let currentSegment: Array<{ x: number, y: number }> = []
-
-  points.forEach((point, index) => {
-    const value = pickValue(point)
-    if (value == null) {
-      if (currentSegment.length > 1) {
-        segments.push(
-          currentSegment
-            .map((segmentPoint, segmentIndex) => `${segmentIndex === 0 ? 'M' : 'L'} ${segmentPoint.x.toFixed(2)} ${segmentPoint.y.toFixed(2)}`)
-            .join(' '),
-        )
-      }
-      currentSegment = []
-      return
-    }
-    const x = CHART_INSET_LEFT + xStep * index
-    const y = CHART_INSET_TOP + (1 - value / maxValue) * plotHeight
-    currentSegment.push({ x, y })
-  })
-
-  if (currentSegment.length > 1) {
-    segments.push(
-      currentSegment
-        .map((segmentPoint, segmentIndex) => `${segmentIndex === 0 ? 'M' : 'L'} ${segmentPoint.x.toFixed(2)} ${segmentPoint.y.toFixed(2)}`)
-        .join(' '),
-    )
-  }
-
-  return segments
-}
-
-function buildChartGeometry(points: UserDashboardOverviewSeriesPoint[]): ChartGeometry {
-  if (points.length === 0) {
-    return {
-      actualSegments: [],
-      limitPaths: [],
-      width: CHART_WIDTH,
-      height: CHART_HEIGHT,
-      hasData: false,
-    }
-  }
-
-  const maxValue = Math.max(
-    1,
-    ...points.flatMap((point) => {
-      const out: number[] = []
-      if (typeof point.value === 'number' && Number.isFinite(point.value)) out.push(point.value)
-      if (typeof point.limitValue === 'number' && Number.isFinite(point.limitValue)) out.push(point.limitValue)
-      return out
-    }),
-  )
-  const plotWidth = CHART_WIDTH - CHART_INSET_LEFT - CHART_INSET_RIGHT
-  const plotHeight = CHART_HEIGHT - CHART_INSET_TOP - CHART_INSET_BOTTOM
-  const baselineY = CHART_HEIGHT - CHART_INSET_BOTTOM
-  const xStep = points.length > 1 ? plotWidth / (points.length - 1) : 0
-  const actualSegments: ChartSegment[] = []
-  let currentActualSegment: Array<{ x: number, y: number }> = []
-
-  points.forEach((point, index) => {
-    if (point.value == null) {
-      const segment = chartPathForSegment(currentActualSegment, baselineY)
-      if (segment) actualSegments.push(segment)
-      currentActualSegment = []
-      return
-    }
-
-    const x = CHART_INSET_LEFT + xStep * index
-    const y = CHART_INSET_TOP + (1 - point.value / maxValue) * plotHeight
-    currentActualSegment.push({ x, y })
-  })
-
-  const tailSegment = chartPathForSegment(currentActualSegment, baselineY)
-  if (tailSegment) actualSegments.push(tailSegment)
-
-  return {
-    actualSegments,
-    limitPaths: buildSeriesPaths(points, (point) => point.limitValue),
-    width: CHART_WIDTH,
-    height: CHART_HEIGHT,
-    hasData: actualSegments.length > 0,
-  }
-}
-
-const CHART_ACCENT_CLASS: Record<'request' | 'hour' | 'day' | 'month', string> = {
-  request: 'text-chart-1',
-  hour: 'text-chart-2',
-  day: 'text-chart-4',
-  month: 'text-chart-3',
-}
-
 function ProgressChart({
   card,
   accentId,
+  language,
 }: {
   card: UserDashboardProgressCard | null
-  accentId: string
+  accentId: keyof typeof CHART_ACCENT_COLOR
+  language: Language
 }): JSX.Element {
-  if (!card) {
+  const config = {
+    value: { label: language === 'zh' ? '已用' : 'Used', color: CHART_ACCENT_COLOR[accentId] },
+    limitValue: { label: language === 'zh' ? '上限' : 'Limit', color: 'var(--muted-foreground)' },
+  } satisfies ChartConfig
+  if (!card || !card.points.some((point) => point.value != null || point.limitValue != null)) {
     return (
-      <div
-        className="user-console-progress-chart user-console-progress-chart-empty min-h-[120px] flex-1 rounded-lg border border-dashed border-border/70 bg-muted/30"
-        aria-hidden="true"
-      />
+      <Empty className="user-console-progress-chart h-28 min-h-0 p-0">
+        <EmptyDescription>—</EmptyDescription>
+      </Empty>
     )
   }
-
-  const geometry = buildChartGeometry(card.points)
-
-  if (!geometry.hasData && geometry.limitPaths.length === 0) {
-    return (
-      <div
-        className="user-console-progress-chart user-console-progress-chart-empty min-h-[120px] flex-1 rounded-lg border border-dashed border-border/70 bg-muted/30"
-        aria-hidden="true"
-      />
-    )
-  }
-
-  const lastPoint = geometry.actualSegments[geometry.actualSegments.length - 1]?.lastPoint ?? null
+  const points = card.points.map((point) => ({
+    ...point,
+    label: new Date((point.displayBucketStart ?? point.bucketStart) * 1000)
+      .toLocaleString(language === 'zh' ? 'zh-CN' : 'en-US'),
+  }))
 
   return (
-    <div
-      className={cn(
-        'user-console-progress-chart relative min-h-[120px] flex-1 self-stretch overflow-hidden rounded-lg bg-muted/20',
-        CHART_ACCENT_CLASS[accentId as keyof typeof CHART_ACCENT_CLASS] ?? 'text-chart-1',
-      )}
-      aria-hidden="true"
-    >
-      <svg
-        className="user-console-progress-chart-svg h-full w-full"
-        viewBox={`0 0 ${geometry.width} ${geometry.height}`}
-        preserveAspectRatio="none"
-        data-accent={accentId}
-      >
-        <defs>
-          <linearGradient id={`user-console-${accentId}-area`} x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.24" />
-            <stop offset="85%" stopColor="currentColor" stopOpacity="0.02" />
-          </linearGradient>
-        </defs>
-        {geometry.limitPaths.map((path, index) => (
-          <path
-            key={`limit-${index}`}
-            d={path}
-            className="user-console-progress-limit-path fill-none stroke-muted-foreground/60 [stroke-dasharray:5_4] [stroke-width:1.5]"
-          />
-        ))}
-        {geometry.actualSegments.map((segment, index) => (
-          <g key={`actual-${index}`}>
-            <path d={segment.areaPath} fill={`url(#user-console-${accentId}-area)`} />
-            <path d={segment.linePath} className="user-console-progress-line-path fill-none stroke-current [vector-effect:non-scaling-stroke] [stroke-width:2]" />
-          </g>
-        ))}
-        {lastPoint ? (
-          <circle
-            cx={lastPoint.x}
-            cy={lastPoint.y}
-            r="4"
-            className="user-console-progress-line-cap fill-current stroke-background [stroke-width:2]"
-          />
-        ) : null}
-      </svg>
-    </div>
+    <ChartContainer config={config} className="user-console-progress-chart h-28 w-full aspect-auto" data-accent={accentId}>
+      <ComposedChart accessibilityLayer margin={{ top: 8, right: 4, bottom: 0, left: 4 }} data={points}>
+        <CartesianGrid vertical={false} />
+        <YAxis hide domain={[0, 'auto']} />
+        <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.label} />} />
+        <Area
+          dataKey="value"
+          type="linear"
+          fill="var(--color-value)"
+          fillOpacity={0.15}
+          stroke="var(--color-value)"
+          strokeWidth={2}
+          connectNulls={false}
+          isAnimationActive={false}
+        />
+        <Line
+          dataKey="limitValue"
+          type="stepAfter"
+          stroke="var(--color-limitValue)"
+          strokeDasharray="5 4"
+          strokeWidth={1.5}
+          dot={false}
+          connectNulls={false}
+          isAnimationActive={false}
+        />
+      </ComposedChart>
+    </ChartContainer>
   )
 }
 
@@ -273,10 +114,11 @@ function SummaryCard({
     <Card
       className={cn(
         `user-console-summary-card user-console-summary-card-${tone}`,
-        'gap-2 py-5',
+        'gap-3',
+        tone === 'month' && 'col-span-2 @lg:col-span-1',
       )}
     >
-      <CardHeader className="user-console-summary-card-header gap-1">
+      <CardHeader className="user-console-summary-card-header flex flex-wrap items-center justify-between gap-1">
         <CardDescription className="user-console-summary-card-label text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
         </CardDescription>
@@ -295,14 +137,26 @@ function SummaryCard({
           {loading ? '--' : formatNumber(value)}
         </span>
       </CardContent>
-      <CardFooter className="user-console-summary-card-foot justify-between text-xs text-muted-foreground">
-        <span>{marker}</span>
-      </CardFooter>
     </Card>
   )
 }
 
+const CHART_ACCENT_COLOR: Record<'request' | 'hour' | 'day' | 'month', string> = {
+  request: 'var(--chart-1)',
+  hour: 'var(--chart-2)',
+  day: 'var(--chart-4)',
+  month: 'var(--chart-3)',
+}
+
+const CHART_ACCENT_CLASS: Record<'request' | 'hour' | 'day' | 'month', string> = {
+  request: 'text-chart-1',
+  hour: 'text-chart-2',
+  day: 'text-chart-4',
+  month: 'text-chart-3',
+}
+
 function ProgressCard({
+  language,
   label,
   card,
   loading,
@@ -310,6 +164,7 @@ function ProgressCard({
   marker,
   formatNumber,
 }: {
+  language: Language
   label: ReactNode
   card: UserDashboardProgressCard | null
   loading: boolean
@@ -326,36 +181,31 @@ function ProgressCard({
       className={cn(
         `user-console-progress-card user-console-progress-card-${accent}`,
         loading && 'is-loading',
-        'gap-3 py-5',
+        'gap-3',
       )}
     >
-      <div className="user-console-progress-card-copy flex flex-1 flex-col gap-3">
-        <CardHeader className="user-console-progress-card-header gap-1">
-          <CardDescription className="user-console-progress-card-label min-w-0 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-            {label}
-          </CardDescription>
-          <CardAction className="user-console-progress-card-marker text-xs text-muted-foreground">
-            {marker}
-          </CardAction>
-        </CardHeader>
-        <CardContent className="user-console-progress-card-value">
+      <CardHeader className="user-console-progress-card-header">
+        <CardDescription className="user-console-progress-card-label min-h-8 min-w-0 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+          {label}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="user-console-progress-card-value flex flex-col gap-3">
+        <div>
           <strong className={cn('text-2xl font-semibold tabular-nums', loading && 'text-muted-foreground/50')}>
             {loading || !card ? '--' : formatNumber(card.used)}
           </strong>
           <span className="ml-1.5 text-sm text-muted-foreground">
             {loading || !card ? '/ --' : `/ ${formatNumber(card.limit)}`}
           </span>
-        </CardContent>
-        <CardFooter className="user-console-progress-card-foot mt-auto justify-between border-t bg-transparent pt-3 text-xs text-muted-foreground">
-          <span>{marker}</span>
-          <strong className={cn('tabular-nums', CHART_ACCENT_CLASS[accent])}>
-            {fillRatio == null ? '--' : `${Math.round(fillRatio * 100)}%`}
-          </strong>
-        </CardFooter>
-      </div>
-      <div className="px-4">
-        <ProgressChart card={card} accentId={accent} />
-      </div>
+        </div>
+        <ProgressChart card={card} accentId={accent} language={language} />
+      </CardContent>
+      <CardFooter className="user-console-progress-card-foot mt-auto justify-between text-xs text-muted-foreground">
+        <span>{marker}</span>
+        <strong className={cn('tabular-nums', CHART_ACCENT_CLASS[accent])}>
+          {fillRatio == null ? '--' : `${Math.round(fillRatio * 100)}%`}
+        </strong>
+      </CardFooter>
     </Card>
   )
 }
@@ -387,8 +237,8 @@ export default function UserDashboardOverview({
       }
 
   return (
-    <div className="user-console-overview-grid flex flex-col gap-4">
-      <div className="user-console-summary-grid grid gap-4 sm:grid-cols-3">
+    <div className="user-console-overview-grid @container flex flex-col gap-4">
+      <div className="user-console-summary-grid grid grid-cols-2 gap-4 @lg:grid-cols-3">
         <SummaryCard
           label={text.dailySuccess}
           value={summary?.dailySuccess ?? 0}
@@ -415,8 +265,9 @@ export default function UserDashboardOverview({
         />
       </div>
 
-      <div className="user-console-progress-grid grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="user-console-progress-grid grid gap-4 @md:grid-cols-2 @5xl:grid-cols-4">
         <ProgressCard
+          language={language}
           label={requestRateLabel}
           card={progress?.requestRate ?? null}
           loading={loading}
@@ -425,12 +276,13 @@ export default function UserDashboardOverview({
           formatNumber={formatNumber}
         />
         <ProgressCard
+          language={language}
           label={
             <UsageMetricLabel
               label={text.hourly}
               kind="businessCalls1h"
               language={language}
-              className="user-console-progress-card-label"
+              className="user-console-progress-card-label min-w-0 whitespace-normal text-left"
             />
           }
           card={progress?.businessCalls1h ?? null}
@@ -440,12 +292,13 @@ export default function UserDashboardOverview({
           formatNumber={formatNumber}
         />
         <ProgressCard
+          language={language}
           label={
             <UsageMetricLabel
               label={text.daily}
               kind="dailyCredits"
               language={language}
-              className="user-console-progress-card-label"
+              className="user-console-progress-card-label min-w-0 whitespace-normal text-left"
             />
           }
           card={progress?.dailyCredits ?? null}
@@ -455,12 +308,13 @@ export default function UserDashboardOverview({
           formatNumber={formatNumber}
         />
         <ProgressCard
+          language={language}
           label={
             <UsageMetricLabel
               label={text.monthly}
               kind="monthlyCredits"
               language={language}
-              className="user-console-progress-card-label"
+              className="user-console-progress-card-label min-w-0 whitespace-normal text-left"
             />
           }
           card={progress?.monthlyCredits ?? null}

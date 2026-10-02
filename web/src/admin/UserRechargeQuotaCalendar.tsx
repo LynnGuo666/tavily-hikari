@@ -1,3 +1,5 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { useMemo } from 'react'
 
 import type { AdminUserDetail } from '../api'
@@ -58,37 +60,37 @@ export function UserRechargeQuotaCalendar({
       </div>
 
       {rows.length === 0 ? (
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.empty}</div>
+        <Empty className="empty-state"><EmptyDescription>{strings.empty}</EmptyDescription></Empty>
       ) : (
         <>
           <div className="admin-recharge-quota-table-facts" aria-label={strings.title}>
             {tableFacts.map((fact) => <span key={fact}>{fact}</span>)}
           </div>
           <div className="table-scroll-shell admin-recharge-quota-table-scroll" data-table-density="compact">
-            <table className="admin-recharge-quota-table" data-table-density="compact">
-            <thead>
-              <tr>
-                <th scope="col">{strings.monthColumn}</th>
-                <th scope="col">{strings.baseColumn}</th>
-                <th scope="col">{strings.tagColumn}</th>
-                <th scope="col">{strings.rechargeColumn}</th>
-                <th scope="col">{strings.finalColumn}</th>
-                <th scope="col">{strings.usedColumn}</th>
-              </tr>
-            </thead>
-            <tbody>
+            <Table className="admin-recharge-quota-table" data-table-density="compact">
+            <TableHeader>
+              <TableRow>
+                <TableHead scope="col">{strings.monthColumn}</TableHead>
+                <TableHead scope="col">{strings.baseColumn}</TableHead>
+                <TableHead scope="col">{strings.tagColumn}</TableHead>
+                <TableHead scope="col">{strings.rechargeColumn}</TableHead>
+                <TableHead scope="col">{strings.finalColumn}</TableHead>
+                <TableHead scope="col">{strings.usedColumn}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {rows.map((row) => (
-                <tr key={row.monthStart}>
-                  <th scope="row">{formatMonth(row.monthStart, locale)}</th>
-                <td>{formatNumber(detail.quotaBase.monthlyCreditsLimit)}</td>
-                <td>{formatNumber(tagDelta)}</td>
-                <td>{formatNumber(row.monthlyDelta)}</td>
-                <td>{formatNumber(detail.quotaBase.monthlyCreditsLimit + tagDelta + row.monthlyDelta)}</td>
-                <td>{formatNumber(getRechargeMonthUsedQuota(row.monthStart, currentMonthStart, detail.monthlyCreditsUsed))}</td>
-              </tr>
+                <TableRow key={row.monthStart}>
+                  <TableHead scope="row">{formatMonth(row.monthStart, locale)}</TableHead>
+                <TableCell>{formatNumber(detail.quotaBase.monthlyCreditsLimit)}</TableCell>
+                <TableCell>{formatNumber(tagDelta)}</TableCell>
+                <TableCell>{formatNumber(row.monthlyDelta)}</TableCell>
+                <TableCell>{formatNumber(detail.quotaBase.monthlyCreditsLimit + tagDelta + row.monthlyDelta)}</TableCell>
+                <TableCell>{formatNumber(getRechargeMonthUsedQuota(row.monthStart, currentMonthStart, detail.monthlyCreditsUsed))}</TableCell>
+              </TableRow>
               ))}
-            </tbody>
-            </table>
+            </TableBody>
+            </Table>
           </div>
         </>
       )}

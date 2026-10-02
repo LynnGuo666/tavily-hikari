@@ -4,6 +4,7 @@ import { installDemoRuntime } from './api/demo'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { LanguageProvider } from './i18n'
 import AdminLogin from './pages/AdminLogin'
+import AgentationToolbar from './components/AgentationToolbar'
 import { bootstrapOfflineShellDocument, registerPwaServiceWorker } from './pwa/runtime'
 import { ThemeProvider } from './theme'
 import './index.css'
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <ThemeProvider>
         <TooltipProvider delayDuration={120} skipDelayDuration={250}>
           <AdminLogin />
+          <AgentationToolbar />
         </TooltipProvider>
       </ThemeProvider>
     </LanguageProvider>

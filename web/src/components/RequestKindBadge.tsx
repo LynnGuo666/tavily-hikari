@@ -129,7 +129,7 @@ export function RequestKindBadge({
     <Badge
       variant="neutral"
       className={cn(
-        'request-kind-badge',
+        'request-kind-badge max-w-full',
         `request-kind-badge--${tone}`,
         size === 'sm' ? 'request-kind-badge--sm' : 'request-kind-badge--md',
         className,
@@ -143,7 +143,7 @@ export function RequestKindBadge({
           <span className="request-kind-badge__separator" aria-hidden="true">
             |
           </span>
-          <span className="request-kind-badge__detail">{detail}</span>
+          <span className="request-kind-badge__detail truncate">{detail}</span>
         </>
       ) : (
         <span className="request-kind-badge__detail">{safeLabel}</span>

@@ -1,4 +1,5 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 
 export type UserTagBindingOption = {
   id: string
@@ -37,27 +38,29 @@ export function UserTagBindingControls({
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent align="start">
-          {bindableTags.length === 0 ? (
-            <SelectItem value="__no_bindable_user_tags__" disabled>
-              {emptyLabel}
-            </SelectItem>
-          ) : (
-            bindableTags.map((tag) => (
-              <SelectItem key={tag.id} value={tag.id}>
-                {tag.displayName}
+          <SelectGroup>
+            {bindableTags.length === 0 ? (
+              <SelectItem value="__no_bindable_user_tags__" disabled>
+                {emptyLabel}
               </SelectItem>
-            ))
-          )}
+            ) : (
+              bindableTags.map((tag) => (
+                <SelectItem key={tag.id} value={tag.id}>
+                  {tag.displayName}
+                </SelectItem>
+              ))
+            )}
+          </SelectGroup>
         </SelectContent>
       </Select>
-      <button
+      <Button
         type="button"
-        className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
+        variant="default" size="sm"
         onClick={() => void onBind()}
         disabled={isBusy || !selectedTagId}
       >
         {isBusy ? buttonBusyLabel ?? buttonLabel : buttonLabel}
-      </button>
+      </Button>
     </div>
   )
 }

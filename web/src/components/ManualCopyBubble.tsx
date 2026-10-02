@@ -1,4 +1,4 @@
-import { type FocusEvent, type MouseEvent, useEffect, useRef } from 'react'
+import { type FocusEvent, type MouseEvent, useEffect, useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
@@ -38,6 +38,8 @@ export default function ManualCopyBubble({
   className,
   onClose,
 }: ManualCopyBubbleProps): JSX.Element | null {
+  const fieldId = useId()
+  const titleId = useId()
   const fieldRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null)
   const { layerRef: bubbleRef, position } = useAnchoredFloatingLayer<HTMLDivElement>({
     open,
@@ -97,15 +99,18 @@ export default function ManualCopyBubble({
     onFocus: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       selectAllReadonlyText(event.currentTarget)
     },
-    className: 'manual-copy-bubble-field',
+    id: fieldId,
+    'aria-label': fieldLabel,
+    className: 'manual-copy-bubble-field font-mono text-xs',
   }
 
   return createPortal(
     <div
       ref={bubbleRef}
-      className={cn('manual-copy-bubble layer-popover', className)}
+      className={cn('manual-copy-bubble fixed z-[1100] flex max-h-[calc(100dvh-2rem)] w-[min(24rem,calc(100vw-2rem))] flex-col gap-3 overflow-y-auto overscroll-contain rounded-xl border bg-popover p-4 text-sm text-popover-foreground shadow-md', className)}
       role="dialog"
       aria-modal="false"
+      aria-labelledby={titleId}
       style={{
         top: `${position?.top ?? 0}px`,
         left: `${position?.left ?? 0}px`,
@@ -115,16 +120,16 @@ export default function ManualCopyBubble({
       }}
       data-placement={position?.placement ?? 'bottom'}
     >
-      <div className="manual-copy-bubble-header">
-        <div className="manual-copy-bubble-copy">
-          <strong className="manual-copy-bubble-title">{title}</strong>
-          <p className="manual-copy-bubble-description">{description}</p>
+      <div className="manual-copy-bubble-header flex items-start justify-between gap-3">
+        <div className="manual-copy-bubble-copy min-w-0 space-y-1">
+          <strong id={titleId} className="manual-copy-bubble-title font-medium">{title}</strong>
+          <p className="manual-copy-bubble-description text-xs text-muted-foreground">{description}</p>
         </div>
-        <button type="button" className="manual-copy-bubble-close" onClick={onClose} aria-label={closeLabel}>
+        <Button type="button" variant="ghost" size="icon-sm" className="manual-copy-bubble-close" onClick={onClose} aria-label={closeLabel}>
           <X className="h-4 w-4" />
-        </button>
+        </Button>
       </div>
-      <label className="manual-copy-bubble-label">{fieldLabel}</label>
+      <label htmlFor={fieldId} className="manual-copy-bubble-label text-sm font-medium">{fieldLabel}</label>
       {multiline ? (
         <Textarea
           {...fieldProps}
@@ -142,7 +147,7 @@ export default function ManualCopyBubble({
           type="text"
         />
       )}
-      <div className="manual-copy-bubble-actions">
+      <div className="manual-copy-bubble-actions flex justify-end">
         <Button type="button" variant="outline" size="sm" onClick={onClose}>
           {closeLabel}
         </Button>

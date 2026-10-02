@@ -1,7 +1,11 @@
-import type { ReactNode } from 'react'
+import { useId, type ReactNode } from 'react'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Field, FieldLabel } from '@/components/ui/field'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
+import { cn } from '@/lib/utils'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 
 interface AdminTablePaginationProps {
   page: number
@@ -38,6 +42,7 @@ export default function AdminTablePagination({
   onNext,
   onPerPageChange,
 }: AdminTablePaginationProps): JSX.Element {
+  const perPageId = useId()
   const hasPerPageControl = typeof perPage === 'number' && typeof onPerPageChange === 'function'
   const resolvedPerPageOptions =
     typeof perPage === 'number' && !perPageOptions.includes(perPage)
@@ -45,49 +50,57 @@ export default function AdminTablePagination({
       : perPageOptions
 
   return (
-    <div className="table-pagination">
-      <div className={`table-pagination-meta${hasPerPageControl ? '' : ' table-pagination-meta-summary-only'}`}>
+    <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className={cn('table-pagination-meta flex min-w-0 flex-col gap-2', !hasPerPageControl && 'table-pagination-meta-summary-only')}>
         {hasPerPageControl ? (
-          <div className="table-pagination-per-page">
-            <span>{perPageLabel}</span>
+          <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+            <FieldLabel htmlFor={perPageId}>{perPageLabel}</FieldLabel>
             <Select value={String(perPage)} onValueChange={(value) => void onPerPageChange(Number(value))} disabled={disabled}>
-              <SelectTrigger aria-label={perPageAriaLabel} className="table-pagination-select w-[96px]" disabled={disabled}>
+              <SelectTrigger id={perPageId} aria-label={perPageAriaLabel} className="table-pagination-select w-20" disabled={disabled}>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent align="start">
-                {resolvedPerPageOptions.map((option) => (
-                  <SelectItem key={option} value={String(option)}>
-                    {option}
-                  </SelectItem>
-                ))}
+              <SelectContent position="popper" align="start">
+                <SelectGroup>
+                  {resolvedPerPageOptions.map((option) => (
+                    <SelectItem key={option} value={String(option)}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </Field>
         ) : null}
-        <span className="table-pagination-summary">{pageSummary ?? `Page ${page} / ${totalPages}`}</span>
+        <span className="table-pagination-summary text-sm text-muted-foreground">{pageSummary ?? `Page ${page} / ${totalPages}`}</span>
       </div>
-      <div className="table-pagination-nav">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="table-pagination-button"
-          onClick={() => void onPrevious()}
-          disabled={disabled || previousDisabled}
-        >
-          {previousLabel}
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          className="table-pagination-button"
-          onClick={() => void onNext()}
-          disabled={disabled || nextDisabled}
-        >
-          {nextLabel}
-        </Button>
-      </div>
+      <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${previousLabel} / ${nextLabel}`}>
+        <PaginationContent>
+          <PaginationItem>
+            <Button
+              type="button"
+              variant="outline"
+              className="table-pagination-button"
+              onClick={() => void onPrevious()}
+              disabled={disabled || previousDisabled}
+            >
+              <ChevronLeftIcon data-icon="inline-start" />
+              {previousLabel}
+            </Button>
+          </PaginationItem>
+          <PaginationItem>
+            <Button
+              type="button"
+              variant="outline"
+              className="table-pagination-button"
+              onClick={() => void onNext()}
+              disabled={disabled || nextDisabled}
+            >
+              {nextLabel}
+              <ChevronRightIcon data-icon="inline-end" />
+            </Button>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   )
 }

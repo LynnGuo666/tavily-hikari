@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 export interface RollingNumberProps {
   value: number | null | undefined
@@ -207,7 +208,7 @@ function RollingDigitColumn({
 
   return (
     <span
-      className={`rn-col${cell.animate ? ` rn-${cell.direction}` : ''}`}
+      className={cn('rn-col relative inline-block w-[1ch] overflow-hidden align-bottom', cell.animate && `rn-${cell.direction}`)}
       style={{ height: digitHeight || undefined }}
       data-rn-digit={cell.char}
       data-rn-animate={cell.animate ? 'true' : 'false'}
@@ -217,11 +218,11 @@ function RollingDigitColumn({
       data-rn-end-index={cell.endIndex}
     >
       <span
-        className="rn-strip"
+        className={cn('rn-strip flex flex-col', cell.animate && 'transition-transform duration-500 ease-out motion-reduce:transition-none')}
         style={{ transform: `translateY(${-translate}px)` }}
       >
         {DIGITS.map((digit, stripIndex) => (
-          <span key={`${columnIndex}-${stripIndex}`} className="rn-digit">
+          <span key={`${columnIndex}-${stripIndex}`} className="rn-digit block shrink-0" style={{ height: digitHeight || undefined }}>
             {digit}
           </span>
         ))}
@@ -271,14 +272,14 @@ export default function RollingNumber({ value, loading, className }: RollingNumb
 
   return (
     <span
-      className={`rolling-number${className ? ' ' + className : ''}`}
+      className={cn('rolling-number relative inline-flex tabular-nums', className)}
       aria-label={formatted}
       role="text"
     >
-      <span className="rn-probe" ref={probeRef} aria-hidden="true">
+      <span className="rn-probe pointer-events-none invisible absolute" ref={probeRef} aria-hidden="true">
         0
       </span>
-      <span aria-hidden="true" className="rn-visual">
+      <span aria-hidden="true" className="rn-visual inline-flex items-baseline">
         {cells.map((cell, index) => {
           if (cell.kind === 'separator') {
             return (

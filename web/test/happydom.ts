@@ -1,16 +1,10 @@
 import { GlobalRegistrator } from '@happy-dom/global-registrator'
-import { Chart as ChartJS } from 'chart.js'
 
 GlobalRegistrator.register({
   url: 'http://localhost/',
 })
 
 ;(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
-
-// Happy DOM does not model responsive canvas reflow like a browser, so Chart.js
-// can recurse while trying to animate resize updates during test renders.
-ChartJS.defaults.animation = false
-ChartJS.defaults.responsive = false
 
 const DEFAULT_CLIENT_WIDTH = 1280
 const DEFAULT_CLIENT_HEIGHT = 720
@@ -48,105 +42,15 @@ Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
   },
 })
 
-const mockGradient = {
-  addColorStop: () => undefined,
-}
 
-function createCanvas2dContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
-  const base = {
-    canvas,
-    globalAlpha: 1,
-    globalCompositeOperation: 'source-over',
-    fillStyle: '#000',
-    strokeStyle: '#000',
-    lineWidth: 1,
-    font: '12px sans-serif',
-    textAlign: 'start',
-    textBaseline: 'alphabetic',
-    shadowBlur: 0,
-    shadowColor: 'transparent',
-    shadowOffsetX: 0,
-    shadowOffsetY: 0,
-    beginPath: () => undefined,
-    closePath: () => undefined,
-    moveTo: () => undefined,
-    lineTo: () => undefined,
-    bezierCurveTo: () => undefined,
-    quadraticCurveTo: () => undefined,
-    arc: () => undefined,
-    arcTo: () => undefined,
-    ellipse: () => undefined,
-    rect: () => undefined,
-    roundRect: () => undefined,
-    fill: () => undefined,
-    stroke: () => undefined,
-    clip: () => undefined,
-    save: () => undefined,
-    restore: () => undefined,
-    translate: () => undefined,
-    rotate: () => undefined,
-    scale: () => undefined,
-    transform: () => undefined,
-    setTransform: () => undefined,
-    resetTransform: () => undefined,
-    clearRect: () => undefined,
-    fillRect: () => undefined,
-    strokeRect: () => undefined,
-    drawImage: () => undefined,
-    fillText: () => undefined,
-    strokeText: () => undefined,
-    setLineDash: () => undefined,
-    getLineDash: () => [],
-    createLinearGradient: () => mockGradient,
-    createRadialGradient: () => mockGradient,
-    createPattern: () => null,
-    measureText: (text: string) =>
-      ({
-        width: String(text).length * 7,
-        actualBoundingBoxLeft: 0,
-        actualBoundingBoxRight: String(text).length * 7,
-        actualBoundingBoxAscent: 8,
-        actualBoundingBoxDescent: 2,
-        fontBoundingBoxAscent: 8,
-        fontBoundingBoxDescent: 2,
-      }) satisfies Partial<TextMetrics>,
-    getImageData: () => ({ data: new Uint8ClampedArray(4), width: 1, height: 1 }),
-    putImageData: () => undefined,
-    isPointInPath: () => false,
-    isPointInStroke: () => false,
+// ResizeObserver does not perform layout in Happy DOM. Give responsive charts
+// measurable bounds while preserving the geometry of other test elements.
+const originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect
+HTMLElement.prototype.getBoundingClientRect = function () {
+  if (this.classList.contains('recharts-responsive-container')) {
+    const width = 640
+    const height = 320
+    return { x: 0, y: 0, top: 0, left: 0, right: width, bottom: height, width, height, toJSON: () => ({}) }
   }
-
-  return new Proxy(base, {
-    get(target, property) {
-      if (property in target) return target[property as keyof typeof target]
-      return () => undefined
-    },
-    set(target, property, value) {
-      ;(target as Record<PropertyKey, unknown>)[property] = value
-      return true
-    },
-  }) as unknown as CanvasRenderingContext2D
+  return originalGetBoundingClientRect.call(this)
 }
-
-const canvasContextCache = new WeakMap<HTMLCanvasElement, CanvasRenderingContext2D>()
-
-Object.defineProperty(HTMLCanvasElement.prototype, 'getContext', {
-  configurable: true,
-  writable: true,
-  value(this: HTMLCanvasElement, type: string) {
-    if (type !== '2d') return null
-    const existing = canvasContextCache.get(this)
-    if (existing) return existing
-    const next = createCanvas2dContext(this)
-    canvasContextCache.set(this, next)
-    return next
-  },
-})
-
-Object.defineProperty(HTMLCanvasElement.prototype, 'toDataURL', {
-  configurable: true,
-  writable: true,
-  value() {
-    return 'data:image/png;base64,'
-  },
-})

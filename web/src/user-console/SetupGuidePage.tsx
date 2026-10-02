@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react'
 
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+  SelectGroup } from '@/components/ui/select'
 import type { UserTokenSummary } from '../api'
 import type { EN } from './text'
 
@@ -32,10 +32,10 @@ export default function SetupGuidePage({
   guide,
 }: SetupGuidePageProps): JSX.Element {
   return (
-    <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-setup-page gap-0 overflow-visible py-0">
-      <CardHeader className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-setup-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">
+    <Card className="surface panel user-console-setup-page gap-0 overflow-visible py-0">
+      <CardHeader className="panel-header border-b user-console-setup-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">
         <div className="user-console-setup-heading min-w-0">
-          <h2 className="text-base font-semibold">{text.title}</h2>
+          <CardTitle className="text-base font-semibold" role="heading" aria-level={2}>{text.title}</CardTitle>
           <CardDescription className="panel-description text-sm text-muted-foreground mt-1 text-sm">{text.description}</CardDescription>
         </div>
         {selectedTokenId ? (
@@ -48,11 +48,13 @@ export default function SetupGuidePage({
                 <SelectValue>{maskedTokenLabel(selectedTokenId)}</SelectValue>
               </SelectTrigger>
               <SelectContent align="end">
-                {tokens.filter((token) => token.enabled).map((token) => (
-                  <SelectItem key={token.tokenId} value={token.tokenId}>
-                    {maskedTokenLabel(token.tokenId)}
-                  </SelectItem>
-                ))}
+                <SelectGroup>
+                  {tokens.filter((token) => token.enabled).map((token) => (
+                    <SelectItem key={token.tokenId} value={token.tokenId}>
+                      {maskedTokenLabel(token.tokenId)}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>

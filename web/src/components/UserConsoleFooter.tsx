@@ -1,9 +1,7 @@
-import { Icon } from '../lib/icons'
+import AppFooter from './AppFooter'
 import { buildOctoRillReleaseLink, formatVersionDisplay } from '../lib/releaseLinks'
 
 import type { VersionInfo } from '../api'
-
-const REPO_URL = 'https://github.com/IvanLi-CN/tavily-hikari'
 
 export interface UserConsoleFooterStrings {
   title: string
@@ -39,21 +37,13 @@ export default function UserConsoleFooter({
     : null
 
   return (
-    <footer className="app-footer user-console-footer">
-      <span>{strings.title}</span>
-      <span className="footer-meta">
-        <a
-          href={REPO_URL}
-          className="footer-link"
-          target="_blank"
-          rel="noreferrer"
-          aria-label={strings.githubAria}
-        >
-          <Icon icon="mdi:github" width={18} height={18} className="footer-link-icon" />
-          <span>{strings.githubLabel}</span>
-        </a>
-      </span>
-      <span className="footer-meta">
+    <AppFooter
+      className="user-console-footer"
+      title={strings.title}
+      githubLabel={strings.githubLabel}
+      githubAria={strings.githubAria}
+      version={
+        <>
         {release ? (
           <>
             {strings.tagPrefix}
@@ -71,7 +61,8 @@ export default function UserConsoleFooter({
         ) : (
           strings.loadingVersion
         )}
-      </span>
-    </footer>
+        </>
+      }
+    />
   )
 }

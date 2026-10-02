@@ -625,7 +625,7 @@ function StatusDetailBubbleProof(): JSX.Element {
             <div style={{ minHeight: 420 }}>
               <Dialog open>
                 <DialogContent
-                  className="dark max-w-3xl overflow-hidden border-border/75 bg-background/94 p-0 shadow-[0_30px_70px_-42px_rgba(15,23,42,0.82)]"
+                  className="dark sm:max-w-3xl overflow-hidden border-border/75 bg-background/94 p-0 shadow-[0_30px_70px_-42px_rgba(15,23,42,0.82)]"
                 >
                   <div
                     ref={rootRef}

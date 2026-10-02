@@ -139,6 +139,8 @@ test('built HTML points to the matching manifest without a legacy touch-icon ove
   ]) {
     const html = fs.readFileSync(path.join(build.distDir, htmlFile), 'utf8')
     const parserWindow = new Window()
+    // Bun may omit this constructor when Happy DOM creates a separate window.
+    parserWindow.SyntaxError ??= SyntaxError
     const document = new parserWindow.DOMParser().parseFromString(html, 'text/html')
     const manifestLinks = document.querySelectorAll('link[rel~="manifest"]')
     expect(manifestLinks.length).toBe(1)

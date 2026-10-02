@@ -1,3 +1,4 @@
+import { TableHead } from '@/components/ui/table'
 import type { ReactNode } from 'react'
 
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
@@ -21,7 +22,7 @@ export function AdminTableValueStack({
   primaryClassName,
 }: StackedValue): JSX.Element {
   return (
-    <div className="admin-table-value-stack">
+    <div className="admin-table-value-stack flex flex-col gap-1">
       <span className={`admin-table-value-primary${primaryClassName ? ` ${primaryClassName}` : ''}`}>
         {primary}
       </span>
@@ -95,7 +96,7 @@ export function AdminUsersSortableHeader<Field extends string>({
     </Button>
   )
   return (
-    <th aria-sort={ariaSort}>
+    <TableHead aria-sort={ariaSort}>
       {hasTooltip ? (
         <Tooltip>
           <TooltipTrigger asChild>{trigger}</TooltipTrigger>
@@ -106,7 +107,7 @@ export function AdminUsersSortableHeader<Field extends string>({
       ) : (
         trigger
       )}
-    </th>
+    </TableHead>
   )
 }
 

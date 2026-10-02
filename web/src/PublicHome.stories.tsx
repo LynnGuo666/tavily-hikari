@@ -84,7 +84,7 @@ function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): JSX.Element {
         )}
       />
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="token-access-modal max-w-xl">
+        <DialogContent className="token-access-modal sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>{strings.tokenAccess.dialog.title}</DialogTitle>
             <DialogDescription>{strings.tokenAccess.dialog.description}</DialogDescription>

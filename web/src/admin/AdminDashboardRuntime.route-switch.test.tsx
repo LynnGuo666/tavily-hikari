@@ -171,7 +171,7 @@ const routeSwitchCases: RouteSwitchCase[] = [
     },
     returnPath: rankingsPath('uniqueIp'),
     returnExpectation: {
-      selector: '.admin-rankings-tab.is-active',
+      selector: '.admin-rankings-tab-strip [role="radio"][aria-checked="true"]',
       text: 'IP',
     },
   },
@@ -182,14 +182,14 @@ const routeSwitchCases: RouteSwitchCase[] = [
     nextExpectation: {
       pathname: analysisPath('rankings'),
       search: '?demo=true&tab=businessCredits',
-      selector: '.admin-rankings-tab.is-active',
+      selector: '.admin-rankings-tab-strip [role="radio"][aria-checked="true"]',
       selectorText: 'Credits',
     },
     returnPath: `${analysisPath('rankings')}?demo=true&tab=uniqueIp`,
     returnExpectation: {
       pathname: analysisPath('rankings'),
       search: '?demo=true&tab=uniqueIp',
-      selector: '.admin-rankings-tab.is-active',
+      selector: '.admin-rankings-tab-strip [role="radio"][aria-checked="true"]',
       selectorText: 'IP',
     },
   },
@@ -200,14 +200,14 @@ const routeSwitchCases: RouteSwitchCase[] = [
     nextExpectation: {
       pathname: '/admin/analysis',
       search: '?demo=true&tab=businessCredits',
-      selector: '.admin-rankings-tab.is-active',
+      selector: '.admin-rankings-tab-strip [role="radio"][aria-checked="true"]',
       selectorText: 'Credits',
     },
     returnPath: '/admin/analysis?demo=true&tab=uniqueIp',
     returnExpectation: {
       pathname: '/admin/analysis',
       search: '?demo=true&tab=uniqueIp',
-      selector: '.admin-rankings-tab.is-active',
+      selector: '.admin-rankings-tab-strip [role="radio"][aria-checked="true"]',
       selectorText: 'IP',
     },
   },
@@ -319,7 +319,7 @@ function hookOrderErrors(): string[] {
 }
 
 function assertRouteRendered(container: HTMLElement, expectation: RouteExpectation): void {
-  const main = container.querySelector<HTMLElement>('[role="main"]')
+  const main = container.querySelector<HTMLElement>('main')
   expect(main).not.toBeNull()
   expect(main?.textContent?.replace(/\s+/g, ' ').trim().length ?? 0).toBeGreaterThan(0)
   if (expectation.pathname) {

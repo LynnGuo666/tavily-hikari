@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/input-group"
 import { SearchIcon, CheckIcon } from "lucide-react"
 
-function Command({
+const Command = React.forwardRef<React.ElementRef<typeof CommandPrimitive>, React.ComponentProps<typeof CommandPrimitive>>(function Command({
   className,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive>) {
+}, ref) {
   return (
     <CommandPrimitive
       data-slot="command"
@@ -26,10 +26,11 @@ function Command({
         "flex size-full flex-col overflow-hidden rounded-xl! bg-popover p-1 text-popover-foreground",
         className
       )}
+      ref={ref}
       {...props}
     />
   )
-}
+})
 
 function CommandDialog({
   title = "Command Palette",
@@ -63,10 +64,10 @@ function CommandDialog({
   )
 }
 
-function CommandInput({
+const CommandInput = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Input>, React.ComponentProps<typeof CommandPrimitive.Input>>(function CommandInput({
   className,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}, ref) {
   return (
     <div data-slot="command-input-wrapper" className="p-1 pb-0">
       <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
@@ -76,6 +77,7 @@ function CommandInput({
             "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
             className
           )}
+          ref={ref}
           {...props}
         />
         <InputGroupAddon>
@@ -84,7 +86,7 @@ function CommandInput({
       </InputGroup>
     </div>
   )
-}
+})
 
 function CommandList({
   className,
@@ -144,11 +146,11 @@ function CommandSeparator({
   )
 }
 
-function CommandItem({
+const CommandItem = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Item>, React.ComponentProps<typeof CommandPrimitive.Item>>(function CommandItem({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Item>) {
+}, ref) {
   return (
     <CommandPrimitive.Item
       data-slot="command-item"
@@ -156,13 +158,14 @@ function CommandItem({
         "group/command-item relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-muted data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
         className
       )}
+      ref={ref}
       {...props}
     >
       {children}
       <CheckIcon className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
     </CommandPrimitive.Item>
   )
-}
+})
 
 function CommandShortcut({
   className,

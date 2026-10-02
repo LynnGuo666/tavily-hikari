@@ -1,3 +1,4 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { type PublicTokenLog } from '../api'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import TokenLogsHeader, { type DetailLogsPushIssueCode, type SegmentedTabsOption, type UserTokenLogFilter } from './TokenLogsHeader'
@@ -162,7 +163,7 @@ export default function TokenLogsPanel({
           : undefined}
       >
         {logs.length === 0 ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert p-6 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
+          <Empty className="empty-state p-6"><EmptyDescription>{text.emptyLogs}</EmptyDescription></Empty>
         ) : (
           <>
             {mode === 'detail' ? (
@@ -192,7 +193,7 @@ export default function TokenLogsPanel({
       {mode === 'full' ? (
         <div className="user-console-mobile-list user-console-md-down flex flex-col gap-3 p-4">
           {logs.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-center text-sm text-muted-foreground">{text.emptyLogs}</div>
+            <Empty className="empty-state rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>{text.emptyLogs}</EmptyDescription></Empty>
           ) : (
             logs.map((log) => (
               <article

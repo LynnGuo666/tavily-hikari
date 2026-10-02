@@ -3954,10 +3954,16 @@ export async function fetchAdminMcpSessionBindings(
   query: AdminMcpSessionBindingsQuery,
   signal?: AbortSignal,
 ): Promise<AdminMcpSessionBindingsPage> {
-  return requestJson<AdminMcpSessionBindingsPage>(
+  const response = await requestJson<AdminMcpSessionBindingsPage>(
     `/api/settings/system/mcp-session-bindings${buildAdminMcpSessionBindingsSearch(query)}`,
     { signal },
   )
+  if (!Array.isArray(response?.items) || !Number.isFinite(response.total)
+    || !Number.isFinite(response.page) || !Number.isFinite(response.perPage)
+    || response.perPage < 1 || !Number.isFinite(response.activeMatchingCount)) {
+    throw new Error('Invalid MCP session bindings response')
+  }
+  return response
 }
 
 export async function revokeSelectedAdminMcpSessionBindings(

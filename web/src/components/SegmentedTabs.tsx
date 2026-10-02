@@ -2,8 +2,8 @@ import * as React from 'react'
 
 import { useViewportMode } from '@/lib/responsive'
 import { cn } from '@/lib/utils'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 
 export interface SegmentedTabsOption<T extends string = string> {
   value: T
@@ -56,11 +56,13 @@ export default function SegmentedTabs<T extends string = string>({
             <SelectValue>{selectedLabel || value}</SelectValue>
           </SelectTrigger>
           <SelectContent align="start">
-            {options.map((option) => (
-              <SelectItem key={option.value} value={option.value} disabled={disabled || option.disabled}>
-                {option.label}
-              </SelectItem>
-            ))}
+            <SelectGroup>
+              {options.map((option) => (
+                <SelectItem key={option.value} value={option.value} disabled={disabled || option.disabled}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
       </div>
@@ -68,27 +70,24 @@ export default function SegmentedTabs<T extends string = string>({
   }
 
   return (
-    <Tabs
+    <ToggleGroup
+      type="single"
       value={value}
-      onValueChange={(next) => onChange(next as T)}
-      className={cn('segmented-tabs', className)}
+      onValueChange={(next) => { if (next) onChange(next as T) }}
+      variant="outline"
+      spacing={0}
+      aria-label={ariaLabel}
+      className={cn('segmented-tabs flex-wrap', className)}
     >
-      <TabsList aria-label={ariaLabel} className="h-auto flex-wrap">
         {options.map((option) => (
-          <TabsTrigger
+          <ToggleGroupItem
             key={option.value}
             value={option.value}
             disabled={disabled || option.disabled}
-            onClick={() => {
-              if (!disabled && !option.disabled && option.value !== value) {
-                onChange(option.value)
-              }
-            }}
           >
             {option.label}
-          </TabsTrigger>
+          </ToggleGroupItem>
         ))}
-      </TabsList>
-    </Tabs>
+    </ToggleGroup>
   )
 }

@@ -1,26 +1,21 @@
-import { useEffect, useId, useMemo, useState } from 'react'
+import SegmentedTabs from '../components/SegmentedTabs'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { useId, useMemo } from 'react'
 
-import ReactEChartsCore from 'echarts-for-react/lib/core'
-import * as echarts from 'echarts/core'
-import { CustomChart, type CustomSeriesOption } from 'echarts/charts'
-import { TooltipComponent, type TooltipComponentOption } from 'echarts/components'
-import { CanvasRenderer } from 'echarts/renderers'
-import type { ComposeOption } from 'echarts/core'
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 
 import type { AdminTranslations, Language } from '../i18n'
 import type { AdminUserRankingRow, AdminUserRankingsSnapshot } from '../api/adminRankings'
 import { Icon } from '../lib/icons'
 import { useViewportMode } from '../lib/responsive'
-import { buildRankingMockAvatarDataUrl, normalizeRankingAvatarUrl } from './rankingAvatar'
 
-echarts.use([TooltipComponent, CustomChart, CanvasRenderer])
 
 type RankingWindowKey = 'last24h' | 'last7d' | 'last30d'
 type RankingMetricKey = 'primarySuccess' | 'businessCredits' | 'uniqueIp'
 type RankingTabKey = RankingWindowKey | RankingMetricKey
 type RankingsConnectionState = 'connecting' | 'live' | 'degraded'
-type EChartsOption = ComposeOption<TooltipComponentOption | CustomSeriesOption>
-type AvatarLoadState = 'loaded' | 'failed'
 
 const DEFAULT_RANKINGS_REFRESH_INTERVAL_SECS = 10
 const DESKTOP_RANKING_ROW_HEIGHT = 32
@@ -36,12 +31,6 @@ type RankingCardDefinition = {
   color: string
 }
 
-type RankingChartInteractiveRow = {
-  row: AdminUserRankingRow
-  top: number
-  height: number
-}
-
 type RankingsMetaProps = {
   strings: AdminTranslations['rankings']
   snapshot: AdminUserRankingsSnapshot | null
@@ -55,24 +44,10 @@ type RankingsChartCardProps = {
   rows: AdminUserRankingRow[]
   strings: AdminTranslations['rankings']
   color: string
-  interactiveUserId: string | null
-  onInteractiveUserChange: (userId: string | null) => void
   onSelectUser?: (userId: string) => void
 }
 
 export type { RankingMetricKey, RankingTabKey, RankingWindowKey }
-
-function readChartColorVar(name: string, fallback: string): string {
-  if (typeof document === 'undefined') return fallback
-  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-  return value.length > 0 ? `hsl(${value})` : fallback
-}
-
-function withOpacity(color: string, opacity: number): string {
-  return color.startsWith('hsl(') && color.endsWith(')')
-    ? `${color.slice(0, -1)} / ${opacity})`
-    : color
-}
 
 function formatDisplayName(row: AdminUserRankingRow, fallback: string): string {
   return row.user.displayName?.trim() || row.user.username?.trim() || row.user.userId || fallback
@@ -81,55 +56,6 @@ function formatDisplayName(row: AdminUserRankingRow, fallback: string): string {
 function buildTopBarDomainMax(topValue: number): number {
   if (topValue <= 0) return 1
   return topValue
-}
-
-function measureIdentityColumnMetrics({
-  rows,
-  strings,
-  compact,
-}: {
-  rows: AdminUserRankingRow[]
-  strings: AdminTranslations['rankings']
-  compact: boolean
-}): { totalWidth: number; nameWidth: number } {
-  const fallbackTotalWidth = compact ? 168 : 212
-  const fallbackNameWidth = compact ? 104 : 138
-  if (rows.length === 0 || typeof document === 'undefined') {
-    return { totalWidth: fallbackTotalWidth, nameWidth: fallbackNameWidth }
-  }
-
-  const probe = document.createElement('span')
-  probe.style.position = 'absolute'
-  probe.style.visibility = 'hidden'
-  probe.style.pointerEvents = 'none'
-  probe.style.whiteSpace = 'nowrap'
-  probe.style.fontFamily = '"DM Sans", system-ui, sans-serif'
-  probe.style.fontSize = compact ? '12px' : '13px'
-  probe.style.fontWeight = '700'
-  document.body.appendChild(probe)
-
-  try {
-    const topRow = rows[0]
-    if (!topRow) {
-      return { totalWidth: fallbackTotalWidth, nameWidth: fallbackNameWidth }
-    }
-    probe.textContent = `${topRow.rank}. ${formatDisplayName(topRow, strings.userFallback)}`
-    const firstRowTextWidth = Math.ceil(probe.getBoundingClientRect().width)
-    const widestTextWidth = rows.reduce((maxWidth, row) => {
-      probe.textContent = `${row.rank}. ${formatDisplayName(row, strings.userFallback)}`
-      return Math.max(maxWidth, Math.ceil(probe.getBoundingClientRect().width))
-    }, firstRowTextWidth)
-
-    const avatarWidth = compact ? 22 : 24
-    const avatarGap = compact ? 10 : 12
-    const contentPadding = compact ? 12 : 14
-    return {
-      totalWidth: avatarWidth + avatarGap + widestTextWidth + contentPadding,
-      nameWidth: widestTextWidth,
-    }
-  } finally {
-    probe.remove()
-  }
 }
 
 function formatTimestamp(unixSeconds: number, language: Language): string {
@@ -150,16 +76,6 @@ function rankingChartHeight(rowCount: number, compact: boolean): number {
   return Math.max(320, clampedRowCount * rankingRowHeight(compact) + RANKING_CHART_BASE_HEIGHT)
 }
 
-function buildInteractiveRows(rows: AdminUserRankingRow[], compact: boolean): RankingChartInteractiveRow[] {
-  const rowHeight = rankingRowHeight(compact)
-  const chartPaddingTop = compact ? 10 : 12
-  return rows.map((row, index) => ({
-    row,
-    top: chartPaddingTop + index * rowHeight,
-    height: rowHeight,
-  }))
-}
-
 function connectionToneClass(state: RankingsConnectionState): string {
   if (state === 'live') return 'is-live'
   if (state === 'degraded') return 'is-degraded'
@@ -170,47 +86,6 @@ function connectionIcon(state: RankingsConnectionState): string {
   if (state === 'live') return 'mdi:check-circle-outline'
   if (state === 'degraded') return 'mdi:alert-circle-outline'
   return 'mdi:loading'
-}
-
-function useLoadedAvatarUrls(rows: AdminUserRankingRow[]): ReadonlySet<string> {
-  const avatarUrls = useMemo(
-    () => Array.from(
-      new Set(rows.map((row) => normalizeRankingAvatarUrl(row.user.avatarUrl)).filter((value): value is string => Boolean(value))),
-    ),
-    [rows],
-  )
-  const [avatarStates, setAvatarStates] = useState<Record<string, AvatarLoadState>>({})
-
-  useEffect(() => {
-    if (typeof Image === 'undefined') return
-    const images: HTMLImageElement[] = []
-
-    for (const url of avatarUrls) {
-      if (avatarStates[url] !== undefined) continue
-      const image = new Image()
-      image.referrerPolicy = 'no-referrer'
-      image.onload = () => {
-        setAvatarStates((current) => (current[url] === 'loaded' ? current : { ...current, [url]: 'loaded' }))
-      }
-      image.onerror = () => {
-        setAvatarStates((current) => (current[url] === 'failed' ? current : { ...current, [url]: 'failed' }))
-      }
-      image.src = url
-      images.push(image)
-    }
-
-    return () => {
-      for (const image of images) {
-        image.onload = null
-        image.onerror = null
-      }
-    }
-  }, [avatarStates, avatarUrls])
-
-  return useMemo(
-    () => new Set(avatarUrls.filter((url) => avatarStates[url] === 'loaded')),
-    [avatarStates, avatarUrls],
-  )
 }
 
 function RankingsSemanticList({
@@ -238,354 +113,33 @@ function RankingsSemanticList({
   )
 }
 
-function RankingsBarChart({
-  rows,
-  strings,
-  color,
-  domainMax,
-  descriptionId,
-  interactiveUserId,
-}: {
-  rows: AdminUserRankingRow[]
-  strings: AdminTranslations['rankings']
-  color: string
-  domainMax: number
-  descriptionId: string
-  interactiveUserId: string | null
-}): JSX.Element {
-  const compact = useViewportMode() === 'small'
-  const loadedAvatarUrls = useLoadedAvatarUrls(rows)
-  const axisColor = readChartColorVar('--foreground', '#332f3a')
-  const { nameWidth: measuredNameWidth } = measureIdentityColumnMetrics({
-    rows,
-    strings,
-    compact,
-  })
-  const chartPaddingLeft = compact ? 14 : 18
-  const chartPaddingTop = compact ? 10 : 12
-  const chartPaddingBottom = compact ? 10 : 12
-  const chartPaddingRight = compact ? 12 : 16
-  const valueLabelWidth = compact ? 34 : 42
-  const valueLabelGap = compact ? 8 : 10
-  const barHeight = compact ? 22 : 24
-  const avatarSize = compact ? 20 : 22
-  const rankWidth = compact ? 24 : 26
-  const rowLabelGap = compact ? 8 : 10
-  const rowNameFontSize = compact ? 12 : 13
-  const rowValueFontSize = compact ? 12 : 13
-  const rowRankFontSize = compact ? 11 : 12
-  const chartHeight = rankingChartHeight(rows.length, compact)
-  const avatarUrlsByUserId = useMemo(
-    () =>
-      new Map(
-        rows.map((row) => {
-          const realAvatarUrl = normalizeRankingAvatarUrl(row.user.avatarUrl)
-          const avatarUrl = realAvatarUrl && loadedAvatarUrls.has(realAvatarUrl)
-            ? realAvatarUrl
-            : buildRankingMockAvatarDataUrl(row.user, strings.userFallback)
-          return [row.user.userId, avatarUrl]
-        }),
-      ),
-    [loadedAvatarUrls, rows, strings.userFallback],
-  )
-
-  const option = useMemo<EChartsOption>(() => ({
-    animation: false,
-    tooltip: {
-      trigger: 'item',
-      formatter(params) {
-        const index = Array.isArray(params)
-          ? -1
-          : typeof params.dataIndex === 'number'
-            ? params.dataIndex
-            : -1
-        const row = index >= 0 ? rows[index] : null
-        if (!row) return ''
-        return `${formatDisplayName(row, strings.userFallback)}<br/>${row.value.toLocaleString()}`
-      },
-      textStyle: {
-        fontFamily: '"DM Sans", system-ui, sans-serif',
-      },
-    },
-    series: [
-      {
-        type: 'custom',
-        coordinateSystem: 'none',
-        data: rows.map((row) => row.value),
-        renderItem(params, api) {
-          const row = rows[params.dataIndexInside]
-          if (!row) return
-
-          const fullWidth = api.getWidth()
-          const fullHeight = api.getHeight()
-          const slotHeight = Math.max(
-            rankingRowHeight(compact),
-            (fullHeight - chartPaddingTop - chartPaddingBottom) / RANKING_SLOT_COUNT,
-          )
-          const centerY = chartPaddingTop + params.dataIndexInside * slotHeight + slotHeight / 2
-          const barY = centerY - barHeight / 2
-          const plotWidth = Math.max(144, fullWidth - chartPaddingLeft - chartPaddingRight)
-          const labelBarWidth = Math.min(
-            Math.max(104, rankWidth + avatarSize + rowLabelGap * 3 + (compact ? 54 : 66)),
-            Math.max(120, plotWidth * 0.42),
-          )
-          const variableBarWidth = Math.max(36, plotWidth - labelBarWidth - valueLabelGap - valueLabelWidth)
-          const valueRatio = domainMax > 0 ? row.value / domainMax : 0
-          const barWidth = labelBarWidth + variableBarWidth * valueRatio
-          const maxNameWidth = Math.max(
-            compact ? 52 : 64,
-            Math.min(measuredNameWidth, labelBarWidth - rankWidth - avatarSize - rowLabelGap * 3 - 12),
-          )
-          const valueText = row.value.toLocaleString()
-          const canShowValueInside = barWidth >= labelBarWidth + valueLabelWidth + 14
-          const valueAnchorX = canShowValueInside
-            ? chartPaddingLeft + barWidth - 10
-            : Math.min(fullWidth - chartPaddingRight, chartPaddingLeft + barWidth + valueLabelGap)
-          const avatarX = chartPaddingLeft + rankWidth + rowLabelGap
-          const avatarY = centerY - avatarSize / 2
-          const avatarUrl =
-            avatarUrlsByUserId.get(row.user.userId) ??
-            buildRankingMockAvatarDataUrl(row.user, strings.userFallback)
-          const isInteractiveMatch = row.user.userId === interactiveUserId
-
-          return {
-            type: 'group',
-            focus: 'none',
-            emphasisDisabled: true,
-            children: [
-              {
-                type: 'rect',
-                shape: {
-                  x: chartPaddingLeft,
-                  y: barY,
-                  width: barWidth,
-                  height: barHeight,
-                  r: [8, 999, 999, 8],
-                },
-                style: {
-                  fill: isInteractiveMatch ? withOpacity(color, 0.94) : color,
-                  shadowColor: isInteractiveMatch ? withOpacity(color, 0.42) : 'transparent',
-                  shadowBlur: isInteractiveMatch ? 8 : 0,
-                  shadowOffsetY: isInteractiveMatch ? 2 : 0,
-                  lineWidth: isInteractiveMatch ? 1.5 : 0,
-                  stroke: isInteractiveMatch ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
-                },
-                silent: true,
-              },
-              {
-                type: 'text',
-                style: {
-                  x: chartPaddingLeft + 10,
-                  y: centerY,
-                  text: `${row.rank}.`,
-                  fill: 'rgba(255, 255, 255, 0.94)',
-                  font: api.font({
-                    fontSize: rowRankFontSize,
-                    fontWeight: 800,
-                    fontFamily: '"DM Sans", system-ui, sans-serif',
-                  }),
-                  textAlign: 'left',
-                  textVerticalAlign: 'middle',
-                },
-                silent: true,
-              },
-              {
-                type: 'group',
-                x: avatarX,
-                y: avatarY,
-                clipPath: {
-                  type: 'circle',
-                  shape: {
-                    cx: avatarSize / 2,
-                    cy: avatarSize / 2,
-                    r: avatarSize / 2,
-                  },
-                },
-                silent: true,
-                children: [
-                  {
-                    type: 'image',
-                    style: {
-                      image: avatarUrl,
-                      x: 0,
-                      y: 0,
-                      width: avatarSize,
-                      height: avatarSize,
-                    },
-                  },
-                  {
-                    type: 'circle',
-                    shape: {
-                      cx: avatarSize / 2,
-                      cy: avatarSize / 2,
-                      r: avatarSize / 2 - 0.5,
-                    },
-                    style: {
-                      fill: 'transparent',
-                      stroke: isInteractiveMatch ? 'rgba(255, 255, 255, 0.96)' : 'rgba(255, 255, 255, 0.78)',
-                      lineWidth: isInteractiveMatch ? 1.5 : 1,
-                    },
-                    silent: true,
-                  },
-                ],
-              },
-              {
-                type: 'text',
-                style: {
-                  x: avatarX + avatarSize + rowLabelGap,
-                  y: centerY,
-                  width: maxNameWidth,
-                  text: formatDisplayName(row, strings.userFallback),
-                  overflow: 'truncate',
-                  ellipsis: '…',
-                  fill: 'rgba(255, 255, 255, 0.96)',
-                  font: api.font({
-                    fontSize: rowNameFontSize,
-                    fontWeight: 800,
-                    fontFamily: '"DM Sans", system-ui, sans-serif',
-                  }),
-                  textAlign: 'left',
-                  textVerticalAlign: 'middle',
-                },
-                silent: true,
-              },
-              {
-                type: 'text',
-                style: {
-                  x: valueAnchorX,
-                  y: centerY,
-                  text: valueText,
-                  fill: canShowValueInside ? 'rgba(255, 255, 255, 0.98)' : axisColor,
-                  font: api.font({
-                    fontSize: rowValueFontSize,
-                    fontWeight: 800,
-                    fontFamily: '"DM Sans", system-ui, sans-serif',
-                  }),
-                  textAlign: canShowValueInside ? 'right' : 'left',
-                  textVerticalAlign: 'middle',
-                },
-                silent: true,
-              },
-            ],
-          }
-        },
-      },
-    ],
-  }), [
-    avatarSize,
-    avatarUrlsByUserId,
-    axisColor,
-    barHeight,
-    chartPaddingBottom,
-    chartPaddingLeft,
-    chartPaddingRight,
-    chartPaddingTop,
-    color,
-    compact,
-    domainMax,
-    interactiveUserId,
-    measuredNameWidth,
-    rankWidth,
-    rowLabelGap,
-    rowNameFontSize,
-    rowRankFontSize,
-    rowValueFontSize,
-    rows,
-    strings,
-    valueLabelGap,
-    valueLabelWidth,
-  ])
-
-  return (
-    <div className="admin-ranking-chart-canvas" style={{ height: chartHeight }} aria-describedby={descriptionId}>
-      <ReactEChartsCore
-        echarts={echarts}
-        option={option}
-        notMerge
-        lazyUpdate
-        autoResize
-        style={{ height: '100%', width: '100%' }}
-        opts={{ renderer: 'canvas' }}
-      />
-    </div>
-  )
-}
-
-function RankingsChartCard({
-  title,
-  description,
-  rows,
-  strings,
-  color,
-  interactiveUserId,
-  onInteractiveUserChange,
-  onSelectUser,
-}: RankingsChartCardProps): JSX.Element {
+function RankingsChartCard({ title, description, rows, strings, color, onSelectUser }: RankingsChartCardProps): JSX.Element {
   const descriptionId = useId()
   const compact = useViewportMode() === 'small'
-  const domainMax = rows.length > 0 ? buildTopBarDomainMax(rows[0]?.value ?? 0) : 1
-  const interactiveRows = useMemo(() => buildInteractiveRows(rows, compact), [compact, rows])
-
+  const data = rows.map((row) => ({ ...row, name: `${row.rank}. ${formatDisplayName(row, strings.userFallback)}` }))
   return (
-    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card relative min-w-0 overflow-hidden rounded-lg border bg-card">
-      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
-        <div>
-          <h3>{title}</h3>
-          <p className="panel-description text-sm text-muted-foreground">{description}</p>
-        </div>
-      </div>
-      <div className="admin-ranking-card-body flex flex-col gap-3 p-4">
-        {rows.length === 0 ? (
-          <div className="admin-ranking-empty-state" role="status" aria-live="polite">
-            <div className="admin-ranking-empty-orb" aria-hidden="true">
-              <Icon icon="mdi:chart-box-outline" width={24} height={24} />
-            </div>
-            <p className="admin-ranking-empty-copy">{strings.empty}</p>
-            <div className="admin-ranking-empty-ghostbars" aria-hidden="true">
-              <span className="admin-ranking-empty-ghostbar h-2 rounded-full bg-muted admin-ranking-empty-ghostbar--long" />
-              <span className="admin-ranking-empty-ghostbar h-2 rounded-full bg-muted admin-ranking-empty-ghostbar--mid" />
-              <span className="admin-ranking-empty-ghostbar h-2 rounded-full bg-muted admin-ranking-empty-ghostbar--short" />
-            </div>
-          </div>
-        ) : (
-          <div className="admin-ranking-chart-layout">
+    <Card className="admin-ranking-card min-w-0">
+      <CardHeader><CardTitle>{title}</CardTitle><CardDescription>{description}</CardDescription></CardHeader>
+      <CardContent>
+        {rows.length === 0 ? <p className="admin-ranking-empty-state py-10 text-center text-muted-foreground" role="status">{strings.empty}</p> : (
+          <div className="admin-ranking-chart-shell min-w-0">
             <RankingsSemanticList id={descriptionId} title={title} rows={rows} strings={strings} />
-            <div className="admin-ranking-chart-shell">
-              <RankingsBarChart
-                rows={rows}
-                strings={strings}
-                color={color}
-                domainMax={domainMax}
-                descriptionId={descriptionId}
-                interactiveUserId={interactiveUserId}
-              />
-              <div className="admin-ranking-chart-hit-layer">
-                {interactiveRows.map(({ row, top, height }) => {
-                  const label = `${row.rank}. ${formatDisplayName(row, strings.userFallback)}`
-                  const active = row.user.userId === interactiveUserId
-                  return (
-                    <button
-                      key={`${title}:${row.user.userId}:${row.rank}`}
-                      type="button"
-                      className={`admin-ranking-chart-hit-target ${active ? 'is-interactive' : ''}`}
-                      style={{ top, height }}
-                      aria-label={label}
-                      onMouseEnter={() => onInteractiveUserChange(row.user.userId)}
-                      onMouseLeave={() => onInteractiveUserChange(null)}
-                      onFocus={() => onInteractiveUserChange(row.user.userId)}
-                      onBlur={() => onInteractiveUserChange(null)}
-                      onClick={() => onSelectUser?.(row.user.userId)}
-                    >
-                      <span className="sr-only">{label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
+            <ChartContainer config={{ value: { label: title, color } }} className="w-full aspect-auto" style={{ height: rankingChartHeight(rows.length, compact) }} aria-describedby={descriptionId}>
+              <BarChart accessibilityLayer data={data} layout="vertical" margin={{ left: 0, right: 16 }}>
+                <CartesianGrid horizontal={false} />
+                <XAxis type="number" domain={[0, buildTopBarDomainMax(rows[0]?.value ?? 0)]} axisLine={false} tickLine={false} />
+                <YAxis type="category" dataKey="name" width={compact ? 100 : 140} axisLine={false} tickLine={false} />
+                <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.name} />} />
+                <Bar dataKey="value" fill="var(--color-value)" radius={4} onClick={(entry) => onSelectUser?.(entry.payload.user.userId)} cursor={onSelectUser ? 'pointer' : undefined} />
+              </BarChart>
+            </ChartContainer>
+            {onSelectUser && <div className="sr-only focus-within:not-sr-only flex flex-wrap gap-2">
+              {data.map((row) => <Button key={row.user.userId} variant="outline" size="sm" onClick={() => onSelectUser(row.user.userId)}>{row.name}</Button>)}
+            </div>}
           </div>
         )}
-      </div>
-    </article>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -607,14 +161,14 @@ function RankingsLoadingCard({
   }))
 
   return (
-    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card relative min-w-0 overflow-hidden rounded-lg border bg-card">
-      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+    <Card className="surface panel admin-ranking-card relative min-w-0 overflow-hidden rounded-lg border bg-card">
+      <CardHeader className="panel-header border-b">
         <div>
-          <h3>{title}</h3>
-          <p className="panel-description text-sm text-muted-foreground">{description}</p>
+          <CardTitle role="heading" aria-level={3}>{title}</CardTitle>
+          <CardDescription className="panel-description">{description}</CardDescription>
         </div>
-      </div>
-      <div className="admin-ranking-card-body flex flex-col gap-3 p-4">
+      </CardHeader>
+      <CardContent className="admin-ranking-card-body flex min-w-0 flex-col gap-3">
         <div
           className="admin-ranking-skeleton-stage"
           role="status"
@@ -622,21 +176,21 @@ function RankingsLoadingCard({
           style={{ minHeight: chartHeight, height: chartHeight }}
         >
           <span className="sr-only">{strings.loading}</span>
-          <div className="admin-ranking-skeleton-list" aria-hidden="true">
+          <div className="admin-ranking-skeleton-list flex flex-col gap-3" aria-hidden="true">
             {skeletonRows.map((row) => (
-              <div key={`${title}-${row.rank}`} className="admin-ranking-skeleton-item">
+              <div key={`${title}-${row.rank}`} className="admin-ranking-skeleton-item flex items-center gap-2">
                 <span className="admin-ranking-skeleton-rank">{row.rank}.</span>
-                <span className="admin-ranking-skeleton-avatar" />
-                <span className="admin-ranking-skeleton-name" style={{ width: row.nameWidth }} />
-                <span className="admin-ranking-skeleton-track">
-                  <span className="admin-ranking-skeleton-bar" style={{ width: row.barWidth }} />
+                <span className="admin-ranking-skeleton-avatar size-6 shrink-0 rounded-full bg-muted" />
+                <span className="admin-ranking-skeleton-name h-3 rounded bg-muted" style={{ width: row.nameWidth }} />
+                <span className="admin-ranking-skeleton-track h-6 flex-1 rounded bg-muted/50">
+                  <span className="admin-ranking-skeleton-bar block h-full rounded bg-muted" style={{ width: row.barWidth }} />
                 </span>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    </article>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -808,7 +362,7 @@ export function RankingsMeta({
   const pendingCopy = !snapshot ? strings.awaitingFirstSnapshot : null
 
   return (
-    <div className="admin-rankings-meta" aria-live="polite">
+    <div className="admin-rankings-meta flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-xs" aria-live="polite">
       <span className="admin-rankings-meta-item flex items-center gap-2 text-xs text-muted-foreground">
         <Icon icon="mdi:refresh" width={16} height={16} className="admin-rankings-meta-icon" aria-hidden="true" />
         <span className="admin-rankings-meta-copy flex flex-col">{refreshCopy}</span>
@@ -825,7 +379,7 @@ export function RankingsMeta({
           <span className="admin-rankings-meta-copy flex flex-col">{updatedCopy ?? pendingCopy}</span>
         </span>
       ) : null}
-      <span className={`admin-ranking-connection ${connectionToneClass(connectionState)}`}>
+      <span className={`admin-ranking-connection inline-flex items-center gap-2 ${connectionToneClass(connectionState)}`}>
         <Icon
           icon={connectionIcon(connectionState)}
           width={16}
@@ -864,10 +418,9 @@ export default function AdminUserRankingsPage({
   onSelectUser?: (userId: string) => void
   showHeader?: boolean
 }): JSX.Element {
-  const [interactiveUserId, setInteractiveUserId] = useState<string | null>(null)
-  const primaryColor = readChartColorVar('--dashboard-chart-result-primary-success', '#10b981')
-  const creditColor = readChartColorVar('--dashboard-chart-type-api-billable', '#60a5fa')
-  const uniqueIpColor = readChartColorVar('--info', '#0ea5e9')
+  const primaryColor = 'var(--chart-1)'
+  const creditColor = 'var(--chart-2)'
+  const uniqueIpColor = 'var(--chart-3)'
   const rankingTabs = useMemo<ReadonlyArray<RankingTabKey>>(
     () => ['last24h', 'last7d', 'last30d', 'primarySuccess', 'businessCredits', 'uniqueIp'],
     [],
@@ -892,12 +445,12 @@ export default function AdminUserRankingsPage({
   const showStaleHint = snapshot?.stale ?? false
 
   return (
-    <section className="admin-rankings-page">
+    <section className="admin-rankings-page flex min-w-0 flex-col gap-4">
       {showHeader ? (
-        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-          <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-rankings-header">
+        <Card className="surface panel">
+          <CardHeader className="panel-header border-b admin-rankings-header">
             <div className="admin-rankings-header-row">
-              <h2>{strings.title}</h2>
+              <CardTitle role="heading" aria-level={2}>{strings.title}</CardTitle>
               <RankingsMeta
                 strings={strings}
                 snapshot={snapshot}
@@ -905,44 +458,33 @@ export default function AdminUserRankingsPage({
                 language={language}
               />
             </div>
-          </div>
+          </CardHeader>
           {error ? (
             <div className={`alert ${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
               <div>{error}</div>
               {snapshot ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
               {!snapshot ? (
                 <div className="admin-ranking-inline-actions flex flex-wrap items-center gap-2">
-                  <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" onClick={onRetry}>
+                  <Button type="button" variant="outline" size="xs" onClick={onRetry}>
                     {strings.retry}
-                  </button>
+                  </Button>
                 </div>
               ) : null}
             </div>
           ) : null}
-        </section>
+        </Card>
       ) : null}
 
       {snapshot || showLoadingSkeleton ? (
         <section className="admin-rankings-toolbar-band" aria-label={strings.tabsLabel}>
-          <div className="admin-rankings-tab-strip" role="radiogroup" aria-label={strings.tabsLabel}>
-            {rankingTabs.map((tab) => {
-              const active = tab === activeTab
-              return (
-                <button
-                  key={tab}
-                  type="button"
-                  role="radio"
-                  aria-checked={active}
-                  aria-disabled={showLoadingSkeleton}
-                  disabled={showLoadingSkeleton}
-                  className={`admin-rankings-tab ${active ? 'is-active' : ''}`}
-                  onClick={() => onTabChange?.(tab)}
-                >
-                  {buildTabLabel(strings, tab)}
-                </button>
-              )
-            })}
-          </div>
+          <SegmentedTabs<RankingTabKey>
+            className="admin-rankings-tab-strip"
+            value={activeTab}
+            disabled={showLoadingSkeleton}
+            onChange={(tab) => onTabChange?.(tab)}
+            options={rankingTabs.map((tab) => ({ value: tab, label: buildTabLabel(strings, tab) }))}
+            ariaLabel={strings.tabsLabel}
+          />
         </section>
       ) : null}
 
@@ -952,9 +494,9 @@ export default function AdminUserRankingsPage({
           {snapshot ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
           {!snapshot ? (
             <div className="admin-ranking-inline-actions flex flex-wrap items-center gap-2">
-              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" onClick={onRetry}>
+              <Button type="button" variant="outline" size="xs" onClick={onRetry}>
                 {strings.retry}
-              </button>
+              </Button>
             </div>
           ) : null}
         </div>
@@ -986,8 +528,6 @@ export default function AdminUserRankingsPage({
                 rows={card.rows}
                 strings={strings}
                 color={card.color}
-                interactiveUserId={interactiveUserId}
-                onInteractiveUserChange={setInteractiveUserId}
                 onSelectUser={onSelectUser}
               />
             ))}

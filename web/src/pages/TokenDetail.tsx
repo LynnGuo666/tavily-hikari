@@ -1,7 +1,9 @@
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from '@/components/ui/chart'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Fragment, type ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../lib/icons'
-import { Chart as ChartJS, BarElement, CategoryScale, Legend, LinearScale, Tooltip, type ChartOptions } from 'chart.js'
-import { Bar } from 'react-chartjs-2'
 import {
   fetchTokenLogDetails,
   fetchTokenLogsCatalog,
@@ -37,7 +39,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useLanguage, useTranslate } from '../i18n'
 import { ADMIN_USER_CONSOLE_HREF } from '../lib/adminUserConsoleEntry'
@@ -59,7 +61,6 @@ import {
   uniqueSelectedRequestKinds,
 } from '../tokenLogRequestKinds'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend)
 
 const emptyRequestLogFacets: RequestLogFacets = {
   results: [],
@@ -207,10 +208,10 @@ function TokenOwnerValue({
   return (
     <div className="token-owner-block flex items-center gap-2">
       {onOpenUser ? (
-        <button type="button" className="link-button token-owner-trigger inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-sm hover:bg-muted" onClick={() => onOpenUser(owner.userId)}>
+        <Button type="button" variant="link" size="sm" className="h-auto p-0 token-owner-trigger inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-sm hover:bg-muted" onClick={() => onOpenUser(owner.userId)}>
           <span className="token-owner-link text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
           {secondary ? <span className="token-owner-secondary text-xs text-muted-foreground">{secondary}</span> : null}
-        </button>
+        </Button>
       ) : (
         <>
           <span className="token-owner-link text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
@@ -1203,7 +1204,7 @@ export default function TokenDetail({
   return (
     <div
       ref={pageRef}
-      className={`admin-detail-stack viewport-${viewportMode} content-${contentMode}${
+      className={`admin-detail-stack flex min-w-0 flex-col gap-6 viewport-${viewportMode} content-${contentMode}${
         isCompactLayout ? ' is-compact-layout' : ''
       }`}
     >
@@ -1251,7 +1252,7 @@ export default function TokenDetail({
 
       {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{error}</div>}
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 token-info-section flex flex-col gap-1">
+      <Card className="surface panel token-info-section flex flex-col gap-1">
         <AdminLoadingRegion
           loadState={infoRegionLoadState}
           loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
@@ -1284,24 +1285,24 @@ export default function TokenDetail({
               />
             </div>
           ) : (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">Token details are unavailable right now.</div>
+            <Empty className="empty-state"><EmptyDescription>Token details are unavailable right now.</EmptyDescription></Empty>
           )}
         </AdminLoadingRegion>
-      </section>
+      </Card>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>Quick Stats</h2>
-            <p className="panel-description text-sm text-muted-foreground">Rolling usage windows (1 hour / 24 hours / calendar month).</p>
+            <CardTitle role="heading" aria-level={2}>Quick Stats</CardTitle>
+            <CardDescription className="panel-description">Rolling usage windows (1 hour / 24 hours / calendar month).</CardDescription>
           </div>
-        </div>
+        </CardHeader>
         <AdminLoadingRegion
           loadState={infoRegionLoadState}
           loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
           minHeight={176}
         >
-          <section className="quick-stats-grid">
+          <section className="quick-stats-grid grid min-w-0 gap-3 px-4 sm:grid-cols-3">
             {info ? (
               <>
                 <QuotaStatCard
@@ -1327,22 +1328,22 @@ export default function TokenDetail({
                 />
               </>
             ) : (
-              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" style={{ gridColumn: '1 / -1' }}>
+              <Empty className="empty-state" style={{ gridColumn: '1 / -1' }}><EmptyDescription>
                 Token quota details are unavailable right now.
-              </div>
+              </EmptyDescription></Empty>
             )}
           </section>
         </AdminLoadingRegion>
         <div style={{ marginTop: 16 }}>
           <UsageChart data={quickUsage} loading={quickUsageLoading} labelFormatter={hourLabel} height={200} />
         </div>
-      </section>
+      </Card>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 token-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b token-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
           <div>
-            <h2>Usage Snapshot</h2>
-            <p className="panel-description text-sm text-muted-foreground">Aggregated metrics for the selected window.</p>
+            <CardTitle role="heading" aria-level={2}>Usage Snapshot</CardTitle>
+            <CardDescription className="panel-description">Aggregated metrics for the selected window.</CardDescription>
           </div>
           <div className="token-period-controls flex flex-wrap items-center gap-2 px-4" role="group" aria-label="Period filter">
             <div className="token-period-control inline-flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted">
@@ -1362,9 +1363,11 @@ export default function TokenDetail({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent align="start">
-                  <SelectItem value="day">Day</SelectItem>
-                  <SelectItem value="week">Week</SelectItem>
-                  <SelectItem value="month">Month</SelectItem>
+                  <SelectGroup>
+                    <SelectItem value="day">Day</SelectItem>
+                    <SelectItem value="week">Week</SelectItem>
+                    <SelectItem value="month">Month</SelectItem>
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
@@ -1402,7 +1405,7 @@ export default function TokenDetail({
               )}
             </div>
           </div>
-        </div>
+        </CardHeader>
         {warning && (
           <div className="token-period-warning px-4 text-xs text-warning alert border-warning/40 bg-warning/10 text-warning" role="status">
             <Icon icon="mdi:alert-circle-outline" width={18} height={18} aria-hidden="true" className="token-warning-icon" />
@@ -1429,7 +1432,7 @@ export default function TokenDetail({
             height={220}
           />
         </div>
-      </section>
+      </Card>
 
       <AdminRecentRequestsPanel
         variant="token"
@@ -1473,7 +1476,7 @@ export default function TokenDetail({
         formatTimeDetail={(ts) => (ts ? dateTimeFormatter.format(new Date(ts * 1000)) : '—')}
         loadLogBodies={loadTokenLogBodies}
       />
-    
+
     <Dialog open={isRotateDialogOpen} onOpenChange={setIsRotateDialogOpen}>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
@@ -1556,41 +1559,27 @@ function UsageChart({
   labelFormatter: (bucket: number) => string
   height?: number
 }) {
-  const labels = data.map((d) => labelFormatter(d.bucket))
-  const totals = data.reduce(
-    (acc, cur) => {
-      acc.success += cur.success
-      acc.system += cur.system
-      acc.external += cur.external
-      return acc
-    },
-    { success: 0, system: 0, external: 0 },
-  )
-  const chartData = {
-    labels,
-    datasets: [
-      { label: 'Success', data: data.map((d) => d.success), backgroundColor: '#16a34a', stack: 'requests' },
-      { label: 'System limited', data: data.map((d) => d.system), backgroundColor: '#f97316', stack: 'requests' },
-      { label: 'Other failures', data: data.map((d) => d.external), backgroundColor: '#ef4444', stack: 'requests' },
-    ],
-  }
-  const options: ChartOptions<'bar'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom' }, tooltip: { mode: 'index', intersect: false } },
-    scales: {
-      x: { stacked: true },
-      y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Requests' } },
-    },
-  } as ChartOptions<'bar'>
+  const chartConfig = {
+    success: { label: 'Success', color: 'var(--chart-1)' },
+    system: { label: 'System limited', color: 'var(--chart-2)' },
+    external: { label: 'Other failures', color: 'var(--chart-3)' },
+  } satisfies ChartConfig
   return (
-    <div className="hourly-chart" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <div className="hourly-chart min-w-0 px-4">
       {loading ? (
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">Loading…</div>
+        <Empty><EmptyDescription>Loading…</EmptyDescription></Empty>
       ) : (
-        <div style={{ height }}>
-          <Bar options={options} data={chartData} />
-        </div>
+        <ChartContainer config={chartConfig} className="aspect-auto w-full" style={{ height }}>
+          <BarChart accessibilityLayer data={data.map((point) => ({ ...point, label: labelFormatter(point.bucket) }))}>
+            <CartesianGrid vertical={false} />
+            <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={10} minTickGap={24} />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartLegend content={<ChartLegendContent />} />
+            <Bar dataKey="success" stackId="requests" fill="var(--color-success)" radius={[0, 0, 4, 4]} />
+            <Bar dataKey="system" stackId="requests" fill="var(--color-system)" />
+            <Bar dataKey="external" stackId="requests" fill="var(--color-external)" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ChartContainer>
       )}
     </div>
   )

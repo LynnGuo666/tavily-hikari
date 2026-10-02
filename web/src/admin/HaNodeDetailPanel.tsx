@@ -2,6 +2,7 @@ import { ArrowLeft, RotateCcw, Server } from 'lucide-react'
 
 import type { HaNodeDetail, HaTimelineEvent } from '../api'
 import type { AdminTranslations } from '../i18n'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import {
@@ -206,14 +207,14 @@ export default function HaNodeDetailPanel({
   const nodeMessage = node ? formatHaPeerMessage(node, strings) : null
   const channelHealth = node?.channelHealth ?? []
   return (
-    <section className="ha-node-panel" aria-labelledby="ha-node-detail-title">
-      <div className="ha-node-panel-head">
-        <div className="ha-node-panel-title-group">
-          <button type="button" className="ha-node-detail-back" onClick={onBack}>
+    <section className="ha-node-panel flex min-w-0 flex-col gap-6" aria-labelledby="ha-node-detail-title">
+      <div className="ha-node-panel-head flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="ha-node-panel-title-group min-w-0 space-y-2 [&_h2]:text-lg [&_h2]:font-semibold [&_p]:text-sm [&_p]:text-muted-foreground">
+          <Button type="button" variant="outline" size="sm" className="ha-node-detail-back" onClick={onBack}>
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>{strings.nodeDetailBack}</span>
-          </button>
-          <div className="ha-node-panel-kicker">{strings.nodeDetailKicker}</div>
+          </Button>
+          <div className="ha-node-panel-kicker text-xs font-medium text-muted-foreground">{strings.nodeDetailKicker}</div>
           <h2 id="ha-node-detail-title">
             {node ? strings.nodeDetailTitle.replace('{nodeId}', node.nodeId) : strings.nodeDetailLoading}
           </h2>
@@ -232,33 +233,34 @@ export default function HaNodeDetailPanel({
         )}
       </div>
 
-      <div className="ha-node-detail-summary">
-        <article className="ha-node-detail-card ha-node-detail-card--overview" aria-label={strings.nodeDetailInfoTitle}>
-          <div className="ha-node-detail-card-head">
-            <div className="ha-node-list-title">
+      <div className="ha-node-detail-summary grid min-w-0 grid-cols-1 items-start gap-6 xl:grid-cols-2">
+        <Card className="ha-node-detail-card min-w-0 ha-node-detail-card--overview" aria-label={strings.nodeDetailInfoTitle}>
+          <CardHeader className="ha-node-detail-card-head flex flex-wrap items-center justify-between gap-3">
+            <CardTitle className="ha-node-list-title flex items-center gap-2 font-medium">
               <Server size={18} aria-hidden="true" />
               <span>{strings.nodeDetailInfoTitle}</span>
-            </div>
+            </CardTitle>
             {node ? <StatusBadge tone={roleTone(node.role)}>{roleLabel(node.role, strings)}</StatusBadge> : null}
-          </div>
+          </CardHeader>
+          <CardContent className="min-w-0">
           {node ? (
             <>
-              <div className="ha-node-detail-overview-grid">
-                <div className="ha-node-detail-primary">
-                  <div className="ha-node-detail-primary-block">
-                    <span className="ha-node-detail-primary-label">{strings.nodeHeader}</span>
-                    <strong className="ha-node-detail-primary-value">{node.nodeId}</strong>
+              <div className="ha-node-detail-overview-grid grid gap-6">
+                <div className="ha-node-detail-primary flex min-w-0 flex-col gap-4">
+                  <div className="ha-node-detail-primary-block flex min-w-0 flex-col gap-1">
+                    <span className="ha-node-detail-primary-label text-xs text-muted-foreground">{strings.nodeHeader}</span>
+                    <strong className="ha-node-detail-primary-value break-all text-lg">{node.nodeId}</strong>
                   </div>
-                  <div className="ha-node-detail-primary-block">
-                    <span className="ha-node-detail-primary-label">{strings.originHeader}</span>
-                    <code className="ha-node-detail-code">{node.publicOrigin ?? '—'}</code>
+                  <div className="ha-node-detail-primary-block flex min-w-0 flex-col gap-1">
+                    <span className="ha-node-detail-primary-label text-xs text-muted-foreground">{strings.originHeader}</span>
+                    <code className="ha-node-detail-code break-all text-xs">{node.publicOrigin ?? '—'}</code>
                   </div>
-                  <div className="ha-node-detail-primary-badges">
+                  <div className="ha-node-detail-primary-badges flex flex-wrap gap-2">
                     {trafficStatus ? <StatusBadge tone={trafficStatus.tone}>{trafficStatus.label}</StatusBadge> : null}
                     {writeStatus ? <StatusBadge tone={writeStatus.tone}>{writeStatus.label}</StatusBadge> : null}
                   </div>
                 </div>
-                <dl className="ha-node-detail-overview-facts">
+                <dl className="ha-node-detail-overview-facts grid grid-cols-1 gap-4 sm:grid-cols-2 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:break-all [&_dd]:tabular-nums">
                   <div>
                     <dt>{strings.summarySyncLag}</dt>
                     <dd>{formatLag(node.syncLagSeconds, language)}</dd>
@@ -275,44 +277,46 @@ export default function HaNodeDetailPanel({
                     <dt>{strings.summaryRecovery}</dt>
                     <dd>{formatHaRecoveryStatus(node.recoveryStatus, strings) ?? '—'}</dd>
                   </div>
-                  <div className="ha-node-detail-overview-fact-wide">
+                  <div className="ha-node-detail-overview-fact-wide sm:col-span-2">
                     <dt>{strings.nodeDetailRoleHintLabel}</dt>
                     <dd>
-                      <code className="ha-node-detail-code">{node.roleHint}</code>
+                      <code className="ha-node-detail-code break-all text-xs">{node.roleHint}</code>
                     </dd>
                   </div>
                 </dl>
               </div>
               {nodeMessage ? (
-                <div className="ha-status-message">
+                <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground">
                   <RotateCcw size={16} aria-hidden="true" />
                   <span>{nodeMessage}</span>
                 </div>
               ) : null}
             </>
           ) : (
-            <div className="ha-status-message">
+            <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground">
               <span>{strings.nodeDetailLoading}</span>
             </div>
           )}
-        </article>
+        </CardContent>
+        </Card>
 
-        <article className="ha-node-detail-card ha-node-detail-card--channels" aria-label="HA channel health">
-          <div className="ha-node-detail-card-head">
-            <div className="ha-node-list-title">
+        <Card className="ha-node-detail-card min-w-0 ha-node-detail-card--channels" aria-label="HA channel health">
+          <CardHeader className="ha-node-detail-card-head flex flex-wrap items-center justify-between gap-3">
+            <CardTitle className="ha-node-list-title flex items-center gap-2 font-medium">
               <Server size={18} aria-hidden="true" />
               <span>{language === 'zh' ? '复制 ACK 与 GC 健康' : 'Replication ACK and GC health'}</span>
-            </div>
-          </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="min-w-0">
           {channelHealth.length === 0 ? (
-            <div className="ha-status-message"><span>—</span></div>
+            <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground"><span>—</span></div>
           ) : (
-            <div className="ha-channel-health-list">
+            <div className="ha-channel-health-list flex min-w-0 flex-col gap-4">
               {channelHealth.map((health) => (
-                <div key={health.channel} className="ha-channel-health-row">
-                  <div className="ha-channel-health-heading">
+                <div key={health.channel} className="ha-channel-health-row space-y-4 rounded-lg border p-3 [&_dl]:grid [&_dl]:grid-cols-1 [&_dl]:gap-3 sm:[&_dl]:grid-cols-2 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:break-all [&_dd]:tabular-nums">
+                  <div className="ha-channel-health-heading flex flex-wrap items-center justify-between gap-2">
                     <strong>{channelLabel(health.channel, language)}</strong>
-                    <div className="ha-channel-health-badges">
+                    <div className="ha-channel-health-badges flex flex-wrap gap-2">
                       <StatusBadge tone={health.cursorState === 'healthy' ? 'success' : 'warning'}>
                         {channelStateLabel(health.cursorState, language)}
                       </StatusBadge>
@@ -346,29 +350,30 @@ export default function HaNodeDetailPanel({
               ))}
             </div>
           )}
-        </article>
+        </CardContent>
+        </Card>
       </div>
 
-      <div className="ha-node-list" aria-label={strings.nodeDetailInteractionsTitle}>
-        <div className="ha-node-list-title">
+      <div className="ha-node-list flex min-w-0 flex-col gap-3 rounded-xl border p-4" aria-label={strings.nodeDetailInteractionsTitle}>
+        <div className="ha-node-list-title flex items-center gap-2 font-medium">
           <RotateCcw size={18} aria-hidden="true" />
           <span>{strings.nodeDetailInteractionsTitle}</span>
         </div>
         {timeline.length === 0 ? (
-          <div className="ha-status-message">
+          <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground">
             <span>{loading ? strings.timelineLoading : strings.nodeDetailTimelineEmpty}</span>
           </div>
         ) : (
-          <div className="ha-timeline-list">
+          <div className="ha-timeline-list flex min-w-0 flex-col gap-2">
             {timeline.map((event) => (
-              <details key={event.id} className="ha-timeline-item">
+              <details key={event.id} className="ha-timeline-item rounded-lg border p-3 [&_summary]:cursor-pointer [&_summary]:space-x-2">
                 <summary>
                   <span>{formatHaTimelineSummary(event, strings, { currentNodeId: detail?.currentNodeId ?? null })}</span>
                   <StatusBadge tone={timelineStatusTone(event.status)}>
                     {formatHaTimelineStatusLabel(event.status, strings)}
                   </StatusBadge>
                 </summary>
-                <div className="ha-timeline-meta">
+                <div className="ha-timeline-meta mt-3 flex flex-col gap-2 text-xs text-muted-foreground [&_pre]:max-w-full [&_pre]:overflow-auto [&_pre]:rounded-md [&_pre]:bg-muted [&_pre]:p-3 [&_pre]:whitespace-pre-wrap [&_pre]:break-all">
                   <div>{formatTimestamp(event.createdAt, language)}</div>
                   {formatHaTimelineDetail(event, strings, { currentNodeId: detail?.currentNodeId ?? null })
                     ? <p>{formatHaTimelineDetail(event, strings, { currentNodeId: detail?.currentNodeId ?? null })}</p>

@@ -1,4 +1,9 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import RequestLogDetailSection from '@/components/RequestLogDetailSection'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
+import { cn } from '@/lib/utils'
+import { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import type { QueryLoadState } from '../admin/queryLoadState'
 import type { LogFacetOption, RequestLog, RequestLogBodies } from '../api'
@@ -40,6 +45,7 @@ import {
   SelectLabel,
   SelectSeparator,
   SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select'
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -457,7 +463,7 @@ function renderEffectBadges(
       </StatusBadge>,
     )
   }
-  return <div className="recent-requests-effect-badges">{badges}</div>
+  return <div className="recent-requests-effect-badges flex flex-wrap items-center gap-1">{badges}</div>
 }
 function formatRequestStatusPair(httpStatus: number | null, mcpStatus: number | null): string {
   return `${httpStatus ?? '—'} / ${mcpStatus ?? '—'}`
@@ -632,8 +638,8 @@ function RecentRequestDetails({
       : null,
   ].filter((entry): entry is { label: string; value: string } => entry != null)
   return (
-    <div className="log-details-panel">
-      <div className="log-details-summary">
+    <div className="log-details-panel flex min-w-0 flex-col gap-4 whitespace-normal rounded-lg bg-muted/30 p-4">
+      <div className="log-details-summary grid min-w-0 gap-x-6 gap-y-3 lg:grid-cols-2 [&>div]:grid [&>div]:min-w-0 [&>div]:grid-cols-[6rem_minmax(0,1fr)] [&>div]:items-start [&>div]:gap-3 [&>div>:last-child]:min-w-0 [&>div>:last-child]:[overflow-wrap:anywhere]">
         <div>
           <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logs.table.time}</span>
           <span className="text-xs leading-5">{formatTime(log.created_at)}</span>
@@ -686,22 +692,19 @@ function RecentRequestDetails({
           </div>
         ))}
       </div>
-      <div className="log-details-body">
-        <div className="flex flex-col gap-2">
-          <header>{strings.logs.table.error}</header>
+      <div className="log-details-body grid min-w-0 gap-3 lg:grid-cols-2">
+        <RequestLogDetailSection title={strings.logs.table.error} className="lg:col-span-2">
           <pre>{formatErrorMessage(log, strings.logs.errors)}</pre>
-        </div>
-        <div className="flex flex-col gap-2">
-          <header>{strings.logDetails.requestBody}</header>
+        </RequestLogDetailSection>
+        <RequestLogDetailSection title={strings.logDetails.requestBody}>
           <pre>{requestBody}</pre>
-        </div>
-        <div className="flex flex-col gap-2">
-          <header>{strings.logDetails.responseBody}</header>
+        </RequestLogDetailSection>
+        <RequestLogDetailSection title={strings.logDetails.responseBody}>
           <pre>{responseBody}</pre>
-        </div>
+        </RequestLogDetailSection>
       </div>
       {logBodiesState?.status === 'error' ? (
-        <div className="log-details-feedback" role="alert">
+        <div className="log-details-feedback flex flex-wrap items-center justify-between gap-3 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-destructive" role="alert">
           <span className="log-details-feedback-message">{logBodiesState.message}</span>
           {onRetryLoadBodies ? (
             <Button type="button" variant="outline" size="sm" onClick={onRetryLoadBodies}>
@@ -712,26 +715,24 @@ function RecentRequestDetails({
       ) : null}
       <RequestIpDiagnostics log={log} language={language} />
       {(forwarded.length > 0 || dropped.length > 0) && (
-        <div className="log-details-headers">
+        <div className="log-details-headers grid min-w-0 gap-3 lg:grid-cols-2">
           {forwarded.length > 0 ? (
-            <div className="flex flex-col gap-2">
-              <header>{strings.logDetails.forwardedHeaders}</header>
+            <RequestLogDetailSection title={strings.logDetails.forwardedHeaders}>
               <ul>
                 {forwarded.map((header, index) => (
                   <li key={`forwarded-${index}-${header}`}>{header}</li>
                 ))}
               </ul>
-            </div>
+            </RequestLogDetailSection>
           ) : null}
           {dropped.length > 0 ? (
-            <div className="flex flex-col gap-2">
-              <header>{strings.logDetails.droppedHeaders}</header>
+            <RequestLogDetailSection title={strings.logDetails.droppedHeaders}>
               <ul>
                 {dropped.map((header, index) => (
                   <li key={`dropped-${index}-${header}`}>{header}</li>
                 ))}
               </ul>
-            </div>
+            </RequestLogDetailSection>
           ) : null}
         </div>
       )}
@@ -783,6 +784,7 @@ export default function AdminRecentRequestsPanel({
   onOpenToken,
   loadLogBodies,
 }: AdminRecentRequestsPanelProps): JSX.Element {
+  const filterId = useId()
   const [expandedLogs, setExpandedLogs] = useState<Set<number>>(() => new Set())
   const [logBodiesById, setLogBodiesById] = useState<Record<number, LogBodiesLoadState>>({})
   const [headerFiltersTarget, setHeaderFiltersTarget] = useState<HTMLElement | null>(null)
@@ -884,19 +886,19 @@ export default function AdminRecentRequestsPanel({
     [keyOptions, selectedKeyId],
   )
   const summaryColumnCount = 6 + Number(showKeyColumn) + Number(showTokenColumn)
-  const desktopClassName = `recent-requests-desktop recent-requests-desktop--${variant}`
-  const mobileClassName = `recent-requests-mobile-list recent-requests-mobile-list--${variant}`
+  const desktopClassName = `recent-requests-desktop hidden md:block recent-requests-desktop--${variant}`
+  const mobileClassName = `recent-requests-mobile-list flex flex-col gap-3 px-4 md:hidden recent-requests-mobile-list--${variant}`
   const mobileCardClassName =
-    variant === 'token' ? 'user-console-mobile-card' : 'rounded-lg border p-3'
+    cn('flex flex-col gap-2 rounded-lg border p-3', variant === 'token' && 'user-console-mobile-card')
   const mobileKvClassName =
-    variant === 'token' ? 'user-console-mobile-kv' : 'flex items-center justify-between gap-2 text-sm'
+    cn('flex items-start justify-between gap-3 text-sm [&>span:first-child]:shrink-0 [&>span:first-child]:text-muted-foreground [&>strong]:min-w-0 [&>strong]:break-all [&>strong]:text-right', variant === 'token' && 'user-console-mobile-kv')
   const mobileStackedClassName =
-    variant === 'token'
-      ? 'user-console-mobile-kv user-console-mobile-kv--stacked'
-      : 'flex items-center justify-between gap-2 text-sm admin-mobile-kv--stacked'
+    cn('flex flex-col gap-2 text-sm [&>span:first-child]:text-muted-foreground', variant === 'token' ? 'user-console-mobile-kv user-console-mobile-kv--stacked' : 'admin-mobile-kv--stacked')
   const headerCopyVisible = showHeaderCopy && (title.trim().length > 0 || description.trim().length > 0)
-  const renderFilters = (className?: string) => (
-    <div className={['flex flex-wrap items-end gap-3 recent-requests-filters', className].filter(Boolean).join(' ')}>
+  const renderFilters = (className?: string) => {
+    const filterPrefix = `${filterId}-${className?.includes('--header') ? 'header' : 'panel'}`
+    return (
+    <FieldGroup className={cn('recent-requests-filters grid w-full grid-cols-1 gap-3 sm:w-[34rem] sm:grid-cols-3', className)}>
       <AdminRecentRequestsRequestKindFilter
         language={language}
         isSmallViewport={isSmallViewport}
@@ -909,8 +911,8 @@ export default function AdminRecentRequestsPanel({
         onToggleRequestKind={onToggleRequestKind}
         onClearRequestKinds={onClearRequestKinds}
       />
-      <div className="recent-requests-filter-field flex flex-col gap-1">
-        <span className="recent-requests-filter-label text-xs font-medium text-muted-foreground">{strings.logs.filters.resultOrEffect}</span>
+      <Field className="recent-requests-filter-field min-w-0">
+        <FieldLabel htmlFor={`${filterPrefix}-outcome`}>{strings.logs.filters.resultOrEffect}</FieldLabel>
         <Select
           value={outcomeValue}
           onValueChange={(value) => {
@@ -936,13 +938,14 @@ export default function AdminRecentRequestsPanel({
           }}
         >
           <SelectTrigger
-            className="recent-requests-filter-select-trigger"
+            id={`${filterPrefix}-outcome`}
+            className="recent-requests-filter-select-trigger w-full"
             aria-label={`${strings.logs.filters.resultOrEffect}: ${outcomeSummary}`}
           >
-            <span className="recent-requests-filter-select-text">{outcomeSummary}</span>
+            <SelectValue>{outcomeSummary}</SelectValue>
           </SelectTrigger>
-          <SelectContent className="recent-requests-filter-content">
-            <SelectItem value={recentRequestsAllFilterValue}>{strings.logs.filters.resultOrEffectAll}</SelectItem>
+          <SelectContent position="popper" align="start" className="recent-requests-filter-content">
+            <SelectGroup><SelectItem value={recentRequestsAllFilterValue}>{strings.logs.filters.resultOrEffectAll}</SelectItem></SelectGroup>
             <SelectSeparator />
             <SelectGroup>
               <SelectLabel>{strings.logs.filters.resultGroup}</SelectLabel>
@@ -953,12 +956,11 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 resultOptions.map((option) => (
                   <SelectItem key={`result-${option.value}`} value={`result:${option.value}`}>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                    <span className="recent-requests-facet-option--status flex w-full items-center justify-between gap-3">
                       <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('result', option.value, strings)}
                       </span>
-                      <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
+                                            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -974,12 +976,11 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 keyEffectOptions.map((option) => (
                   <SelectItem key={`effect-${option.value}`} value={`keyEffect:${option.value}`}>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                    <span className="recent-requests-facet-option--status flex w-full items-center justify-between gap-3">
                       <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('keyEffect', option.value, strings)}
                       </span>
-                      <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
+                                            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -995,12 +996,11 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 bindingEffectOptions.map((option) => (
                   <SelectItem key={`binding-effect-${option.value}`} value={`bindingEffect:${option.value}`}>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                    <span className="recent-requests-facet-option--status flex w-full items-center justify-between gap-3">
                       <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('bindingEffect', option.value, strings)}
                       </span>
-                      <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
+                                            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -1016,12 +1016,11 @@ export default function AdminRecentRequestsPanel({
               ) : (
                 selectionEffectOptions.map((option) => (
                   <SelectItem key={`selection-effect-${option.value}`} value={`selectionEffect:${option.value}`}>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground hover:bg-muted recent-requests-facet-option--status">
+                    <span className="recent-requests-facet-option--status flex w-full items-center justify-between gap-3">
                       <span className="flex items-center gap-1.5">
                         {renderOutcomeFacetLabel('selectionEffect', option.value, strings)}
                       </span>
-                      <span className="recent-requests-facet-option-spacer" aria-hidden="true" />
-                      <span className="rounded-full bg-muted px-1.5 tabular-nums">{`x${option.count ?? 0}`}</span>
+                                            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{`x${option.count ?? 0}`}</span>
                     </span>
                   </SelectItem>
                 ))
@@ -1029,12 +1028,13 @@ export default function AdminRecentRequestsPanel({
             </SelectGroup>
           </SelectContent>
         </Select>
-      </div>
+      </Field>
       {showKeyColumn && onKeyFilterChange ? (
-        <div className="recent-requests-filter-field flex flex-col gap-1">
-          <span className="recent-requests-filter-label text-xs font-medium text-muted-foreground">{strings.logs.table.key}</span>
+        <Field className="recent-requests-filter-field min-w-0">
+          <FieldLabel htmlFor={`${filterPrefix}-key`}>{strings.logs.table.key}</FieldLabel>
           <SearchableFacetSelect
             value={selectedKeyId ?? null}
+            triggerId={`${filterPrefix}-key`}
             options={keyOptions}
             summary={keyFilterSummary}
             allLabel={strings.logs.filters.keyAll}
@@ -1045,30 +1045,32 @@ export default function AdminRecentRequestsPanel({
             listAriaLabel={strings.logs.table.key}
             onChange={onKeyFilterChange}
             disabled={keyOptions.length === 0 && !selectedKeyId}
-            triggerClassName="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu"
+            align="start"
+            triggerClassName="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu w-full min-w-0"
             contentClassName="recent-requests-filter-menu"
           />
-        </div>
+        </Field>
       ) : null}
-    </div>
-  )
+    </FieldGroup>
+    )
+  }
   const headerFiltersPortal = headerFiltersTarget
     ? createPortal(renderFilters('recent-requests-filters--header'), headerFiltersTarget)
     : null
   return (
-    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+    <Card className={cn('surface panel', !headerCopyVisible && headerFiltersTarget && 'md:pt-0')}>
       {headerFiltersPortal}
-      <div className={`panel-header flex flex-col gap-1.5 border-b px-4 pb-4 recent-requests-header${headerCopyVisible ? '' : ' recent-requests-header--filters-only'}${headerFiltersTarget ? ' recent-requests-header--portal' : ''}`}>
+      <CardHeader className={cn('panel-header recent-requests-header gap-4', !headerCopyVisible && 'recent-requests-header--filters-only', headerFiltersTarget && 'recent-requests-header--portal', !headerCopyVisible && headerFiltersTarget && 'md:hidden')}>
         {headerCopyVisible ? (
           <div>
-            <h2>{title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{description}</p>
+            <CardTitle role="heading" aria-level={2}>{title}</CardTitle>
+            <CardDescription>{description}</CardDescription>
           </div>
         ) : null}
-        {renderFilters(headerFiltersTarget ? 'recent-requests-filters--mobile-only' : undefined)}
-      </div>
+        {renderFilters(headerFiltersTarget ? 'recent-requests-filters--mobile-only md:hidden' : undefined)}
+      </CardHeader>
       <AdminTableShell
-        className={desktopClassName}
+        className={cn(desktopClassName, 'rounded-none border-0')}
         tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:align-middle [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_td]:align-middle [&_tbody_tr]:border-b recent-requests-table recent-requests-table--${variant}`}
         loadState={loadState}
         loadingLabel={loadingLabel}
@@ -1095,7 +1097,7 @@ export default function AdminRecentRequestsPanel({
           {logs.length === 0 ? (
             <TableRow>
               <TableCell colSpan={summaryColumnCount}>
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{emptyLabel}</div>
+                <Empty className="empty-state"><EmptyDescription>{emptyLabel}</EmptyDescription></Empty>
               </TableCell>
             </TableRow>
           ) : (
@@ -1121,12 +1123,14 @@ export default function AdminRecentRequestsPanel({
                     <TableCell className="recent-requests-col recent-requests-col--time">
                       <div className="log-time-cell">
                         {hasTimeBubble ? (
-                          <>
-                            <button type="button" className="log-time-trigger" aria-label={timeDetailLabel ?? timeLabel}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                            <Button type="button" variant="ghost" className="log-time-trigger h-auto p-0" aria-label={timeDetailLabel ?? timeLabel}>
                               <span className="log-time-main">{timeLabel}</span>
-                            </button>
-                            <div className="log-time-bubble">{timeDetailLabel}</div>
-                          </>
+                            </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>{timeDetailLabel}</TooltipContent>
+                          </Tooltip>
                         ) : (
                           <span className="log-time-main">{timeLabel}</span>
                         )}
@@ -1135,13 +1139,13 @@ export default function AdminRecentRequestsPanel({
                     {showTokenColumn ? (
                       <TableCell className="recent-requests-col recent-requests-col--token">
                         {tokenId ? (
-                          <button
+                          <Button
                             type="button"
-                            className="link-button log-token-link recent-requests-entity-link request-entity-button"
+                            variant="link" size="sm" className="h-auto p-0 log-token-link recent-requests-entity-link request-entity-button"
                             onClick={() => onOpenToken?.(tokenId)}
                           >
                             <code>{tokenId}</code>
-                          </button>
+                          </Button>
                         ) : (
                           strings.logs.errors.none
                         )}
@@ -1150,9 +1154,10 @@ export default function AdminRecentRequestsPanel({
                     {showKeyColumn ? (
                       <TableCell className="recent-requests-col recent-requests-col--key">
                         {keyId ? (
-                          <button
+                          <Button
                             type="button"
-                            className={[
+                            variant="link"
+                            className={cn('h-auto p-0', [
                               'link-button',
                               'log-token-link',
                               'log-key-link',
@@ -1160,7 +1165,7 @@ export default function AdminRecentRequestsPanel({
                               'recent-requests-key-id-link',
                               'request-entity-button',
                               isRebalanceGateway ? 'recent-requests-key-id-link--rebalance' : '',
-                            ].filter(Boolean).join(' ')}
+                            ].filter(Boolean).join(' '))}
                             aria-label={`${strings.logs.table.key}: ${keyId}`}
                             title={keyId}
                             onClick={() => onOpenKey?.(keyId)}
@@ -1172,7 +1177,7 @@ export default function AdminRecentRequestsPanel({
                               </>
                             ) : null}
                             <code>{keyId}</code>
-                          </button>
+                          </Button>
                         ) : (
                           strings.logs.errors.none
                         )}
@@ -1256,7 +1261,7 @@ export default function AdminRecentRequestsPanel({
         minHeight={240}
       >
         {logs.length === 0 ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{emptyLabel}</div>
+          <Empty className="empty-state"><EmptyDescription>{emptyLabel}</EmptyDescription></Empty>
         ) : (
           logs.map((log) => {
             const expanded = expandedLogs.has(log.id)
@@ -1280,9 +1285,9 @@ export default function AdminRecentRequestsPanel({
                   <div className={mobileKvClassName}>
                     <span>{strings.logs.table.token}</span>
                     {tokenId ? (
-                      <button type="button" className="request-entity-button admin-mobile-request-entity-button" onClick={() => onOpenToken?.(tokenId)}>
+                      <Button type="button" variant="link" className="request-entity-button admin-mobile-request-entity-button h-auto p-0" onClick={() => onOpenToken?.(tokenId)}>
                         <strong><code>{tokenId}</code></strong>
-                      </button>
+                      </Button>
                     ) : (
                       <strong><code>{strings.logs.errors.none}</code></strong>
                     )}
@@ -1292,15 +1297,16 @@ export default function AdminRecentRequestsPanel({
                   <div className={mobileKvClassName}>
                     <span>{strings.logs.table.key}</span>
                     {keyId ? (
-                      <button
+                      <Button
                         type="button"
-                        className={[
+                        variant="link"
+                        className={cn('h-auto p-0', [
                           'request-entity-button',
                           'admin-mobile-request-entity-button',
                           'log-key-link',
                           'recent-requests-key-id-link',
                           isRebalanceGateway ? 'recent-requests-key-id-link--rebalance' : '',
-                        ].filter(Boolean).join(' ')}
+                        ].filter(Boolean).join(' '))}
                         aria-label={`${strings.logs.table.key}: ${keyId}`}
                         title={keyId}
                         onClick={() => onOpenKey?.(keyId)}
@@ -1312,7 +1318,7 @@ export default function AdminRecentRequestsPanel({
                           </>
                         ) : null}
                         <strong><code>{keyId}</code></strong>
-                      </button>
+                      </Button>
                     ) : (
                       <strong><code>{strings.logs.errors.none}</code></strong>
                     )}
@@ -1350,8 +1356,10 @@ export default function AdminRecentRequestsPanel({
                 </div>
                 <div className={mobileKvClassName}>
                   <span>{strings.logs.table.result}</span>
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     className={`log-result-button recent-requests-mobile-result-button${expanded ? ' log-result-button-active' : ''}`}
                     onClick={() => toggleExpandedLog(log)}
                     aria-expanded={expanded}
@@ -1362,12 +1370,11 @@ export default function AdminRecentRequestsPanel({
                     </StatusBadge>
                     <Icon
                       icon={expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'}
-                      width={18}
-                      height={18}
+                      data-icon="inline-end"
                       className="log-result-icon"
                       aria-hidden="true"
                     />
-                  </button>
+                  </Button>
                 </div>
                 <div className={mobileStackedClassName}>
                   <span>{strings.logs.table.effects}</span>
@@ -1379,7 +1386,7 @@ export default function AdminRecentRequestsPanel({
                   )}
                 </div>
                 {expanded ? (
-                  <div className="recent-requests-mobile-details" id={`recent-request-mobile-details-${log.id}`}>
+                  <div className="recent-requests-mobile-details min-w-0 border-t pt-3" id={`recent-request-mobile-details-${log.id}`}>
                     <RecentRequestDetails
                       log={log}
                       logBodiesState={resolvedLogBodiesState}
@@ -1395,11 +1402,14 @@ export default function AdminRecentRequestsPanel({
           })
         )}
       </AdminLoadingRegion>
+      <CardFooter>
       <AdminTablePagination
         page={1}
         totalPages={1}
         pageSummary={paginationSummary}
         perPage={perPage}
+        perPageLabel={language === 'zh' ? '每页条数' : 'Rows per page'}
+        perPageAriaLabel={language === 'zh' ? '每页条数' : 'Rows per page'}
         previousLabel={strings.logs.pagination.newer}
         nextLabel={strings.logs.pagination.older}
         previousDisabled={!hasNewer}
@@ -1409,6 +1419,7 @@ export default function AdminRecentRequestsPanel({
         onNext={onOlderPage}
         onPerPageChange={onPerPageChange}
       />
-    </section>
+      </CardFooter>
+    </Card>
   )
 }

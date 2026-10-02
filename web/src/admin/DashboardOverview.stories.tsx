@@ -1060,8 +1060,8 @@ export const TypesAreaHiddenMiddleSeries: Story = {
     if (apiNonBillable?.getAttribute('aria-pressed') !== 'true') {
       throw new Error('Expected later visible type series to stay active after the middle series is hidden.')
     }
-    if (canvasElement.querySelector('.dashboard-chart-canvas canvas') == null) {
-      throw new Error('Expected hidden-middle stacked area story to render the chart canvas.')
+    if (canvasElement.querySelector('.dashboard-chart-shell [data-slot="chart"] .recharts-surface') == null) {
+      throw new Error('Expected hidden-middle stacked area story to render the shadcn chart.')
     }
   },
 }
@@ -1090,8 +1090,8 @@ export const CreditsAreaLocalOnly: Story = {
   },
   play: async ({ canvasElement }) => {
     await new Promise((resolve) => window.setTimeout(resolve, 50))
-    if (canvasElement.querySelector('.dashboard-chart-canvas canvas') == null) {
-      throw new Error('Expected local-only credit story to render the dashboard chart canvas')
+    if (canvasElement.querySelector('.dashboard-chart-shell [data-slot="chart"] .recharts-surface') == null) {
+      throw new Error('Expected local-only credit story to render the dashboard shadcn chart')
     }
     const chips = Array.from(canvasElement.querySelectorAll<HTMLButtonElement>('.dashboard-chart-series-chip'))
     const local = chips.find((chip) => chip.textContent?.includes('Local estimate'))
@@ -1293,11 +1293,11 @@ export const ZhDarkEvidence: Story = {
     if (canvasElement.querySelectorAll('.dashboard-quota-charge-card').length < 2) {
       throw new Error('Expected both today and month quota charge cards to render')
     }
-    const cardBackdropCanvases = canvasElement.querySelectorAll('.dashboard-summary-card-backdrop canvas')
+    const cardBackdropCanvases = canvasElement.querySelectorAll('.dashboard-summary-card-backdrop [data-slot="chart"] .recharts-surface')
     if (cardBackdropCanvases.length !== 16) {
       throw new Error(`Expected 16 card backdrop charts, received ${cardBackdropCanvases.length}`)
     }
-    const blockBackdropCanvases = canvasElement.querySelectorAll('.dashboard-summary-block-backdrop canvas')
+    const blockBackdropCanvases = canvasElement.querySelectorAll('.dashboard-summary-block-backdrop [data-slot="chart"] .recharts-surface')
     if (blockBackdropCanvases.length !== 0) {
       throw new Error(`Expected no block backdrop charts, received ${blockBackdropCanvases.length}`)
     }

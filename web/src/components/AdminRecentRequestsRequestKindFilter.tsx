@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useId, useMemo, useState } from 'react'
 
 import type { AdminTranslations } from '../i18n'
 import { Icon } from '../lib/icons'
@@ -19,16 +19,16 @@ import { Button } from '@/components/ui/button'
 import {
   Drawer,
   DrawerContent,
+  DrawerClose,
+  DrawerFooter,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
+  DrawerTrigger,
 } from '@/components/ui/drawer'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Field, FieldGroup, FieldLabel, FieldSet, FieldLegend } from '@/components/ui/field'
 import SegmentedTabs from '@/components/SegmentedTabs'
 
 type Language = 'en' | 'zh'
@@ -102,6 +102,7 @@ export default function AdminRecentRequestsRequestKindFilter({
   onClearRequestKinds,
 }: AdminRecentRequestsRequestKindFilterProps): JSX.Element {
   const [requestKindFilterOpen, setRequestKindFilterOpen] = useState(false)
+  const triggerId = useId()
 
   const normalizedSelectedRequestKinds = useMemo(
     () => Array.from(new Set(selectedRequestKinds.map((value) => value.trim()).filter(Boolean))),
@@ -209,73 +210,48 @@ export default function AdminRecentRequestsRequestKindFilter({
       groupLabel: string,
       container: RequestKindContainer,
     ) => (
-      <div className="token-request-kind-group">
-        <div className="token-request-kind-group-label">{groupLabel}</div>
+      <FieldSet className="token-request-kind-group gap-3">
+        <FieldLegend variant="label">{groupLabel}</FieldLegend>
         {options.length === 0 ? (
           <div className="token-request-kind-empty">{strings.logs.filters.requestTypeEmpty}</div>
         ) : (
-          <div className="token-request-kind-group-options">
+          <FieldGroup className="token-request-kind-group-options gap-2">
             {options.map((option) => {
               const checked = effectiveSelectedRequestKinds.includes(option.key)
               const content = (
-                <span className="recent-requests-request-kind-option">
+                <span className="recent-requests-request-kind-option flex flex-1 items-center justify-between gap-3">
                   <RequestKindBadge
                     requestKindKey={option.key}
                     requestKindLabel={option.label}
                     size="sm"
                   />
-                  <span className="recent-requests-request-kind-count">{`x${option.count ?? 0}`}</span>
+                  <span className="recent-requests-request-kind-count text-xs text-muted-foreground">{`x${option.count ?? 0}`}</span>
                 </span>
               )
 
-              if (container === 'drawer') {
-                return (
-                  <button
-                    key={option.key}
-                    type="button"
-                    role="checkbox"
-                    aria-checked={checked}
-                    className={`recent-requests-request-kind-drawer-item${
-                      checked ? ' recent-requests-request-kind-drawer-item--checked' : ''
-                    }`}
-                    onClick={() => onToggleRequestKind(option.key)}
-                  >
-                    <span className="recent-requests-request-kind-drawer-mark" aria-hidden="true">
-                      {checked ? <Icon icon="mdi:check" width={16} height={16} /> : null}
-                    </span>
-                    {content}
-                  </button>
-                )
-              }
-
               return (
-                <DropdownMenuCheckboxItem
-                  key={option.key}
-                  className="cursor-pointer recent-requests-request-kind-item"
-                  checked={checked}
-                  onSelect={(event) => event.preventDefault()}
-                  onCheckedChange={() => onToggleRequestKind(option.key)}
-                >
-                  {content}
-                </DropdownMenuCheckboxItem>
+                <Field key={option.key} orientation="horizontal" className="recent-requests-request-kind-item gap-2">
+                  <Checkbox id={`${triggerId}-${container}-${option.key}`} aria-label={option.label} checked={checked} onCheckedChange={() => onToggleRequestKind(option.key)} />
+                  <FieldLabel htmlFor={`${triggerId}-${container}-${option.key}`} className="min-w-0 flex-1">{content}</FieldLabel>
+                </Field>
               )
             })}
-          </div>
+          </FieldGroup>
         )}
-      </div>
+      </FieldSet>
     ),
-    [effectiveSelectedRequestKinds, onToggleRequestKind, strings.logs.filters.requestTypeEmpty],
+    [effectiveSelectedRequestKinds, onToggleRequestKind, strings.logs.filters.requestTypeEmpty, triggerId],
   )
 
   const renderRequestKindFiltersContent = useCallback(
     (container: RequestKindContainer) => (
       <div
         className={[
-          'token-request-kind-panel',
+          'token-request-kind-panel flex flex-col gap-4',
           `token-request-kind-panel--${container}`,
         ].join(' ')}
       >
-        <div className="token-request-kind-panel-header">
+        <div className="token-request-kind-panel-header flex items-center justify-between gap-2">
           <div className="token-request-kind-panel-title">{strings.logs.filters.requestType}</div>
           <Button
             type="button"
@@ -288,12 +264,12 @@ export default function AdminRecentRequestsRequestKindFilter({
             {strings.users.clear}
           </Button>
         </div>
-        <div className="token-request-kind-layout">
-          <div className="token-request-kind-quick-filters">
-            <div className="token-request-kind-quick-cell">
-              <div className="token-request-kind-group-label">
+        <div className="token-request-kind-layout flex flex-col gap-4">
+          <FieldGroup className="token-request-kind-quick-filters grid gap-3 sm:grid-cols-2">
+            <FieldSet className="token-request-kind-quick-cell gap-2">
+              <FieldLegend variant="label">
                 {strings.logs.filters.billingGroup}
-              </div>
+              </FieldLegend>
               <SegmentedTabs<TokenLogRequestKindQuickBilling>
                 value={requestKindQuickBilling}
                 onChange={(next) =>
@@ -302,13 +278,13 @@ export default function AdminRecentRequestsRequestKindFilter({
                 options={requestKindBillingQuickFilterOptions}
                 ariaLabel={strings.logs.filters.billingGroup}
                 className="token-request-quick-segmented"
-                smallViewportBehavior={container === 'drawer' ? 'buttons' : 'select'}
+                smallViewportBehavior="buttons"
               />
-            </div>
-            <div className="token-request-kind-quick-cell">
-              <div className="token-request-kind-group-label">
+            </FieldSet>
+            <FieldSet className="token-request-kind-quick-cell gap-2">
+              <FieldLegend variant="label">
                 {strings.logs.filters.protocolGroup}
-              </div>
+              </FieldLegend>
               <SegmentedTabs<TokenLogRequestKindQuickProtocol>
                 value={requestKindQuickProtocol}
                 onChange={(next) =>
@@ -317,11 +293,11 @@ export default function AdminRecentRequestsRequestKindFilter({
                 options={requestKindProtocolQuickFilterOptions}
                 ariaLabel={strings.logs.filters.protocolGroup}
                 className="token-request-quick-segmented"
-                smallViewportBehavior={container === 'drawer' ? 'buttons' : 'select'}
+                smallViewportBehavior="buttons"
               />
-            </div>
-          </div>
-          <div className="token-request-kind-columns">
+            </FieldSet>
+          </FieldGroup>
+          <div className="token-request-kind-columns grid gap-4 sm:grid-cols-2">
             {renderRequestKindOptionsList(requestKindColumnGroups.api, 'API', container)}
             {renderRequestKindOptionsList(requestKindColumnGroups.mcp, 'MCP', container)}
           </div>
@@ -345,51 +321,58 @@ export default function AdminRecentRequestsRequestKindFilter({
   )
 
   return (
-    <div className="recent-requests-filter-field recent-requests-filter-field--request-kind">
-      <span className="recent-requests-filter-label">{strings.logs.filters.requestType}</span>
+    <Field className="recent-requests-filter-field recent-requests-filter-field--request-kind min-w-0">
+      <FieldLabel htmlFor={triggerId}>{strings.logs.filters.requestType}</FieldLabel>
       {isSmallViewport ? (
         <Drawer
           open={requestKindFilterOpen}
           onOpenChange={setRequestKindFilterOpen}
           shouldScaleBackground={false}
         >
-          <button
+          <DrawerTrigger asChild><Button
             type="button"
-            className="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu"
+            id={triggerId}
+            variant="outline" className="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu w-full justify-between"
             aria-label={`${strings.logs.filters.requestType}: ${requestKindTriggerSummary}`}
-            onClick={() => setRequestKindFilterOpen(true)}
           >
-            <span className="recent-requests-filter-select-text">{requestKindTriggerSummary}</span>
-            <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" />
-          </button>
-          <DrawerContent className="token-request-kind-drawer">
+            <span className="recent-requests-filter-select-text truncate">{requestKindTriggerSummary}</span>
+            <Icon icon="mdi:chevron-down" data-icon="inline-end" aria-hidden="true" />
+          </Button></DrawerTrigger>
+          <DrawerContent className="token-request-kind-drawer max-h-[85dvh]">
             <DrawerHeader className="sr-only">
               <DrawerTitle>{strings.logs.filters.requestType}</DrawerTitle>
               <DrawerDescription>{strings.logs.descriptionFallback}</DrawerDescription>
             </DrawerHeader>
-            {renderRequestKindFiltersContent('drawer')}
+            <div className="min-h-0 overflow-y-auto p-4">
+              {renderRequestKindFiltersContent('drawer')}
+            </div>
+            <DrawerFooter>
+              <DrawerClose asChild><Button variant="outline">{language === 'zh' ? '完成' : 'Done'}</Button></DrawerClose>
+            </DrawerFooter>
           </DrawerContent>
         </Drawer>
       ) : (
-        <DropdownMenu open={requestKindFilterOpen} onOpenChange={setRequestKindFilterOpen}>
-          <DropdownMenuTrigger asChild>
-            <button
+        <Popover open={requestKindFilterOpen} onOpenChange={setRequestKindFilterOpen}>
+          <PopoverTrigger asChild>
+            <Button
               type="button"
-              className="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu"
+              id={triggerId}
+              variant="outline" className="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu w-full justify-between"
               aria-label={`${strings.logs.filters.requestType}: ${requestKindTriggerSummary}`}
             >
-              <span className="recent-requests-filter-select-text">{requestKindTriggerSummary}</span>
-              <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="token-request-kind-menu recent-requests-filter-menu recent-requests-filter-menu--request-kind"
+              <span className="recent-requests-filter-select-text truncate">{requestKindTriggerSummary}</span>
+              <Icon icon="mdi:chevron-down" data-icon="inline-end" aria-hidden="true" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            align="start"
+            aria-label={strings.logs.filters.requestType}
+            className="token-request-kind-menu recent-requests-filter-menu recent-requests-filter-menu--request-kind w-[min(36rem,calc(100vw-2rem))] max-h-[70dvh] overflow-y-auto p-4"
           >
             {renderRequestKindFiltersContent('dropdown')}
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </PopoverContent>
+        </Popover>
       )}
-    </div>
+    </Field>
   )
 }

@@ -11,6 +11,7 @@ import {
 import { createPortal } from 'react-dom'
 
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
+import { Button } from '@/components/ui/button'
 import { cn } from '../lib/utils'
 
 export interface AnchoredInfoDisclosureProps
@@ -145,28 +146,27 @@ export function AnchoredInfoDisclosure({
 
   return (
     <>
-      <button
+      <Button variant="ghost"
         {...buttonProps}
         ref={triggerRef}
         type={type}
         className={className}
         aria-describedby={open ? bubbleId : undefined}
         aria-expanded={open}
-        aria-haspopup="dialog"
-        onClick={handleClick}
+                onClick={handleClick}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {children}
-      </button>
+      </Button>
       {open && typeof document !== 'undefined'
         ? createPortal(
             <div
               ref={bubbleRef}
               id={bubbleId}
-              className={cn('anchored-info-disclosure-bubble layer-popover', bubbleClassName)}
+              className={cn('anchored-info-disclosure-bubble fixed z-[1100] max-h-[calc(100dvh-2rem)] w-max max-w-[min(24rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-md', bubbleClassName)}
               role="tooltip"
               data-placement={position?.placement ?? 'top'}
               style={{

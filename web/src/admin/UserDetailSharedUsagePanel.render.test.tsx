@@ -1,7 +1,6 @@
 import '../../test/happydom'
 
 import { afterEach, describe, expect, it } from 'bun:test'
-import { Chart as ChartJS } from 'chart.js'
 import { act, type ComponentProps } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 
@@ -103,7 +102,7 @@ async function mountPanel(
 }
 
 function clickTab(container: HTMLElement, label: string) {
-  const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('button[role="tab"]'))
+  const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('button[data-slot=toggle-group-item]'))
   const target = buttons.find((button) => button.textContent?.trim() === label)
   if (!target) {
     throw new Error(`tab not found: ${label}`)
@@ -122,7 +121,7 @@ describe('UserDetailSharedUsagePanel tab presentation', () => {
   it('orders windows from shortest to longest while keeping business 1h as the default active series', async () => {
     const { container, root } = await mountPanel()
 
-    const labels = Array.from(container.querySelectorAll<HTMLButtonElement>('button[role="tab"]'))
+    const labels = Array.from(container.querySelectorAll<HTMLButtonElement>('button[data-slot=toggle-group-item]'))
       .map((button) => button.textContent?.trim())
 
     expect(labels).toEqual([
@@ -169,7 +168,7 @@ describe('UserDetailSharedUsagePanel loading behavior', () => {
 
     expect(container.querySelector<HTMLElement>('.admin-user-shared-usage-panel')?.dataset.activeSeries).toBe('ip')
     expect(container.querySelector('.admin-user-ip-gantt-chart')).not.toBeNull()
-    expect(container.querySelector('.admin-user-ip-gantt-chart canvas')).not.toBeNull()
+    expect(container.querySelector('.admin-user-ip-gantt-chart[data-slot="chart"]')).not.toBeNull()
     expect(container.textContent).toContain('203.0.113.7')
     expect(container.textContent).toContain(ZH.admin.users.detail.ipUsage24hTitle)
     expect(container.textContent).toContain(ZH.admin.users.detail.ipUsage7dTitle)
@@ -280,18 +279,10 @@ describe('UserDetailSharedUsagePanel loading behavior', () => {
       }),
     })
 
-    const canvas = container.querySelector('canvas')
-    expect(canvas).not.toBeNull()
-    const chart = canvas ? ChartJS.getChart(canvas) : undefined
-    expect(chart).toBeDefined()
-
-    const stacks = chart?.data.datasets.map((dataset) => dataset.stack)
-    expect(stacks).toEqual([
-      'business-bars',
-      'business-bars',
-      'business-pressure-line',
-      'business-limit-line',
-    ])
+    expect(container.querySelector('[data-slot="chart"]')).not.toBeNull()
+    expect(container.querySelectorAll('.recharts-bar')).toHaveLength(2)
+    expect(container.querySelectorAll('.recharts-line')).toHaveLength(2)
+    expect(container.querySelector('canvas')).toBeNull()
 
     await act(async () => {
       root.unmount()

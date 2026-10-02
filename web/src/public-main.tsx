@@ -6,6 +6,7 @@ import { LanguageProvider } from './i18n'
 import NotFoundFallbackPreview from './components/NotFoundFallbackPreview'
 import { bootstrapOfflineShellDocument, registerPwaServiceWorker } from './pwa/runtime'
 import PublicHome from './PublicHome'
+import AgentationToolbar from './components/AgentationToolbar'
 import { ThemeProvider } from './theme'
 import './index.css'
 
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <ThemeProvider>
         <TooltipProvider delayDuration={120} skipDelayDuration={250}>
           {isPublicHomePath ? <PublicHome /> : <NotFoundFallbackPreview originalPath={window.location.pathname} />}
+          <AgentationToolbar />
         </TooltipProvider>
       </ThemeProvider>
     </LanguageProvider>

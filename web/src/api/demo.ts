@@ -1,3 +1,6 @@
+import { buildDemoUserUsageSeries } from './demoUserUsageSeries'
+import type { AdminUserUsageSeriesKey } from './runtime'
+import { createDemoMcpSessionBindings, handleDemoMcpSessionBindingsRoute } from './demoMcpSessionBindings'
 import {
   createDemoAnnouncements,
   demoUserActiveAnnouncements,
@@ -223,6 +226,7 @@ function createDemoState() {
       userAvatarUrl: null,
     },
     haStatus: createDemoHaStatus(nowSeconds),
+    mcpSessionBindings: createDemoMcpSessionBindings(nowSeconds),
     version: { backend: '0.81.1', frontend: '0.1.0-demo' },
     tokens,
     tokenSecrets: new Map(tokens.map((token) => [token.id, token.id === DEMO_TOKEN_ID ? DEMO_TOKEN : `th-${token.id}-demoaccesssecret`])),
@@ -1978,6 +1982,8 @@ async function handleDemoRoute(url: URL, method: string, init?: RequestInit): Pr
   if (path === '/api/profile') return jsonResponse(demoState.profile)
   const haResponse = handleDemoHaRoute(path, method, demoState, await readJsonBody(init))
   if (haResponse) return haResponse
+  const sessionResponse = handleDemoMcpSessionBindingsRoute(url, method, demoState.mcpSessionBindings, await readJsonBody(init))
+  if (sessionResponse) return sessionResponse
   if (path === '/api/summary') return jsonResponse(demoSummary())
   if (path === '/api/summary/windows') return jsonResponse(demoSummaryWindows())
   if (path === '/api/dashboard/overview') return jsonResponse(demoDashboardOverview())
@@ -2230,7 +2236,7 @@ function handleUserRoute(path: string, url: URL, method: string, init?: RequestI
     if (method === 'POST') return jsonResponse(demoUserEntitlements(user.userId).items[0], 201)
   }
   if (method !== 'GET') return noContentResponse()
-  if (path.endsWith('/usage-series')) return jsonResponse({ limit: user.quotaHourlyLimit, points: range(24).map((index) => ({ bucketStart: nowSeconds(-(23 - index) * 3600), displayBucketStart: nowSeconds(-(23 - index) * 3600), value: 20 + index, limitValue: user.quotaHourlyLimit })) })
+  if (path.endsWith('/usage-series')) return jsonResponse(buildDemoUserUsageSeries((url.searchParams.get('series') ?? 'businessCalls1h') as AdminUserUsageSeriesKey, user, nowSeconds(0)))
   if (path.endsWith('/broken-keys')) return jsonResponse({ ...buildListPage([{ keyId: DEMO_QUOTA_KEY_ID, currentStatus: 'exhausted', reasonCode: 'upstream_usage_limit_432', reasonSummary: 'Demo quota exhausted', latestBreakAt: nowSeconds(-4200), source: 'request_log', breakerTokenId: DEMO_TOKEN_ID, breakerUserId: user.userId, breakerUserDisplayName: user.displayName, manualActorDisplayName: null, relatedUsers: [] }], url) })
   return jsonResponse({
     ...user,

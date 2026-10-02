@@ -1,72 +1,20 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LineController,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-  type ActiveElement,
-  type ChartData,
-  type ChartOptions,
-  type TooltipModel,
-} from 'chart.js'
-import { Chart } from 'react-chartjs-2'
-
-import type {
-  AdminUserIpTimelineEntry,
-  AdminUserUsageSeries,
-  AdminUserUsageSeriesKey,
-  AdminUserUsageSeriesQuotaPoint,
-} from '../api'
-import type { AdminTranslations } from '../i18n'
-import SegmentedTabs from '@/components/SegmentedTabs'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Bar, BarChart, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from 'recharts'
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from '@/components/ui/chart'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Button } from '@/components/ui/button'
+import SegmentedTabs from '@/components/SegmentedTabs'
 import { useTheme } from '../theme'
+import type { AdminUserIpTimelineEntry, AdminUserUsageSeries, AdminUserUsageSeriesKey, AdminUserUsageSeriesQuotaPoint } from '../api'
+import type { AdminTranslations } from '../i18n'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineController, LineElement, PointElement, Tooltip, Legend)
-
-const USAGE_TAB_ORDER: readonly AdminUserUsagePanelTab[] = [
-  'rate5m',
-  'businessCalls1h',
-  'dailyCredits',
-  'monthlyCredits',
-  'ip',
-]
-const USAGE_SERIES_KEYS = new Set<AdminUserUsageSeriesKey>([
-  'rate5m',
-  'businessCalls1h',
-  'dailyCredits',
-  'monthlyCredits',
-])
-
-type LoadStatus = 'idle' | 'loading' | 'success' | 'error'
-type TooltipVerticalPlacement = 'top' | 'bottom'
-type TooltipHorizontalPlacement = 'left' | 'right'
+const USAGE_TAB_ORDER = ['rate5m', 'businessCalls1h', 'dailyCredits', 'monthlyCredits', 'ip'] as const
+const USAGE_SERIES_KEYS = new Set<AdminUserUsageSeriesKey>(['rate5m', 'businessCalls1h', 'dailyCredits', 'monthlyCredits'])
 type AdminUserUsagePanelTab = AdminUserUsageSeriesKey | 'ip'
-type IpGanttRange = [number, number]
+type LoadStatus = 'idle' | 'loading' | 'success' | 'error'
 type TimelineBounds = { min: number; max: number }
-
-const HOVER_TOOLTIP_POSITION_STEP = 4
-const IP_GANTT_MIN_HEIGHT = 172
-const IP_GANTT_MAX_HEIGHT = 420
-const IP_GANTT_ROW_HEIGHT = 32
-const IP_GANTT_AXIS_HEIGHT = 46
-const BUSINESS_CALLS_BAR_STACK = 'business-bars'
-const BUSINESS_CALLS_PRESSURE_STACK = 'business-pressure-line'
-const BUSINESS_CALLS_LIMIT_STACK = 'business-limit-line'
-
-interface SharedUsageTooltipState {
-  index: number
-  x: number
-  y: number
-  verticalPlacement: TooltipVerticalPlacement
-  horizontalPlacement: TooltipHorizontalPlacement
-}
+type IpGanttRange = [number, number]
 
 interface UserDetailSharedUsagePanelProps {
   usersStrings: AdminTranslations['users']
@@ -86,12 +34,6 @@ interface UserDetailSharedUsagePanelProps {
 
 function isUsageSeriesKey(value: AdminUserUsagePanelTab): value is AdminUserUsageSeriesKey {
   return USAGE_SERIES_KEYS.has(value as AdminUserUsageSeriesKey)
-}
-
-function readChartColorVar(name: string, fallback: string): string {
-  if (typeof document === 'undefined') return fallback
-  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-  return value.length > 0 ? `hsl(${value})` : fallback
 }
 
 function formatNumber(locale: string, value: number): string {
@@ -207,18 +149,6 @@ function clipIpTimelineRange(item: AdminUserIpTimelineEntry, bounds: TimelineBou
   return [Math.min(first, last), Math.max(first, last)]
 }
 
-function axisTickStride(series: AdminUserUsageSeriesKey): number {
-  switch (series) {
-    case 'rate5m':
-    case 'businessCalls1h':
-      return 24
-    case 'dailyCredits':
-      return 1
-    case 'monthlyCredits':
-      return 1
-  }
-}
-
 export function isBusinessCalls1hStacked(activeSeries: AdminUserUsageSeriesKey): boolean {
   return activeSeries === 'businessCalls1h'
 }
@@ -233,64 +163,6 @@ function isBusinessCallsSeries(
   value: AdminUserUsageSeries | null | undefined,
 ): value is Extract<AdminUserUsageSeries, { kind: 'businessCalls1h' }> {
   return value?.kind === 'businessCalls1h'
-}
-
-function areTooltipStatesEqual(a: SharedUsageTooltipState | null, b: SharedUsageTooltipState | null): boolean {
-  if (a === b) return true
-  if (!a || !b) return false
-  return (
-    a.index === b.index &&
-    a.x === b.x &&
-    a.y === b.y &&
-    a.verticalPlacement === b.verticalPlacement &&
-    a.horizontalPlacement === b.horizontalPlacement
-  )
-}
-
-function quantizeHoverCoordinate(value: number): number {
-  return Math.round(value / HOVER_TOOLTIP_POSITION_STEP) * HOVER_TOOLTIP_POSITION_STEP
-}
-
-function resolveTooltipAnchor(index: number, fallback: { x: number; y: number }): { index: number; x: number; y: number } {
-  return {
-    index,
-    x: fallback.x,
-    y: fallback.y,
-  }
-}
-
-function isTooltipWithinHoverBounds(chart: ChartJS, source: { x: number; y: number }): boolean {
-  const chartArea = chart.chartArea
-  if (!chartArea) return false
-  return (
-    Number.isFinite(source.x) &&
-    Number.isFinite(source.y) &&
-    source.x >= chartArea.left &&
-    source.x <= chartArea.right &&
-    source.y >= chartArea.top &&
-    source.y <= chartArea.bottom
-  )
-}
-
-function clampTooltipState(
-  chart: ChartJS,
-  source: { index: number; x: number; y: number },
-): SharedUsageTooltipState {
-  const width = chart.canvas.clientWidth || chart.width || 320
-  const height = chart.canvas.clientHeight || chart.height || 220
-  const rawX = source.x
-  const rawY = source.y
-  const x = Math.round(Math.min(Math.max(rawX, 12), Math.max(12, width - 12)))
-  const y = Math.round(Math.min(Math.max(rawY, 12), Math.max(12, height - 12)))
-  const horizontalPlacement: TooltipHorizontalPlacement = rawX > width * 0.62 ? 'left' : 'right'
-  const verticalPlacement: TooltipVerticalPlacement = rawY < height * 0.42 ? 'bottom' : 'top'
-  return {
-    index: source.index,
-    x,
-    y,
-    verticalPlacement,
-    horizontalPlacement,
-  }
 }
 
 export function UserDetailSharedUsagePanel({
@@ -314,9 +186,6 @@ export function UserDetailSharedUsagePanel({
     () => initialSeriesCache ?? {},
   )
   const [statusBySeries, setStatusBySeries] = useState<Partial<Record<AdminUserUsageSeriesKey, LoadStatus>>>({})
-  const [hoverTooltip, setHoverTooltip] = useState<SharedUsageTooltipState | null>(null)
-  const [pinnedTooltip, setPinnedTooltip] = useState<SharedUsageTooltipState | null>(null)
-  const chartAreaRef = useRef<HTMLDivElement>(null)
   const loadSeriesRef = useRef(loadSeries)
   const inflightControllersRef = useRef<Partial<Record<AdminUserUsageSeriesKey, AbortController>>>({})
   const currentSeries = isUsageSeriesKey(activeSeries) ? seriesCache[activeSeries] ?? null : null
@@ -332,24 +201,6 @@ export function UserDetailSharedUsagePanel({
       inflightControllersRef.current = {}
     }
   }, [])
-
-  useEffect(() => {
-    setHoverTooltip(null)
-    setPinnedTooltip(null)
-  }, [activeSeries])
-
-  useEffect(() => {
-    if (!pinnedTooltip && !hoverTooltip) return
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target
-      if (!(target instanceof Node)) return
-      if (chartAreaRef.current?.contains(target)) return
-      setPinnedTooltip(null)
-      setHoverTooltip(null)
-    }
-    window.addEventListener('pointerdown', handlePointerDown)
-    return () => window.removeEventListener('pointerdown', handlePointerDown)
-  }, [hoverTooltip, pinnedTooltip])
 
   useEffect(() => {
     if (!isUsageSeriesKey(activeSeries)) return
@@ -400,602 +251,96 @@ export function UserDetailSharedUsagePanel({
         point.limitValue != null,
     )
   }, [currentSeries])
-  const chartPalette = useMemo(
-    () => ({
-      bar: readChartColorVar('--primary', '#38bdf8'),
-      barBorder: readChartColorVar('--primary', '#0ea5e9'),
-      pressureLine: readChartColorVar('--info', '#0ea5e9'),
-      limitLine: readChartColorVar('--warning', '#f59e0b'),
-      grid: readChartColorVar('--dashboard-chart-grid', 'rgba(148, 163, 184, 0.18)'),
-      tick: readChartColorVar('--dashboard-chart-tick', '#cbd5e1'),
-    }),
-    [resolvedTheme],
-  )
-
-  const activeTooltip = pinnedTooltip ?? hoverTooltip
-  const activeTooltipPoint = activeTooltip ? currentSeries?.points[activeTooltip.index] ?? null : null
-  const tooltipHasGap = activeTooltipPoint
-    ? 'value' in activeTooltipPoint
-      ? activeTooltipPoint.value == null || activeTooltipPoint.limitValue == null
-      : activeTooltipPoint.pressure == null || activeTooltipPoint.limitValue == null
-    : false
-
+  const chartConfig = {
+    success: { label: usersStrings.detail.sharedUsageLegendSuccess, color: 'var(--chart-1)' },
+    failure: { label: usersStrings.detail.sharedUsageLegendFailure, color: 'var(--chart-2)' },
+    value: { label: usersStrings.detail.sharedUsageLegendUsed, color: 'var(--chart-1)' },
+    pressure: { label: usersStrings.detail.sharedUsageLegendPressure, color: 'var(--chart-3)' },
+    limitValue: { label: usersStrings.detail.sharedUsageLegendLimit, color: 'var(--chart-4)' },
+  } satisfies ChartConfig
+  const chartData = currentSeries?.points.map((point) => {
+    const valuePoint = 'value' in point ? point : { ...point, value: point.pressure }
+    return {
+      ...point,
+      label: isUsageSeriesKey(activeSeries) ? formatBucketAxisLabel(language, activeSeries, valuePoint) : '',
+      tooltipLabel: isUsageSeriesKey(activeSeries) ? formatBucketTooltipLabel(language, activeSeries, valuePoint) : '',
+      ...('bars' in point ? { success: point.bars.success, failure: point.bars.failure } : {}),
+    }
+  }) ?? []
+  const businessCalls = isBusinessCallsSeries(currentSeries)
   const retryActiveSeries = () => {
     if (!isUsageSeriesKey(activeSeries)) return
     inflightControllersRef.current[activeSeries]?.abort()
     delete inflightControllersRef.current[activeSeries]
     setStatusBySeries((current) => ({ ...current, [activeSeries]: 'idle' }))
-    setHoverTooltip(null)
-    setPinnedTooltip(null)
   }
-
-  const chartData = useMemo(() => {
-    if (!isUsageSeriesKey(activeSeries)) {
-      return { labels: [], datasets: [] } as unknown as ChartData<'bar', (number | null)[], string>
-    }
-    if (isBusinessCallsSeries(currentSeries)) {
-      const labels = currentSeries.points.map((point) =>
-        formatBucketAxisLabel(language, 'businessCalls1h', {
-          bucketStart: point.bucketStart,
-          displayBucketStart: point.displayBucketStart,
-          value: point.pressure,
-          limitValue: point.limitValue,
-        }),
-      )
-      return {
-        labels,
-        datasets: [
-          {
-            type: 'bar',
-            label: usersStrings.detail.sharedUsageLegendSuccess,
-            data: currentSeries.points.map((point) => point.bars.success),
-            backgroundColor: chartPalette.bar,
-            borderColor: chartPalette.barBorder,
-            borderWidth: 1,
-            borderRadius: 6,
-            stack: BUSINESS_CALLS_BAR_STACK,
-            barPercentage: 0.72,
-            categoryPercentage: 0.82,
-          },
-          {
-            type: 'bar',
-            label: usersStrings.detail.sharedUsageLegendFailure,
-            data: currentSeries.points.map((point) => point.bars.failure),
-            backgroundColor: readChartColorVar('--destructive', '#ef4444'),
-            borderColor: readChartColorVar('--destructive', '#dc2626'),
-            borderWidth: 1,
-            borderRadius: 6,
-            stack: BUSINESS_CALLS_BAR_STACK,
-            barPercentage: 0.72,
-            categoryPercentage: 0.82,
-          },
-          {
-            type: 'line',
-            label: usersStrings.detail.sharedUsageLegendPressure,
-            data: currentSeries.points.map((point) => point.pressure),
-            borderColor: chartPalette.pressureLine,
-            borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 0,
-            tension: 0,
-            stack: BUSINESS_CALLS_PRESSURE_STACK,
-          },
-          {
-            type: 'line',
-            label: usersStrings.detail.sharedUsageLegendLimit,
-            data: currentSeries.points.map((point) => point.limitValue),
-            borderColor: chartPalette.limitLine,
-            borderWidth: 2,
-            borderDash: [8, 6],
-            pointRadius: 0,
-            pointHoverRadius: 0,
-            tension: 0,
-            stack: BUSINESS_CALLS_LIMIT_STACK,
-          },
-        ],
-      } as unknown as ChartData<'bar', (number | null)[], string>
-    }
-    const labels = currentSeries?.points.map((point) => formatBucketAxisLabel(language, activeSeries, point)) ?? []
-    return {
-      labels,
-      datasets: [
-        {
-          type: 'bar',
-          label: usersStrings.detail.sharedUsageLegendUsed,
-          data: currentSeries?.points.map((point) => point.value) ?? [],
-          backgroundColor: chartPalette.bar,
-          borderColor: chartPalette.barBorder,
-          borderWidth: 1,
-          borderRadius: 6,
-          barPercentage: activeSeries === 'monthlyCredits' ? 0.62 : 0.72,
-          categoryPercentage: activeSeries === 'monthlyCredits' ? 0.72 : 0.82,
-        },
-        {
-          type: 'line',
-          label: usersStrings.detail.sharedUsageLegendLimit,
-          data: currentSeries?.points.map((point) => point.limitValue) ?? [],
-          borderColor: chartPalette.limitLine,
-          borderWidth: 2,
-          borderDash: [8, 6],
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          tension: 0,
-        },
-      ],
-    } as unknown as ChartData<'bar', (number | null)[], string>
-  }, [
-    activeSeries,
-    chartPalette.bar,
-    chartPalette.barBorder,
-    currentSeries,
-    language,
-    usersStrings.detail.sharedUsageLegendFailure,
-    usersStrings.detail.sharedUsageLegendLimit,
-    usersStrings.detail.sharedUsageLegendPressure,
-    usersStrings.detail.sharedUsageLegendSuccess,
-    usersStrings.detail.sharedUsageLegendUsed,
-    chartPalette.limitLine,
-    chartPalette.pressureLine,
-  ])
-
-  const chartOptions = useMemo(() => {
-    if (!isUsageSeriesKey(activeSeries)) {
-      return {} as ChartOptions<'bar'>
-    }
-    const points = currentSeries?.points ?? []
-    const stride = axisTickStride(activeSeries)
-    return {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      onClick(event, elements: ActiveElement[], chart) {
-        const directAnchor = elements.find((item) => item.datasetIndex === 0) ?? elements[0]
-        const tooltipModel = chart.tooltip
-        const hoveredPoint = tooltipModel?.dataPoints?.[0] ?? null
-        const eventX = typeof event.x === 'number' ? event.x : tooltipModel?.caretX
-        const eventY = typeof event.y === 'number' ? event.y : tooltipModel?.caretY
-        const source = directAnchor
-          ? resolveTooltipAnchor(directAnchor.index, {
-              x: eventX ?? directAnchor.element.x,
-              y: eventY ?? directAnchor.element.y,
-            })
-          : hoveredPoint && tooltipModel
-            ? resolveTooltipAnchor(hoveredPoint.dataIndex, { x: tooltipModel.caretX, y: tooltipModel.caretY })
-            : null
-        if (!source) {
-          setPinnedTooltip(null)
-          return
-        }
-        const nextTooltip = clampTooltipState(chart, source)
-        setPinnedTooltip((current) => (current?.index === nextTooltip.index ? null : nextTooltip))
-      },
-      onHover(event, elements: ActiveElement[], chart) {
-        if (pinnedTooltip) return
-        const x = typeof event.x === 'number' ? quantizeHoverCoordinate(event.x) : Number.NaN
-        const y = typeof event.y === 'number' ? quantizeHoverCoordinate(event.y) : Number.NaN
-        const hoverSource = Number.isFinite(x) && Number.isFinite(y) ? { x, y } : null
-        if (!hoverSource || !isTooltipWithinHoverBounds(chart, hoverSource)) {
-          setHoverTooltip((current) => (current == null ? current : null))
-          return
-        }
-        const directAnchor = elements.find((item) => item.datasetIndex === 0) ?? elements[0]
-        const hoveredPoint = chart.tooltip?.dataPoints?.[0] ?? null
-        const source = directAnchor
-          ? resolveTooltipAnchor(directAnchor.index, hoverSource)
-          : hoveredPoint
-            ? resolveTooltipAnchor(hoveredPoint.dataIndex, hoverSource)
-            : null
-        if (!source) {
-          setHoverTooltip((current) => (current == null ? current : null))
-          return
-        }
-        const nextTooltip = clampTooltipState(chart, source)
-        setHoverTooltip((current) => (areTooltipStatesEqual(current, nextTooltip) ? current : nextTooltip))
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          enabled: false,
-          external({ tooltip }: { chart: ChartJS; tooltip: TooltipModel<'bar'> }) {
-            if (pinnedTooltip) return
-            if (tooltip.opacity === 0) {
-              setHoverTooltip((current) => (current == null ? current : null))
-            }
-          },
-        },
-      },
-      scales: {
-        x: {
-          stacked: isBusinessCalls1hStacked(activeSeries),
-          grid: { display: false },
-          ticks: {
-            autoSkip: false,
-            maxRotation: 0,
-            minRotation: 0,
-            color: chartPalette.tick,
-            callback(_value, index) {
-              const finalIndex = points.length - 1
-              if (index !== finalIndex && finalIndex - index < stride) return ''
-              if (index === finalIndex || index % stride === 0) {
-                const label = chartData.labels?.[index]
-                return typeof label === 'string' ? label : ''
-              }
-              return ''
-            },
-          },
-        },
-        y: {
-          beginAtZero: true,
-          stacked: isBusinessCalls1hStacked(activeSeries),
-          grid: { color: chartPalette.grid },
-          ticks: {
-            color: chartPalette.tick,
-            callback(value) {
-              return formatNumber(language, Number(value))
-            },
-          },
-        },
-      },
-    } as ChartOptions<'bar'>
-  }, [activeSeries, chartData.labels, chartPalette.grid, chartPalette.tick, currentSeries?.points, language, pinnedTooltip])
-
   const ipTimelineBounds = useMemo(() => {
     const max = Math.floor(Date.now() / 1000)
-    const min = max - 7 * 24 * 60 * 60
-    return { min, max }
+    return { min: max - 7 * 24 * 60 * 60, max }
   }, [])
-  const ipGanttData = useMemo(
-    () =>
-      ({
-        labels: ipTimeline.map((item) => item.ipAddress),
-        datasets: [
-          {
-            label: usersStrings.detail.ipUsageTitle,
-            data: ipTimeline.map((item) => clipIpTimelineRange(item, ipTimelineBounds)),
-            backgroundColor: chartPalette.bar,
-            borderColor: chartPalette.barBorder,
-            borderSkipped: false,
-            borderWidth: 1,
-            borderRadius: 4,
-            minBarLength: 6,
-            barPercentage: 0.68,
-            categoryPercentage: 0.82,
-          },
-        ],
-      }) as ChartData<'bar', IpGanttRange[], string>,
-    [
-      chartPalette.bar,
-      chartPalette.barBorder,
-      ipTimeline,
-      ipTimelineBounds.max,
-      ipTimelineBounds.min,
-      usersStrings.detail.ipUsageTitle,
-    ],
-  )
-  const ipGanttOptions = useMemo(
-    () =>
-      ({
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: { mode: 'nearest', intersect: true },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              title(items) {
-                const index = items[0]?.dataIndex ?? 0
-                return ipTimeline[index]?.ipAddress ?? ''
-              },
-              label(item) {
-                const entry = ipTimeline[item.dataIndex]
-                if (!entry) return ''
-                return `${formatIpTimelineRangeLabel(language, entry.firstSeenAt, entry.lastSeenAt)} · ${formatNumber(language, entry.requestCount)}`
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            type: 'linear',
-            min: ipTimelineBounds.min,
-            max: ipTimelineBounds.max,
-            grid: { color: chartPalette.grid },
-            ticks: {
-              color: chartPalette.tick,
-              maxTicksLimit: 8,
-              callback(value) {
-                return formatIpTimelineAxisLabel(language, Number(value))
-              },
-            },
-          },
-          y: {
-            grid: { display: false },
-            ticks: {
-              color: chartPalette.tick,
-              font: { family: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' },
-              padding: 4,
-            },
-          },
-        },
-      }) as ChartOptions<'bar'>,
-    [
-      chartPalette.grid,
-      chartPalette.tick,
-      ipTimeline,
-      ipTimelineBounds.max,
-      ipTimelineBounds.min,
-      language,
-    ],
-  )
-
+  const ipData = ipTimeline.map((item) => ({ ...item, range: clipIpTimelineRange(item, ipTimelineBounds) }))
+  const ipConfig = { range: { label: usersStrings.detail.ipUsageTitle, color: 'var(--chart-1)' } } satisfies ChartConfig
   const renderIpList = (titleText: string, values: string[], total: number) => (
-    <div className="admin-user-ip-list">
-      <div className="admin-user-ip-list-header">
-        <h3>{titleText}</h3>
-        <span>{formatNumber(language, total)}</span>
-      </div>
-      {values.length === 0 ? (
-        <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.ipUsageListEmpty}</p>
-      ) : (
-        <div className="admin-user-ip-list-values">
-          {values.map((ip) => (
-            <code key={ip}>{ip}</code>
-          ))}
-        </div>
-      )}
-    </div>
+    <Card size="sm">
+      <CardHeader><CardTitle>{titleText} · {formatNumber(language, total)}</CardTitle></CardHeader>
+      <CardContent className="flex flex-wrap gap-2">
+        {values.length === 0 ? <p className="text-muted-foreground">{usersStrings.detail.ipUsageListEmpty}</p> : values.map((ip) => <code key={ip}>{ip}</code>)}
+      </CardContent>
+    </Card>
   )
-
-  const renderIpUsage = () => (
-    <div className="admin-user-ip-usage">
-      <div className="admin-user-ip-usage-copy">
-        <h3>{usersStrings.detail.ipUsageTitle}</h3>
-        <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.ipUsageDescription}</p>
-      </div>
-      {ipTimeline.length === 0 ? (
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.detail.ipUsageEmpty}</div>
-      ) : (
-        <div
-          className="admin-user-ip-gantt-chart"
-          role="img"
-          aria-label={usersStrings.detail.ipUsageTitle}
-          style={{
-            height: Math.min(
-              IP_GANTT_MAX_HEIGHT,
-              Math.max(IP_GANTT_MIN_HEIGHT, ipTimeline.length * IP_GANTT_ROW_HEIGHT + IP_GANTT_AXIS_HEIGHT),
-            ),
-          }}
-        >
-          <Chart type="bar" data={ipGanttData} options={ipGanttOptions} />
-        </div>
-      )}
-      <div className="admin-user-ip-lists">
-        {renderIpList(usersStrings.detail.ipUsage24hTitle, ipAddresses24h, ipCount24h)}
-        {renderIpList(usersStrings.detail.ipUsage7dTitle, ipAddresses7d, ipCount7d)}
-      </div>
-    </div>
-  )
-
   return (
-    <div
-      className="admin-user-shared-usage-panel"
-      data-active-series={activeSeries}
-      data-loaded-series={loadedSeries.join(',')}
-      data-resolved-theme={resolvedTheme}
-      data-tooltip-open={activeTooltip != null ? 'true' : 'false'}
-      data-tooltip-pinned={pinnedTooltip != null ? 'true' : 'false'}
-    >
-      {title || description ? (
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-user-shared-usage-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
-          <div className="admin-user-shared-usage-heading">
-            {title ? <h2>{title}</h2> : null}
-            {description ? <p className="panel-description text-sm text-muted-foreground">{description}</p> : null}
-          </div>
-          <SegmentedTabs<AdminUserUsagePanelTab>
-            value={activeSeries}
-            onChange={setActiveSeries}
-            options={[
-              { value: 'rate5m', label: usersStrings.detail.sharedUsageTabs.fiveMinute },
-              { value: 'businessCalls1h', label: usersStrings.detail.sharedUsageTabs.businessOneHour },
-              { value: 'dailyCredits', label: usersStrings.detail.sharedUsageTabs.daily },
-              { value: 'monthlyCredits', label: usersStrings.detail.sharedUsageTabs.monthly },
-              { value: 'ip', label: usersStrings.detail.sharedUsageTabs.ip },
-            ]}
-            ariaLabel={usersStrings.detail.sharedUsageTitle}
-            className="admin-user-shared-usage-tabs"
-          />
-        </div>
-      ) : (
-        <div className="admin-user-shared-usage-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
-          <SegmentedTabs<AdminUserUsagePanelTab>
-            value={activeSeries}
-            onChange={setActiveSeries}
-            options={[
-              { value: 'rate5m', label: usersStrings.detail.sharedUsageTabs.fiveMinute },
-              { value: 'businessCalls1h', label: usersStrings.detail.sharedUsageTabs.businessOneHour },
-              { value: 'dailyCredits', label: usersStrings.detail.sharedUsageTabs.daily },
-              { value: 'monthlyCredits', label: usersStrings.detail.sharedUsageTabs.monthly },
-              { value: 'ip', label: usersStrings.detail.sharedUsageTabs.ip },
-            ]}
-            ariaLabel={usersStrings.detail.sharedUsageTitle}
-            className="admin-user-shared-usage-tabs"
-          />
-        </div>
-      )}
-
-      {activeSeries === 'ip' ? null : (
-        <div className="admin-user-shared-usage-meta">
-          <div className="admin-user-shared-usage-legend">
-            <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-bar" />
-              {activeSeries === 'businessCalls1h'
-                ? usersStrings.detail.sharedUsageLegendSuccess
-                : usersStrings.detail.sharedUsageLegendUsed}
-            </span>
-            {activeSeries === 'businessCalls1h' ? (
-              <>
-                <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <span
-                    className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm"
-                    style={{ backgroundColor: readChartColorVar('--destructive', '#ef4444') }}
-                  />
-                  {usersStrings.detail.sharedUsageLegendFailure}
-                </span>
-                <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <span
-                    className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-line size-2.5 shrink-0 rounded-t-sm"
-                    style={
-                      {
-                        '--admin-user-shared-usage-line-color': chartPalette.pressureLine,
-                        '--admin-user-shared-usage-line-style': 'solid',
-                      } as CSSProperties
-                    }
-                  />
-                  {usersStrings.detail.sharedUsageLegendPressure}
-                </span>
-                <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <span
-                    className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-line size-2.5 shrink-0 rounded-t-sm"
-                    style={
-                      {
-                        '--admin-user-shared-usage-line-color': chartPalette.limitLine,
-                        '--admin-user-shared-usage-line-style': 'dashed',
-                      } as CSSProperties
-                    }
-                  />
-                  {usersStrings.detail.sharedUsageLegendLimit}
-                </span>
-              </>
-            ) : (
-              <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-line size-2.5 shrink-0 rounded-t-sm" />
-                {usersStrings.detail.sharedUsageLegendLimit}
-              </span>
-            )}
-          </div>
-        </div>
-      )}
-
-      <div
-        ref={chartAreaRef}
-        className="admin-user-shared-usage-chart"
-        onPointerLeave={() => {
-          if (pinnedTooltip) return
-          setHoverTooltip(null)
-        }}
-      >
+    <div className="admin-user-shared-usage-panel flex min-w-0 flex-col gap-4" data-active-series={activeSeries} data-loaded-series={loadedSeries.join(',')} data-resolved-theme={resolvedTheme}>
+      <div className="admin-user-shared-usage-panel-header flex flex-wrap items-start justify-between gap-3 px-4">
+        {title || description ? <div>{title ? <h2>{title}</h2> : null}{description ? <p className="text-muted-foreground">{description}</p> : null}</div> : null}
+        <SegmentedTabs<AdminUserUsagePanelTab> value={activeSeries} onChange={setActiveSeries} ariaLabel={usersStrings.detail.sharedUsageTitle}
+          options={[
+            { value: 'rate5m', label: usersStrings.detail.sharedUsageTabs.fiveMinute },
+            { value: 'businessCalls1h', label: usersStrings.detail.sharedUsageTabs.businessOneHour },
+            { value: 'dailyCredits', label: usersStrings.detail.sharedUsageTabs.daily },
+            { value: 'monthlyCredits', label: usersStrings.detail.sharedUsageTabs.monthly },
+            { value: 'ip', label: usersStrings.detail.sharedUsageTabs.ip },
+          ]} />
+      </div>
+      <div className="admin-user-shared-usage-chart min-w-0 px-4">
         {activeSeries === 'ip' ? (
-          renderIpUsage()
-        ) : (statusBySeries[activeSeries] ?? 'idle') === 'loading' && !currentSeries ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.detail.sharedUsageLoading}</div>
-        ) : (statusBySeries[activeSeries] ?? 'idle') === 'error' && !currentSeries ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">
-            <div>{usersStrings.detail.sharedUsageLoadFailed}</div>
-            <Button
-              type="button"
-              variant="outline"
-              size="xs"
-              onClick={retryActiveSeries}
-              style={{ marginTop: 12 }}
-            >
-              {usersStrings.detail.sharedUsageRetryAction}
-            </Button>
+          <div className="admin-user-ip-usage flex min-w-0 flex-col gap-4">
+            <div><h3>{usersStrings.detail.ipUsageTitle}</h3><p className="text-muted-foreground">{usersStrings.detail.ipUsageDescription}</p></div>
+            {ipTimeline.length === 0 ? <Empty><EmptyDescription>{usersStrings.detail.ipUsageEmpty}</EmptyDescription></Empty> : (
+              <ChartContainer config={ipConfig} className="admin-user-ip-gantt-chart w-full aspect-auto" aria-label={usersStrings.detail.ipUsageTitle}
+                style={{ height: Math.min(420, Math.max(172, ipTimeline.length * 32 + 46)) }}>
+                <BarChart accessibilityLayer layout="vertical" data={ipData}>
+                  <CartesianGrid horizontal={false} />
+                  <XAxis type="number" domain={[ipTimelineBounds.min, ipTimelineBounds.max]} tickFormatter={(value) => formatIpTimelineAxisLabel(language, value)} tickLine={false} axisLine={false} />
+                  <YAxis dataKey="ipAddress" type="category" tickLine={false} axisLine={false} width={120} />
+                  <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.ipAddress}
+                    formatter={(_, __, item) => `${formatIpTimelineRangeLabel(language, item.payload.firstSeenAt, item.payload.lastSeenAt)} · ${formatNumber(language, item.payload.requestCount)}`} />} />
+                  <Bar dataKey="range" fill="var(--color-range)" radius={4} />
+                </BarChart>
+              </ChartContainer>
+            )}
+            <div className="admin-user-ip-lists grid gap-4 sm:grid-cols-2">
+              {renderIpList(usersStrings.detail.ipUsage24hTitle, ipAddresses24h, ipCount24h)}
+              {renderIpList(usersStrings.detail.ipUsage7dTitle, ipAddresses7d, ipCount7d)}
+            </div>
           </div>
-        ) : !hasRenderablePoints ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.detail.sharedUsageEmpty}</div>
-        ) : (
-          <>
-            <Chart type="bar" data={chartData} options={chartOptions} />
-            {activeTooltip && activeTooltipPoint ? (
-              <div
-                className="admin-user-shared-usage-tooltip rounded-lg border bg-popover p-3 text-xs shadow-lg layer-popover rounded-lg border bg-popover p-3 text-xs shadow-lg"
-                data-vertical-placement={activeTooltip.verticalPlacement}
-                data-horizontal-placement={activeTooltip.horizontalPlacement}
-                data-tooltip-mode={pinnedTooltip ? 'pinned' : 'hover'}
-                style={{
-                  left: `${activeTooltip.x}px`,
-                  top: `${activeTooltip.y}px`,
-                }}
-              >
-                <div className="admin-user-shared-usage-tooltip-header font-medium">
-                  <strong>
-                    {formatBucketTooltipLabel(
-                      language,
-                      activeSeries,
-                      'value' in activeTooltipPoint
-                        ? activeTooltipPoint
-                        : {
-                            bucketStart: activeTooltipPoint.bucketStart,
-                            displayBucketStart: activeTooltipPoint.displayBucketStart,
-                            value: activeTooltipPoint.pressure,
-                            limitValue: activeTooltipPoint.limitValue,
-                          },
-                    )}
-                  </strong>
-                </div>
-                <dl className="admin-user-shared-usage-tooltip-grid grid grid-cols-2 gap-x-4 gap-y-1">
-                  {'value' in activeTooltipPoint ? (
-                    <>
-                      <div>
-                        <dt>{usersStrings.detail.sharedUsageLegendUsed}</dt>
-                        <dd>
-                          {activeTooltipPoint.value == null ? '—' : formatNumber(language, activeTooltipPoint.value)}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>{usersStrings.detail.sharedUsageLegendLimit}</dt>
-                        <dd>
-                          {activeTooltipPoint.limitValue == null
-                            ? '—'
-                            : formatNumber(language, activeTooltipPoint.limitValue)}
-                        </dd>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div>
-                        <dt>{usersStrings.detail.sharedUsageLegendSuccess}</dt>
-                        <dd>
-                          {activeTooltipPoint.bars.success == null
-                            ? '—'
-                            : formatNumber(language, activeTooltipPoint.bars.success)}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>{usersStrings.detail.sharedUsageLegendFailure}</dt>
-                        <dd>
-                          {activeTooltipPoint.bars.failure == null
-                            ? '—'
-                            : formatNumber(language, activeTooltipPoint.bars.failure)}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>{usersStrings.detail.sharedUsageLegendPressure}</dt>
-                        <dd>
-                          {activeTooltipPoint.pressure == null
-                            ? '—'
-                            : formatNumber(language, activeTooltipPoint.pressure)}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>{usersStrings.detail.sharedUsageLegendLimit}</dt>
-                        <dd>
-                          {activeTooltipPoint.limitValue == null
-                            ? '—'
-                            : formatNumber(language, activeTooltipPoint.limitValue)}
-                        </dd>
-                      </div>
-                    </>
-                  )}
-                </dl>
-                {tooltipHasGap ? (
-                  <p className="admin-user-shared-usage-tooltip-note text-muted-foreground">{usersStrings.detail.sharedUsagePartialHint}</p>
-                ) : null}
-              </div>
-            ) : null}
-          </>
-        )}
+        ) : activeStatus === 'loading' && !currentSeries ? <Empty><EmptyDescription>{usersStrings.detail.sharedUsageLoading}</EmptyDescription></Empty>
+          : activeStatus === 'error' && !currentSeries ? (
+            <Empty><EmptyDescription>{usersStrings.detail.sharedUsageLoadFailed}</EmptyDescription><Button variant="outline" size="sm" onClick={retryActiveSeries}>{usersStrings.detail.sharedUsageRetryAction}</Button></Empty>
+          ) : !hasRenderablePoints ? <Empty><EmptyDescription>{usersStrings.detail.sharedUsageEmpty}</EmptyDescription></Empty> : (
+            <ChartContainer config={chartConfig} className="h-80 w-full aspect-auto" aria-label={Object.values(chartConfig).map((item) => item.label).join(", ")}>
+              <ComposedChart accessibilityLayer data={chartData}>
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={10} minTickGap={32} />
+                <YAxis tickLine={false} axisLine={false} width={40} />
+                <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.tooltipLabel} />} />
+                <ChartLegend content={<ChartLegendContent className="admin-user-shared-usage-legend" />} />
+                {businessCalls ? <Bar dataKey="success" stackId="calls" fill="var(--color-success)" radius={[0, 0, 4, 4]} /> : <Bar dataKey="value" fill="var(--color-value)" radius={4} />}
+                {businessCalls ? <Bar dataKey="failure" stackId="calls" fill="var(--color-failure)" radius={[4, 4, 0, 0]} /> : null}
+                {businessCalls ? <Line dataKey="pressure" type="step" stroke="var(--color-pressure)" strokeWidth={2} dot={false} /> : null}
+                <Line dataKey="limitValue" type="step" stroke="var(--color-limitValue)" strokeWidth={2} dot={false} />
+              </ComposedChart>
+            </ChartContainer>
+          )}
       </div>
     </div>
   )

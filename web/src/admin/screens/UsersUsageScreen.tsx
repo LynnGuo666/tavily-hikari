@@ -1,3 +1,7 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Card } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { TableBody, TableRow, TableCell, TableHeader, TableHead } from '@/components/ui/table'
 import type { ReactNode } from 'react'
 
 import AdminLoadingRegion from '../../components/AdminLoadingRegion'
@@ -99,7 +103,7 @@ export function UsersUsageScreen({
         filterStatusText={filterStatusText}
       />
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         <AdminTableShell
           className="overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex"
           tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table${showShadowDailyColumn ? ' admin-users-usage-table--shadow-compare' : ''}`}
@@ -109,19 +113,19 @@ export function UsersUsageScreen({
           minHeight={360}
         >
           {users.length === 0 ? (
-            <tbody>
-              <tr>
-                <td colSpan={showShadowDailyColumn ? 12 : 11}>
-                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.none}</div>
-                </td>
-              </tr>
-            </tbody>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={showShadowDailyColumn ? 12 : 11}>
+                  <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
+                </TableCell>
+              </TableRow>
+            </TableBody>
           ) : (
             <>
-              <thead>
-                <tr>
-                  <th>{usersStrings.usage.table.user}</th>
-                  <th>{usersStrings.usage.table.status}</th>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{usersStrings.usage.table.user}</TableHead>
+                  <TableHead>{usersStrings.usage.table.status}</TableHead>
                   <AdminUsersSortableHeader
                     label={usersStrings.usage.table.hourlyAny}
                     field="requestRateUsed"
@@ -143,7 +147,7 @@ export function UsersUsageScreen({
                     activeOrder={activeSortOrder}
                     onToggle={onToggleSort}
                   />
-                  {showShadowDailyColumn ? <th>{usersStrings.usage.table.shadowDaily}</th> : null}
+                  {showShadowDailyColumn ? <TableHead>{usersStrings.usage.table.shadowDaily}</TableHead> : null}
                   <AdminUsersSortableHeader
                     label={usersStrings.usage.table.monthly}
                     field="monthlyCreditsUsed"
@@ -188,9 +192,9 @@ export function UsersUsageScreen({
                     activeOrder={activeSortOrder}
                     onToggle={onToggleSort}
                   />
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {users.map((item) => {
                   const requestRate = resolveRequestRate(item, 'user')
                   const userLabel = item.displayName || item.username || item.userId
@@ -209,29 +213,29 @@ export function UsersUsageScreen({
                     formatQuotaStackValue,
                   })
                   return (
-                    <tr key={item.userId}>
-                      <td className="admin-users-identity-cell">
-                        <button
+                    <TableRow key={item.userId}>
+                      <TableCell className="admin-users-identity-cell">
+                        <Button
                           type="button"
-                          className="link-button admin-users-identity-button"
+                          variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
                           aria-label={usersStrings.actions.view}
                           onClick={() => onOpenUser(item.userId)}
                         >
                           <strong>{formatAdminUserListPrimary(item)}</strong>
-                        </button>
+                        </Button>
                         {userMeta ? (
                           <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">{userMeta}</div>
                         ) : null}
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StatusBadge tone={item.active ? 'success' : 'neutral'}>
                           {item.active ? usersStrings.status.active : usersStrings.status.inactive}
                         </StatusBadge>
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...formatQuotaStackValue(requestRate.used, requestRate.limit)} />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack
                           primary={formatQuotaUsagePair(
                             item.businessCalls1h.totalCount,
@@ -243,28 +247,28 @@ export function UsersUsageScreen({
                               : `S ${formatNumber(item.businessCalls1h.successCount)} / F ${formatNumber(item.businessCalls1h.failureCount)}`
                           }
                         />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...formatQuotaStackValue(item.dailyCreditsUsed, item.dailyCreditsLimit)} />
-                      </td>
+                      </TableCell>
                       {showShadowDailyColumn ? (
-                        <td className="admin-users-compact-cell">
+                        <TableCell className="admin-users-compact-cell">
                           <AdminTableValueStack {...shadowDailyUsage} />
-                        </td>
+                        </TableCell>
                       ) : null}
-                      <td className="admin-users-compact-cell">
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack
                           {...formatQuotaStackValue(item.monthlyCreditsUsed, item.monthlyCreditsLimit)}
                         />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         {(() => {
                           const metric = formatMonthlyBrokenStackValue(
                             item.monthlyBrokenCount,
                             item.monthlyBrokenLimit,
                           )
                           return (
-                            <div className="admin-table-value-stack">
+                            <div className="admin-table-value-stack flex flex-col gap-1">
                               <MonthlyBrokenCountTrigger
                                 count={item.monthlyBrokenCount}
                                 onOpen={() => onOpenMonthlyBrokenDrawer(item.userId, userLabel)}
@@ -275,27 +279,27 @@ export function UsersUsageScreen({
                             </div>
                           )
                         })()}
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <strong>{formatNumber(item.recentIpCount7d)}</strong>
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack
                           {...formatSuccessRateStackValue(item.dailySuccess, item.dailyFailure, language)}
                         />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack
                           {...formatSuccessRateStackValue(item.monthlySuccess, item.monthlyFailure, language)}
                         />
-                      </td>
-                      <td className="admin-users-compact-cell">
+                      </TableCell>
+                      <TableCell className="admin-users-compact-cell">
                         <AdminTableValueStack {...formatStackedTimestamp(item.lastActivity, language)} />
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   )
                 })}
-              </tbody>
+              </TableBody>
             </>
           )}
         </AdminTableShell>
@@ -308,7 +312,7 @@ export function UsersUsageScreen({
           minHeight={260}
         >
           {users.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.none}</div>
+            <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             users.map((item) => {
               const requestRate = resolveRequestRate(item, 'user')
@@ -329,14 +333,14 @@ export function UsersUsageScreen({
                 <article key={item.userId} className="rounded-lg border p-3">
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.user}</span>
-                    <button
+                    <Button
                       type="button"
-                      className="link-button admin-users-mobile-link"
+                      variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
                       aria-label={usersStrings.actions.view}
                       onClick={() => onOpenUser(item.userId)}
                     >
                       <strong>{formatAdminUserListPrimary(item)}</strong>
-                    </button>
+                    </Button>
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.status}</span>
@@ -375,9 +379,9 @@ export function UsersUsageScreen({
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.monthlyBroken}</span>
                     {item.monthlyBrokenCount > 0 ? (
-                      <button
+                      <Button
                         type="button"
-                        className="link-button"
+                        variant="link" size="sm" className="h-auto p-0"
                         onClick={() =>
                           onOpenMonthlyBrokenDrawer(
                             item.userId,
@@ -385,7 +389,7 @@ export function UsersUsageScreen({
                           )}
                       >
                         <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
-                      </button>
+                      </Button>
                     ) : (
                       <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
                     )}
@@ -413,7 +417,7 @@ export function UsersUsageScreen({
         </AdminLoadingRegion>
 
         {pagination}
-      </section>
+      </Card>
     </>
   )
 }

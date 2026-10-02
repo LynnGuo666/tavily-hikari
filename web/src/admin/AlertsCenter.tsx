@@ -1,5 +1,7 @@
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
 import type {
   AlertCatalog,
   AlertEvent,
@@ -50,25 +52,22 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import SegmentedTabs from '@/components/SegmentedTabs'
 import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-
 const EMPTY_ALERT_EVENTS_PAGE: AlertsPage<AlertEvent> = {
   items: [],
   total: 0,
   page: 1,
   perPage: 20,
 }
-
 const EMPTY_ALERT_GROUPS_PAGE: AlertsPage<AlertGroup> = {
   items: [],
   total: 0,
   page: 1,
   perPage: 20,
 }
-
 function alertTypeTone(type: AlertType): StatusTone {
   switch (type) {
     case 'upstream_key_blocked':
@@ -815,9 +814,9 @@ export default function AlertsCenter({
     )
   }, [])
   return (
-    <div className="alerts-center-stack">
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 alerts-center-panel">
-        <div className="alerts-center-toolbar">
+    <div className="alerts-center-stack flex min-w-0 flex-col gap-4">
+      <Card className="surface panel alerts-center-panel min-w-0">
+        <div className="alerts-center-toolbar flex min-w-0 flex-col gap-4 px-4">
           <div className={`alerts-center-tabs-mobile${inlineTabsVariant === 'mobile' ? ' block md:hidden' : ''}`}>
             <SegmentedTabs<AlertsCenterView>
               className="alerts-center-tabs"
@@ -832,7 +831,7 @@ export default function AlertsCenter({
             />
           </div>
 
-          <div className="alerts-center-filters alerts-center-filters--primary">
+          <div className="alerts-center-filters alerts-center-filters--primary grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--type">
               <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.type}</span>
               <SearchableFacetSelect
@@ -854,40 +853,43 @@ export default function AlertsCenter({
               <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.requestKinds}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button
+                  <Button variant="outline" size="sm"
                     type="button"
-                    className="searchable-facet-select__trigger alerts-center-request-kinds-trigger alerts-center-filter-control"
+                    className="searchable-facet-select__trigger alerts-center-request-kinds-trigger alerts-center-filter-control w-full justify-between"
                     aria-label={copy.filters.requestKinds}
                   >
                     <span className="searchable-facet-select__summary">{requestKindsSummary}</span>
                     <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" />
-                  </button>
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="alerts-center-request-kinds-menu">
-                  {(catalog?.requestKindOptions ?? []).length === 0 ? (
-                    <div className="alerts-center-request-kinds-empty">{copy.filters.requestKindsEmpty}</div>
-                  ) : (
-                    catalog?.requestKindOptions.map((option) => {
-                      const checked = requestKinds.includes(option.key)
-                      return (
-                        <DropdownMenuCheckboxItem
-                          key={option.key}
-                          checked={checked}
-                          onCheckedChange={() => {
-                            const nextRequestKinds = checked
-                              ? requestKinds.filter((value) => value !== option.key)
-                              : [...requestKinds, option.key]
-                            navigateWith({ requestKinds: nextRequestKinds, page: 1 })
-                          }}
-                        >
-                          <span className="alerts-center-request-kinds-option">
-                            <span>{option.label}</span>
-                            <span className="alerts-center-request-kinds-count">x{option.count}</span>
-                          </span>
-                        </DropdownMenuCheckboxItem>
-                      )
-                    })
-                  )}
+                <DropdownMenuContent align="start" className="alerts-center-request-kinds-menu max-h-80 w-72 overflow-y-auto">
+                  <DropdownMenuGroup>
+                    {(catalog?.requestKindOptions ?? []).length === 0 ? (
+                      <div className="alerts-center-request-kinds-empty">{copy.filters.requestKindsEmpty}</div>
+                    ) : (
+                      catalog?.requestKindOptions.map((option) => {
+                        const checked = requestKinds.includes(option.key)
+                        return (
+                          <DropdownMenuCheckboxItem
+                            key={option.key}
+                            checked={checked}
+                            onSelect={(event) => event.preventDefault()}
+                            onCheckedChange={() => {
+                              const nextRequestKinds = checked
+                                ? requestKinds.filter((value) => value !== option.key)
+                                : [...requestKinds, option.key]
+                              navigateWith({ requestKinds: nextRequestKinds, page: 1 })
+                            }}
+                          >
+                            <span className="alerts-center-request-kinds-option flex w-full items-center justify-between gap-2">
+                              <span>{option.label}</span>
+                              <span className="alerts-center-request-kinds-count text-xs text-muted-foreground">x{option.count}</span>
+                            </span>
+                          </DropdownMenuCheckboxItem>
+                        )
+                      })
+                    )}
+                  </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -896,7 +898,8 @@ export default function AlertsCenter({
               <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.since}</span>
               <Input
                 type="datetime-local"
-                className="alerts-center-time-input alerts-center-filter-control"
+                className="alerts-center-time-input alerts-center-filter-control w-full min-w-0"
+                aria-label={copy.filters.since}
                 value={draftSince}
                 onChange={(event) => setDraftSince(event.target.value)}
               />
@@ -905,7 +908,8 @@ export default function AlertsCenter({
               <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.until}</span>
               <Input
                 type="datetime-local"
-                className="alerts-center-time-input alerts-center-filter-control"
+                className="alerts-center-time-input alerts-center-filter-control w-full min-w-0"
+                aria-label={copy.filters.until}
                 value={draftUntil}
                 onChange={(event) => setDraftUntil(event.target.value)}
               />
@@ -960,7 +964,7 @@ export default function AlertsCenter({
                 labelVariant="mono"
               />
             </div>
-            <div className="alerts-center-filter-actions">
+            <div className="alerts-center-filter-actions flex flex-wrap items-end gap-2">
               <Button
                 type="button"
                 variant="outline"
@@ -987,7 +991,7 @@ export default function AlertsCenter({
           </div>
         </div>
         {alertsCoverage ? (
-          <div className="alerts-center-stale-notice" role="status">
+          <div className="alerts-center-stale-notice mx-4 flex flex-wrap items-start gap-3 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm [&_span]:block" role="status">
             <Icon icon="mdi:alert-circle-outline" width={17} height={17} aria-hidden="true" />
             <div>
               <strong>{copy.stale.title}</strong>
@@ -997,11 +1001,12 @@ export default function AlertsCenter({
           </div>
         ) : null}
 
+        <CardContent className="min-w-0">
         <AdminLoadingRegion loadState={catalogLoadState} loadingLabel={copy.title} errorLabel={catalogError}>
           {view === 'events' ? (
             <AdminTableShell
               className="alerts-center-table-shell"
-              tableClassName="alerts-center-table alerts-center-table--events"
+              tableClassName="min-w-[64rem] [&_td]:whitespace-normal alerts-center-table alerts-center-table--events"
               loadState={listLoadState}
               loadingLabel={copy.title}
               errorLabel={listError}
@@ -1021,7 +1026,7 @@ export default function AlertsCenter({
                 {eventsPage.items.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7}>
-                      <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{copy.emptyEvents}</div>
+                      <Empty className="empty-state"><EmptyDescription>{copy.emptyEvents}</EmptyDescription></Empty>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -1037,7 +1042,7 @@ export default function AlertsCenter({
                         <StatusBadge tone={alertTypeTone(event.type)}>{copy.types[event.type]}</StatusBadge>
                       </TableCell>
                       <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">
-                        <div className="alerts-center-subject-cell">
+                        <div className="alerts-center-subject-cell flex min-w-0 flex-col gap-1">
                           <strong>{subjectDisplayLabel(event)}</strong>
                         </div>
                       </TableCell>
@@ -1047,40 +1052,40 @@ export default function AlertsCenter({
                         ) : '—'}
                       </TableCell>
                       <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--related">
-                        <div className="alerts-center-related-actions">
+                        <div className="alerts-center-related-actions flex flex-wrap gap-2">
                           {event.user ? (
-                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline" onClick={() => onOpenUser(event.user!.userId)}>
+                            <Button type="button" variant="link" size="sm" className="h-auto p-0 alerts-center-related-link text-primary underline-offset-4 hover:underline" onClick={() => onOpenUser(event.user!.userId)}>
                               {event.user.displayName ?? event.user.username ?? event.user.userId}
-                            </button>
+                            </Button>
                           ) : null}
                           {event.token ? (
-                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenToken(event.token!.id)}>
+                            <Button type="button" variant="link" size="sm" className="h-auto p-0 alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenToken(event.token!.id)}>
                               {event.token.label ?? event.token.id}
-                            </button>
+                            </Button>
                           ) : null}
                           {event.key ? (
-                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenKey(event.key!.id)}>
+                            <Button type="button" variant="link" size="sm" className="h-auto p-0 alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenKey(event.key!.id)}>
                               {event.key.label ?? event.key.id}
-                            </button>
+                            </Button>
                           ) : null}
                           {event.job ? (
-                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onNavigate(modulePath('jobs'))}>
+                            <Button type="button" variant="link" size="sm" className="h-auto p-0 alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onNavigate(modulePath('jobs'))}>
                               {`${copy.openJobs} #${event.job.id}`}
-                            </button>
+                            </Button>
                           ) : null}
                         </div>
                       </TableCell>
                       <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--request">
                         {event.request ? (
-                          <button type="button" className="alerts-center-request-link" onClick={() => setSelectedRequest(event.request)}>
+                          <Button variant="link" size="sm" type="button" className="alerts-center-request-link" onClick={() => setSelectedRequest(event.request)}>
                             {requestSummary(event.request)}
-                          </button>
+                          </Button>
                         ) : (
                           '—'
                         )}
                       </TableCell>
                       <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">
-                        <div className="alerts-center-summary-cell px-3 py-2 align-top">
+                        <div className="alerts-center-summary-cell px-3 py-2 align-top flex min-w-[12rem] max-w-[24rem] flex-col gap-1 text-sm whitespace-normal [&_span]:text-muted-foreground">
                           <strong>{event.title}</strong>
                           <span>{event.summary}</span>
                         </div>
@@ -1093,7 +1098,7 @@ export default function AlertsCenter({
           ) : (
             <AdminTableShell
               className="alerts-center-table-shell"
-              tableClassName="alerts-center-table alerts-center-table--groups"
+              tableClassName="min-w-[64rem] [&_td]:whitespace-normal alerts-center-table alerts-center-table--groups"
               loadState={listLoadState}
               loadingLabel={copy.title}
               errorLabel={listError}
@@ -1112,7 +1117,7 @@ export default function AlertsCenter({
                 {groupsPage.items.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6}>
-                      <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{copy.emptyGroups}</div>
+                      <Empty className="empty-state"><EmptyDescription>{copy.emptyGroups}</EmptyDescription></Empty>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -1125,7 +1130,7 @@ export default function AlertsCenter({
                         <TableRow key={group.id}>
                           <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--expander">
                             {canExpand ? (
-                              <button
+                              <Button variant="ghost" size="icon-sm"
                                 type="button"
                                 className="alerts-center-row-expander"
                                 onClick={() => toggleExpandedGroup(group.id)}
@@ -1133,11 +1138,11 @@ export default function AlertsCenter({
                                 aria-expanded={expanded}
                               >
                                 <Icon icon={expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'} width={18} height={18} aria-hidden="true" />
-                              </button>
+                              </Button>
                             ) : null}
                           </TableCell>
                           <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--time">
-                            <div className="alerts-center-time-cell alerts-center-time-cell--range">
+                            <div className="alerts-center-time-cell alerts-center-time-cell--range flex flex-col gap-1 text-xs">
                               <strong>{formatMonthDayTimeWithSeconds(group.firstSeen, language)}</strong>
                               <span>{formatMonthDayTimeWithSeconds(group.lastSeen, language)}</span>
                             </div>
@@ -1146,9 +1151,9 @@ export default function AlertsCenter({
                             <StatusBadge tone={alertTypeTone(group.type)}>{copy.types[group.type]}</StatusBadge>
                           </TableCell>
                           <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">
-                            <div className="alerts-center-subject-cell">
+                            <div className="alerts-center-subject-cell flex min-w-0 flex-col gap-1">
                               {hasClickableGroupSubject(group) ? (
-                                <button
+                                <Button variant="link" size="sm"
                                   type="button"
                                   className={`alerts-center-related-link text-primary underline-offset-4 hover:underline${group.subjectKind !== 'user' ? ' alerts-center-related-link--mono font-mono text-xs' : ''}`}
                                   onClick={() => {
@@ -1170,14 +1175,14 @@ export default function AlertsCenter({
                                   }}
                                 >
                                   {subjectDisplayLabel(group)}
-                                </button>
+                                </Button>
                               ) : (
                                 <strong>{subjectDisplayLabel(group)}</strong>
                               )}
                             </div>
                           </TableCell>
                           <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--request-kind">
-                            <div className="alerts-center-summary-cell px-3 py-2 align-top">
+                            <div className="alerts-center-summary-cell px-3 py-2 align-top flex min-w-[12rem] max-w-[24rem] flex-col gap-1 text-sm whitespace-normal [&_span]:text-muted-foreground">
                               <strong>{compatibilityGroup ? '—' : semanticWindowLabel(group, language)}</strong>
                               {(group.groupingKind ?? 'compat') === 'mother' ? (
                                 <span>{`x${group.eventCount ?? group.count} · ${group.childCount ?? group.children?.length ?? 0} ${copy.groupUi.children}`}</span>
@@ -1187,7 +1192,7 @@ export default function AlertsCenter({
                             </div>
                           </TableCell>
                           <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">
-                            <div className="alerts-center-summary-cell px-3 py-2 align-top">
+                            <div className="alerts-center-summary-cell px-3 py-2 align-top flex min-w-[12rem] max-w-[24rem] flex-col gap-1 text-sm whitespace-normal [&_span]:text-muted-foreground">
                               <strong>{group.latestEvent.title}</strong>
                               <span>{group.latestEvent.summary}</span>
                             </div>
@@ -1200,7 +1205,7 @@ export default function AlertsCenter({
                                   <TableRow key={`${child.id}:summary`} className="alerts-center-child-row">
                                     <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--expander alerts-center-child-row__expander" />
                                     <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--time">
-                                      <div className="alerts-center-time-cell alerts-center-child-window">
+                                      <div className="alerts-center-time-cell alerts-center-child-window flex flex-col gap-1 text-xs">
                                         <strong>{semanticWindowLabel(child, language)}</strong>
                                         {child.semanticWindowStart != null && child.semanticWindowEnd != null ? (
                                           <span>
@@ -1210,30 +1215,30 @@ export default function AlertsCenter({
                                       </div>
                                     </TableCell>
                                     <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--type">
-                                      <div className="alerts-center-child-stat">
+                                      <div className="alerts-center-child-stat flex flex-wrap items-center gap-2">
                                         <strong>x{child.eventCount ?? child.count}</strong>
                                         <span>{copy.groupUi.children}</span>
                                       </div>
                                     </TableCell>
                                     <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">
-                                      <div className="alerts-center-summary-cell px-3 py-2 align-top">
+                                      <div className="alerts-center-summary-cell px-3 py-2 align-top flex min-w-[12rem] max-w-[24rem] flex-col gap-1 text-sm whitespace-normal [&_span]:text-muted-foreground">
                                         <strong>{`${formatTime(child.firstSeen)} · ${formatTimeDetail(child.firstSeen)}`}</strong>
                                         <span>{copy.groupUi.firstHit}</span>
                                       </div>
                                     </TableCell>
                                     <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--request-kind">
-                                      <div className="alerts-center-summary-cell px-3 py-2 align-top">
+                                      <div className="alerts-center-summary-cell px-3 py-2 align-top flex min-w-[12rem] max-w-[24rem] flex-col gap-1 text-sm whitespace-normal [&_span]:text-muted-foreground">
                                         <strong>{`${formatTime(child.lastSeen)} · ${formatTimeDetail(child.lastSeen)}`}</strong>
                                         <span>{copy.groupUi.lastHit}</span>
                                       </div>
                                     </TableCell>
                                     <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">
-                                      <div className="alerts-center-child-summary-row">
-                                        <div className="alerts-center-summary-cell px-3 py-2 align-top">
+                                      <div className="alerts-center-child-summary-row flex items-start gap-2">
+                                        <div className="alerts-center-summary-cell px-3 py-2 align-top flex min-w-[12rem] max-w-[24rem] flex-col gap-1 text-sm whitespace-normal [&_span]:text-muted-foreground">
                                           <strong>{child.latestEvent.title}</strong>
                                           <span>{child.latestEvent.summary}</span>
                                         </div>
-                                        <button
+                                        <Button variant="ghost" size="sm"
                                           type="button"
                                           className="alerts-center-inline-toggle"
                                           onClick={() => {
@@ -1249,7 +1254,7 @@ export default function AlertsCenter({
                                         >
                                           <Icon icon="mdi:format-list-bulleted-square" width={16} height={16} aria-hidden="true" />
                                           <span>{`${copy.groupUi.expand} ${child.eventCount ?? child.count} ${copy.groupUi.requestRecords}`}</span>
-                                        </button>
+                                        </Button>
                                       </div>
                                     </TableCell>
                                   </TableRow>
@@ -1265,11 +1270,12 @@ export default function AlertsCenter({
             </AdminTableShell>
           )}
 
-          <AdminTablePagination
+          <CardFooter className="mt-4 -mx-4 -mb-4"><AdminTablePagination
             page={currentPage.page}
             totalPages={totalPageCount}
             pageSummary={paginationSummary(copy, currentPage.total, currentPage.page, currentPage.perPage)}
             perPage={currentPage.perPage}
+            perPageLabel={language === 'zh' ? '每页条数' : 'Per page'}
             previousLabel={copy.paginationPrevious}
             nextLabel={copy.paginationNext}
             previousDisabled={currentPage.page <= 1}
@@ -1285,13 +1291,15 @@ export default function AlertsCenter({
               navigateWith({ page: 1 })
             }}
           />
+          </CardFooter>
         </AdminLoadingRegion>
-      </section>
+        </CardContent>
+      </Card>
 
       <Drawer open={selectedRequest != null} onOpenChange={(open) => !open && setSelectedRequest(null)} shouldScaleBackground={false}>
         <DrawerContent className="request-entity-drawer-content-fit">
-          <section className="alerts-center-request-drawer">
-            <header className="alerts-center-request-drawer__header">
+          <section className="alerts-center-request-drawer flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain p-4">
+            <header className="alerts-center-request-drawer__header flex flex-col gap-2">
               <DrawerTitle asChild>
                 <h3>{copy.requestDrawer.title}</h3>
               </DrawerTitle>
@@ -1305,7 +1313,7 @@ export default function AlertsCenter({
               loadingLabel={copy.requestDrawer.loading}
               errorLabel={requestLoadError ?? copy.requestDrawer.error}
             >
-              <div className="alerts-center-request-drawer__grid">
+              <div className="alerts-center-request-drawer__grid grid min-w-0 gap-4 md:grid-cols-2 [&_h4]:mb-2 [&_h4]:font-medium [&_pre]:max-h-96 [&_pre]:overflow-auto [&_pre]:rounded-lg [&_pre]:bg-muted [&_pre]:p-3 [&_pre]:text-xs [&_pre]:whitespace-pre-wrap [&_pre]:break-all">
                 <div>
                   <h4>{copy.requestDrawer.requestBody}</h4>
                   <pre>{requestBody}</pre>
@@ -1327,8 +1335,8 @@ export default function AlertsCenter({
         direction="right"
       >
         <DrawerContent className="alerts-center-child-drawer">
-          <section className="alerts-center-request-drawer alerts-center-child-drawer__content">
-            <header className="alerts-center-request-drawer__header alerts-center-child-drawer__header">
+          <section className="alerts-center-request-drawer alerts-center-child-drawer__content flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain p-4">
+            <header className="alerts-center-request-drawer__header alerts-center-child-drawer__header flex flex-col gap-2">
               <DrawerTitle asChild>
                 <h3>{copy.childDrawer.title}</h3>
               </DrawerTitle>
@@ -1341,7 +1349,7 @@ export default function AlertsCenter({
               </DrawerDescription>
             </header>
 
-            <div className="alerts-center-child-request-filters">
+            <div className="alerts-center-child-request-filters grid min-w-0 gap-3 sm:grid-cols-2">
               <div className="alerts-center-filter-field flex flex-col gap-1">
                 <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.childDrawer.requestKind}</span>
                 <SearchableFacetSelect
@@ -1368,55 +1376,23 @@ export default function AlertsCenter({
               </div>
               <div className="alerts-center-filter-field flex flex-col gap-1">
                 <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.childDrawer.outcome}</span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button type="button" className="searchable-facet-select__trigger alerts-center-request-kinds-trigger">
-                      <span className="searchable-facet-select__summary">
-                        {childRequestFilters.outcome === 'all'
-                          ? copy.childDrawer.allOutcomes
-                          : childRequestFilters.outcome === 'quota_exhausted'
-                            ? copy.childDrawer.quotaExhausted
-                            : childRequestFilters.outcome === 'success'
-                              ? copy.childDrawer.success
-                              : childRequestFilters.outcome === 'error'
-                                ? copy.childDrawer.error
-                                : copy.childDrawer.neutral}
-                      </span>
-                      <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="alerts-center-request-kinds-menu">
+                <Select value={childRequestFilters.outcome} onValueChange={(value) => setChildRequestFilters((current) => ({ ...current, outcome: value as ChildRequestOutcomeFilter }))}>
+                  <SelectTrigger className="w-full" aria-label={copy.childDrawer.outcome}><SelectValue /></SelectTrigger>
+                  <SelectContent position="popper"><SelectGroup>
                     {[
                       ['all', copy.childDrawer.allOutcomes],
                       ['quota_exhausted', copy.childDrawer.quotaExhausted],
                       ['success', copy.childDrawer.success],
                       ['error', copy.childDrawer.error],
                       ['neutral', copy.childDrawer.neutral],
-                    ].map(([value, label]) => (
-                      <button
-                        key={value}
-                        type="button"
-                        className={`searchable-facet-select__option${childRequestFilters.outcome === value ? ' searchable-facet-select__option--active' : ''}`}
-                        onClick={() =>
-                          setChildRequestFilters((current) => ({
-                            ...current,
-                            outcome: value as ChildRequestOutcomeFilter,
-                          }))}
-                      >
-                        <span className="searchable-facet-select__mark" aria-hidden="true">
-                          {childRequestFilters.outcome === value ? <Icon icon="mdi:check" width={16} height={16} /> : null}
-                        </span>
-                        <span className="searchable-facet-select__option-body">
-                          <span className="searchable-facet-select__label">{label}</span>
-                        </span>
-                      </button>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                    ].map(([value, label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}
+                  </SelectGroup></SelectContent>
+                </Select>
               </div>
               <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-child-request-filters__search">
                 <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.childDrawer.search}</span>
                 <Input
+                  aria-label={copy.childDrawer.search}
                   value={childRequestFilters.text}
                   onChange={(event) =>
                     setChildRequestFilters((current) => ({
@@ -1429,7 +1405,7 @@ export default function AlertsCenter({
               </div>
             </div>
 
-            <div className="alerts-center-child-events alerts-center-child-request-list">
+            <div className="alerts-center-child-events alerts-center-child-request-list flex min-w-0 flex-col gap-3">
               {selectedChildDetails == null ? (
                 <div className="alerts-center-inline-muted text-muted-foreground">{copy.childDrawer.empty}</div>
               ) : childRequestLoadState === 'error' ? (
@@ -1442,8 +1418,8 @@ export default function AlertsCenter({
                 <div className="alerts-center-inline-muted text-muted-foreground">{copy.childDrawer.emptyFiltered}</div>
               ) : (
                 filteredChildRequestRecords.map((log) => (
-                  <div key={log.id} className="alerts-center-child-event alerts-center-child-request-item">
-                    <div className="alerts-center-child-event__meta">
+                  <div key={log.id} className="alerts-center-child-event alerts-center-child-request-item flex min-w-0 flex-col gap-3 rounded-lg border p-3">
+                    <div className="alerts-center-child-event__meta flex flex-wrap items-center gap-2 text-xs">
                       <StatusBadge tone={alertTypeTone(log.result_status === 'quota_exhausted' ? 'user_quota_exhausted' : 'user_request_rate_limited')}>
                         {log.result_status === 'quota_exhausted'
                           ? copy.types.user_quota_exhausted
@@ -1454,27 +1430,27 @@ export default function AlertsCenter({
                         <RequestKindBadge requestKindKey={log.request_kind_key} requestKindLabel={log.request_kind_label ?? log.request_kind_key} size="sm" />
                       ) : null}
                     </div>
-                    <div className="alerts-center-summary-cell px-3 py-2 align-top">
+                    <div className="alerts-center-summary-cell px-3 py-2 align-top flex min-w-[12rem] max-w-[24rem] flex-col gap-1 text-sm whitespace-normal [&_span]:text-muted-foreground">
                       <strong>{`${log.method} ${log.path}${log.query ? `?${log.query}` : ''}`}</strong>
                       <span>{log.error_message?.trim() || requestSummary({ id: log.id, method: log.method, path: log.path, query: log.query })}</span>
                     </div>
-                    <div className="alerts-center-related-actions">
+                    <div className="alerts-center-related-actions flex flex-wrap gap-2">
                       {selectedChildDetails?.child.user?.userId ? (
-                        <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline" onClick={() => onOpenUser(selectedChildDetails.child.user!.userId)}>
+                        <Button type="button" variant="link" size="sm" className="h-auto p-0 alerts-center-related-link text-primary underline-offset-4 hover:underline" onClick={() => onOpenUser(selectedChildDetails.child.user!.userId)}>
                           {selectedChildDetails.child.user.displayName ?? selectedChildDetails.child.user.username ?? selectedChildDetails.child.user.userId}
-                        </button>
+                        </Button>
                       ) : null}
                       {log.auth_token_id ? (
-                        <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenToken(log.auth_token_id!)}>
+                        <Button type="button" variant="link" size="sm" className="h-auto p-0 alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenToken(log.auth_token_id!)}>
                           {log.auth_token_id}
-                        </button>
+                        </Button>
                       ) : null}
                       {log.key_id ? (
-                        <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenKey(log.key_id!)}>
+                        <Button type="button" variant="link" size="sm" className="h-auto p-0 alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenKey(log.key_id!)}>
                           {log.key_id}
-                        </button>
+                        </Button>
                       ) : null}
-                      <button
+                      <Button variant="link" size="sm"
                         type="button"
                         className="alerts-center-request-link"
                         onClick={() =>
@@ -1486,7 +1462,7 @@ export default function AlertsCenter({
                           })}
                       >
                         {requestSummary({ id: log.id, method: log.method, path: log.path, query: log.query })}
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))

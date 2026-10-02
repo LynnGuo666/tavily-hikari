@@ -1,4 +1,6 @@
 import { type PropsWithChildren, type ReactNode } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
 interface AdminSidebarUtilityCardProps extends PropsWithChildren {
   title?: ReactNode
@@ -14,7 +16,7 @@ export function AdminSidebarUtilityStack({
   children,
   className,
 }: AdminSidebarUtilityStackProps): JSX.Element {
-  const classes = ['admin-sidebar-utility-stack', className].filter(Boolean).join(' ')
+  const classes = cn('admin-sidebar-utility-stack flex flex-col gap-3', className)
 
   return <div className={classes}>{children}</div>
 }
@@ -25,17 +27,17 @@ export function AdminSidebarUtilityCard({
   className,
   children,
 }: AdminSidebarUtilityCardProps): JSX.Element {
-  const classes = ['admin-sidebar-utility-card', className].filter(Boolean).join(' ')
+  const classes = cn('admin-sidebar-utility-card', className)
 
   return (
-    <section className={classes}>
+    <Card size="sm" className={classes}>
       {(title || description) ? (
-        <header className="admin-sidebar-utility-card-header">
-          {title ? <h2 className="admin-sidebar-utility-card-title">{title}</h2> : null}
-          {description ? <p className="admin-sidebar-utility-card-description">{description}</p> : null}
-        </header>
+        <CardHeader>
+          {title ? <CardTitle>{title}</CardTitle> : null}
+          {description ? <CardDescription>{description}</CardDescription> : null}
+        </CardHeader>
       ) : null}
-      {children}
-    </section>
+      <CardContent className="flex flex-col gap-3">{children}</CardContent>
+    </Card>
   )
 }

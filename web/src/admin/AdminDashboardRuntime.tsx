@@ -1,3 +1,8 @@
+import RequestLogDetailSection from '@/components/RequestLogDetailSection'
+import AppFooter from '../components/AppFooter'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Icon } from '../lib/icons'
 import { cleanedRequestLogBodySummary } from '../requestLogBodySummary'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
@@ -44,9 +49,10 @@ import {
 import {
   Drawer,
   DrawerContent,
+  DrawerTitle,
 } from '@/components/ui/drawer'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -57,10 +63,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Card } from '@/components/ui/card'
+  DropdownMenuGroup } from '@/components/ui/dropdown-menu'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Table } from '@/components/ui/table'
+import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
 import { AnchoredInfoDisclosure } from '@/components/anchored-info-disclosure'
@@ -915,7 +921,7 @@ const keysBulkToolbarStyle = {
   flexWrap: 'wrap',
   marginBottom: 10,
   padding: '4px 2px',
-  borderBottom: '1px solid hsl(var(--legacy-border) / 0.46)',
+  borderBottom: '1px solid color-mix(in oklab, var(--border) 46%, transparent)',
 } as const
 
 const keysBulkSelectionStyle = {
@@ -1498,7 +1504,7 @@ function AdminUsersSortableHeader<Field extends string>({
     </Button>
   )
   return (
-    <th aria-sort={ariaSort}>
+    <TableHead aria-sort={ariaSort}>
       {hasTooltip ? (
         <Tooltip>
           <TooltipTrigger asChild>{trigger}</TooltipTrigger>
@@ -1509,7 +1515,7 @@ function AdminUsersSortableHeader<Field extends string>({
       ) : (
         trigger
       )}
-    </th>
+    </TableHead>
   )
 }
 
@@ -1815,7 +1821,7 @@ function AdminDashboard(): JSX.Element {
   const [keyStatusFacets, setKeyStatusFacets] = useState<Array<{ value: string; count: number }>>([])
   const [keyRegionFacets, setKeyRegionFacets] = useState<Array<{ value: string; count: number }>>([])
   const [tokens, setTokens] = useState<AuthToken[]>([])
-  const tokenPanelRef = useRef<HTMLElement | null>(null)
+  const tokenPanelRef = useRef<HTMLDivElement | null>(null)
   const [tokenBulkPanelLeft, setTokenBulkPanelLeft] = useState('50%')
   const [dashboardTrend, setDashboardTrend] = useState<DashboardTrendBuckets>(() => createEmptyDashboardTrend())
   const [dashboardHourlyRequestWindow, setDashboardHourlyRequestWindow] = useState<DashboardHourlyRequestWindow>(
@@ -2158,7 +2164,6 @@ function AdminDashboard(): JSX.Element {
   const [bulkSyncBubbleVisible, setBulkSyncBubbleVisible] = useState(false)
   const [bulkSyncBubblePinnedPosition, setBulkSyncBubblePinnedPosition] =
     useState<ApiKeyBulkSyncBubblePinnedPosition | null>(null)
-  const keysSelectAllRef = useRef<HTMLInputElement | null>(null)
   const bulkSyncButtonRef = useRef<HTMLButtonElement | null>(null)
   const [pendingTokenDeleteId, setPendingTokenDeleteId] = useState<string | null>(null)
   const [editingTokenId, setEditingTokenId] = useState<string | null>(null)
@@ -5728,12 +5733,6 @@ function AdminDashboard(): JSX.Element {
   )
 
   useEffect(() => {
-    if (keysSelectAllRef.current) {
-      keysSelectAllRef.current.indeterminate = someVisibleKeysSelected
-    }
-  }, [someVisibleKeysSelected])
-
-  useEffect(() => {
     latestKeysSelectionQueryKeyRef.current = keysSelectionQueryKey
     if (preservedKeysSelectionQueryKeyRef.current === keysSelectionQueryKey) {
       preservedKeysSelectionQueryKeyRef.current = null
@@ -7987,27 +7986,27 @@ function AdminDashboard(): JSX.Element {
     : sortedTagCatalog
 
   const renderUserTagSummaryPanel = (): JSX.Element => (
-    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-      <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+    <Card className="surface panel">
+      <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
         <div>
-          <h2>{usersStrings.catalog.summaryTitle}</h2>
-          <p className="panel-description text-sm text-muted-foreground">{usersStrings.catalog.summaryDescription}</p>
+          <CardTitle role="heading" aria-level={2}>{usersStrings.catalog.summaryTitle}</CardTitle>
+          <CardDescription className="panel-description">{usersStrings.catalog.summaryDescription}</CardDescription>
         </div>
-        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={navigateUserTags}>
+        <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
           {usersStrings.userTags.manageCatalog}
-        </button>
-      </div>
+        </Button>
+      </CardHeader>
 
       {tagCatalogError && (
-        <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert" style={{ marginBottom: 12 }}>
+        <Alert className="" role="alert" style={{ marginBottom: 12 }} variant="destructive"><AlertDescription>
           {tagCatalogError}
-        </div>
+        </AlertDescription></Alert>
       )}
 
       {tagCatalogLoading ? (
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.catalog.loading}</div>
+        <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.loading}</EmptyDescription></Empty>
       ) : sortedTagCatalog.length === 0 ? (
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.catalog.summaryEmpty}</div>
+        <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.summaryEmpty}</EmptyDescription></Empty>
       ) : (
         <div className="user-tag-summary-grid">
           {sortedTagCatalog.map((tag) => {
@@ -8042,7 +8041,7 @@ function AdminDashboard(): JSX.Element {
           })}
         </div>
       )}
-    </section>
+    </Card>
   )
 
   const renderUserTagEffectToggle = (): JSX.Element => (
@@ -8247,9 +8246,9 @@ function AdminDashboard(): JSX.Element {
 
         <div className="user-tag-catalog-body">
           {isBlockAll ? (
-            <div className="alert border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note">
+            <Alert className="border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note"><AlertDescription>
               {usersStrings.catalog.blockDescription}
-            </div>
+            </AlertDescription></Alert>
           ) : (
             <dl className="user-tag-catalog-delta-grid">
               {([
@@ -8294,9 +8293,9 @@ function AdminDashboard(): JSX.Element {
           description={usersStrings.catalog.description}
           actions={
             <div className="user-tag-page-actions">
-              <button
+              <Button
                 type="button"
-                className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50"
+                variant="outline" size="sm"
                 onClick={() =>
                   navigateToPath(
                     buildUsersCollectionPath(
@@ -8310,30 +8309,30 @@ function AdminDashboard(): JSX.Element {
                 }
               >
                 {usersStrings.catalog.backToUsers}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
+                variant="default" size="sm"
                 onClick={beginCreateUserTag}
                 disabled={activeUserTagEditorId === NEW_USER_TAG_CARD_ID}
               >
                 {usersStrings.catalog.actions.create}
-              </button>
+              </Button>
             </div>
           }
         />
       </div>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 block md:hidden">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <Card className="surface panel block md:hidden">
+        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
-            <h2>{usersStrings.catalog.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{usersStrings.catalog.description}</p>
+            <CardTitle role="heading" aria-level={2}>{usersStrings.catalog.title}</CardTitle>
+            <CardDescription className="panel-description">{usersStrings.catalog.description}</CardDescription>
           </div>
           <div className="user-tag-page-actions">
-            <button
+            <Button
               type="button"
-              className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50"
+              variant="outline" size="sm"
               onClick={() =>
                 navigateToPath(
                   buildUsersCollectionPath(
@@ -8347,18 +8346,18 @@ function AdminDashboard(): JSX.Element {
               }
             >
               {usersStrings.catalog.backToUsers}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
+              variant="default" size="sm"
               onClick={beginCreateUserTag}
               disabled={activeUserTagEditorId === NEW_USER_TAG_CARD_ID}
             >
               {usersStrings.catalog.actions.create}
-            </button>
+            </Button>
           </div>
-        </div>
-      </section>
+        </CardHeader>
+      </Card>
 
       {tagCatalogError && (
         <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">
@@ -8366,17 +8365,17 @@ function AdminDashboard(): JSX.Element {
         </div>
       )}
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         {tagCatalogLoading ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.catalog.loading}</div>
+          <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.loading}</EmptyDescription></Empty>
         ) : visibleTagCards.length === 0 ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.catalog.empty}</div>
+          <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.empty}</EmptyDescription></Empty>
         ) : (
           <div className="user-tag-catalog-grid">
             {visibleTagCards.map((tag) => renderUserTagCatalogCard(tag))}
           </div>
         )}
-      </section>
+      </Card>
 
       <Dialog open={pendingUserTagDelete != null} onOpenChange={(open) => { if (!open) closeUserTagDeleteDialog() }}>
         <DialogContent className="sm:max-w-md">
@@ -8413,45 +8412,20 @@ function AdminDashboard(): JSX.Element {
   )
 
   const appFooter = (
-      <footer className="app-footer">
-        <span>{footerStrings.title}</span>
-        <span className="footer-meta">
-          {/* GitHub repository link with Iconify icon */}
-          <a
-            href="https://github.com/IvanLi-CN/tavily-hikari"
-            className="footer-link"
-            target="_blank"
-            rel="noreferrer"
-            aria-label={footerStrings.githubAria}
-          >
-            <Icon icon="mdi:github" width={18} height={18} className="footer-link-icon" />
-            <span>{footerStrings.githubLabel}</span>
-          </a>
-        </span>
-        <span className="footer-meta">
-          {version ? (
-            (() => {
-              const raw = version.backend || ''
-              const release = buildOctoRillReleaseLink(raw)
-              const displayVersion = formatVersionDisplay(raw)
-              return (
-                <>
-                  {footerStrings.tagPrefix}
-                  {release ? (
-                    <a href={release.href} className="footer-link" target="_blank" rel="noreferrer">
-                      {release.label}
-                    </a>
-                  ) : (
-                    <span>{displayVersion ?? raw}</span>
-                  )}
-                </>
-              )
-            })()
-          ) : (
-            footerStrings.loadingVersion
-          )}
-        </span>
-      </footer>
+    <AppFooter
+      className="mt-auto"
+      title={footerStrings.title}
+      githubLabel={footerStrings.githubLabel}
+      githubAria={footerStrings.githubAria}
+      version={version ? (() => {
+        const raw = version.backend || ''
+        const release = buildOctoRillReleaseLink(raw)
+        const displayVersion = formatVersionDisplay(raw)
+        return <>{footerStrings.tagPrefix}{release ? (
+          <a href={release.href} className="footer-link underline-offset-4 hover:underline" target="_blank" rel="noreferrer">{release.label}</a>
+        ) : <span>{displayVersion ?? raw}</span>}</>
+      })() : footerStrings.loadingVersion}
+    />
   )
 
   const renderAdminGlobalOverlayHost = (): JSX.Element => (
@@ -8463,17 +8437,18 @@ function AdminDashboard(): JSX.Element {
         }}
         shouldScaleBackground={false}
       >
-        <DrawerContent className="request-entity-drawer-content-fit">
-          <div className="request-entity-drawer-body-fit">
-            <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-detail-panel-compact" id="user-detail-tags">
-              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <DrawerContent className="request-entity-drawer-content-fit overflow-hidden" aria-describedby={undefined}>
+          <DrawerTitle className="sr-only">{usersStrings.brokenKeys.drawerTitle}</DrawerTitle>
+          <div className="request-entity-drawer-body-fit min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
+            <Card className="surface panel user-detail-panel-compact" id="user-detail-tags">
+              <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div>
-                  <h2>{usersStrings.brokenKeys.drawerTitle}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">
+                  <CardTitle role="heading" aria-level={2}>{usersStrings.brokenKeys.drawerTitle}</CardTitle>
+                  <CardDescription className="panel-description">
                     {usersStrings.brokenKeys.drawerDescription.replace('{label}', monthlyBrokenDrawer?.label ?? '—')}
-                  </p>
+                  </CardDescription>
                 </div>
-              </div>
+              </CardHeader>
               <AdminLoadingRegion
                 className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
                 loadState={monthlyBrokenDrawerLoadState}
@@ -8482,26 +8457,26 @@ function AdminDashboard(): JSX.Element {
                 minHeight={240}
               >
                 {monthlyBrokenDrawerItems.length === 0 ? (
-                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.brokenKeys.empty}</div>
+                  <Empty className="empty-state"><EmptyDescription>{usersStrings.brokenKeys.empty}</EmptyDescription></Empty>
                 ) : (
                   <Table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b">
-                    <thead>
-                      <tr>
-                        <th>{usersStrings.brokenKeys.table.key}</th>
-                        <th>{usersStrings.brokenKeys.table.status}</th>
-                        <th>{usersStrings.brokenKeys.table.reason}</th>
-                        <th>{usersStrings.brokenKeys.table.latestBreakAt}</th>
-                        <th>{usersStrings.brokenKeys.table.breaker}</th>
-                        <th>{usersStrings.brokenKeys.table.relatedUsers}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{usersStrings.brokenKeys.table.key}</TableHead>
+                        <TableHead>{usersStrings.brokenKeys.table.status}</TableHead>
+                        <TableHead>{usersStrings.brokenKeys.table.reason}</TableHead>
+                        <TableHead>{usersStrings.brokenKeys.table.latestBreakAt}</TableHead>
+                        <TableHead>{usersStrings.brokenKeys.table.breaker}</TableHead>
+                        <TableHead>{usersStrings.brokenKeys.table.relatedUsers}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                       {monthlyBrokenDrawerItems.map((item) => {
                         const stateKey = copyStateKey('brokenKeys', item.keyId)
                         const state = copyState.get(stateKey)
                         return (
-                          <tr key={`${item.keyId}:${item.latestBreakAt}`}>
-                            <td>
+                          <TableRow key={`${item.keyId}:${item.latestBreakAt}`}>
+                            <TableCell>
                               <MonthlyBrokenKeyValue
                                 keyId={item.keyId}
                                 ungroupedLabel={keyStrings.groups.ungrouped}
@@ -8514,25 +8489,25 @@ function AdminDashboard(): JSX.Element {
                                   handleCopyMonthlyBrokenKeyId(item.keyId, stateKey, anchorEl)
                                 }
                               />
-                            </td>
-                            <td>
+                            </TableCell>
+                            <TableCell>
                               <StatusBadge tone={item.currentStatus === 'quarantined' ? 'warning' : 'error'}>
                                 {adminStrings.statuses[item.currentStatus] ?? item.currentStatus}
                               </StatusBadge>
-                            </td>
-                            <td>{item.reasonSummary || item.reasonCode || usersStrings.brokenKeys.noReason}</td>
-                            <td>{formatTimestamp(item.latestBreakAt)}</td>
-                            <td>{formatMonthlyBrokenBreaker(item, usersStrings.brokenKeys)}</td>
-                            <td>
+                            </TableCell>
+                            <TableCell>{item.reasonSummary || item.reasonCode || usersStrings.brokenKeys.noReason}</TableCell>
+                            <TableCell>{formatTimestamp(item.latestBreakAt)}</TableCell>
+                            <TableCell>{formatMonthlyBrokenBreaker(item, usersStrings.brokenKeys)}</TableCell>
+                            <TableCell>
                               {formatMonthlyBrokenRelatedUsers(
                                 item.relatedUsers,
                                 usersStrings.brokenKeys.noRelatedUsers,
                               )}
-                            </td>
-                          </tr>
+                            </TableCell>
+                          </TableRow>
                         )
                       })}
-                    </tbody>
+                    </TableBody>
                   </Table>
                 )}
               </AdminLoadingRegion>
@@ -8544,7 +8519,7 @@ function AdminDashboard(): JSX.Element {
                 minHeight={240}
               >
                 {monthlyBrokenDrawerItems.length === 0 ? (
-                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.brokenKeys.empty}</div>
+                  <Empty className="empty-state"><EmptyDescription>{usersStrings.brokenKeys.empty}</EmptyDescription></Empty>
                 ) : (
                   monthlyBrokenDrawerItems.map((item) => {
                     const stateKey = copyStateKey('brokenKeys', item.keyId)
@@ -8598,7 +8573,7 @@ function AdminDashboard(): JSX.Element {
                   })
                 )}
               </AdminLoadingRegion>
-            </section>
+            </Card>
           </div>
         </DrawerContent>
       </Drawer>
@@ -8610,8 +8585,9 @@ function AdminDashboard(): JSX.Element {
         }}
         shouldScaleBackground={false}
       >
-        <DrawerContent className="request-entity-drawer-content">
-          <div className="request-entity-drawer-body">
+        <DrawerContent className="request-entity-drawer-content overflow-hidden" aria-describedby={undefined}>
+          <DrawerTitle className="sr-only">{requestEntityDrawer?.id}</DrawerTitle>
+          <div className="request-entity-drawer-body min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
             {requestEntityDrawer?.kind === 'key' ? (
               <KeyDetails
                 key={`drawer-key-${requestEntityDrawer.id}`}
@@ -8638,7 +8614,7 @@ function AdminDashboard(): JSX.Element {
 
     {/* Batch Create Tokens modal */}
     <Dialog open={batchDialogOpen} onOpenChange={(open) => { if (!open) closeBatchDialog() }}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>{tokenStrings.batchDialog.title}</DialogTitle>
         </DialogHeader>
@@ -8741,16 +8717,16 @@ function AdminDashboard(): JSX.Element {
 
 {/* Batch Add API Keys Report modal */}
 <Dialog open={keysBatchReport != null} onOpenChange={(open) => { if (!open) closeKeysBatchReportDialog() }}>
-  <DialogContent className="max-w-4xl sm:max-h-[min(calc(100dvh-6rem),calc(100vh-6rem))]">
+  <DialogContent className="sm:max-w-4xl sm:max-h-[min(calc(100dvh-6rem),calc(100vh-6rem))]">
     <DialogHeader>
       <DialogTitle>{keyStrings.batch.report.title}</DialogTitle>
     </DialogHeader>
     <div style={{ overflowY: 'auto', minHeight: 0, paddingTop: 12 }}>
       {keysBatchReport?.kind === 'error' ? (
         <>
-          <div className="alert border-destructive/30 bg-destructive/10 text-destructive">
+          <Alert className="" variant="destructive"><AlertDescription>
             {keysBatchReport.message}
-          </div>
+          </AlertDescription></Alert>
           <div className="py-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
             <div>
               <span className="opacity-70">{keyStrings.batch.report.summary.inputLines}</span> {formatNumber(keysBatchReport.input_lines)}
@@ -8813,22 +8789,22 @@ function AdminDashboard(): JSX.Element {
                 }}
               >
                 <Table className="table-zebra">
-                  <thead>
-                    <tr>
-                      <th>{keyStrings.batch.report.failures.table.apiKey}</th>
-                      <th>{keyStrings.batch.report.failures.table.error}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{keyStrings.batch.report.failures.table.apiKey}</TableHead>
+                      <TableHead>{keyStrings.batch.report.failures.table.error}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {keysBatchFailures.map((item, index) => (
-                      <tr key={`${item.api_key}-${index}`}>
-                        <td style={{ wordBreak: 'break-all' }}>
+                      <TableRow key={`${item.api_key}-${index}`}>
+                        <TableCell style={{ wordBreak: 'break-all' }}>
                           <code>{item.api_key}</code>
-                        </td>
-                        <td style={{ wordBreak: 'break-word' }}>{item.error || '—'}</td>
-                      </tr>
+                        </TableCell>
+                        <TableCell style={{ wordBreak: 'break-word' }}>{item.error || '—'}</TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
+                  </TableBody>
                 </Table>
               </div>
             )}
@@ -8848,7 +8824,7 @@ function AdminDashboard(): JSX.Element {
 
 {/* Disable Confirmation modal */}
 <Dialog open={pendingDisableId != null} onOpenChange={(open) => { if (!open) cancelDisable() }}>
-  <DialogContent className="max-w-md">
+  <DialogContent className="sm:max-w-md">
     <DialogHeader>
       <DialogTitle>{keyStrings.dialogs.disable.title}</DialogTitle>
       <DialogDescription>{keyStrings.dialogs.disable.description}</DialogDescription>
@@ -8866,7 +8842,7 @@ function AdminDashboard(): JSX.Element {
 
 {/* Delete Confirmation modal */}
 <Dialog open={pendingDeleteId != null} onOpenChange={(open) => { if (!open) cancelDelete() }}>
-  <DialogContent className="max-w-md">
+  <DialogContent className="sm:max-w-md">
     <DialogHeader>
       <DialogTitle>{keyStrings.dialogs.delete.title}</DialogTitle>
       <DialogDescription>{keyStrings.dialogs.delete.description}</DialogDescription>
@@ -8883,7 +8859,7 @@ function AdminDashboard(): JSX.Element {
 </Dialog>
 
 <Dialog open={pendingBulkDelete} onOpenChange={(open) => { if (!open) cancelBulkDelete() }}>
-  <DialogContent className="max-w-md">
+  <DialogContent className="sm:max-w-md">
     <DialogHeader>
       <DialogTitle>{keyStrings.dialogs.bulkDelete.title}</DialogTitle>
       <DialogDescription>{keyStrings.dialogs.bulkDelete.description}</DialogDescription>
@@ -8906,7 +8882,7 @@ function AdminDashboard(): JSX.Element {
 
 {/* Token Delete Confirmation */}
 <Dialog open={pendingTokenDeleteId != null} onOpenChange={(open) => { if (!open) cancelTokenDelete() }}>
-  <DialogContent className="max-w-md">
+  <DialogContent className="sm:max-w-md">
     <DialogHeader>
       <DialogTitle>{tokenStrings.dialogs.delete.title}</DialogTitle>
       <DialogDescription>{tokenStrings.dialogs.delete.description}</DialogDescription>
@@ -8924,7 +8900,7 @@ function AdminDashboard(): JSX.Element {
 
 {/* Token Bulk Delete Confirmation */}
 <Dialog open={pendingTokenBulkDelete} onOpenChange={(open) => { if (!open) setPendingTokenBulkDelete(false) }}>
-  <DialogContent className="max-w-md">
+  <DialogContent className="sm:max-w-md">
     <DialogHeader>
       <DialogTitle>{tokenStrings.bulk.confirmTitle}</DialogTitle>
       <DialogDescription>
@@ -8949,7 +8925,7 @@ function AdminDashboard(): JSX.Element {
 
 {/* Token Edit Note modal */}
 <Dialog open={editingTokenId != null} onOpenChange={(open) => { if (!open) cancelTokenNote() }}>
-  <DialogContent className="max-w-lg">
+  <DialogContent className="sm:max-w-lg">
     <DialogHeader>
       <DialogTitle>{tokenStrings.dialogs.note.title}</DialogTitle>
     </DialogHeader>
@@ -8972,7 +8948,7 @@ function AdminDashboard(): JSX.Element {
 </Dialog>
 <Dialog open={manualCopyDialog != null} onOpenChange={(open) => { if (!open) setManualCopyDialog(null) }}>
   <DialogContent
-    className="max-w-lg"
+    className="sm:max-w-lg"
     onEscapeKeyDown={(event) => event.preventDefault()}
     onInteractOutside={(event) => event.preventDefault()}
   >
@@ -9329,7 +9305,7 @@ function AdminDashboard(): JSX.Element {
       <AdminShellSidebarUtility>
         <AdminSidebarUtilityStack>
           <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-actions">
+            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
                 href={userConsoleHref}
@@ -9357,15 +9333,15 @@ function AdminDashboard(): JSX.Element {
         <div className="hidden md:block">
           <AdminCompactIntro title={userDetailTitle} description={userDetailDescription} actions={renderUserDetailTabs()} />
         </div>
-        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 block md:hidden">
-          <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+        <Card className="surface panel block md:hidden">
+          <CardHeader className="panel-header border-b">
             <div>
-              <h2>{userDetailTitle}</h2>
-              <p className="panel-description text-sm text-muted-foreground">{userDetailDescription}</p>
+              <CardTitle role="heading" aria-level={2}>{userDetailTitle}</CardTitle>
+              <CardDescription className="panel-description">{userDetailDescription}</CardDescription>
             </div>
             {renderUserDetailTabs()}
-          </div>
-        </section>
+          </CardHeader>
+        </Card>
 
         {userTagError && (
           <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">
@@ -9380,24 +9356,24 @@ function AdminDashboard(): JSX.Element {
         )}
 
         {userDetailLoading ? (
-          <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.loading}</div>
-          </section>
+          <Card className="surface panel">
+            <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.loading}</EmptyDescription></Empty>
+          </Card>
         ) : !detail ? (
-          <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.notFound}</div>
-          </section>
+          <Card className="surface panel">
+            <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.notFound}</EmptyDescription></Empty>
+          </Card>
         ) : (
           <>
             {activeUserDetailTab === 'account' && (
             <>
-            <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
-              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+            <Card className="surface panel user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
+              <CardHeader className="panel-header border-b">
                 <div>
-                  <h2>{usersStrings.detail.identityTitle}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.identityDescription}</p>
+                  <CardTitle role="heading" aria-level={2}>{usersStrings.detail.identityTitle}</CardTitle>
+                  <CardDescription className="panel-description">{usersStrings.detail.identityDescription}</CardDescription>
                 </div>
-              </div>
+              </CardHeader>
               <dl className="user-detail-definition-grid">
                 <div className="user-detail-definition-grid__item--wide">
                   <dt>{usersStrings.detail.userId}</dt>
@@ -9457,18 +9433,18 @@ function AdminDashboard(): JSX.Element {
                   <dd>{formatNumber(detail.recentIpCount7d)}</dd>
                 </div>
               </dl>
-            </section>
+            </Card>
 
-            <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
+            <Card className="surface panel">
+              <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div>
-                  <h2>{usersStrings.userTags.title}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">{usersStrings.userTags.description}</p>
+                  <CardTitle role="heading" aria-level={2}>{usersStrings.userTags.title}</CardTitle>
+                  <CardDescription className="panel-description">{usersStrings.userTags.description}</CardDescription>
                 </div>
-                <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={navigateUserTags}>
+                <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
                   {usersStrings.userTags.manageCatalog}
-                </button>
-              </div>
+                </Button>
+              </CardHeader>
               <div className="user-tag-binding-toolbar">
                 <div className="user-tag-binding-summary">
                   <div className="user-tag-binding-summary-top">
@@ -9513,7 +9489,7 @@ function AdminDashboard(): JSX.Element {
               </div>
 
               {boundTags.length === 0 ? (
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" style={{ marginTop: 12 }}>{usersStrings.userTags.empty}</div>
+                <Empty className="empty-state" style={{ marginTop: 12 }}><EmptyDescription>{usersStrings.userTags.empty}</EmptyDescription></Empty>
               ) : (
                 <div className="user-tag-binding-list">
                   {boundTags.map((tag) => {
@@ -9534,16 +9510,16 @@ function AdminDashboard(): JSX.Element {
                                 : usersStrings.catalog.effectKinds.quotaDelta}
                             </StatusBadge>
                           </div>
-                          <button
+                          <Button
                             type="button"
-                            className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs"
+                            variant="ghost" size="xs"
                             onClick={() => void unbindSelectedUserTag(tag)}
                             disabled={savingUserTagBinding || isSystem || tag.source !== 'manual'}
                           >
                             {isSystem || tag.source !== 'manual'
                               ? usersStrings.userTags.readOnly
                               : usersStrings.userTags.unbindAction}
-                          </button>
+                          </Button>
                         </div>
                         <div className="token-compact-pair">
                           <div className="token-compact-field">
@@ -9564,7 +9540,7 @@ function AdminDashboard(): JSX.Element {
                   })}
                 </div>
               )}
-            </section>
+            </Card>
             </>
             )}
 
@@ -9585,7 +9561,7 @@ function AdminDashboard(): JSX.Element {
             )}
 
             {activeUserDetailTab === 'activity' && (
-            <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10" id="user-detail-activity">
+            <Card className="surface panel" id="user-detail-activity">
               <AdminLazyBoundary loadingLabel={loadingStateStrings.switching} minHeight={280}>
                 <LazyUserDetailSharedUsagePanel
                   key={`usage:${detail.userId}:${userDetailRevision}`}
@@ -9603,15 +9579,15 @@ function AdminDashboard(): JSX.Element {
                   loadSeries={(series, signal) => fetchAdminUserUsageSeries(detail.userId, series, signal)}
                 />
               </AdminLazyBoundary>
-            </section>
+            </Card>
             )}
 
             {activeUserDetailTab === 'account' && (
-            <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10" id="user-detail-tokens">
-              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+            <Card className="surface panel" id="user-detail-tokens">
+              <CardHeader className="panel-header border-b">
                 <div>
-                  <h2>{usersStrings.detail.tokensTitle}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.tokensDescription}</p>
+                  <CardTitle role="heading" aria-level={2}>{usersStrings.detail.tokensTitle}</CardTitle>
+                  <CardDescription className="panel-description">{usersStrings.detail.tokensDescription}</CardDescription>
                 </div>
                 <Button
                   type="button"
@@ -9623,7 +9599,7 @@ function AdminDashboard(): JSX.Element {
                   <Icon icon={addingUserToken ? 'mdi:progress-helper' : 'mdi:key-plus'} width={16} height={16} />
                   <span>{addingUserToken ? usersStrings.detail.addingToken : usersStrings.detail.addToken}</span>
                 </Button>
-              </div>
+              </CardHeader>
               <div className="table-wrapper overflow-hidden rounded-lg border">
                 <AdminLazyBoundary loadingLabel={loadingStateStrings.switching} minHeight={220}>
                   <LazyUserDetailTokenTable
@@ -9637,7 +9613,7 @@ function AdminDashboard(): JSX.Element {
                   />
                 </AdminLazyBoundary>
               </div>
-            </section>
+            </Card>
             )}
             <Dialog
               open={pendingUserTokenDeleteTarget != null}
@@ -9645,7 +9621,7 @@ function AdminDashboard(): JSX.Element {
                 if (!open) cancelUserTokenDelete()
               }}
             >
-              <DialogContent className="max-w-md">
+              <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                   <DialogTitle>{usersStrings.detail.tokenDelete.title}</DialogTitle>
                   <DialogDescription>{usersStrings.detail.tokenDelete.description}</DialogDescription>
@@ -9711,21 +9687,21 @@ function AdminDashboard(): JSX.Element {
       <AdminShellSidebarUtility>
         <AdminSidebarUtilityStack>
           <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-toolbar">
+            <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
               <ThemeToggle />
               <LanguageSwitcher />
             </div>
-            <div className="admin-sidebar-utility-meta">
+            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
               {displayName && (
-                <div className={`user-badge${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
-                  {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />}
+                <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
+                  {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
                   <span>{displayName}</span>
                 </div>
               )}
             </div>
           </AdminSidebarUtilityCard>
           <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-actions">
+            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
                 href={userConsoleHref}
@@ -9768,11 +9744,11 @@ function AdminDashboard(): JSX.Element {
           showShadowDailyColumn={showShadowDailyUsageColumn}
           searchControls={
             <div style={{ display: 'grid', gap: 6 }}>
-              <div className="users-search-controls users-search-controls--header">
+              <div className="users-search-controls users-search-controls--header flex min-w-0 flex-wrap items-center gap-2">
                 <Input
                   type="text"
                   name="user-usage-search"
-                  className="users-search-input"
+                  className="users-search-input min-w-0 flex-1"
                   placeholder={usersStrings.searchPlaceholder}
                   value={usersQueryInput}
                   disabled={usersBlocking}
@@ -9854,10 +9830,10 @@ function AdminDashboard(): JSX.Element {
         <AdminShellSidebarUtility>
           <AdminSidebarUtilityStack>
             <AdminSidebarUtilityCard>
-              <div className="admin-sidebar-utility-toolbar">
+              <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
                 <ThemeToggle />
               </div>
-              <div className="admin-sidebar-utility-actions">
+              <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
                 <AdminReturnToConsoleLink
                   label={headerStrings.returnToConsole}
                   href={userConsoleHref}
@@ -9875,11 +9851,11 @@ function AdminDashboard(): JSX.Element {
           unboundTokenUsageStrings={unboundTokenUsageStrings}
           tokenStrings={tokenStrings}
           searchControls={
-            <div className="users-search-controls users-search-controls--header">
+            <div className="users-search-controls users-search-controls--header flex min-w-0 flex-wrap items-center gap-2">
               <Input
                 type="text"
                 name="unbound-token-usage-search"
-                className="users-search-input"
+                className="users-search-input min-w-0 flex-1"
                 placeholder={unboundTokenUsageStrings.searchPlaceholder}
                 value={unboundTokenUsageQueryInput}
                 disabled={unboundTokenUsageBlocking}
@@ -9980,14 +9956,14 @@ function AdminDashboard(): JSX.Element {
     <AdminShellSidebarUtility>
       <AdminSidebarUtilityStack>
         <AdminSidebarUtilityCard>
-          <div className="admin-sidebar-utility-toolbar">
+          <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
-          <div className="admin-sidebar-utility-meta">
+          <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
             {displayName && (
-              <div className={`user-badge${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
-                {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />}
+              <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
+                {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
                 <span>{displayName}</span>
               </div>
             )}
@@ -9995,7 +9971,7 @@ function AdminDashboard(): JSX.Element {
         </AdminSidebarUtilityCard>
 
         <AdminSidebarUtilityCard>
-          <div className="admin-sidebar-utility-actions">
+          <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <AdminReturnToConsoleLink
               label={headerStrings.returnToConsole}
               href={userConsoleHref}
@@ -10168,11 +10144,11 @@ function AdminDashboard(): JSX.Element {
   )
   const renderUsersSearchControls = (className?: string) => (
     <div style={{ display: 'grid', gap: 6 }}>
-      <div className={['users-search-controls', className].filter(Boolean).join(' ')}>
+      <div className={['users-search-controls flex min-w-0 flex-wrap items-center gap-2', className].filter(Boolean).join(' ')}>
         <Input
           type="text"
           name="users-search"
-          className="users-search-input"
+          className="users-search-input min-w-0 flex-1"
           placeholder={usersStrings.searchPlaceholder}
           value={usersQueryInput}
           disabled={usersBlocking}
@@ -10310,11 +10286,12 @@ function AdminDashboard(): JSX.Element {
     { value: 'month', label: quotaLabels.month },
   ]
   const renderTokenFilters = () => (
-    <div className="token-filters-bar">
-      <div className="token-filter-search">
+    <div className="token-filters-bar flex flex-wrap items-center gap-2 px-4">
+      <div className="token-filter-search flex w-full min-w-0 items-center gap-2 sm:max-w-sm">
         <Input
           type="text"
           name="token-search"
+          aria-label={tokenStrings.filters.searchPlaceholder}
           placeholder={tokenStrings.filters.searchPlaceholder}
           value={tokenQueryInput}
           disabled={tokensBlocking}
@@ -10336,47 +10313,55 @@ function AdminDashboard(): JSX.Element {
         </Button>
       </div>
       <Select value={currentTokenGroupValue} onValueChange={handleTokenGroupFilterChange} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select" aria-label={tokenStrings.groups.label}>
+        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.groups.label}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="__all__">{tokenStrings.groups.label}: {tokenStrings.groups.all}</SelectItem>
-          <SelectItem value="__ungrouped__">{tokenStrings.groups.label}: {tokenStrings.groups.ungrouped}</SelectItem>
-          {namedTokenGroups.map((group) => (
-            <SelectItem key={group.name} value={group.name}>
-              {tokenStrings.groups.label}: {group.name}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            <SelectItem value="__all__">{tokenStrings.groups.label}: {tokenStrings.groups.all}</SelectItem>
+            <SelectItem value="__ungrouped__">{tokenStrings.groups.label}: {tokenStrings.groups.ungrouped}</SelectItem>
+            {namedTokenGroups.map((group) => (
+              <SelectItem key={group.name} value={group.name}>
+                {tokenStrings.groups.label}: {group.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <Select value={selectedTokenOwnerFilter} onValueChange={(value) => handleTokenOwnerFilterChange(value as AdminTokenOwnerFilter)} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select" aria-label={tokenStrings.filters.owner}>
+        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.filters.owner}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {tokenOwnerFilterOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value}>{tokenStrings.filters.owner}: {option.label}</SelectItem>
-          ))}
+          <SelectGroup>
+            {tokenOwnerFilterOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>{tokenStrings.filters.owner}: {option.label}</SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <Select value={selectedTokenQuotaFilter} onValueChange={(value) => handleTokenQuotaFilterChange(value as AdminTokenQuotaStateFilter)} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select" aria-label={tokenStrings.filters.quota}>
+        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.filters.quota}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {tokenQuotaFilterOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value}>{tokenStrings.filters.quota}: {option.label}</SelectItem>
-          ))}
+          <SelectGroup>
+            {tokenQuotaFilterOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>{tokenStrings.filters.quota}: {option.label}</SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <Select value={selectedTokenEnabledFilter} onValueChange={(value) => handleTokenEnabledFilterChange(value as AdminTokenEnabledFilter)} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select" aria-label={tokenStrings.filters.status}>
+        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.filters.status}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {tokenEnabledFilterOptions.map((option) => (
-            <SelectItem key={option.value} value={option.value}>{tokenStrings.filters.status}: {option.label}</SelectItem>
-          ))}
+          <SelectGroup>
+            {tokenEnabledFilterOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>{tokenStrings.filters.status}: {option.label}</SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       {tokenHasFilters && (
@@ -10417,7 +10402,7 @@ function AdminDashboard(): JSX.Element {
         style={{ ...keysQuickAddCardStyle, position: 'relative' }}
       >
         <div
-          className={`keys-batch-collapsed${keysBatchVisible ? ' is-hidden' : ''}`}
+          className={`keys-batch-collapsed flex items-center gap-2${keysBatchVisible ? ' invisible' : ''}`}
           aria-hidden={keysBatchVisible}
           style={keysQuickAddActionsStyle}
         >
@@ -10456,7 +10441,7 @@ function AdminDashboard(): JSX.Element {
         createPortal(
           <div
             ref={keysBatchOverlayRef}
-            className={`card bg-base-100 shadow-xl border border-base-300 keys-batch-overlay${keysBatchClosing ? ' is-closing' : ''}`}
+            className={`keys-batch-overlay rounded-xl border bg-popover text-popover-foreground shadow-lg${keysBatchClosing ? ' opacity-0' : ''}`}
             onMouseEnter={() => {
               clearKeysBatchAutoCollapseTimer()
               if (keysBatchClosing) {
@@ -10498,7 +10483,7 @@ function AdminDashboard(): JSX.Element {
               width: 'min(720px, calc(100vw - 32px))',
             }}
           >
-            <div className="card-body" style={{ padding: 16 }}>
+            <div className="flex flex-col gap-3 p-4">
               <Textarea
                 ref={keysBatchTextareaRef}
                 className="min-h-[112px] w-full text-sm"
@@ -10696,7 +10681,7 @@ function AdminDashboard(): JSX.Element {
       )}
 
       {showTokens && (
-      <section ref={tokenPanelRef} className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card ref={tokenPanelRef} className="surface panel">
         <div className="block md:hidden">
           {renderTokenToolbar()}
         </div>
@@ -10709,46 +10694,42 @@ function AdminDashboard(): JSX.Element {
           minHeight={320}
         >
           {tokenList.length === 0 ? (
-            <tbody>
-              <tr>
-                <td colSpan={isAdmin ? 8 : 6}>
-                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{tokenStrings.empty.none}</div>
-                </td>
-              </tr>
-            </tbody>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={isAdmin ? 8 : 6}>
+                  <Empty className="empty-state"><EmptyDescription>{tokenStrings.empty.none}</EmptyDescription></Empty>
+                </TableCell>
+              </TableRow>
+            </TableBody>
           ) : (
             <>
-              <thead>
-                <tr>
+              <TableHeader>
+                <TableRow>
                   {isAdmin && (
-                    <th className="token-select-col">
+                    <TableHead className="token-select-col">
                       <label style={keySelectionCheckboxLabelStyle}>
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           className="token-selection-checkbox"
-                          checked={allVisibleTokensSelected}
-                          ref={(node) => {
-                            if (node) node.indeterminate = someVisibleTokensSelected
-                          }}
-                          onChange={toggleVisibleTokenSelection}
+                          checked={someVisibleTokensSelected ? 'indeterminate' : allVisibleTokensSelected}
+                          onCheckedChange={toggleVisibleTokenSelection}
                           disabled={tokensBlocking || tokenList.length === 0}
                           aria-label={tokenStrings.bulk.pageSelected
                             .replace('{count}', String(selectedVisibleTokenCount))
                             .replace('{total}', String(tokenList.length))}
                         />
                       </label>
-                    </th>
+                    </TableHead>
                   )}
-                  <th className="token-id-col">{tokenStrings.table.id}</th>
-                  <th>{tokenStrings.table.owner}</th>
-                  <th>{tokenStrings.table.note}</th>
-                  <th>{tokenStrings.table.usage}</th>
-                  <th>{tokenStrings.table.quota}</th>
-                  <th>{tokenStrings.table.lastUsed}</th>
-                  {isAdmin && <th>{tokenStrings.table.actions}</th>}
-                </tr>
-              </thead>
-              <tbody>
+                  <TableHead className="token-id-col">{tokenStrings.table.id}</TableHead>
+                  <TableHead>{tokenStrings.table.owner}</TableHead>
+                  <TableHead>{tokenStrings.table.note}</TableHead>
+                  <TableHead>{tokenStrings.table.usage}</TableHead>
+                  <TableHead>{tokenStrings.table.quota}</TableHead>
+                  <TableHead>{tokenStrings.table.lastUsed}</TableHead>
+                  {isAdmin && <TableHead>{tokenStrings.table.actions}</TableHead>}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {tokenList.map((t) => {
                   const stateKey = copyStateKey('tokens', t.id)
                   const state = copyState.get(stateKey)
@@ -10758,31 +10739,30 @@ function AdminDashboard(): JSX.Element {
                   const quotaLabel = quotaLabels[quotaStateKey] ?? quotaLabels.normal
                   const quotaTitle = `${t.quota_hourly_used}/${t.quota_hourly_limit} · ${t.quota_daily_used}/${t.quota_daily_limit} · ${t.quota_monthly_used}/${t.quota_monthly_limit}`
                   return (
-                    <tr key={t.id}>
+                    <TableRow key={t.id}>
                       {isAdmin && (
-                        <td className="token-select-col">
+                        <TableCell className="token-select-col">
                           <label style={keySelectionCheckboxLabelStyle}>
-                            <input
-                              type="checkbox"
+                            <Checkbox
                               className="token-selection-checkbox"
                               checked={selectedTokenIds.has(t.id)}
-                              onChange={() => toggleTokenSelection(t.id)}
+                              onCheckedChange={() => toggleTokenSelection(t.id)}
                               disabled={tokenBulkActionInFlight != null}
                               aria-label={`${tokenStrings.table.id} ${t.id}`}
                             />
                           </label>
-                        </td>
+                        </TableCell>
                       )}
-                      <td className="token-id-col">
-                        <div className="token-id-cell">
-                          <button
+                      <TableCell className="token-id-col">
+                        <div className="token-id-cell flex items-center gap-2">
+                          <Button
                             type="button"
                             title={tokenStrings.table.id}
-                            className="link-button token-id-link"
+                            variant="link" size="sm" className="h-auto p-0 token-id-link"
                             onClick={() => navigateToken(t.id)}
                           >
                             <code className="token-id-code">{t.id}</code>
-                          </button>
+                          </Button>
                           <span
                             className="token-status-slot"
                             aria-hidden={t.enabled ? true : undefined}
@@ -10799,24 +10779,24 @@ function AdminDashboard(): JSX.Element {
                             )}
                           </span>
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <TokenOwnerValue owner={t.owner} emptyLabel={tokenStrings.owner.unbound} onOpenUser={navigateUser} />
-                      </td>
-                      <td>{t.note || '—'}</td>
-                      <td>{formatNumber(t.total_requests)}</td>
-                      <td>
+                      </TableCell>
+                      <TableCell>{t.note || '—'}</TableCell>
+                      <TableCell>{formatNumber(t.total_requests)}</TableCell>
+                      <TableCell>
                         <StatusBadge
                           tone={quotaTone(quotaStateKey)}
                           className={`token-quota-pill token-quota-pill-${quotaStateKey}`}
                         >
                           {quotaLabel}
                         </StatusBadge>
-                      </td>
-                      <td>{formatTimestamp(t.last_used_at)}</td>
+                      </TableCell>
+                      <TableCell>{formatTimestamp(t.last_used_at)}</TableCell>
                       {isAdmin && (
-                        <td className="jobs-message-cell">
-                          <div className="table-actions">
+                        <TableCell className="jobs-message-cell">
+                          <div className="table-actions flex flex-wrap items-center gap-1">
 <Button
   type="button"
   variant={state === 'copied' ? 'success' : 'ghost'}
@@ -10903,12 +10883,12 @@ function AdminDashboard(): JSX.Element {
   />
 </Button>
                           </div>
-                        </td>
+                        </TableCell>
                       )}
-                    </tr>
+                    </TableRow>
                   )
                 })}
-              </tbody>
+              </TableBody>
             </>
           )}
         </AdminTableShell>
@@ -10919,7 +10899,7 @@ function AdminDashboard(): JSX.Element {
           minHeight={260}
         >
           {tokenList.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{tokenStrings.empty.none}</div>
+            <Empty className="empty-state"><EmptyDescription>{tokenStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             tokenList.map((t) => {
               const stateKey = copyStateKey('tokens', t.id)
@@ -10934,11 +10914,10 @@ function AdminDashboard(): JSX.Element {
                     <div className="flex items-center justify-between gap-2 text-sm token-mobile-select-row">
                       <span>{tokenStrings.bulk.selected.replace('{count}', '1')}</span>
                       <label style={keySelectionCheckboxLabelStyle}>
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           className="token-selection-checkbox"
                           checked={selectedTokenIds.has(t.id)}
-                          onChange={() => toggleTokenSelection(t.id)}
+                          onCheckedChange={() => toggleTokenSelection(t.id)}
                           disabled={tokenBulkActionInFlight != null}
                           aria-label={`${tokenStrings.table.id} ${t.id}`}
                         />
@@ -11129,7 +11108,7 @@ function AdminDashboard(): JSX.Element {
             onPerPageChange={changeTokensPerPage}
           />
         )}
-      </section>
+      </Card>
       )}
       {offline.isOffline ? (
         <OfflineStatusBanner
@@ -11140,7 +11119,7 @@ function AdminDashboard(): JSX.Element {
       {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
 
       {showKeys && (
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10" style={keysBatchVisible ? { position: 'relative', zIndex: 40 } : undefined}>
+      <Card className="surface panel" style={keysBatchVisible ? { position: 'relative', zIndex: 40 } : undefined}>
             {isAdmin && (
               <div className="block md:hidden">
                 {renderKeyQuickAddToolbar()}
@@ -11182,30 +11161,32 @@ function AdminDashboard(): JSX.Element {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-64">
-                    <DropdownMenuLabel>{keyStrings.groups.label}</DropdownMenuLabel>
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      disabled={selectedKeyGroups.length === 0}
-                      onSelect={(event) => {
-                        event.preventDefault()
-                        handleClearKeyGroupFilters()
-                      }}
-                    >
-                      {keyStrings.filters.clearGroups}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    {keyGroupFilterOptions.map((option) => (
-                      <DropdownMenuCheckboxItem
-                        key={option.value || '__ungrouped__'}
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel>{keyStrings.groups.label}</DropdownMenuLabel>
+                      <DropdownMenuItem
                         className="cursor-pointer"
-                        checked={selectedKeyGroups.includes(option.value)}
-                        onSelect={(event) => event.preventDefault()}
-                        onCheckedChange={() => handleToggleKeyGroupFilter(option.value)}
+                        disabled={selectedKeyGroups.length === 0}
+                        onSelect={(event) => {
+                          event.preventDefault()
+                          handleClearKeyGroupFilters()
+                        }}
                       >
-                        <span>{option.label}</span>
-                        <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
-                      </DropdownMenuCheckboxItem>
-                    ))}
+                        {keyStrings.filters.clearGroups}
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      {keyGroupFilterOptions.map((option) => (
+                        <DropdownMenuCheckboxItem
+                          key={option.value || '__ungrouped__'}
+                          className="cursor-pointer"
+                          checked={selectedKeyGroups.includes(option.value)}
+                          onSelect={(event) => event.preventDefault()}
+                          onCheckedChange={() => handleToggleKeyGroupFilter(option.value)}
+                        >
+                          <span>{option.label}</span>
+                          <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
@@ -11222,30 +11203,32 @@ function AdminDashboard(): JSX.Element {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-64">
-                  <DropdownMenuLabel>{keyStrings.filters.status}</DropdownMenuLabel>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    disabled={selectedKeyStatuses.length === 0}
-                    onSelect={(event) => {
-                      event.preventDefault()
-                      handleClearKeyStatusFilters()
-                    }}
-                  >
-                    {keyStrings.filters.clearStatuses}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  {keyStatusFilterOptions.map((option) => (
-                    <DropdownMenuCheckboxItem
-                      key={option.value}
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>{keyStrings.filters.status}</DropdownMenuLabel>
+                    <DropdownMenuItem
                       className="cursor-pointer"
-                      checked={selectedKeyStatuses.includes(option.value)}
-                      onSelect={(event) => event.preventDefault()}
-                      onCheckedChange={() => handleToggleKeyStatusFilter(option.value)}
+                      disabled={selectedKeyStatuses.length === 0}
+                      onSelect={(event) => {
+                        event.preventDefault()
+                        handleClearKeyStatusFilters()
+                      }}
                     >
-                      <span>{option.label}</span>
-                      <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
+                      {keyStrings.filters.clearStatuses}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    {keyStatusFilterOptions.map((option) => (
+                      <DropdownMenuCheckboxItem
+                        key={option.value}
+                        className="cursor-pointer"
+                        checked={selectedKeyStatuses.includes(option.value)}
+                        onSelect={(event) => event.preventDefault()}
+                        onCheckedChange={() => handleToggleKeyStatusFilter(option.value)}
+                      >
+                        <span>{option.label}</span>
+                        <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenu>
@@ -11261,30 +11244,32 @@ function AdminDashboard(): JSX.Element {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-72">
-                  <DropdownMenuLabel>{keyStrings.filters.region}</DropdownMenuLabel>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    disabled={selectedKeyRegions.length === 0}
-                    onSelect={(event) => {
-                      event.preventDefault()
-                      handleClearKeyRegionFilters()
-                    }}
-                  >
-                    {keyStrings.filters.clearRegions}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  {keyRegionFilterOptions.map((option) => (
-                    <DropdownMenuCheckboxItem
-                      key={option.value}
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>{keyStrings.filters.region}</DropdownMenuLabel>
+                    <DropdownMenuItem
                       className="cursor-pointer"
-                      checked={selectedKeyRegions.includes(option.value)}
-                      onSelect={(event) => event.preventDefault()}
-                      onCheckedChange={() => handleToggleKeyRegionFilter(option.value)}
+                      disabled={selectedKeyRegions.length === 0}
+                      onSelect={(event) => {
+                        event.preventDefault()
+                        handleClearKeyRegionFilters()
+                      }}
                     >
-                      <span>{option.label}</span>
-                      <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
-                    </DropdownMenuCheckboxItem>
-                  ))}
+                      {keyStrings.filters.clearRegions}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    {keyRegionFilterOptions.map((option) => (
+                      <DropdownMenuCheckboxItem
+                        key={option.value}
+                        className="cursor-pointer"
+                        checked={selectedKeyRegions.includes(option.value)}
+                        onSelect={(event) => event.preventDefault()}
+                        onCheckedChange={() => handleToggleKeyRegionFilter(option.value)}
+                      >
+                        <span>{option.label}</span>
+                        <span className="ml-auto text-xs opacity-60">{formatNumber(option.count)}</span>
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -11400,112 +11385,109 @@ function AdminDashboard(): JSX.Element {
           minHeight={320}
         >
           {visibleKeys.length === 0 ? (
-            <tbody>
-              <tr>
-                <td colSpan={isAdmin ? 8 : 6}>
-                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={isAdmin ? 8 : 6}>
+                  <Empty className="empty-state"><EmptyDescription>
                     {keysHasFilters ? keyStrings.empty.filtered : keyStrings.empty.none}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+                  </EmptyDescription></Empty>
+                </TableCell>
+              </TableRow>
+            </TableBody>
           ) : (
             <>
-              <thead>
-                <tr>
+              <TableHeader>
+                <TableRow>
                   {isAdmin && (
-                    <th style={{ width: 52 }}>
+                    <TableHead style={{ width: 52 }}>
                       <label style={keySelectionCheckboxLabelStyle}>
-                        <input
-                          ref={keysSelectAllRef}
-                          type="checkbox"
-                          checked={allVisibleKeysSelected}
+                        <Checkbox
+                          checked={someVisibleKeysSelected ? 'indeterminate' : allVisibleKeysSelected}
                           aria-label={keyStrings.selection.selectAll}
-                          onChange={(event) => toggleAllVisibleKeys(event.currentTarget.checked)}
+                          onCheckedChange={(checked) => toggleAllVisibleKeys(checked === true)}
                           disabled={bulkKeyActionInFlight != null}
                         />
                       </label>
-                    </th>
+                    </TableHead>
                   )}
-                  <th>
+                  <TableHead>
                     <div style={adminTableHeaderStackStyle}>
                       <span style={adminTableFieldStyle}>{keyStrings.table.keyId}</span>
                       <span style={adminTableSecondaryFieldStyle}>{keyStrings.groups.label}</span>
                     </div>
-                  </th>
-                  <th>
+                  </TableHead>
+                  <TableHead>
                     <div style={adminTableHeaderStackStyle}>
                       <span style={adminTableFieldStyle}>{keyStrings.table.registration}</span>
                       <span style={adminTableSecondaryFieldStyle}>{keyStrings.table.registrationRegion}</span>
                     </div>
-                  </th>
-                  <th>
+                  </TableHead>
+                  <TableHead>
                     <div style={adminTableHeaderStackStyle}>
                       <span style={adminTableFieldStyle}>{keyStrings.table.status}</span>
                       <span style={adminTableSecondaryFieldStyle} aria-hidden="true">&nbsp;</span>
                     </div>
-                  </th>
-                  <th>
+                  </TableHead>
+                  <TableHead>
                     <div style={adminTableHeaderStackStyle}>
                       <span style={adminTableFieldStyle}>{keyStrings.table.success}</span>
                       <span style={adminTableSecondaryFieldStyle}>{keyStrings.table.errors}</span>
                     </div>
-                  </th>
-                  <th>
+                  </TableHead>
+                  <TableHead>
                     <div style={adminTableHeaderStackStyle}>
                       <span style={adminTableFieldStyle}>{keyStrings.table.quotaLeft}</span>
                       <span style={adminTableSecondaryFieldStyle} aria-hidden="true">&nbsp;</span>
                     </div>
-                  </th>
-                  <th>
+                  </TableHead>
+                  <TableHead>
                     <div style={adminTableHeaderStackStyle}>
                       <span style={adminTableFieldStyle}>{keyStrings.table.lastUsed}</span>
                       <span style={adminTableSecondaryFieldStyle}>{keyStrings.table.statusChanged}</span>
                     </div>
-                  </th>
+                  </TableHead>
                   {isAdmin && (
-                    <th>
+                    <TableHead>
                       <div style={adminTableHeaderStackStyle}>
                         <span style={adminTableFieldStyle}>{keyStrings.table.actions}</span>
                         <span style={adminTableSecondaryFieldStyle} aria-hidden="true">&nbsp;</span>
                       </div>
-                    </th>
+                    </TableHead>
                   )}
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {visibleKeys.map((item) => {
                   const stateKey = copyStateKey('keys', item.id)
                   const state = copyState.get(stateKey)
                   const keyGroupName = formatKeyGroupName(item.group, keyStrings.groups.ungrouped)
                   return (
-                    <tr key={item.id}>
+                    <TableRow key={item.id}>
                       {isAdmin && (
-                        <td>
+                        <TableCell>
                           <label style={keySelectionCheckboxLabelStyle}>
-                            <input
-                              type="checkbox"
+                            <Checkbox
                               checked={selectedKeyIds.has(item.id)}
                               aria-label={`${keyStrings.selection.selectRow}: ${item.id}`}
-                              onChange={() => toggleSelectedKey(item.id)}
+                              onCheckedChange={() => toggleSelectedKey(item.id)}
                               disabled={bulkKeyActionInFlight != null}
                             />
                           </label>
-                        </td>
+                        </TableCell>
                       )}
-                      <td>
+                      <TableCell>
                         <div style={adminTableStackStyle}>
                           <div style={adminTableInlineFieldStyle}>
-                            <button
+                            <Button
                               type="button"
-                              className="link-button"
+                              variant="link" size="sm" className="h-auto p-0"
                               onClick={() => navigateKey(item.id, { preserveKeysContext: true })}
                               title={keyStrings.actions.details}
                               aria-label={keyStrings.actions.details}
                               style={{ whiteSpace: 'nowrap' }}
                             >
                               <code>{item.id}</code>
-                            </button>
+                            </Button>
                             {isAdmin && (
 <Button
   type="button"
@@ -11529,16 +11511,16 @@ function AdminDashboard(): JSX.Element {
                           </div>
                           <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>{keyGroupName}</span>
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <div style={adminTableStackStyle}>
                           <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>{formatRegistrationValue(item.registration_ip)}</span>
                           <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>
                             {formatRegistrationValue(item.registration_region)}
                           </span>
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <div style={adminTableStackStyle}>
                           <span style={adminTableFieldStyle}>
                             <StatusBadge tone={statusTone(keyBadgeStatus(item))}>
@@ -11546,29 +11528,29 @@ function AdminDashboard(): JSX.Element {
                             </StatusBadge>
                           </span>
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <div style={adminTableStackStyle}>
                           <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>{formatNumber(item.success_count)}</span>
                           <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>{formatNumber(item.error_count)}</span>
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>
                           {item.quota_remaining != null && item.quota_limit != null
                             ? `${formatNumber(item.quota_remaining)} / ${formatNumber(item.quota_limit)}`
                             : '—'}
                         </span>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <div style={adminTableStackStyle}>
                           <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>{formatTimestampNoYear(item.last_used_at)}</span>
                           <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>{formatTimestampNoYear(item.status_changed_at)}</span>
                         </div>
-                      </td>
+                      </TableCell>
                       {isAdmin && (
-                        <td>
-                          <div className="table-actions api-keys-actions">
+                        <TableCell>
+                          <div className="table-actions api-keys-actions flex flex-wrap items-center gap-1">
                             {item.quarantine ? (
   <Button
     type="button"
@@ -11642,12 +11624,12 @@ function AdminDashboard(): JSX.Element {
     <Icon icon="mdi:eye-outline" width={18} height={18} />
 </Button>
                           </div>
-                        </td>
+                        </TableCell>
                       )}
-                    </tr>
+                    </TableRow>
                   )
                 })}
-              </tbody>
+              </TableBody>
             </>
           )}
         </AdminTableShell>
@@ -11659,9 +11641,9 @@ function AdminDashboard(): JSX.Element {
           minHeight={240}
         >
           {visibleKeys.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">
+            <Empty className="empty-state"><EmptyDescription>
               {keysHasFilters ? keyStrings.empty.filtered : keyStrings.empty.none}
-            </div>
+            </EmptyDescription></Empty>
           ) : (
             visibleKeys.map((item) => {
               const total = item.total_requests || 0
@@ -11672,11 +11654,10 @@ function AdminDashboard(): JSX.Element {
                   {isAdmin && (
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
                       <label style={keySelectionCheckboxLabelStyle}>
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           checked={selectedKeyIds.has(item.id)}
                           aria-label={`${keyStrings.selection.selectRow}: ${item.id}`}
-                          onChange={() => toggleSelectedKey(item.id)}
+                          onCheckedChange={() => toggleSelectedKey(item.id)}
                           disabled={bulkKeyActionInFlight != null}
                         />
                         <span className="panel-description text-sm text-muted-foreground">{keyStrings.selection.selectRow}</span>
@@ -11828,7 +11809,7 @@ function AdminDashboard(): JSX.Element {
             onPerPageChange={changeKeysPerPage}
           />
         )}
-      </section>
+      </Card>
       )}
 
       {showRequests && (
@@ -11882,7 +11863,7 @@ function AdminDashboard(): JSX.Element {
       )}
 
       {showJobs && (
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+      <Card className="surface panel">
         <div className="block md:hidden">
           {renderJobFilterToolbar()}
         </div>
@@ -11904,28 +11885,28 @@ function AdminDashboard(): JSX.Element {
           minHeight={320}
         >
           {jobs.length === 0 ? (
-            <tbody>
-              <tr>
-                <td colSpan={8}>
-                  <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{jobsStrings.empty.none}</div>
-                </td>
-              </tr>
-            </tbody>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <Empty className="empty-state"><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
+                </TableCell>
+              </TableRow>
+            </TableBody>
           ) : (
             <>
-              <thead>
-                <tr>
-                  <th>{jobsStrings.table.id}</th>
-                  <th>{jobsStrings.table.type}</th>
-                  <th>{jobsStrings.table.key}</th>
-                  <th>{jobsStrings.table.status}</th>
-                  <th>{jobsStrings.table.source}</th>
-                  <th>{jobsStrings.table.attempt}</th>
-                  <th>{jobsStrings.table.started}</th>
-                  <th>{jobsStrings.table.message}</th>
-                </tr>
-              </thead>
-              <tbody>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{jobsStrings.table.id}</TableHead>
+                  <TableHead>{jobsStrings.table.type}</TableHead>
+                  <TableHead>{jobsStrings.table.key}</TableHead>
+                  <TableHead>{jobsStrings.table.status}</TableHead>
+                  <TableHead>{jobsStrings.table.source}</TableHead>
+                  <TableHead>{jobsStrings.table.attempt}</TableHead>
+                  <TableHead>{jobsStrings.table.started}</TableHead>
+                  <TableHead>{jobsStrings.table.message}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {jobs.map((j) => {
                   const jt = j.job_type
                   const jobTypeLabelText = adminJobTypeLabel(jt, jobsStrings)
@@ -11964,10 +11945,10 @@ function AdminDashboard(): JSX.Element {
                   const rows: JSX.Element[] = []
 
                   rows.push(
-                    <tr key={j.id}>
-                      <td>{j.id}</td>
-                      <td>{jobTypeLabelText}</td>
-                      <td>
+                    <TableRow key={j.id}>
+                      <TableCell>{j.id}</TableCell>
+                      <TableCell>{jobTypeLabelText}</TableCell>
+                      <TableCell>
                         <JobKeyLink
                           keyId={keyId}
                           keyGroup={keyGroup}
@@ -11975,16 +11956,16 @@ function AdminDashboard(): JSX.Element {
                           detailLabel={keyStrings.actions.details}
                           onOpenKey={navigateKey}
                         />
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StatusBadge tone={statusTone(j.status)} title={String(j.status ?? '')}>
                           {jobStatusText}
                         </StatusBadge>
-                      </td>
-                      <td>{jobSourceText}</td>
-                      <td>{j.attempt}</td>
-                      <td>{startedTimeLabel}</td>
-                      <td className="jobs-message-cell">
+                      </TableCell>
+                      <TableCell>{jobSourceText}</TableCell>
+                      <TableCell>{j.attempt}</TableCell>
+                      <TableCell>{startedTimeLabel}</TableCell>
+                      <TableCell className="jobs-message-cell">
                         {jobMessage ? (
                           <button
                             type="button"
@@ -12007,16 +11988,16 @@ function AdminDashboard(): JSX.Element {
                         ) : (
                           '—'
                         )}
-                      </td>
-                    </tr>,
+                      </TableCell>
+                    </TableRow>,
                   )
 
                   if (isExpanded) {
                     rows.push(
-                      <tr key={`${j.id}-details`} className="log-details-row">
-                        <td colSpan={8} id={`job-details-${j.id}`}>
-                          <div className="log-details-panel">
-                            <div className="log-details-summary">
+                      <TableRow key={`${j.id}-details`} className="log-details-row">
+                        <TableCell colSpan={8} id={`job-details-${j.id}`}>
+                          <div className="log-details-panel flex min-w-0 flex-col gap-4 whitespace-normal rounded-lg bg-muted/30 p-4">
+                            <div className="log-details-summary grid min-w-0 gap-x-6 gap-y-3 lg:grid-cols-2 [&>div]:grid [&>div]:min-w-0 [&>div]:grid-cols-[6rem_minmax(0,1fr)] [&>div]:items-start [&>div]:gap-3 [&>div>:last-child]:min-w-0 [&>div>:last-child]:[overflow-wrap:anywhere]">
                               <div>
                                 <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.id}</div>
                                 <div className="text-xs leading-5">{j.id}</div>
@@ -12098,22 +12079,21 @@ function AdminDashboard(): JSX.Element {
                               )}
                             </div>
                             {jobMessage && (
-                              <div className="log-details-body">
-                                <section className="flex flex-col gap-2">
-                                  <header>{jobsStrings.table.message}</header>
+                              <div className="log-details-body grid min-w-0 gap-3 lg:grid-cols-2">
+                                <RequestLogDetailSection title={jobsStrings.table.message}>
                                   <pre>{jobMessage}</pre>
-                                </section>
+                                </RequestLogDetailSection>
                               </div>
                             )}
                           </div>
-                        </td>
-                      </tr>,
+                        </TableCell>
+                      </TableRow>,
                     )
                   }
 
                   return rows
                 })}
-              </tbody>
+              </TableBody>
             </>
           )}
         </AdminTableShell>
@@ -12125,7 +12105,7 @@ function AdminDashboard(): JSX.Element {
           minHeight={240}
         >
           {jobs.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{jobsStrings.empty.none}</div>
+            <Empty className="empty-state"><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             jobs.map((j) => {
               const jt = j.job_type
@@ -12200,22 +12180,22 @@ function AdminDashboard(): JSX.Element {
             onNext={() => setJobsPage((page) => page + 1)}
           />
         )}
-      </section>
+      </Card>
       )}
 
       {showUsers && (
         <>
-          <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
+          <Card className="surface panel">
             <div className="block md:hidden">
-              <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
+              <CardHeader className="panel-header border-b admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div style={{ flex: '1 1 340px', minWidth: 260 }}>
-                  <h2>{usersStrings.title}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">{usersStrings.description}</p>
+                  <CardTitle role="heading" aria-level={2}>{usersStrings.title}</CardTitle>
+                  <CardDescription className="panel-description">{usersStrings.description}</CardDescription>
                 </div>
                 <div style={{ flex: '1 1 520px', minWidth: 0 }}>
                   {renderUsersSearchControls()}
                 </div>
-              </div>
+              </CardHeader>
             </div>
             <AdminTableShell
               className="overflow-hidden rounded-lg border"
@@ -12226,20 +12206,20 @@ function AdminDashboard(): JSX.Element {
               minHeight={360}
             >
               {users.length === 0 ? (
-                <tbody>
-                  <tr>
-                    <td colSpan={showShadowDailyUsageColumn ? 9 : 8}>
-                      <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.none}</div>
-                    </td>
-                  </tr>
-                </tbody>
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={showShadowDailyUsageColumn ? 9 : 8}>
+                      <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
               ) : (
                 <>
-                  <thead>
-                    <tr>
-                      <th>{usersStrings.table.user}</th>
-                      <th>{usersStrings.table.status}</th>
-                      <th>{usersStrings.table.tags}</th>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{usersStrings.table.user}</TableHead>
+                      <TableHead>{usersStrings.table.status}</TableHead>
+                      <TableHead>{usersStrings.table.tags}</TableHead>
                       <AdminUsersSortableHeader
                         label={usersStrings.table.daily}
                         field="dailyCreditsUsed"
@@ -12247,7 +12227,7 @@ function AdminDashboard(): JSX.Element {
                         activeOrder={effectiveUsersSortOrder}
                         onToggle={toggleUsersSort}
                       />
-                      {showShadowDailyUsageColumn ? <th>{usersStrings.table.shadowDaily}</th> : null}
+                      {showShadowDailyUsageColumn ? <TableHead>{usersStrings.table.shadowDaily}</TableHead> : null}
                       <AdminUsersSortableHeader
                         label={usersStrings.table.monthly}
                         field="monthlyCreditsUsed"
@@ -12276,9 +12256,9 @@ function AdminDashboard(): JSX.Element {
                         activeOrder={effectiveUsersSortOrder}
                         onToggle={toggleUsersSort}
                       />
-                    </tr>
-                  </thead>
-                  <tbody>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {users.map((item) => {
                       const shadowDailyUsage = buildShadowDailyUsageStack({
                         actualUsed: item.dailyCreditsUsed,
@@ -12294,58 +12274,58 @@ function AdminDashboard(): JSX.Element {
                         formatQuotaStackValue,
                       })
                       return (
-                      <tr key={item.userId}>
-                        <td className="admin-users-identity-cell">
-                          <button
+                      <TableRow key={item.userId}>
+                        <TableCell className="admin-users-identity-cell">
+                          <Button
                             type="button"
-                            className="link-button admin-users-identity-button"
+                            variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
                             aria-label={usersStrings.actions.view}
                             onClick={() => navigateUser(item.userId, { preserveUsersContext: true })}
                           >
                             <strong>{formatAdminUserListPrimary(item)}</strong>
-                          </button>
+                          </Button>
                           {formatAdminUserListMeta(item) && (
                             <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
                               {formatAdminUserListMeta(item)}
                             </div>
                           )}
-                        </td>
-                        <td>
+                        </TableCell>
+                        <TableCell>
                           <StatusBadge tone={item.active ? 'success' : 'neutral'}>
                             {item.active ? usersStrings.status.active : usersStrings.status.inactive}
                           </StatusBadge>
-                        </td>
-                        <td className="admin-users-tags-cell">
+                        </TableCell>
+                        <TableCell className="admin-users-tags-cell">
                           <UserTagBadgeList
                             tags={item.tags}
                             usersStrings={usersStrings}
                             emptyLabel={usersStrings.userTags.empty}
                           />
-                        </td>
-                        <td className="admin-users-compact-cell">
+                        </TableCell>
+                        <TableCell className="admin-users-compact-cell">
                           <AdminTableValueStack {...formatQuotaStackValue(item.dailyCreditsUsed, item.dailyCreditsLimit)} />
-                        </td>
+                        </TableCell>
                         {showShadowDailyUsageColumn ? (
-                          <td className="admin-users-compact-cell">
+                          <TableCell className="admin-users-compact-cell">
                             <AdminTableValueStack {...shadowDailyUsage} />
-                          </td>
+                          </TableCell>
                         ) : null}
-                        <td className="admin-users-compact-cell">
+                        <TableCell className="admin-users-compact-cell">
                           <AdminTableValueStack {...formatQuotaStackValue(item.monthlyCreditsUsed, item.monthlyCreditsLimit)} />
-                        </td>
-                        <td className="admin-users-compact-cell">
+                        </TableCell>
+                        <TableCell className="admin-users-compact-cell">
                           <strong>{formatNumber(item.recentIpCount7d)}</strong>
-                        </td>
-                        <td className="admin-users-compact-cell">
+                        </TableCell>
+                        <TableCell className="admin-users-compact-cell">
                           <AdminTableValueStack {...formatStackedTimestamp(item.lastActivity, language)} />
-                        </td>
-                        <td className="admin-users-compact-cell">
+                        </TableCell>
+                        <TableCell className="admin-users-compact-cell">
                           <AdminTableValueStack {...formatStackedTimestamp(item.lastLoginAt, language)} />
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                       )
                     })}
-                  </tbody>
+                  </TableBody>
                 </>
               )}
             </AdminTableShell>
@@ -12357,7 +12337,7 @@ function AdminDashboard(): JSX.Element {
               minHeight={260}
             >
               {users.length === 0 ? (
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.empty.none}</div>
+                <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
               ) : (
                 users.map((item) => {
                   const shadowDailyUsage = buildShadowDailyUsageStack({
@@ -12377,14 +12357,14 @@ function AdminDashboard(): JSX.Element {
                   <article key={item.userId} className="rounded-lg border p-3">
                     <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.user}</span>
-                      <button
+                      <Button
                         type="button"
-                        className="link-button admin-users-mobile-link"
+                        variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
                         aria-label={usersStrings.actions.view}
                         onClick={() => navigateUser(item.userId, { preserveUsersContext: true })}
                       >
                         <strong>{formatAdminUserListPrimary(item)}</strong>
-                      </button>
+                      </Button>
                     </div>
                     <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.status}</span>
@@ -12452,7 +12432,7 @@ function AdminDashboard(): JSX.Element {
                 onNext={goNextUsersPage}
               />
             )}
-          </section>
+          </Card>
 
           {renderUserTagSummaryPanel()}
         </>
@@ -12563,7 +12543,7 @@ function AdminDashboard(): JSX.Element {
       )}
 
       {showSystemSettingsHa && (
-        <section className="admin-settings-ha-page">
+        <section className="admin-settings-ha-page flex min-w-0 flex-col gap-6">
           {route.name === 'ha-node' ? (
             <HaNodeDetailPanel
               detail={haNodeDetail}
@@ -12578,7 +12558,7 @@ function AdminDashboard(): JSX.Element {
             />
           ) : adminHaPanel}
           <Dialog open={haCutoverDialogOpen} onOpenChange={setHaCutoverDialogOpen}>
-              <DialogContent className="max-w-2xl">
+              <DialogContent className="sm:max-w-2xl">
               <DialogHeader>
                 <DialogTitle>{systemSettingsStrings.ha.dialogPlannedCutoverTitle}</DialogTitle>
                 <DialogDescription>{systemSettingsStrings.ha.dialogPlannedCutoverDescription}</DialogDescription>
@@ -12698,8 +12678,8 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
 
   return (
     <>
-      <tr>
-        <td>
+      <TableRow>
+        <TableCell>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
@@ -12714,8 +12694,8 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
               {timeDetail}
             </TooltipContent>
           </Tooltip>
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <button
             type="button"
             className={`log-key-pill request-entity-button${isRebalanceGateway ? ' log-key-pill--rebalance' : ''}`}
@@ -12734,23 +12714,23 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
             ) : null}
             <code>{log.key_id}</code>
           </button>
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           {tokenId ? (
-            <button
+            <Button
               type="button"
-              className="link-button log-token-link request-entity-button"
+              variant="link" size="sm" className="h-auto p-0 log-token-link request-entity-button"
               title={strings.tokens.table.id}
               aria-label={strings.tokens.table.id}
               onClick={() => onOpenToken?.(tokenId)}
             >
               <code>{tokenId}</code>
-            </button>
+            </Button>
           ) : (
             '—'
           )}
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
@@ -12765,8 +12745,8 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
               {formatRequestStatusTooltip(log, strings)}
             </TooltipContent>
           </Tooltip>
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <button
             type="button"
             className={`log-result-button${expanded ? ' log-result-button-active' : ''}`}
@@ -12781,23 +12761,23 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
             </StatusBadge>
             <Icon icon={expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'} width={18} height={18} className="log-result-icon" />
           </button>
-        </td>
-        <td>
+        </TableCell>
+        <TableCell>
           <StatusBadge
             tone={keyEffectTone(log.key_effect_code)}
             title={formatKeyEffectSummary(log, strings, language)}
           >
             {keyEffectBadgeLabel(log, strings)}
           </StatusBadge>
-        </td>
-        <td>{formatErrorMessage(log, strings.logs.errors, language)}</td>
-      </tr>
+        </TableCell>
+        <TableCell>{formatErrorMessage(log, strings.logs.errors, language)}</TableCell>
+      </TableRow>
       {expanded && (
-        <tr className="log-details-row">
-          <td colSpan={7} id={`log-details-${log.id}`}>
+        <TableRow className="log-details-row">
+          <TableCell colSpan={7} id={`log-details-${log.id}`}>
             <LogDetails log={log} strings={strings} language={language} />
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       )}
     </>
   )
@@ -12832,8 +12812,8 @@ function LogDetails({
   const guidance = operationalClassGuidance(log.operationalClass, log.failure_kind, language)
 
   return (
-    <div className="log-details-panel">
-      <div className="log-details-summary">
+    <div className="log-details-panel flex min-w-0 flex-col gap-4 whitespace-normal rounded-lg bg-muted/30 p-4">
+      <div className="log-details-summary grid min-w-0 gap-x-6 gap-y-3 lg:grid-cols-2 [&>div]:grid [&>div]:min-w-0 [&>div]:grid-cols-[6rem_minmax(0,1fr)] [&>div]:items-start [&>div]:gap-3 [&>div>:last-child]:min-w-0 [&>div>:last-child]:[overflow-wrap:anywhere]">
         <div>
           <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.request}</span>
           <span className="text-xs leading-5">{requestLine}</span>
@@ -12854,43 +12834,38 @@ function LogDetails({
           <span className="text-xs leading-5">{keyEffect}</span>
         </div>
       </div>
-      <div className="log-details-body">
-        <div className="flex flex-col gap-2">
-          <header>{strings.logDetails.requestBody}</header>
+      <div className="log-details-body grid min-w-0 gap-3 lg:grid-cols-2">
+        <RequestLogDetailSection title={strings.logDetails.requestBody}>
           <pre>{requestBody}</pre>
-        </div>
-        <div className="flex flex-col gap-2">
-          <header>{strings.logDetails.responseBody}</header>
+        </RequestLogDetailSection>
+        <RequestLogDetailSection title={strings.logDetails.responseBody}>
           <pre>{responseBody}</pre>
-        </div>
+        </RequestLogDetailSection>
         {guidance ? (
-          <div className="flex flex-col gap-2">
-            <header>{strings.logDetails.solution}</header>
+          <RequestLogDetailSection title={strings.logDetails.solution}>
             <pre>{guidance}</pre>
-          </div>
+          </RequestLogDetailSection>
         ) : null}
       </div>
       {(forwarded.length > 0 || dropped.length > 0) && (
-        <div className="log-details-headers">
+        <div className="log-details-headers grid min-w-0 gap-3 lg:grid-cols-2">
           {forwarded.length > 0 && (
-            <div className="flex flex-col gap-2">
-              <header>{strings.logDetails.forwardedHeaders}</header>
+            <RequestLogDetailSection title={strings.logDetails.forwardedHeaders}>
               <ul>
                 {forwarded.map((header, index) => (
                   <li key={`forwarded-${index}-${header}`}>{header}</li>
                 ))}
               </ul>
-            </div>
+            </RequestLogDetailSection>
           )}
           {dropped.length > 0 && (
-            <div className="flex flex-col gap-2">
-              <header>{strings.logDetails.droppedHeaders}</header>
+            <RequestLogDetailSection title={strings.logDetails.droppedHeaders}>
               <ul>
                 {dropped.map((header, index) => (
                   <li key={`dropped-${index}-${header}`}>{header}</li>
                 ))}
               </ul>
-            </div>
+            </RequestLogDetailSection>
           )}
         </div>
       )}
@@ -13421,10 +13396,10 @@ export function KeyDetails({
     <AdminShellSidebarUtility>
       <AdminSidebarUtilityStack>
         <AdminSidebarUtilityCard>
-          <div className="admin-sidebar-utility-toolbar">
+          <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
             <ThemeToggle />
           </div>
-          <div className="admin-sidebar-utility-actions">
+          <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <AdminReturnToConsoleLink
               label={adminStrings.header.returnToConsole}
               href={ADMIN_USER_CONSOLE_HREF}
@@ -13438,7 +13413,7 @@ export function KeyDetails({
         </AdminSidebarUtilityCard>
 
         <AdminSidebarUtilityCard>
-          <div className="admin-sidebar-utility-actions">
+          <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <Button
               type="button"
               variant={syncState === 'success' ? 'success' : 'default'}
@@ -13466,19 +13441,19 @@ export function KeyDetails({
   )
 
   return (
-    <div className="admin-detail-stack">
+    <div className="admin-detail-stack flex min-w-0 flex-col gap-6">
       {keyDetailSidebarUtility}
 
       <div className="block md:hidden">
-        <section className="surface app-header">
-          <div className="title-group">
+        <section className="surface app-header flex flex-col gap-3">
+          <div className="title-group flex flex-col gap-1">
             <h1>{keyDetailsStrings.title}</h1>
             <p>
               {keyDetailsStrings.descriptionPrefix}{' '}
               <code>{id}</code>
             </p>
           </div>
-          <div className="controls">
+          <div className="controls flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <AdminReturnToConsoleLink
               label={adminStrings.header.returnToConsole}
@@ -13526,14 +13501,14 @@ export function KeyDetails({
       {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" style={{ marginTop: 8, marginBottom: 0 }}>{error}</div>}
 
       {detail && (
-        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-          <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+        <Card className="surface panel min-w-0">
+          <CardHeader className="panel-header border-b">
             <div>
-              <h2>{keyDetailsStrings.metadata.title}</h2>
-              <p className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.metadata.description}</p>
+              <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.metadata.title}</CardTitle>
+              <CardDescription className="panel-description">{keyDetailsStrings.metadata.description}</CardDescription>
             </div>
-          </div>
-          <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-3">
             <div className="flex items-center justify-between gap-2 text-sm">
               <span>{keyDetailsStrings.metadata.group}</span>
               <strong>{formatKeyGroupName(detail.group, keyStrings.groups.ungrouped)}</strong>
@@ -13546,16 +13521,16 @@ export function KeyDetails({
               <span>{keyDetailsStrings.metadata.registrationRegion}</span>
               <strong>{formatRegistrationValue(detail.registration_region)}</strong>
             </div>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
       )}
 
       {detail?.quarantine && (
-        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-          <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+        <Card className="surface panel min-w-0">
+          <CardHeader className="panel-header border-b">
             <div>
-              <h2>{keyDetailsStrings.quarantine.title}</h2>
-              <p className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.quarantine.description}</p>
+              <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.quarantine.title}</CardTitle>
+              <CardDescription className="panel-description">{keyDetailsStrings.quarantine.description}</CardDescription>
             </div>
             <Button
               type="button"
@@ -13574,7 +13549,7 @@ export function KeyDetails({
                 ? keyDetailsStrings.quarantine.clearing
                 : keyDetailsStrings.quarantine.clearAction}
             </Button>
-          </div>
+          </CardHeader>
           <div className="flex items-center justify-between gap-2 text-sm">
             <span>{keyDetailsStrings.quarantine.source}</span>
             <strong>{detail.quarantine.source}</strong>
@@ -13588,8 +13563,8 @@ export function KeyDetails({
             <strong>{formatTimestamp(detail.quarantine.createdAt)}</strong>
           </div>
           {hasQuarantineRawDetail && (
-            <div className="quarantine-detail-block">
-              <div className="quarantine-detail-header">
+            <div className="quarantine-detail-block flex flex-col gap-3 px-4">
+              <div className="quarantine-detail-header flex flex-wrap items-center justify-between gap-2">
                 <div className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.quarantine.detail}</div>
                 <Button
                   type="button"
@@ -13613,7 +13588,7 @@ export function KeyDetails({
               </div>
               <pre
                 id={quarantineDetailId}
-                className="log-details-pre"
+                className="log-details-pre max-h-80 overflow-auto whitespace-pre-wrap break-all rounded-lg bg-muted p-3 font-mono text-xs"
                 hidden={!quarantineDetailExpanded}
                 aria-hidden={!quarantineDetailExpanded}
               >
@@ -13621,24 +13596,24 @@ export function KeyDetails({
               </pre>
             </div>
           )}
-        </section>
+        </Card>
       )}
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel min-w-0">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>Quota</h2>
-            <p className="panel-description text-sm text-muted-foreground">Tavily Usage for this key</p>
+            <CardTitle role="heading" aria-level={2}>Quota</CardTitle>
+            <CardDescription className="panel-description">Tavily Usage for this key</CardDescription>
           </div>
-        </div>
+        </CardHeader>
         <AdminLoadingRegion
           loadState={detailLoadState}
           loadingLabel={detailLoadingLabel}
           minHeight={180}
         >
-          <section className="metrics-grid">
+          <CardContent className="metrics-grid grid min-w-0 gap-3 sm:grid-cols-3">
             {!detail ? (
-              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" style={{ gridColumn: '1 / -1' }}>{keyDetailsStrings.loading}</div>
+              <Empty className="empty-state" style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
             ) : (
               (() => {
                 const limit = detail?.quota_limit ?? null
@@ -13652,21 +13627,21 @@ export function KeyDetails({
                 ].map((m) => (
                   <div key={m.id} className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4">
                     <h3>{m.label}</h3>
-                    <div className="metric-value font-mono text-2xl font-semibold tabular-nums">{m.value}</div>
+                    <div className={`metric-value min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
                     <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
                   </div>
                 ))
               })()
             )}
-          </section>
+          </CardContent>
         </AdminLoadingRegion>
-      </section>
+      </Card>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel min-w-0">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{keyDetailsStrings.usageTitle}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.usageDescription}</p>
+            <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.usageTitle}</CardTitle>
+            <CardDescription className="panel-description">{keyDetailsStrings.usageDescription}</CardDescription>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
             <Select value={period} onValueChange={handleKeyLogPeriodChange} disabled={detailBlocking}>
@@ -13674,14 +13649,16 @@ export function KeyDetails({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent align="end">
-                <SelectItem value="day">{keyDetailsStrings.periodOptions.day}</SelectItem>
-                <SelectItem value="week">{keyDetailsStrings.periodOptions.week}</SelectItem>
-                <SelectItem value="month">{keyDetailsStrings.periodOptions.month}</SelectItem>
+                <SelectGroup>
+                  <SelectItem value="day">{keyDetailsStrings.periodOptions.day}</SelectItem>
+                  <SelectItem value="week">{keyDetailsStrings.periodOptions.week}</SelectItem>
+                  <SelectItem value="month">{keyDetailsStrings.periodOptions.month}</SelectItem>
+                </SelectGroup>
               </SelectContent>
             </Select>
             <Input
               type="date"
-              name="key-usage-start-date"
+              name="key-usage-start-date" aria-label={keyDetailsStrings.usageTitle}
               value={startDate}
               onChange={(e) => handleKeyLogStartDateChange(e.target.value)}
               className="w-[176px]"
@@ -13691,27 +13668,27 @@ export function KeyDetails({
               {keyDetailsStrings.apply}
             </Button>
           </div>
-        </div>
+        </CardHeader>
         <AdminLoadingRegion
           loadState={detailLoadState}
           loadingLabel={detailLoadingLabel}
           minHeight={180}
         >
-          <section className="metrics-grid">
+          <CardContent className="metrics-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {!summary ? (
-              <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert" style={{ gridColumn: '1 / -1' }}>{keyDetailsStrings.loading}</div>
+              <Empty className="empty-state" style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
             ) : (
               metricCards.map((m) => (
                 <div key={m.id} className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4">
                   <h3>{m.label}</h3>
-                  <div className="metric-value font-mono text-2xl font-semibold tabular-nums">{m.value}</div>
+                  <div className={`metric-value min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
                   <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
                 </div>
               ))
             )}
-          </section>
+          </CardContent>
         </AdminLoadingRegion>
-      </section>
+      </Card>
 
       <AdminLazyBoundary loadingLabel={detailLoadingLabel} minHeight={260}>
         <LazyKeyStickyPanels

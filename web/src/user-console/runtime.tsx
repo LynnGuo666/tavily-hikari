@@ -1,3 +1,4 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../lib/icons'
 import CherryStudioMock from '../components/CherryStudioMock'
@@ -109,6 +110,7 @@ import {
   resolveMcpProbeButtonState,
 } from '../lib/mcpProbe'
 import { useResponsiveModes } from '../lib/responsive'
+import { cn } from '@/lib/utils'
 import {
   formatRequestRateSummary,
   resolveRequestRate,
@@ -2353,11 +2355,16 @@ export default function UserConsole(): JSX.Element {
     const finalBehavior = behavior === 'smooth' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
       ? 'auto'
       : behavior
-    target.scrollIntoView({ behavior: finalBehavior, block: 'start' })
+    const headerHeight = pageRef.current?.querySelector('.user-console-header')?.getBoundingClientRect().height ?? 0
+    const navigationHeight = pageRef.current?.querySelector('.user-console-billing-nav-section')?.getBoundingClientRect().height ?? 0
+    window.scrollTo({
+      top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - headerHeight - navigationHeight - 40),
+      behavior: finalBehavior,
+    })
   }, [])
 
   useEffect(() => {
-    if (consoleEmptyState || route.name !== 'landing' || !route.section) return
+    if (consoleEmptyState || loading || route.name !== 'landing' || !route.section) return
     if (!shouldScrollLandingSectionRef.current) {
       landingScrollBehaviorRef.current = 'auto'
       return
@@ -2370,13 +2377,13 @@ export default function UserConsole(): JSX.Element {
       landingScrollBehaviorRef.current = 'auto'
     })
     return () => window.cancelAnimationFrame(frame)
-  }, [consoleEmptyState, route, scrollToLandingSection])
+  }, [consoleEmptyState, loading, route, scrollToLandingSection])
 
   useEffect(() => {
-    if (consoleEmptyState || (route.name !== 'token' && route.name !== 'tokenLogs' && route.name !== 'setup')) return
+    if (consoleEmptyState || (route.name !== 'token' && route.name !== 'tokenLogs' && route.name !== 'setup' && route.name !== 'billing')) return
     const frame = window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, behavior: 'auto' })
-      if (route.name !== 'setup') {
+      if (route.name === 'token' || route.name === 'tokenLogs') {
         detailHeadingRef.current?.focus({ preventScroll: true })
       }
     })
@@ -2858,7 +2865,7 @@ export default function UserConsole(): JSX.Element {
         onLogout={handleLogout}
       />
 
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="flex w-full min-w-0 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
       <ConnectedUpdateAvailableBanner strings={publicStrings.updateBanner} />
       {consoleUnavailable && <AccessStatePanel state="unavailable" text={text} onHome={goHome} />}
       {consoleLoggedOut && <AccessStatePanel state="logged_out" text={text} onHome={goHome} />}
@@ -2923,7 +2930,7 @@ export default function UserConsole(): JSX.Element {
               goTokens()
             }}
           >
-            <TabsList className="user-console-billing-nav-tabs h-auto flex-wrap">
+            <TabsList className="user-console-billing-nav-tabs w-full sm:w-fit">
               {consoleSectionTabs.map((option) => (
                 <TabsTrigger key={option.value} value={option.value}>
                   {option.label}
@@ -2936,7 +2943,7 @@ export default function UserConsole(): JSX.Element {
 
       {!consoleEmptyState && route.name === 'landing' && (
         <div
-          className={`user-console-landing-stack flex flex-col gap-6${showRechargePanel ? ' has-rail lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start' : ''}`}
+          className={cn('user-console-landing-stack flex min-w-0 flex-col gap-6', showRechargePanel && 'has-rail lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start')}
         >
           <section
             ref={dashboardSectionRef}
@@ -2993,14 +3000,14 @@ export default function UserConsole(): JSX.Element {
           <section
             ref={tokensSectionRef}
             id="console-tokens-section"
-            className="user-console-section user-console-tokens-section flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
+            className="user-console-section user-console-tokens-section @container min-w-0 lg:col-span-full flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
             data-console-section="tokens"
           >
-            <CardHeader>
+            <CardHeader className="flex flex-col gap-2 @3xl:grid">
               <CardTitle className="text-lg font-semibold">{text.tokens.title}</CardTitle>
               <CardDescription>{text.tokens.description}</CardDescription>
               {!showTokenListLoading && !showEmptyTokens ? (
-                <CardAction className="self-center">
+                <CardAction className="self-start @3xl:self-center">
                   <TokenListSummary
                     text={text.tokens}
                     total={tokens.length}
@@ -3011,11 +3018,11 @@ export default function UserConsole(): JSX.Element {
                 </CardAction>
               ) : null}
             </CardHeader>
-            <CardContent className="table-wrapper overflow-hidden rounded-lg border flex flex-col gap-6 p-0">
+            <CardContent className="table-wrapper flex flex-col gap-4">
               {showTokenListLoading ? (
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.loading}</div>
+                <Empty className="empty-state"><EmptyDescription>{text.tokens.loading}</EmptyDescription></Empty>
               ) : showEmptyTokens ? (
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground px-4 py-8 text-center text-sm text-muted-foreground">{text.tokens.empty}</div>
+                <Empty className="empty-state"><EmptyDescription>{text.tokens.empty}</EmptyDescription></Empty>
               ) : (
                 <>
                   <div className="hidden overflow-hidden rounded-lg border md:block">
@@ -3184,8 +3191,8 @@ export default function UserConsole(): JSX.Element {
                   {text.setup.detailAction}
                 </Button>
                 <Button type="button" variant="outline" className="user-console-detail-back" onClick={() => goTokens()}>
-                  <span className="user-console-detail-back-full">{text.detail.back}</span>
-                  <span className="user-console-detail-back-short">{text.detail.backShort}</span>
+                  <span className="user-console-detail-back-full hidden sm:inline">{text.detail.back}</span>
+                  <span className="user-console-detail-back-short sm:hidden">{text.detail.backShort}</span>
                 </Button>
               </div>
             </CardHeader>
@@ -3296,8 +3303,8 @@ export default function UserConsole(): JSX.Element {
               </div>
               <div className="user-console-detail-actions flex flex-wrap items-center gap-2">
                 <Button type="button" variant="outline" className="user-console-detail-back" onClick={() => goTokenDetail(route.id)}>
-                  <span className="user-console-detail-back-full">{text.detail.logsBack}</span>
-                  <span className="user-console-detail-back-short">{text.detail.backShort}</span>
+                  <span className="user-console-detail-back-full hidden sm:inline">{text.detail.logsBack}</span>
+                  <span className="user-console-detail-back-short sm:hidden">{text.detail.backShort}</span>
                 </Button>
               </div>
             </CardHeader>
@@ -3318,8 +3325,8 @@ export default function UserConsole(): JSX.Element {
           />
         </>
       )}
-      </div>
       <UserConsoleFooter strings={text.footer} versionState={versionState} />
+      </div>
       <TokenResetDialogs
         text={text}
         resetTokenId={resetTokenId}

@@ -1,3 +1,4 @@
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import type { AdminUserQuotaBreakdownEntry } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
 import type { AdminTranslations } from '../i18n'
@@ -66,29 +67,29 @@ export function UserDetailQuotaBreakdown({
   return (
     <>
       <div className="table-wrapper overflow-hidden rounded-lg border hidden md:flex" style={{ marginTop: 12 }}>
-        <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b user-tag-breakdown-table">
-          <thead>
-            <tr>
-              <th>{usersStrings.effectiveQuota.columns.item}</th>
-              <th>{usersStrings.effectiveQuota.columns.source}</th>
-              <th>{usersStrings.effectiveQuota.columns.effect}</th>
-              <th>
+        <Table className="user-tag-breakdown-table">
+          <TableHeader>
+            <TableRow>
+              <TableHead>{usersStrings.effectiveQuota.columns.item}</TableHead>
+              <TableHead>{usersStrings.effectiveQuota.columns.source}</TableHead>
+              <TableHead>{usersStrings.effectiveQuota.columns.effect}</TableHead>
+              <TableHead>
                 <UsageMetricLabel label={usersStrings.quota.hourly} kind="businessCalls1h" language={language} />
-              </th>
-              <th>
+              </TableHead>
+              <TableHead>
                 <UsageMetricLabel label={usersStrings.quota.daily} kind="dailyCredits" language={language} />
-              </th>
-              <th>
+              </TableHead>
+              <TableHead>
                 <UsageMetricLabel label={usersStrings.quota.monthly} kind="monthlyCredits" language={language} />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {entries.map((entry, index) => {
               const view = buildBreakdownViewModel(entry, usersStrings)
               return (
-                <tr key={`${entry.kind}:${entry.tagId ?? 'row'}:${index}`}>
-                  <td>
+                <TableRow key={`${entry.kind}:${entry.tagId ?? 'row'}:${index}`}>
+                  <TableCell>
                     <div className="token-compact-pair">
                       <div className="token-compact-field token-compact-field--wrap">
                         <span className="token-compact-value token-compact-value--wrap">{view.breakdownLabel}</span>
@@ -99,19 +100,19 @@ export function UserDetailQuotaBreakdown({
                         </div>
                       )}
                     </div>
-                  </td>
-                  <td>{view.sourceLabel}</td>
-                  <td>
+                  </TableCell>
+                  <TableCell>{view.sourceLabel}</TableCell>
+                  <TableCell>
                     <StatusBadge tone={view.effectTone}>{view.effectLabel}</StatusBadge>
-                  </td>
-                  <td>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.businessCalls1hDelta)}</td>
-                  <td>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.dailyCreditsDelta)}</td>
-                  <td>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.monthlyCreditsDelta)}</td>
-                </tr>
+                  </TableCell>
+                  <TableCell>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.businessCalls1hDelta)}</TableCell>
+                  <TableCell>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.dailyCreditsDelta)}</TableCell>
+                  <TableCell>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.monthlyCreditsDelta)}</TableCell>
+                </TableRow>
               )
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       <div className="flex flex-col gap-3 md:hidden flex md:hidden" style={{ marginTop: 12 }}>

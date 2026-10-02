@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { Icon, getGuideClientIconName } from '../lib/icons'
 import { copyText } from '../lib/clipboard'
@@ -127,22 +127,24 @@ export function MobileGuideDropdown({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="guide-select-menu w-56 p-1">
-        {labels.map((tab) => (
-          <DropdownMenuItem
-            key={tab.id}
-            className={cn('flex items-center gap-2', tab.id === active && 'bg-accent text-accent-foreground')}
-            onSelect={() => onChange(tab.id)}
-          >
-            <Icon
-              icon={getGuideClientIconName(tab.id)}
-              width={16}
-              height={16}
-              aria-hidden="true"
-              className="text-muted-foreground"
-            />
-            <span className="truncate">{tab.label}</span>
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuGroup>
+          {labels.map((tab) => (
+            <DropdownMenuItem
+              key={tab.id}
+              className={cn('flex items-center gap-2', tab.id === active && 'bg-accent text-accent-foreground')}
+              onSelect={() => onChange(tab.id)}
+            >
+              <Icon
+                icon={getGuideClientIconName(tab.id)}
+                width={16}
+                height={16}
+                aria-hidden="true"
+                className="text-muted-foreground"
+              />
+              <span className="truncate">{tab.label}</span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )

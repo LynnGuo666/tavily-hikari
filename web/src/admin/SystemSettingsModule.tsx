@@ -1,3 +1,6 @@
+import { Card } from '@/components/ui/card'
+import { Textarea } from '@/components/ui/textarea'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { useEffect, useState, type KeyboardEvent } from 'react'
 
 import {
@@ -16,7 +19,7 @@ import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import { Icon } from '../lib/icons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
@@ -679,40 +682,40 @@ export default function SystemSettingsModule({
         <p className="text-sm text-muted-foreground">{strings.form.observedClientIpNoRequests}</p>
       ) : (
         <div className="max-h-[min(18rem,36dvh)] overflow-auto rounded-md border border-border bg-background">
-          <table className="w-max min-w-full table-auto text-left text-sm">
-            <thead className="bg-muted/50 text-sm text-muted-foreground">
-              <tr>
-                <th className="whitespace-nowrap px-4 py-3">{strings.form.observedClientIpRequestColumn}</th>
+          <Table className="w-max min-w-full table-auto text-left text-sm">
+            <TableHeader className="bg-muted/50 text-sm text-muted-foreground">
+              <TableRow>
+                <TableHead className="whitespace-nowrap px-4 py-3">{strings.form.observedClientIpRequestColumn}</TableHead>
                 {observedHeaderColumns.map((header) => (
-                  <th key={header} className="whitespace-nowrap px-4 py-3 font-mono">
+                  <TableHead key={header} className="whitespace-nowrap px-4 py-3 font-mono">
                     {header}
-                  </th>
+                  </TableHead>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {observedClientIpRequests.map((item) => {
                 const valuesByHeader = new Map(
                   item.ipHeaders.map((header) => [header.name.toLowerCase(), header.value]),
                 )
                 return (
-                  <tr key={item.id} className="border-t border-border">
-                    <td className="px-4 py-3 align-top whitespace-nowrap font-mono text-[13px] leading-6">
+                  <TableRow key={item.id} className="border-t border-border">
+                    <TableCell className="px-4 py-3 align-top whitespace-nowrap font-mono text-[13px] leading-6">
                       {new Date(item.createdAt * 1000).toLocaleString('zh-CN')}
-                    </td>
+                    </TableCell>
                     {observedHeaderColumns.map((header) => (
-                      <td
+                      <TableCell
                         key={`${item.id}-${header}`}
                         className="whitespace-nowrap px-4 py-3 align-top font-mono text-[13px] leading-6"
                       >
                         {valuesByHeader.get(header) ?? '—'}
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
+                  </TableRow>
                 )
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>
@@ -752,9 +755,9 @@ export default function SystemSettingsModule({
             <div className="grid gap-2 text-sm">
               <label className="flex flex-col gap-2">
                 <span className="font-medium">{strings.form.trustedProxyCidrs}</span>
-                <textarea
+                <Textarea
                   rows={4}
-                  className="resize-y rounded-md border border-input bg-background px-3 py-2 text-sm leading-6"
+                  className="resize-y rounded-md border border- bg-background px-3 py-2 text-sm leading-6"
                   value={draftTrustedProxyCidrs}
                   disabled={saving}
                   onChange={(event) => setDraftTrustedProxyCidrs(event.target.value)}
@@ -813,8 +816,8 @@ export default function SystemSettingsModule({
                   ))}
                 </div>
               </div>
-              <textarea
-                className="h-28 resize-y rounded-md border border-input bg-background px-3 py-2 text-sm"
+              <Textarea
+                className="h-28 resize-y rounded-md border border- bg-background px-3 py-2 text-sm"
                 value={draftTrustedClientIpHeaders}
                 disabled={saving}
                 onChange={(event) => setDraftTrustedClientIpHeaders(event.target.value)}
@@ -827,7 +830,7 @@ export default function SystemSettingsModule({
                 role="status"
                 aria-live="polite"
                 style={{
-                  color: parsedTrustedClientIpHeaders.duplicateError || error ? 'hsl(var(--legacy-destructive))' : undefined,
+                  color: parsedTrustedClientIpHeaders.duplicateError || error ? 'var(--destructive)' : undefined,
                 }}
               >
                 {parsedTrustedClientIpHeaders.duplicateError ??
@@ -871,7 +874,7 @@ export default function SystemSettingsModule({
   )
 
   return (
-    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 system-settings-shell">
+    <Card className="surface panel system-settings-shell">
       <AdminLoadingRegion
         loadState={loadState}
         loadingLabel={strings.description}
@@ -891,7 +894,7 @@ export default function SystemSettingsModule({
                     <p
                       role="status"
                       aria-live="polite"
-                      style={{ color: registrationPolicy.error ? 'hsl(var(--legacy-destructive))' : undefined }}
+                      style={{ color: registrationPolicy.error ? 'var(--destructive)' : undefined }}
                     >
                       {registrationPolicy.error ?? registrationPolicy.statusText}
                     </p>
@@ -1410,9 +1413,11 @@ export default function SystemSettingsModule({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent align="end" className="system-settings-select-content">
-                    <SelectItem value="accessToken">{strings.form.upstreamProjectIdModeAccessToken}</SelectItem>
-                    <SelectItem value="passthrough">{strings.form.upstreamProjectIdModePassthrough}</SelectItem>
-                    <SelectItem value="fixed">{strings.form.upstreamProjectIdModeFixed}</SelectItem>
+                    <SelectGroup>
+                      <SelectItem value="accessToken">{strings.form.upstreamProjectIdModeAccessToken}</SelectItem>
+                      <SelectItem value="passthrough">{strings.form.upstreamProjectIdModePassthrough}</SelectItem>
+                      <SelectItem value="fixed">{strings.form.upstreamProjectIdModeFixed}</SelectItem>
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
                 <p className="system-settings-field-hint text-xs text-muted-foreground">
@@ -1535,7 +1540,7 @@ export default function SystemSettingsModule({
               className="system-settings-inline-status text-sm font-medium"
               role="status"
               aria-live="polite"
-              style={{ color: error ? 'hsl(var(--legacy-destructive))' : undefined }}
+              style={{ color: error ? 'var(--destructive)' : undefined }}
             >
               {error ?? strings.actions.applying}
             </p>
@@ -1546,6 +1551,6 @@ export default function SystemSettingsModule({
           )}
         </div>
       </AdminLoadingRegion>
-    </section>
+    </Card>
   )
 }

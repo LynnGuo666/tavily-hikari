@@ -28,7 +28,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 
 interface UserConsoleHeaderProps {
   title: string
@@ -171,39 +171,41 @@ function UserConsoleUtilityMenu(): JSX.Element {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={8}>
-        <DropdownMenuLabel>{copy.theme}</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => handleThemeSelect('light')}>
-          <SunIcon aria-hidden="true" />
-          {copy.light}
-          {mode === 'light' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeSelect('dark')}>
-          <MoonIcon aria-hidden="true" />
-          {copy.dark}
-          {mode === 'dark' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeSelect('system')}>
-          <ThemeModeIcon mode="system" />
-          {copy.system}
-          {mode === 'system' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{copy.theme}</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => handleThemeSelect('light')}>
+            <SunIcon aria-hidden="true" />
+            {copy.light}
+            {mode === 'light' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleThemeSelect('dark')}>
+            <MoonIcon aria-hidden="true" />
+            {copy.dark}
+            {mode === 'dark' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleThemeSelect('system')}>
+            <ThemeModeIcon mode="system" />
+            {copy.system}
+            {mode === 'system' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
+          </DropdownMenuItem>
 
-        <DropdownMenuSeparator />
+          <DropdownMenuSeparator />
 
-        <DropdownMenuLabel>{strings.common.languageLabel}</DropdownMenuLabel>
-        {languageOptions.map((option) => {
-          const meta = LANGUAGE_META[option.value]
-          const isActive = option.value === language
-          return (
-            <DropdownMenuItem key={option.value} onClick={() => handleLanguageSelect(option.value)}>
-              <span className="language-flag" aria-hidden="true">
-                <Icon icon={meta.icon} width={18} height={18} />
-              </span>
-              {strings.common[option.labelKey]}
-              {isActive ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
-            </DropdownMenuItem>
-          )
-        })}
+          <DropdownMenuLabel>{strings.common.languageLabel}</DropdownMenuLabel>
+          {languageOptions.map((option) => {
+            const meta = LANGUAGE_META[option.value]
+            const isActive = option.value === language
+            return (
+              <DropdownMenuItem key={option.value} onClick={() => handleLanguageSelect(option.value)}>
+                <span className="language-flag" aria-hidden="true">
+                  <Icon icon={meta.icon} width={18} height={18} />
+                </span>
+                {strings.common[option.labelKey]}
+                {isActive ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
+              </DropdownMenuItem>
+            )
+          })}
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -274,53 +276,55 @@ function UserConsoleAccountMenu(props: UserConsoleAccountMenuProps): JSX.Element
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={8} className="w-56">
-        <div className="flex items-center gap-2.5 px-2 py-2">
-          <UserConsoleAvatar
-            avatarUrl={props.sessionAvatarUrl}
-            displayName={accountName}
-            className={`${AVATAR_FALLBACK_CLASS} size-8`}
-            imageClassName={`${AVATAR_BASE_CLASS} size-8`}
-          />
-          <div className="flex min-w-0 flex-col">
-            <span className="truncate text-sm font-medium">{accountName}</span>
-            {accountMeta ? <span className="truncate text-xs text-muted-foreground">{accountMeta}</span> : null}
+        <DropdownMenuGroup>
+          <div className="flex items-center gap-2.5 px-2 py-2">
+            <UserConsoleAvatar
+              avatarUrl={props.sessionAvatarUrl}
+              displayName={accountName}
+              className={`${AVATAR_FALLBACK_CLASS} size-8`}
+              imageClassName={`${AVATAR_BASE_CLASS} size-8`}
+            />
+            <div className="flex min-w-0 flex-col">
+              <span className="truncate text-sm font-medium">{accountName}</span>
+              {accountMeta ? <span className="truncate text-xs text-muted-foreground">{accountMeta}</span> : null}
+            </div>
           </div>
-        </div>
 
-        {(hasAdminAction || props.logoutVisible) && <DropdownMenuSeparator />}
+          {(hasAdminAction || props.logoutVisible) && <DropdownMenuSeparator />}
 
-        {hasAdminAction && (
-          <DropdownMenuItem
-            onSelect={() => {
-              if (props.adminHref) {
-                window.location.href = props.adminHref
-              }
-            }}
-          >
-            <CrownIcon aria-hidden="true" />
-            {props.adminMenuLabel ?? props.adminActionLabel}
-          </DropdownMenuItem>
-        )}
+          {hasAdminAction && (
+            <DropdownMenuItem
+              onSelect={() => {
+                if (props.adminHref) {
+                  window.location.href = props.adminHref
+                }
+              }}
+            >
+              <CrownIcon aria-hidden="true" />
+              {props.adminMenuLabel ?? props.adminActionLabel}
+            </DropdownMenuItem>
+          )}
 
-        {props.logoutVisible && (
-          <DropdownMenuItem
-            variant="destructive"
-            onSelect={(event) => {
-              event.preventDefault()
-              if (!props.isLoggingOut) {
-                props.onLogout()
-              }
-            }}
-            disabled={props.isLoggingOut}
-          >
-            {props.isLoggingOut ? (
-              <LoaderCircleIcon className="animate-spin" aria-hidden="true" />
-            ) : (
-              <LogOutIcon aria-hidden="true" />
-            )}
-            {props.isLoggingOut ? props.loggingOutLabel : props.logoutLabel}
-          </DropdownMenuItem>
-        )}
+          {props.logoutVisible && (
+            <DropdownMenuItem
+              variant="destructive"
+              onSelect={(event) => {
+                event.preventDefault()
+                if (!props.isLoggingOut) {
+                  props.onLogout()
+                }
+              }}
+              disabled={props.isLoggingOut}
+            >
+              {props.isLoggingOut ? (
+                <LoaderCircleIcon className="animate-spin" aria-hidden="true" />
+              ) : (
+                <LogOutIcon aria-hidden="true" />
+              )}
+              {props.isLoggingOut ? props.loggingOutLabel : props.logoutLabel}
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -330,8 +334,8 @@ export default function UserConsoleHeader(props: UserConsoleHeaderProps): JSX.El
   const desktopSummary = props.subtitle
 
   return (
-    <section className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+    <section className="user-console-header sticky top-0 z-10 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="flex w-full flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
         <div className="user-console-header-topline user-console-header-main flex min-w-0 items-center gap-3">
           <BrandLockup title="Tavily Hikari" variant="responsive" />
           <span className="hidden rounded-full border bg-muted px-2 py-0.5 text-xs text-muted-foreground sm:inline">
@@ -357,11 +361,10 @@ export default function UserConsoleHeader(props: UserConsoleHeaderProps): JSX.El
         </div>
 
         <div
-          className="user-console-header-actions-compact flex w-full items-center justify-between gap-2 md:hidden"
+          className="user-console-header-actions-compact flex w-full min-w-0 flex-wrap items-center justify-between gap-2 md:hidden"
           aria-label={props.sessionLabel}
         >
-          <span className="min-w-0 truncate text-sm text-muted-foreground">{desktopSummary}</span>
-          <div className="user-console-header-compact-tools flex items-center gap-2">
+          <div className="user-console-header-compact-tools flex shrink-0 items-center gap-2">
             <UserConsoleAnnouncementsTrigger
               announcementsLabel={props.announcementsLabel}
               announcementCount={props.announcementCount}
@@ -369,7 +372,7 @@ export default function UserConsoleHeader(props: UserConsoleHeaderProps): JSX.El
             />
             <UserConsoleUtilityMenu />
           </div>
-          <div className="user-console-header-compact-account flex items-center">
+          <div className="user-console-header-compact-account flex min-w-0 items-center">
             <UserConsoleAccountMenu {...props} />
           </div>
         </div>

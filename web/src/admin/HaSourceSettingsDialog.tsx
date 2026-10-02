@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { CircleAlert } from 'lucide-react'
 
 import type {
@@ -13,9 +13,10 @@ import type { AdminTranslations } from '../i18n'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import SegmentedTabs from '@/components/SegmentedTabs'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 
 type SubmitFailureState = {
   title: string
@@ -121,6 +122,7 @@ export default function HaSourceSettingsDialog({
   const [success, setSuccess] = useState<string | null>(null)
   const [technicalDetailsOpen, setTechnicalDetailsOpen] = useState(false)
 
+  const fieldId = useId()
   const draft = useMemo(() => toDraftSourceSettings(status), [status])
   const canApplyToEdgeone = status?.role === 'full_master' || status?.role === 'provisional_master'
 
@@ -241,17 +243,17 @@ export default function HaSourceSettingsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl" portalContainer={dialogPortalContainer}>
+      <DialogContent className="sm:max-w-2xl" portalContainer={dialogPortalContainer}>
         <DialogHeader>
           <DialogTitle>{strings.sourceDialogTitle}</DialogTitle>
           <DialogDescription>{strings.sourceDialogDescription}</DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-2">
+        <FieldGroup className="gap-4 py-2">
           <dl className="grid gap-3 rounded-[18px] border border-border/60 bg-muted/30 px-4 py-3 text-sm">
             <div className="grid gap-1">
               <dt className="font-semibold">{strings.summaryCurrentOrigin}</dt>
-              <dd className="text-muted-foreground">{currentTargetLabel}</dd>
+              <dd className="break-all text-muted-foreground">{currentTargetLabel}</dd>
             </div>
             <div className="grid gap-1">
               <dt className="font-semibold">{strings.summaryCurrentSource}</dt>
@@ -277,11 +279,11 @@ export default function HaSourceSettingsDialog({
             />
           </div>
 
-          <div className="ha-source-selection-card text-sm">
+          <div className="ha-source-selection-card grid min-w-0 gap-2 rounded-lg border bg-muted/30 p-3 text-sm">
             <span className="font-semibold">
               {sourceKind === 'direct' ? strings.sourceSelectedDirectLabel : strings.sourceSelectedOriginGroupLabel}
             </span>
-            <code className="ha-source-selection-preview">{formatSourceSelectionSummary(
+            <code className="ha-source-selection-preview break-all text-xs">{formatSourceSelectionSummary(
               sourceKind,
               directOriginScheme,
               directOriginHost,
@@ -295,8 +297,8 @@ export default function HaSourceSettingsDialog({
           {sourceKind === 'direct' ? (
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <label className="grid gap-2">
-                  <span className="text-sm font-semibold">{strings.sourceSchemeLabel}</span>
+                <Field className="gap-2">
+                  <FieldLabel htmlFor={`${fieldId}-scheme`}>{strings.sourceSchemeLabel}</FieldLabel>
                   <Select
                     value={directOriginScheme}
                     disabled={saving}
@@ -305,25 +307,28 @@ export default function HaSourceSettingsDialog({
                       setDirectOriginScheme(value as HaSourceScheme)
                     }}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger id={`${fieldId}-scheme`} aria-label={strings.sourceSchemeLabel} className="w-full">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      {sourceSchemeOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
+                    <SelectContent position="popper">
+                      <SelectGroup>
+                        {sourceSchemeOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
-                </label>
+                </Field>
                 <p className="text-xs text-muted-foreground">{strings.sourceDirectHint}</p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-[minmax(0,1.5fr)_minmax(10rem,0.6fr)]">
-                <label className="grid gap-2">
-                  <span className="text-sm font-semibold">{strings.sourceHostLabel}</span>
+                <Field className="gap-2">
+                  <FieldLabel htmlFor={`${fieldId}-host`}>{strings.sourceHostLabel}</FieldLabel>
                   <Input
+                    id={`${fieldId}-host`}
                     ref={directHostInputRef}
                     value={directOriginHost}
                     disabled={saving}
@@ -341,10 +346,11 @@ export default function HaSourceSettingsDialog({
                       {directHostError}
                     </p>
                   )}
-                </label>
-                <label className="grid gap-2">
-                  <span className="text-sm font-semibold">{strings.sourcePortLabel}</span>
+                </Field>
+                <Field className="gap-2">
+                  <FieldLabel htmlFor={`${fieldId}-port`}>{strings.sourcePortLabel}</FieldLabel>
                   <Input
+                    id={`${fieldId}-port`}
                     ref={directPortInputRef}
                     inputMode="numeric"
                     value={directOriginPort}
@@ -363,15 +369,16 @@ export default function HaSourceSettingsDialog({
                       {directPortError}
                     </p>
                   )}
-                </label>
+                </Field>
               </div>
             </div>
           ) : (
             <div className="grid gap-2">
-              <label className="grid gap-2">
-                <span className="text-sm font-semibold">{strings.sourceGroupIdLabel}</span>
+              <Field className="gap-2">
+                <FieldLabel htmlFor={`${fieldId}-group`}>{strings.sourceGroupIdLabel}</FieldLabel>
                 <Input
-                  ref={originGroupInputRef}
+                  id={`${fieldId}-group`}
+                    ref={originGroupInputRef}
                   value={originGroupId}
                   disabled={saving}
                   aria-invalid={originGroupError ? true : undefined}
@@ -383,7 +390,7 @@ export default function HaSourceSettingsDialog({
                   placeholder="eo-group-123"
                   className={originGroupError ? 'border-destructive focus-visible:ring-destructive' : undefined}
                 />
-              </label>
+              </Field>
               {originGroupError && (
                 <p id="ha-source-origin-group-error" className="text-sm font-medium text-destructive">
                   {originGroupError}
@@ -396,7 +403,7 @@ export default function HaSourceSettingsDialog({
           <div className="grid gap-1 text-sm">
             <div className="flex flex-wrap items-center gap-2">
               <span className="font-semibold">{strings.summaryExpectedOrigin}</span>
-              <code className="rounded-full bg-muted px-2 py-1 text-xs">{formatTargetPreview({
+              <code className="break-all rounded-md bg-muted px-2 py-1 text-xs">{formatTargetPreview({
                 sourceKind,
                 directOriginScheme,
                 directOriginHost: sourceKind === 'direct' ? directOriginHost.trim() : null,
@@ -457,7 +464,7 @@ export default function HaSourceSettingsDialog({
               {success}
             </p>
           )}
-        </div>
+        </FieldGroup>
 
         <DialogFooter className="gap-2 sm:justify-end">
           <Button type="button" variant="outline" disabled={saving} onClick={() => onOpenChange(false)}>

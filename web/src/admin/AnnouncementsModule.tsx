@@ -1,3 +1,5 @@
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
+import { Textarea } from '@/components/ui/textarea'
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
@@ -18,7 +20,7 @@ import MarkdownContent from '../components/MarkdownContent'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import SegmentedTabs, { type SegmentedTabsOption } from '@/components/SegmentedTabs'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 import UserConsoleAnnouncements from '../user-console/Announcements'
 import { EN as USER_CONSOLE_EN, ZH as USER_CONSOLE_ZH } from '../user-console/text'
 import { Icon } from '../lib/icons'
@@ -350,8 +352,8 @@ function MilkdownPreviewContent({
       ].filter(Boolean).join(' ')}
       onChange={() => {}}
       fallback={(
-        <textarea
-          className="textarea announcements-body-fallback text-sm text-muted-foreground announcements-body-fallback--readonly"
+        <Textarea
+          className="announcements-body-fallback text-sm text-muted-foreground announcements-body-fallback--readonly"
           value={value}
           aria-label={label}
           rows={5}
@@ -443,8 +445,10 @@ function AnnouncementEditorPanel({
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="modal">{strings.modal}</SelectItem>
-            <SelectItem value="ticker">{strings.ticker}</SelectItem>
+            <SelectGroup>
+              <SelectItem value="modal">{strings.modal}</SelectItem>
+              <SelectItem value="ticker">{strings.ticker}</SelectItem>
+            </SelectGroup>
           </SelectContent>
         </Select>
       </label>
@@ -517,10 +521,10 @@ function TextareaFallback({
   onChange: (value: string) => void
 }): JSX.Element {
   return (
-    <textarea
+    <Textarea
       id={id}
       name={name}
-      className="textarea announcements-body-fallback text-sm text-muted-foreground"
+      className="announcements-body-fallback text-sm text-muted-foreground"
       value={value}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
@@ -617,7 +621,7 @@ function AnnouncementsListPanel({
         ) : (
           <>
             <div className="table-wrapper overflow-hidden rounded-lg border announcements-table-wrapper overflow-hidden rounded-lg border hidden md:flex">
-              <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b announcements-table w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:align-middle [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_td]:align-middle [&_tbody_tr]:border-b">
+              <Table className="announcements-table">
                 <colgroup>
                   <col className="announcements-col-title" />
                   <col className="announcements-col-display" />
@@ -625,31 +629,31 @@ function AnnouncementsListPanel({
                   <col className="announcements-col-updated" />
                   <col className="announcements-col-actions" />
                 </colgroup>
-                <thead>
-                  <tr>
-                    <th>{strings.table.announcement}</th>
-                    <th>{strings.table.display}</th>
-                    <th>{strings.table.status}</th>
-                    <th>{strings.table.updated}</th>
-                    <th>{strings.table.actions}</th>
-                  </tr>
-                </thead>
-                <tbody>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{strings.table.announcement}</TableHead>
+                    <TableHead>{strings.table.display}</TableHead>
+                    <TableHead>{strings.table.status}</TableHead>
+                    <TableHead>{strings.table.updated}</TableHead>
+                    <TableHead>{strings.table.actions}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {items.map((item) => (
-                    <tr key={item.id}>
-                      <td>
+                    <TableRow key={item.id}>
+                      <TableCell>
                         <div className="announcements-title-cell">
                           <AnnouncementListPrimaryCopy item={item} />
                         </div>
-                      </td>
-                      <td>{displayLabel(item.displayKind, strings)}</td>
-                      <td>
+                      </TableCell>
+                      <TableCell>{displayLabel(item.displayKind, strings)}</TableCell>
+                      <TableCell>
                         <StatusBadge tone={statusTone(item.status)}>
                           {strings.status[item.status]}
                         </StatusBadge>
-                      </td>
-                      <td>{formatTimestamp(item.updatedAt, language)}</td>
-                      <td>
+                      </TableCell>
+                      <TableCell>{formatTimestamp(item.updatedAt, language)}</TableCell>
+                      <TableCell>
                         <div className="table-actions announcements-actions">
                           <Button type="button" variant="outline" size="xs" onClick={() => onPreview(item)}>
                             {strings.actions.preview}
@@ -679,11 +683,11 @@ function AnnouncementsListPanel({
                             </Button>
                           ) : null}
                         </div>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
             <div className="flex flex-col gap-3 md:hidden flex md:hidden">
               {items.map((item) => {

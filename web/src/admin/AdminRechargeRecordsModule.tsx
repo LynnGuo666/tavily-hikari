@@ -1,3 +1,8 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Field, FieldLabel, FieldGroup } from '@/components/ui/field'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { useEffect, useMemo, useState } from 'react'
 
 import {
@@ -12,6 +17,7 @@ import {
   type AdminRechargeStatus,
   type AdminRechargeViewMode,
 } from '../api'
+import { StatusBadge } from '../components/StatusBadge'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -206,14 +212,14 @@ export default function AdminRechargeRecordsModule({
   if (data && !data.hasRechargeOrders) {
     return (
       <section className="admin-recharge-module admin-recharge-module--empty" aria-label={strings.title}>
-        <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{strings.emptyHiddenDescription}</div>
+        <Empty className="empty-state"><EmptyDescription>{strings.emptyHiddenDescription}</EmptyDescription></Empty>
       </section>
     )
   }
 
   return (
-    <section className="admin-recharge-module" aria-label={strings.title}>
-      <div className="admin-recharge-summary" aria-label={strings.title}>
+    <section className="admin-recharge-module flex min-w-0 flex-col gap-4" aria-label={strings.title}>
+      <div className="admin-recharge-summary flex flex-wrap gap-3 text-sm text-muted-foreground" aria-label={strings.title}>
         <span>{formatTemplate(strings.summary.orders, { total: summary.total })}</span>
         <span>{formatTemplate(strings.summary.actionable, { count: summary.actionable })}</span>
         <span>{totpSummaryText}</span>
@@ -224,10 +230,9 @@ export default function AdminRechargeRecordsModule({
         </p>
       )}
 
-      <div className="admin-recharge-toolbar">
-        <div className="admin-recharge-toolbar-primary">
-          <label className="admin-recharge-search-field" htmlFor="admin-recharge-search">
-            <span className="sr-only">{strings.searchLabel}</span>
+      <div className="admin-recharge-toolbar flex flex-col gap-4">
+        <div className="admin-recharge-toolbar-primary flex flex-wrap items-center gap-3">
+          <Field className="admin-recharge-search-field"><FieldLabel htmlFor="admin-recharge-search" className="sr-only">{strings.searchLabel}</FieldLabel>
             <Input
               id="admin-recharge-search"
               name="admin_recharge_search"
@@ -235,21 +240,21 @@ export default function AdminRechargeRecordsModule({
               onChange={(event) => { setPage(1); setQuery(event.target.value) }}
               placeholder={strings.searchPlaceholder}
             />
-          </label>
-          <div className="segmented-control" role="group" aria-label={strings.viewAriaLabel}>
-            <Button type="button" variant={view === 'flat' ? 'default' : 'outline'} onClick={() => setView('flat')}>{strings.flatView}</Button>
-            <Button type="button" variant={view === 'user' ? 'default' : 'outline'} onClick={() => setView('user')}>{strings.userView}</Button>
-          </div>
+          </Field>
+          <ToggleGroup type="single" value={view} onValueChange={(value) => { if (value) setView(value as AdminRechargeViewMode) }} variant="outline" aria-label={strings.viewAriaLabel}>
+            <ToggleGroupItem value="flat">{strings.flatView}</ToggleGroupItem>
+            <ToggleGroupItem value="user">{strings.userView}</ToggleGroupItem>
+          </ToggleGroup>
         </div>
-        <div className="admin-recharge-filter-row">
-          <label className="admin-recharge-filter-field" htmlFor="admin-recharge-status">
-            <span>{strings.statusFilterLabel}</span>
-            <select id="admin-recharge-status" name="admin_recharge_status" value={status} onChange={(event) => { setPage(1); setStatus(event.target.value as AdminRechargeStatus | 'all') }}>
-              {STATUS_OPTIONS.map((item) => <option key={item} value={item}>{item === 'all' ? strings.allStatuses : statusLabel(item, strings)}</option>)}
-            </select>
-          </label>
-          <label className="admin-recharge-filter-field" htmlFor="admin-recharge-start-date">
-            <span>{strings.startDateFilterLabel}</span>
+        <FieldGroup className="admin-recharge-filter-row grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-status">{strings.statusFilterLabel}</FieldLabel>
+            <Select name="admin_recharge_status"
+              value={status}
+              onValueChange={(value) => { setPage(1); setStatus(value as AdminRechargeStatus | 'all') }}><SelectTrigger id="admin-recharge-status" className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectGroup>
+              {STATUS_OPTIONS.map((item) => <SelectItem key={item} value={item}>{item === 'all' ? strings.allStatuses : statusLabel(item, strings)}</SelectItem>)}
+            </SelectGroup></SelectContent></Select>
+          </Field>
+          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-start-date">{strings.startDateFilterLabel}</FieldLabel>
             <Input
               id="admin-recharge-start-date"
               name="admin_recharge_start_date"
@@ -258,9 +263,8 @@ export default function AdminRechargeRecordsModule({
               max={endDate || undefined}
               onChange={(event) => { setPage(1); setStartDate(event.target.value) }}
             />
-          </label>
-          <label className="admin-recharge-filter-field" htmlFor="admin-recharge-end-date">
-            <span>{strings.endDateFilterLabel}</span>
+          </Field>
+          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-end-date">{strings.endDateFilterLabel}</FieldLabel>
             <Input
               id="admin-recharge-end-date"
               name="admin_recharge_end_date"
@@ -269,94 +273,96 @@ export default function AdminRechargeRecordsModule({
               min={startDate || undefined}
               onChange={(event) => { setPage(1); setEndDate(event.target.value) }}
             />
-          </label>
-          <label className="admin-recharge-filter-field" htmlFor="admin-recharge-sort">
-            <span>{strings.sortFilterLabel}</span>
-            <select id="admin-recharge-sort" name="admin_recharge_sort" value={sort} onChange={(event) => setSort(event.target.value as AdminRechargeSort)}>
-              {SORT_OPTIONS.map((item) => <option key={item} value={item}>{sortLabel(item, strings)}</option>)}
-            </select>
-          </label>
-          <label className="admin-recharge-filter-field" htmlFor="admin-recharge-order">
-            <span>{strings.orderFilterLabel}</span>
-            <select id="admin-recharge-order" name="admin_recharge_order" value={order} onChange={(event) => setOrder(event.target.value as 'asc' | 'desc')}>
-              <option value="desc">{strings.orderDesc}</option>
-              <option value="asc">{strings.orderAsc}</option>
-            </select>
-          </label>
-        </div>
+          </Field>
+          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-sort">{strings.sortFilterLabel}</FieldLabel>
+            <Select name="admin_recharge_sort"
+              value={sort}
+              onValueChange={(value) => setSort(value as AdminRechargeSort)}><SelectTrigger id="admin-recharge-sort" className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectGroup>
+              {SORT_OPTIONS.map((item) => <SelectItem key={item} value={item}>{sortLabel(item, strings)}</SelectItem>)}
+            </SelectGroup></SelectContent></Select>
+          </Field>
+          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-order">{strings.orderFilterLabel}</FieldLabel>
+            <Select name="admin_recharge_order"
+              value={order}
+              onValueChange={(value) => setOrder(value as 'asc' | 'desc')}><SelectTrigger id="admin-recharge-order" className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectGroup>
+              <SelectItem value="desc">{strings.orderDesc}</SelectItem>
+              <SelectItem value="asc">{strings.orderAsc}</SelectItem>
+            </SelectGroup></SelectContent></Select>
+          </Field>
+        </FieldGroup>
       </div>
 
       <AdminLoadingRegion loadState={loadState} errorLabel={error} loadingLabel={strings.loading}>
         {view === 'user' ? (
-          <div className="admin-recharge-group-grid">
+          <div className="admin-recharge-group-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {(data?.groups ?? []).map((group) => (
-              <button key={group.user.id} type="button" className="admin-recharge-user-card" onClick={() => openUser(group.user.id)}>
+              <Button variant="outline" key={group.user.id} type="button" className="admin-recharge-user-card h-auto w-full items-start whitespace-normal text-left flex flex-col gap-2 p-4 [&_span]:text-xs [&_span]:text-muted-foreground" onClick={() => openUser(group.user.id)}>
                 <strong>{userLabel(group.user)}</strong>
                 <span>{formatTemplate(strings.groupSummary, { orders: group.orderCount, paid: group.paidOrderCount, refunded: group.refundedOrderCount })}</span>
                 <span>{formatTemplate(strings.groupCredits, { credits: group.totalCredits.toLocaleString(), amount: (group.totalMoneyCents / 100).toFixed(2) })}</span>
-              </button>
+              </Button>
             ))}
           </div>
         ) : (
-          <div className="admin-recharge-table-scroll">
-            <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:align-middle [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_td]:align-middle [&_tbody_tr]:border-b admin-recharge-table">
-              <thead>
-                <tr>
-                  <th>{strings.table.user}</th>
-                  <th>{strings.table.order}</th>
-                  <th>{strings.table.status}</th>
-                  <th>{strings.table.amount}</th>
-                  <th>{strings.table.finalAmount}</th>
-                  <th>{strings.table.createdAt}</th>
-                  <th>{strings.table.paidAt}</th>
-                  <th>{strings.table.refundedAt}</th>
-                  <th>{strings.table.actions}</th>
-                </tr>
-              </thead>
-              <tbody>
+          <div className="admin-recharge-table-scroll min-w-0 max-w-full rounded-lg border">
+            <Table className="admin-recharge-table">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{strings.table.user}</TableHead>
+                  <TableHead>{strings.table.order}</TableHead>
+                  <TableHead>{strings.table.status}</TableHead>
+                  <TableHead>{strings.table.amount}</TableHead>
+                  <TableHead>{strings.table.finalAmount}</TableHead>
+                  <TableHead>{strings.table.createdAt}</TableHead>
+                  <TableHead>{strings.table.paidAt}</TableHead>
+                  <TableHead>{strings.table.refundedAt}</TableHead>
+                  <TableHead>{strings.table.actions}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {(data?.items ?? []).map((item) => (
-                  <tr key={item.outTradeNo}>
-                    <td><button type="button" className="link-button admin-recharge-user-link" onClick={() => openUser(item.user.id)}>{userLabel(item.user)}</button></td>
-                    <td>
-                      <div className="admin-recharge-order-cell">
+                  <TableRow key={item.outTradeNo}>
+                    <TableCell><Button type="button" variant="link" size="sm" className="h-auto p-0 admin-recharge-user-link" onClick={() => openUser(item.user.id)}>{userLabel(item.user)}</Button></TableCell>
+                    <TableCell>
+                      <div className="admin-recharge-order-cell flex flex-col gap-1 [&_code]:text-xs">
                         <span>{formatTemplate(strings.orderCredits, { credits: item.credits.toLocaleString(), months: item.months })}</span>
                         <code>{item.outTradeNo}</code>
                       </div>
-                    </td>
-                    <td><span className={`status-pill status-${item.status}`}>{statusLabel(item.status, strings)}</span></td>
-                    <td>{formatTemplate(strings.amountLdc, { amount: item.money })}</td>
-                    <td>
-                      <div className="admin-recharge-order-cell">
+                    </TableCell>
+                    <TableCell><StatusBadge tone={item.status === 'paid' ? 'success' : item.status === 'failed' ? 'error' : item.status === 'pending' || item.status === 'refunding' ? 'warning' : 'neutral'}>{statusLabel(item.status, strings)}</StatusBadge></TableCell>
+                    <TableCell>{formatTemplate(strings.amountLdc, { amount: item.money })}</TableCell>
+                    <TableCell>
+                      <div className="admin-recharge-order-cell flex flex-col gap-1 [&_code]:text-xs">
                         <span>{formatTemplate(strings.finalAmountLdc, { amount: (item.finalMoneyCents / 100).toFixed(2) })}</span>
                         {item.monthEndClampApplied ? (
-                          <span className="admin-recharge-order-meta">{strings.monthEndClampApplied}</span>
+                          <span className="admin-recharge-order-meta text-xs text-muted-foreground">{strings.monthEndClampApplied}</span>
                         ) : (
-                          <span className="admin-recharge-order-meta">{strings.monthEndClampInactive}</span>
+                          <span className="admin-recharge-order-meta text-xs text-muted-foreground">{strings.monthEndClampInactive}</span>
                         )}
                       </div>
-                    </td>
-                    <td>{formatDate(item.createdAt)}</td>
-                    <td>{formatDate(item.paidAt)}</td>
-                    <td>{formatDate(item.refundedAt)}</td>
-                    <td>
+                    </TableCell>
+                    <TableCell>{formatDate(item.createdAt)}</TableCell>
+                    <TableCell>{formatDate(item.paidAt)}</TableCell>
+                    <TableCell>{formatDate(item.refundedAt)}</TableCell>
+                    <TableCell>
                       {item.status === 'paid' ? (
-                        <div className="admin-recharge-actions">
+                        <div className="admin-recharge-actions flex flex-wrap gap-2">
                           <Button type="button" size="sm" variant="outline" className="admin-recharge-action-button" onClick={() => openRefundDialog(item, 'refund')}>{strings.actions.refund}</Button>
                           <Button type="button" size="sm" variant="outline" className="admin-recharge-action-button" onClick={() => openRefundDialog(item, 'refundOnly')}>{strings.actions.refundOnly}</Button>
                         </div>
                       ) : (
                         <span className="admin-recharge-action-state">{statusActionLabel(item, strings)}</span>
                       )}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         )}
       </AdminLoadingRegion>
 
-      <div className="admin-recharge-pagination">
+      <div className="admin-recharge-pagination flex flex-wrap items-center justify-center gap-3 border-t pt-4 text-sm">
         <Button type="button" variant="outline" disabled={page <= 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>{strings.actions.previousPage}</Button>
         <span>{formatTemplate(strings.paginationSummary, { page: data?.page ?? page, total: data?.total ?? 0 })}</span>
         <Button type="button" variant="outline" disabled={!data || page * data.perPage >= data.total} onClick={() => setPage((value) => value + 1)}>{strings.actions.nextPage}</Button>
@@ -501,11 +507,11 @@ export function AdminRechargeRefundDialogBody({
     <>
       {header}
       {refundDialogBlocked ? (
-        <div className="admin-recharge-setup-callout" role="status" aria-live="polite">
+        <div className="admin-recharge-setup-callout rounded-lg border bg-muted/50 p-3 text-sm" role="status" aria-live="polite">
           {blockedCallout}
         </div>
       ) : (
-        <label className="admin-recharge-totp-field" htmlFor="admin-recharge-refund-totp">
+        <label className="admin-recharge-totp-field flex flex-col gap-2 text-sm font-medium" htmlFor="admin-recharge-refund-totp">
           <span>{strings.confirm.totpLabel}</span>
           <Input
             id="admin-recharge-refund-totp"
@@ -525,7 +531,7 @@ export function AdminRechargeRefundDialogBody({
       )}
       {refundDialogStatus && (
         <p
-          className={refundError ? 'admin-recharge-dialog-error' : 'admin-recharge-dialog-status'}
+          className={refundError ? 'admin-recharge-dialog-error text-sm text-destructive' : 'admin-recharge-dialog-status text-sm text-muted-foreground'}
           role="status"
           aria-live="polite"
         >

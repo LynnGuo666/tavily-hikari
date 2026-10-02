@@ -57,14 +57,11 @@ export const DEFAULT_VISIBLE_CREDIT_SERIES = [
   ...DASHBOARD_CREDIT_SERIES_ORDER,
 ] as const satisfies ReadonlyArray<DashboardCreditSeriesId>
 
-export const DASHBOARD_AREA_CHART_STACK_ID = 'area'
-export const DASHBOARD_AREA_CHART_TENSION = 0.18
 export const DASHBOARD_REALTIME_BUCKET_SECONDS = 5 * 60
 export const DASHBOARD_REALTIME_VISIBLE_BUCKETS = 73
 export const DASHBOARD_REALTIME_RETAINED_BUCKETS = 589
 export const DASHBOARD_COMPARISON_BUCKET_SECONDS = 60 * 60
 
-export type DashboardAreaFillTarget = 'origin' | '-1'
 
 export interface DashboardHourlyChartPreferences {
   chartMode: DashboardHourlyChartMode
@@ -95,18 +92,6 @@ export interface DashboardVisibleWindow {
   rangeStart: number
   rangeEnd: number
   slots: DashboardHourlyRangeSlot[]
-}
-
-export interface DashboardAreaStackLayer<T extends string> {
-  seriesId: T
-  type: 'line'
-  fill: DashboardAreaFillTarget
-  stack: typeof DASHBOARD_AREA_CHART_STACK_ID
-  tension: typeof DASHBOARD_AREA_CHART_TENSION
-  borderWidth: 2
-  pointRadius: 0
-  pointHoverRadius: 3
-  spanGaps: false
 }
 
 function positiveModulo(value: number, divisor: number): number {
@@ -317,42 +302,6 @@ export function buildRollingHourlyWindow(window: DashboardHourlyRequestWindow): 
   const rangeStart = latestHourStart - 24 * bucketSeconds
 
   return buildAggregatedHourlySlots(window, rangeStart, rangeEnd, bucketSeconds)
-}
-
-export function getCurrentPartialHourHighlightIndex(
-  chartMode: DashboardHourlyChartMode,
-  slots: ReadonlyArray<DashboardHourlyRangeSlot>,
-): number | null {
-  if (slots.length === 0) return null
-  return chartMode === 'results' || chartMode === 'types' || chartMode === 'credits' ? slots.length - 1 : null
-}
-
-export function getDashboardHourlyBarChartKey(
-  chartMode: DashboardHourlyChartMode,
-  slots: ReadonlyArray<DashboardHourlyRangeSlot>,
-  markerStyleToken = '',
-): string {
-  const highlightIndex = getCurrentPartialHourHighlightIndex(chartMode, slots)
-  const styleSuffix = markerStyleToken.length > 0 ? `:${markerStyleToken}` : ''
-  return highlightIndex == null
-    ? `${chartMode}:no-current-partial-hour:${slots.length}${styleSuffix}`
-    : `${chartMode}:current-partial-hour-${highlightIndex}:${slots.length}${styleSuffix}`
-}
-
-export function buildDashboardAreaStackLayers<T extends string>(
-  visibleSeries: ReadonlyArray<T>,
-): DashboardAreaStackLayer<T>[] {
-  return visibleSeries.map((seriesId, index) => ({
-    seriesId,
-    type: 'line',
-    fill: index === 0 ? 'origin' : '-1',
-    stack: DASHBOARD_AREA_CHART_STACK_ID,
-    tension: DASHBOARD_AREA_CHART_TENSION,
-    borderWidth: 2,
-    pointRadius: 0,
-    pointHoverRadius: 3,
-    spanGaps: false,
-  }))
 }
 
 export function getCurrentDayHourlyBuckets(

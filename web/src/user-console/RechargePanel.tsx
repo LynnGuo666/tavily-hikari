@@ -1,3 +1,4 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
 import type { RechargeConfig, RechargeOrder, RechargeQuote } from '../api'
 import type { UserDashboard } from '../api'
 import { CircleHelp, Eye, Minus, Plus } from 'lucide-react'
@@ -233,11 +234,11 @@ export default function RechargePanel({
   }
 
   return (
-    <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-section user-console-recharge-section gap-0 py-0">
-      <CardHeader className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-section-header user-console-recharge-header flex-row flex-wrap items-start justify-between gap-3 border-b p-5">
-        <div className="min-w-0">
+    <Card className="surface panel user-console-section user-console-recharge-section @container gap-0 py-0">
+      <CardHeader className="panel-header user-console-section-header user-console-recharge-header flex flex-row items-start justify-between gap-3 border-b p-4">
+        <div className="min-w-0 flex-1">
           <CardTitle className="text-base font-semibold">{text.title}</CardTitle>
-          <CardDescription className="panel-description text-sm text-muted-foreground mt-1 text-sm">{text.description}</CardDescription>
+          <CardDescription className="panel-description mt-1">{text.description}</CardDescription>
         </div>
         {config?.enabled ? (
           <StatusBadge tone="success">{text.enabled}</StatusBadge>
@@ -246,10 +247,10 @@ export default function RechargePanel({
         )}
       </CardHeader>
 
-      <div className={cn('user-console-recharge-grid p-5', showOrders ? 'grid gap-5 lg:grid-cols-[1fr_320px]' : 'user-console-recharge-grid-composer')}>
+      <div className={cn('user-console-recharge-grid p-4', showOrders ? 'grid gap-5 @3xl:grid-cols-[1fr_320px]' : 'user-console-recharge-grid-composer')}>
         <div className="user-console-recharge-main flex flex-col gap-4">
           {showSummary ? (
-            <div className="user-console-recharge-summary grid gap-3 rounded-lg border border-border bg-muted/30 p-4 text-sm sm:grid-cols-3">
+            <div className="user-console-recharge-summary grid gap-3 rounded-lg border border-border bg-muted/30 p-4 text-sm @xs:grid-cols-2 @xl:grid-cols-3">
               <div className="flex flex-col gap-0.5">
                 <span className="text-xs text-muted-foreground">{text.currentEntitlement}</span>
                 <strong className="font-semibold tabular-nums">{formatNumber(currentEntitlement)}</strong>
@@ -262,16 +263,16 @@ export default function RechargePanel({
                 <span className="text-xs text-muted-foreground">{text.effectiveUntil}</span>
                 <strong className="font-semibold tabular-nums">{effectiveUntil ? formatTimestamp(effectiveUntil) : text.noEntitlement}</strong>
               </div>
-              {quote?.monthEndClampApplied ? <p className="user-console-recharge-test-price text-xs text-warning sm:col-span-3">{text.clampNotice}</p> : null}
+              {quote?.monthEndClampApplied ? <p className="user-console-recharge-test-price text-xs text-warning @xl:col-span-3">{text.clampNotice}</p> : null}
               {config?.testPriceEnabled && text.testPrice ? (
-                <p className="user-console-recharge-test-price text-xs text-warning sm:col-span-3">{text.testPrice}</p>
+                <p className="user-console-recharge-test-price text-xs text-warning @xl:col-span-3">{text.testPrice}</p>
               ) : null}
             </div>
           ) : null}
 
           {config?.enabled ? (
             <div className="user-console-recharge-form flex flex-col gap-4">
-              <div className="user-console-recharge-controls grid gap-4 sm:grid-cols-2">
+              <div className="user-console-recharge-controls grid gap-4 @xs:grid-cols-2">
                 <Field className="user-console-recharge-field gap-2">
                   <FieldLabel className="text-xs font-medium text-muted-foreground">{text.credits}</FieldLabel>
                   <div className="user-console-recharge-stepper flex items-center gap-1.5">
@@ -286,7 +287,7 @@ export default function RechargePanel({
                       <Minus size={16} strokeWidth={2.2} aria-hidden="true" />
                     </Button>
                     <Input
-                      className="user-console-recharge-readonly w-20 text-center tabular-nums"
+                      className="user-console-recharge-readonly min-w-0 flex-1 text-center tabular-nums"
                       type="text"
                       readOnly
                       value={formatNumber(normalizedCredits)}
@@ -318,7 +319,7 @@ export default function RechargePanel({
                       <Minus size={16} strokeWidth={2.2} aria-hidden="true" />
                     </Button>
                     <Input
-                      className="user-console-recharge-readonly w-20 text-center tabular-nums"
+                      className="user-console-recharge-readonly min-w-0 flex-1 text-center tabular-nums"
                       type="text"
                       readOnly
                       value={formatNumber(normalizedMonths)}
@@ -338,7 +339,7 @@ export default function RechargePanel({
                 </Field>
               </div>
 
-              <div className="user-console-recharge-delta grid gap-2 sm:grid-cols-3" aria-label={text.quotaDelta}>
+              <div className="user-console-recharge-delta grid gap-2 @xs:grid-cols-3" aria-label={text.quotaDelta}>
                 {(quote
                   ? [
                       { kind: 'hourly' as const, label: text.hourlyDelta, value: quote.currentMonthFinalHourlyDelta },
@@ -350,7 +351,7 @@ export default function RechargePanel({
                       { kind: 'daily' as const, label: text.dailyDelta, value: 0 },
                       { kind: 'monthly' as const, label: text.monthlyDelta, value: 0 },
                     ]).map(({ kind, label, value }) => (
-                  <div key={label} className="user-console-recharge-delta-pill flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm">
+                  <div key={label} className="user-console-recharge-delta-pill flex min-w-0 flex-col gap-1 rounded-lg border border-border bg-card px-3 py-2 text-sm @xl:flex-row @xl:items-center @xl:justify-between">
                     <span className="text-xs text-muted-foreground">{label}</span>
                     <strong className="font-semibold tabular-nums">{formatRechargeDeltaValue(kind, Number(value), language)}</strong>
                   </div>
@@ -381,7 +382,7 @@ export default function RechargePanel({
               {error ? <p className="user-console-recharge-error text-sm text-destructive" role="status" aria-live="polite">{error}</p> : null}
             </div>
           ) : (
-            <p className="empty-state px-4 py-8 text-center text-sm text-muted-foreground user-console-recharge-disabled rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">{text.unavailable}</p>
+            <Empty className="empty-state user-console-recharge-disabled rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>{text.unavailable}</EmptyDescription></Empty>
           )}
         </div>
 
@@ -390,7 +391,7 @@ export default function RechargePanel({
             <h3 className="text-sm font-semibold">{text.orders}</h3>
             <div className="user-console-recharge-orders-panel flex flex-col gap-3">
               {orders.length === 0 ? (
-                <p className="empty-state px-4 py-8 text-center text-sm text-muted-foreground rounded-lg border border-dashed border-border/70 bg-muted/30 p-4 text-sm text-muted-foreground">{text.noOrders}</p>
+                <Empty className="empty-state rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>{text.noOrders}</EmptyDescription></Empty>
               ) : (
                 <ul className="flex flex-col gap-2">
                   {orders.slice(0, ordersLimit).map((order) => (
@@ -417,21 +418,23 @@ export default function RechargePanel({
       {viewportMode === 'small' ? (
         <Drawer open={previewOpen} onOpenChange={setPreviewOpen} shouldScaleBackground={false}>
           <DrawerContent className="user-console-recharge-preview-drawer">
-            <DrawerHeader>
+            <DrawerHeader className="shrink-0">
               <div className="user-console-recharge-preview-drawer-title-row flex items-center justify-between gap-2">
                 <DrawerTitle>{text.previewTitle}</DrawerTitle>
                 <RechargePreviewMobileHelp text={text} />
               </div>
               <DrawerDescription>{text.previewDescription}</DrawerDescription>
             </DrawerHeader>
-            <RechargePreviewBody
-              text={text}
-              quote={quote}
-              credits={normalizedCredits}
-              months={normalizedMonths}
-              rows={previewMonths}
-            />
-            <DrawerFooter>
+            <div className="min-h-0 flex-1 overflow-y-auto px-4">
+              <RechargePreviewBody
+                text={text}
+                quote={quote}
+                credits={normalizedCredits}
+                months={normalizedMonths}
+                rows={previewMonths}
+              />
+            </div>
+            <DrawerFooter className="shrink-0">
               <DrawerClose asChild>
                 <Button type="button" variant="outline">{text.closePreview}</Button>
               </DrawerClose>
@@ -440,7 +443,7 @@ export default function RechargePanel({
         </Drawer>
       ) : (
         <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-          <DialogContent className="user-console-recharge-preview-modal max-w-3xl overflow-y-auto">
+          <DialogContent className="user-console-recharge-preview-modal max-h-[calc(100svh-2rem)] overflow-y-auto sm:max-w-3xl">
             <DialogHeader>
               <DialogTitle>{text.previewTitle}</DialogTitle>
               <DialogDescription>{text.previewDescription}</DialogDescription>
@@ -584,7 +587,7 @@ function RechargePreviewBody({
 }): JSX.Element {
   return (
     <div className="user-console-recharge-preview flex flex-col gap-4">
-      <div className="user-console-recharge-preview-summary grid gap-3 rounded-lg border border-border bg-muted/30 p-4 text-sm sm:grid-cols-3">
+      <div className="user-console-recharge-preview-summary grid grid-cols-3 gap-3 rounded-lg border border-border bg-muted/30 p-4 text-sm">
         <div className="flex flex-col gap-0.5">
           <span className="text-xs text-muted-foreground">{text.credits}</span>
           <strong className="font-semibold tabular-nums">{formatNumber(credits)}</strong>
@@ -603,7 +606,7 @@ function RechargePreviewBody({
       </p>
 
       <div className="user-console-recharge-preview-table overflow-x-auto rounded-lg border border-border text-sm" role="table">
-        <div className="user-console-recharge-preview-row user-console-recharge-preview-head grid grid-cols-[1.4fr_1fr_1fr_1fr] gap-2 border-b bg-muted/50 px-3 py-2 font-medium" role="row">
+        <div className="user-console-recharge-preview-row user-console-recharge-preview-head hidden grid-cols-[1.4fr_1fr_1fr_1fr] gap-2 border-b bg-muted/50 px-3 py-2 font-medium sm:grid" role="row">
           <div role="columnheader">{text.previewMonth}</div>
           <div role="columnheader">
             <RechargePreviewColumnLabel label={text.previewCurrentQuota} hint={text.previewCurrentQuotaHint} />
@@ -619,26 +622,26 @@ function RechargePreviewBody({
           <div
             key={row.monthStart}
             className={cn(
-              'user-console-recharge-preview-row grid grid-cols-[1.4fr_1fr_1fr_1fr] gap-2 border-b px-3 py-2 last:border-b-0',
+              'user-console-recharge-preview-row grid grid-cols-3 gap-3 border-b px-3 py-3 last:border-b-0 sm:grid-cols-[1.4fr_1fr_1fr_1fr]',
               row.afterExpiry && 'is-after-expiry bg-muted/20 text-muted-foreground',
             )}
             role="row"
           >
-            <span role="cell" className="flex flex-col gap-0.5">
+            <span role="cell" className="col-span-full flex flex-col gap-0.5 sm:col-span-1">
               {formatMonthLabel(row.monthStart)}
               {row.afterExpiry ? <em className="user-console-recharge-preview-tag not-italic text-xs">{text.previewAfterExpiry}</em> : null}
               {row.clampApplied ? <em className="user-console-recharge-preview-tag not-italic text-xs text-warning">{text.clampNotice}</em> : null}
             </span>
-            <strong role="cell" data-label={text.previewCurrentQuota} className="font-semibold tabular-nums">
-              <span className="user-console-recharge-preview-cell-label text-xs font-normal text-muted-foreground">{text.previewCurrentQuota}</span>
+            <strong role="cell" data-label={text.previewCurrentQuota} className="flex flex-col gap-1 font-semibold tabular-nums">
+              <span className="user-console-recharge-preview-cell-label text-xs font-normal text-muted-foreground sm:hidden">{text.previewCurrentQuota}</span>
               {formatNumber(row.currentQuota)}
             </strong>
-            <strong role="cell" data-label={text.previewDelta} className="font-semibold tabular-nums">
-              <span className="user-console-recharge-preview-cell-label text-xs font-normal text-muted-foreground">{text.previewDelta}</span>
+            <strong role="cell" data-label={text.previewDelta} className="flex flex-col gap-1 font-semibold tabular-nums">
+              <span className="user-console-recharge-preview-cell-label text-xs font-normal text-muted-foreground sm:hidden">{text.previewDelta}</span>
               +{formatNumber(row.delta)}
             </strong>
-            <strong role="cell" data-label={text.previewExpectedQuota} className="font-semibold tabular-nums">
-              <span className="user-console-recharge-preview-cell-label text-xs font-normal text-muted-foreground">{text.previewExpectedQuota}</span>
+            <strong role="cell" data-label={text.previewExpectedQuota} className="flex flex-col gap-1 font-semibold tabular-nums">
+              <span className="user-console-recharge-preview-cell-label text-xs font-normal text-muted-foreground sm:hidden">{text.previewExpectedQuota}</span>
               {formatNumber(row.expectedQuota)}
             </strong>
           </div>

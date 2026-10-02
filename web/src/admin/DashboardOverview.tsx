@@ -1,3 +1,11 @@
+import { ChartContainer, type ChartConfig } from '@/components/ui/chart'
+import { Area, AreaChart } from 'recharts'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Badge } from '@/components/ui/badge'
+import { cn } from '@/lib/utils'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardAction } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { useId, useMemo } from 'react'
 
 import type {
@@ -12,19 +20,6 @@ import type {
 } from '../api'
 import RollingNumber from '../components/RollingNumber'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
-import { Line } from 'react-chartjs-2'
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Filler,
-  Legend,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-  type ChartData,
-  type ChartOptions,
-} from 'chart.js'
 import DashboardTrendPanel from './DashboardTrendPanel'
 import {
   type DashboardCreditSeriesId,
@@ -41,7 +36,6 @@ import {
   type DashboardCardBackdropSeries,
 } from './dashboardCardBackdrops'
 
-ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Filler, Tooltip, Legend)
 
 export interface DashboardMetricCard {
   id: string
@@ -186,18 +180,6 @@ interface DashboardOverviewProps {
   chartLabelTimeZone?: string | null
 }
 
-function readChartColorVar(name: string, fallback: string): string {
-  if (typeof document === 'undefined') return fallback
-  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
-  return value.length > 0 ? `hsl(${value})` : fallback
-}
-
-function withOpacity(color: string, opacity: number): string {
-  return color.startsWith('hsl(') && color.endsWith(')')
-    ? `${color.slice(0, -1)} / ${opacity})`
-    : color
-}
-
 function buildCumulativeNullableSeries(
   values: ReadonlyArray<number | null>,
   initialValue = 0,
@@ -260,30 +242,29 @@ function SummaryMetricCard({
   )
 
   return (
-    <div
-      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative min-w-0 flex flex-col gap-2 overflow-hidden rounded-lg border p-4${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width sm:col-span-2 xl:col-span-1' : ''}`}
-    >
+    <Card size="sm" className={cn(
+      'metric-card dashboard-summary-card relative min-w-0',
+      backdrop && 'dashboard-summary-card-with-backdrop',
+      compact && 'dashboard-summary-card-compact',
+      metric.fullWidth && 'dashboard-summary-card-full-width sm:col-span-2 xl:col-span-1',
+    )}>
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={metric.label}
           className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0 z-0 opacity-50"
           primaryValues={backdrop.current}
           comparisonValues={backdrop.comparison}
-          primaryColor={backdrop.color ?? readChartColorVar('--primary', 'hsl(262 83% 58%)')}
-          comparisonColor={backdrop.comparisonColor}
           primaryInitialValue={backdrop.baseline ?? 0}
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <div className="dashboard-summary-card-content relative z-10 flex flex-col gap-1.5">
-        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2 [&_h3]:text-sm [&_h3]:font-medium">
-          <h3>{metric.label}</h3>
+      <CardHeader className="dashboard-summary-card-heading relative z-10">
+          <CardTitle role="heading" aria-level={3}>{metric.label}</CardTitle>
           {metric.marker ? (
-            <span className={`dashboard-summary-card-marker inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium dashboard-summary-card-marker-${metric.markerTone ?? 'neutral'}`}>
-              {metric.marker}
-            </span>
+            <CardAction><Badge variant={metric.markerTone === 'primary' ? 'default' : 'secondary'}>{metric.marker}</Badge></CardAction>
           ) : null}
-        </div>
+      </CardHeader>
+      <CardContent className="dashboard-summary-card-content relative z-10 flex flex-col gap-1.5">
         <div className="dashboard-summary-card-value-row flex items-baseline gap-2">
           <MetricValue value={metric.value} valueNumber={metric.valueNumber} compact={compact} />
         </div>
@@ -300,8 +281,8 @@ function SummaryMetricCard({
         ) : null}
         {metric.comparison && metric.subtitle ? <div className="metric-subtitle text-xs text-muted-foreground">{metric.subtitle}</div> : null}
         {!metric.comparison && backdropNotice ? <div className="metric-subtitle text-xs text-muted-foreground">{backdropNotice}</div> : null}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -313,24 +294,22 @@ function QuotaChargeCard({
   backdrop?: DashboardCardBackdropSeries
 }): JSX.Element {
   return (
-    <article className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative min-w-0 flex flex-col gap-2 overflow-hidden rounded-lg border p-4 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
+    <Card size="sm" className="metric-card dashboard-summary-card relative min-w-0 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={card.title}
           className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0 z-0 opacity-50"
           primaryValues={backdrop.current}
           comparisonValues={backdrop.comparison}
-          primaryColor={backdrop.color ?? readChartColorVar('--primary', 'hsl(262 83% 58%)')}
-          comparisonColor={backdrop.comparisonColor}
           primaryInitialValue={backdrop.baseline ?? 0}
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <div className="dashboard-summary-card-content relative z-10 flex flex-col gap-1.5">
-        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2 [&_h3]:text-sm [&_h3]:font-medium">
-          <h3>{card.title}</h3>
-        </div>
-        <div className="dashboard-quota-charge-grid">
+      <CardHeader className="dashboard-summary-card-heading relative z-10">
+        <CardTitle role="heading" aria-level={3}>{card.title}</CardTitle>
+      </CardHeader>
+      <CardContent className="dashboard-summary-card-content relative z-10 flex flex-col gap-3">
+        <div className="dashboard-quota-charge-grid grid grid-cols-2 gap-3">
           <div className="dashboard-quota-charge-value font-mono text-sm font-semibold tabular-nums">
             <span className="dashboard-quota-charge-label text-xs text-muted-foreground">{card.localLabel}</span>
             <MetricValue value={card.localValue} valueNumber={card.localValueNumber} />
@@ -340,122 +319,52 @@ function QuotaChargeCard({
             <MetricValue value={card.upstreamValue} valueNumber={card.upstreamValueNumber} />
           </div>
         </div>
-        <div className="dashboard-quota-charge-footer">
+        <div className="dashboard-quota-charge-footer flex flex-col gap-1">
           <div className={`metric-delta inline-flex items-center gap-1.5 text-xs metric-delta-${card.deltaTone ?? 'neutral'}`}>
             <span className="metric-delta-label text-muted-foreground">{card.deltaLabel}</span>
             <span className="metric-delta-value font-mono font-medium tabular-nums">{card.deltaValue}</span>
           </div>
-          <div className="dashboard-quota-charge-meta">
+          <div className="dashboard-quota-charge-meta flex flex-wrap gap-x-3 text-xs text-muted-foreground">
             <span>{card.coverage}</span>
             <span>{card.freshness}</span>
           </div>
         </div>
-      </div>
-    </article>
+      </CardContent>
+    </Card>
   )
 }
 
 function DashboardUsageBackdropChart({
   ariaLabel,
   primaryValues,
-  primaryColor,
   comparisonValues,
-  comparisonColor,
   primaryInitialValue = 0,
   comparisonInitialValue = 0,
   className,
 }: {
   ariaLabel: string
   primaryValues: ReadonlyArray<number | null>
-  primaryColor: string
   comparisonValues?: ReadonlyArray<number | null>
-  comparisonColor?: string
   primaryInitialValue?: number
   comparisonInitialValue?: number
   className?: string
 }): JSX.Element | null {
-  const chartData = useMemo<ChartData<'line'>>(() => {
-    if (primaryValues.length === 0) {
-      return { labels: [], datasets: [] }
-    }
-
-    const labels = primaryValues.map((_, index) => String(index + 1))
-    const datasets: ChartData<'line'>['datasets'] = [
-      {
-        label: 'current',
-        data: buildCumulativeNullableSeries(primaryValues, primaryInitialValue),
-        borderColor: primaryColor,
-        backgroundColor: withOpacity(primaryColor, 0.12),
-        fill: true,
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHitRadius: 0,
-        tension: 0.38,
-        spanGaps: false,
-        order: 1,
-      },
-    ]
-
-    if (comparisonValues && comparisonValues.length > 0) {
-      datasets.push({
-        label: 'comparison',
-        data: buildCumulativeNullableSeries(comparisonValues, comparisonInitialValue),
-        borderColor: comparisonColor ?? primaryColor,
-        backgroundColor: 'transparent',
-        fill: false,
-        borderWidth: 1.5,
-        borderDash: [5, 4],
-        pointRadius: 0,
-        pointHitRadius: 0,
-        tension: 0.34,
-        spanGaps: false,
-        order: 0,
-      })
-    }
-
-    return { labels, datasets }
-  }, [comparisonColor, comparisonInitialValue, comparisonValues, primaryColor, primaryInitialValue, primaryValues])
-
-  const chartOptions = useMemo<ChartOptions<'line'>>(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: {
-      duration: 560,
-      easing: 'easeOutCubic',
-    },
-    events: [],
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: false },
-    },
-    layout: {
-      padding: 0,
-    },
-    elements: {
-      line: {
-        borderCapStyle: 'round',
-        borderJoinStyle: 'round',
-      },
-    },
-    scales: {
-      x: {
-        display: false,
-        grid: { display: false },
-        border: { display: false },
-      },
-      y: {
-        display: false,
-        grid: { display: false },
-        border: { display: false },
-      },
-    },
-  }), [])
-
-  if (chartData.datasets.length === 0) return null
-
+  if (primaryValues.length === 0) return null
+  const primary = buildCumulativeNullableSeries(primaryValues, primaryInitialValue)
+  const comparison = comparisonValues ? buildCumulativeNullableSeries(comparisonValues, comparisonInitialValue) : []
+  const data = primary.map((value, index) => ({ index, primary: value, comparison: comparison[index] ?? null }))
+  const config = {
+    primary: { label: 'Current', color: 'var(--chart-1)' },
+    comparison: { label: 'Previous', color: 'var(--chart-2)' },
+  } satisfies ChartConfig
   return (
     <div className={className} aria-hidden="true">
-      <Line aria-label={ariaLabel} options={chartOptions} data={chartData} />
+      <ChartContainer config={config} className="h-full w-full aspect-auto">
+        <AreaChart accessibilityLayer data={data} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
+          <Area dataKey="primary" type="natural" fill="var(--color-primary)" fillOpacity={0.4} stroke="var(--color-primary)" />
+          {comparisonValues ? <Area dataKey="comparison" type="natural" fill="var(--color-comparison)" fillOpacity={0.1} stroke="var(--color-comparison)" /> : null}
+        </AreaChart>
+      </ChartContainer>
     </div>
   )
 }
@@ -640,9 +549,9 @@ export default function DashboardOverview({
     month_end: 0,
   }
   const backdropColors = {
-    today: readChartColorVar('--primary', 'hsl(262 83% 58%)'),
-    yesterday: readChartColorVar('--secondary', 'hsl(330 80% 51%)'),
-    month: readChartColorVar('--info', 'hsl(199 89% 48%)'),
+    today: 'var(--chart-1)',
+    yesterday: 'var(--chart-1)',
+    month: 'var(--chart-1)',
   }
   const comparisonRangeStart = summaryWindowValues.yesterday_start
   const comparisonRangeEnd = summaryWindowValues.today_start
@@ -733,7 +642,7 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'valuableFailure',
         }),
-        color: readChartColorVar('--destructive', 'hsl(0 84% 60%)'),
+        color: 'var(--chart-1)',
         comparisonColor: backdropColors.yesterday,
       },
       otherSuccess: {
@@ -758,7 +667,7 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'otherSuccess',
         }),
-        color: readChartColorVar('--success', 'hsl(160 84% 39%)'),
+        color: 'var(--chart-1)',
         comparisonColor: backdropColors.yesterday,
       },
       otherFailure: {
@@ -783,7 +692,7 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'otherFailure',
         }),
-        color: readChartColorVar('--warning', 'hsl(38 92% 50%)'),
+        color: 'var(--chart-1)',
         comparisonColor: backdropColors.yesterday,
       },
       unknown: {
@@ -808,7 +717,7 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'unknown',
         }),
-        color: readChartColorVar('--muted-foreground', 'hsl(215 16% 47%)'),
+        color: 'var(--chart-1)',
         comparisonColor: backdropColors.yesterday,
       },
       upstreamExhausted: {
@@ -833,7 +742,7 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'upstreamExhausted',
         }),
-        color: readChartColorVar('--info', 'hsl(199 89% 48%)'),
+        color: 'var(--chart-1)',
         comparisonColor: backdropColors.yesterday,
       },
     }
@@ -875,11 +784,11 @@ export default function DashboardOverview({
         comparisonColor: backdropColors.yesterday,
       },
       valuableSuccess: buildMonthCardBackdrop('valuableSuccess'),
-      valuableFailure: buildMonthCardBackdrop('valuableFailure', readChartColorVar('--destructive', 'hsl(0 84% 60%)')),
-      otherSuccess: buildMonthCardBackdrop('otherSuccess', readChartColorVar('--success', 'hsl(160 84% 39%)')),
-      otherFailure: buildMonthCardBackdrop('otherFailure', readChartColorVar('--warning', 'hsl(38 92% 50%)')),
-      unknown: buildMonthCardBackdrop('unknown', readChartColorVar('--muted-foreground', 'hsl(215 16% 47%)')),
-      upstreamExhausted: buildMonthCardBackdrop('upstreamExhausted', readChartColorVar('--info', 'hsl(199 89% 48%)')),
+      valuableFailure: buildMonthCardBackdrop('valuableFailure', 'var(--chart-1)'),
+      otherSuccess: buildMonthCardBackdrop('otherSuccess', 'var(--chart-1)'),
+      otherFailure: buildMonthCardBackdrop('otherFailure', 'var(--chart-1)'),
+      unknown: buildMonthCardBackdrop('unknown', 'var(--chart-1)'),
+      upstreamExhausted: buildMonthCardBackdrop('upstreamExhausted', 'var(--chart-1)'),
     }
   }, [
     backdropColors.month,
@@ -893,24 +802,25 @@ export default function DashboardOverview({
     <div className="dashboard-overview-stack flex flex-col gap-4">
       <section className="dashboard-summary-panel flex flex-col gap-4">
         {!overviewReady ? (
-          <div className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 dashboard-summary-fallback">
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.loading}</div>
-          </div>
+          <Card className="surface panel dashboard-summary-fallback">
+            <Empty className="empty-state"><EmptyDescription>{strings.loading}</EmptyDescription></Empty>
+          </Card>
         ) : !hasTodaySummary && !hasMonthSummary && !hasStatusSummary ? (
-          <div className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 dashboard-summary-fallback">
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{overviewReady ? strings.summaryUnavailable : strings.loading}</div>
-          </div>
+          <Card className="surface panel dashboard-summary-fallback">
+            <Empty className="empty-state"><EmptyDescription>{overviewReady ? strings.summaryUnavailable : strings.loading}</EmptyDescription></Empty>
+          </Card>
         ) : (
-          <div className="dashboard-summary-layout flex min-w-0 flex-col gap-4 px-4">
-            <div className="dashboard-summary-top-row grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
-              <article className="dashboard-summary-block relative min-w-0 overflow-hidden rounded-lg border bg-card p-4 dashboard-summary-block-primary">
-                <div className="dashboard-summary-block-content flex flex-col gap-3">
-                  <header className="dashboard-summary-header flex items-start justify-between gap-2">
+          <div className="dashboard-summary-layout flex min-w-0 flex-col gap-4">
+            <div className="dashboard-summary-top-row grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-2">
+              <Card className="dashboard-summary-block min-w-0 dashboard-summary-block-primary">
+
+                  <CardHeader className="dashboard-summary-header">
                     <div>
-                      <h2>{strings.todayTitle}</h2>
-                      <p className="panel-description text-sm text-muted-foreground">{strings.todayDescription}</p>
+                      <CardTitle role="heading" aria-level={2}>{strings.todayTitle}</CardTitle>
+                      <CardDescription className="panel-description">{strings.todayDescription}</CardDescription>
                     </div>
-                  </header>
+                  </CardHeader>
+<CardContent>
                   {hasTodaySummary ? (
                     <div className="dashboard-summary-section-stack flex flex-col gap-3">
                       {todayTotalMetric ? (
@@ -920,7 +830,7 @@ export default function DashboardOverview({
                         />
                       ) : null}
                       {todayQuotaCharge ? <QuotaChargeCard card={todayQuotaCharge} backdrop={todayCardBackdrops.total} /> : null}
-                      <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6 dashboard-summary-metrics-primary dashboard-today-grid">
+                      <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 dashboard-summary-metrics-primary dashboard-today-grid">
                         {todayDetailMetrics.map((metric) => (
                           <SummaryMetricCard
                             key={metric.id}
@@ -931,19 +841,21 @@ export default function DashboardOverview({
                       </div>
                     </div>
                   ) : (
-                    <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert dashboard-summary-empty">{strings.summaryUnavailable}</div>
+                    <Empty className="empty-state dashboard-summary-empty"><EmptyDescription>{strings.summaryUnavailable}</EmptyDescription></Empty>
                   )}
-                </div>
-              </article>
+                </CardContent>
 
-              <article className="dashboard-summary-block relative min-w-0 overflow-hidden rounded-lg border bg-card p-4 dashboard-summary-block-secondary">
-                <div className="dashboard-summary-block-content flex flex-col gap-3">
-                  <header className="dashboard-summary-header flex items-start justify-between gap-2">
+              </Card>
+
+              <Card className="dashboard-summary-block min-w-0 dashboard-summary-block-secondary">
+
+                  <CardHeader className="dashboard-summary-header">
                     <div>
-                      <h2>{strings.monthTitle}</h2>
-                      <p className="panel-description text-sm text-muted-foreground">{strings.monthDescription}</p>
+                      <CardTitle role="heading" aria-level={2}>{strings.monthTitle}</CardTitle>
+                      <CardDescription className="panel-description">{strings.monthDescription}</CardDescription>
                     </div>
-                  </header>
+                  </CardHeader>
+<CardContent>
                   {hasMonthSummary ? (
                     <div className="dashboard-summary-section-stack flex flex-col gap-3">
                       {monthTotalMetric ? (
@@ -954,7 +866,7 @@ export default function DashboardOverview({
                         />
                       ) : null}
                       {monthQuotaCharge ? <QuotaChargeCard card={monthQuotaCharge} backdrop={monthCardBackdrops.total} /> : null}
-                      <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6 dashboard-summary-metrics-compact dashboard-summary-metrics-month">
+                      <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 dashboard-summary-metrics-compact dashboard-summary-metrics-month">
                         {monthDetailMetrics.map((metric) => (
                           <SummaryMetricCard
                             key={metric.id}
@@ -967,19 +879,21 @@ export default function DashboardOverview({
                       </div>
                     </div>
                   ) : (
-                    <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert dashboard-summary-empty">{strings.summaryUnavailable}</div>
+                    <Empty className="empty-state dashboard-summary-empty"><EmptyDescription>{strings.summaryUnavailable}</EmptyDescription></Empty>
                   )}
-                </div>
-              </article>
+                </CardContent>
+
+              </Card>
             </div>
 
-            <article className="dashboard-summary-block relative min-w-0 overflow-hidden rounded-lg border bg-card p-4 dashboard-summary-block-status">
-              <header className="dashboard-summary-header flex items-start justify-between gap-2">
+            <Card className="dashboard-summary-block min-w-0 dashboard-summary-block-status">
+              <CardHeader className="dashboard-summary-header">
                 <div>
-                  <h2>{strings.currentStatusTitle}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">{strings.currentStatusDescription}</p>
+                  <CardTitle role="heading" aria-level={2}>{strings.currentStatusTitle}</CardTitle>
+                  <CardDescription className="panel-description">{strings.currentStatusDescription}</CardDescription>
                 </div>
-              </header>
+              </CardHeader>
+<CardContent>
               {hasStatusSummary ? (
                 <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6 dashboard-summary-metrics-compact dashboard-summary-metrics-status">
                   {statusMetrics.map((metric) => (
@@ -987,11 +901,12 @@ export default function DashboardOverview({
                   ))}
                 </div>
               ) : (
-                <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert dashboard-summary-empty">
+                <Empty className="empty-state dashboard-summary-empty"><EmptyDescription>
                   {statusLoading ? strings.loading : strings.statusUnavailable}
-                </div>
+                </EmptyDescription></Empty>
               )}
-            </article>
+            </CardContent>
+</Card>
           </div>
         )}
       </section>
@@ -1009,31 +924,31 @@ export default function DashboardOverview({
         chartLabelTimeZone={chartLabelTimeZone}
       />
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{strings.recentAlertsTitle}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{strings.recentAlertsDescription}</p>
+            <CardTitle role="heading" aria-level={2}>{strings.recentAlertsTitle}</CardTitle>
+            <CardDescription className="panel-description">{strings.recentAlertsDescription}</CardDescription>
           </div>
-          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={onOpenRecentAlerts}>
+          <CardAction><Button type="button" variant="outline" size="sm" onClick={onOpenRecentAlerts}>
             {strings.recentAlertsOpen}
-          </button>
-        </div>
+          </Button></CardAction>
+        </CardHeader>
         {!overviewReady ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.loading}</div>
+          <Empty className="empty-state"><EmptyDescription>{strings.loading}</EmptyDescription></Empty>
         ) : recentAlerts.totalEvents === 0 ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.recentAlertsEmpty}</div>
+          <Empty className="empty-state"><EmptyDescription>{strings.recentAlertsEmpty}</EmptyDescription></Empty>
         ) : (
-          <div className="dashboard-alerts-summary">
-            <div className="dashboard-alerts-summary__overview">
-              <div className="dashboard-alerts-summary__overview-copy">
+          <CardContent className="dashboard-alerts-summary flex flex-col gap-4">
+            <div className="dashboard-alerts-summary__overview grid gap-4 lg:grid-cols-2">
+              <div className="dashboard-alerts-summary__overview-copy flex flex-col gap-1 [&>p]:text-sm [&>p]:text-muted-foreground">
                 <strong>{strings.recentAlertsOverviewTitle}</strong>
                 <p>{strings.recentAlertsOverviewSummary}</p>
               </div>
-              <div className="dashboard-alerts-summary__metrics">
+              <div className="dashboard-alerts-summary__metrics grid grid-cols-3 gap-3">
                 {recentAlerts.groupedCountWindows.map((item) => (
                   <article
-                    className="dashboard-alerts-summary__metric-chip"
+                    className="dashboard-alerts-summary__metric-chip flex flex-col gap-1 rounded-lg border p-3 [&>strong]:text-lg [&>strong]:tabular-nums [&>small]:text-muted-foreground"
                     data-current-window={item.windowHours === recentAlerts.windowHours ? 'true' : undefined}
                     key={item.windowHours}
                   >
@@ -1046,15 +961,15 @@ export default function DashboardOverview({
                 ))}
               </div>
             </div>
-            <div className="dashboard-alerts-summary__groups" role="table" aria-label={strings.recentAlertsTitle}>
-              <div className="dashboard-alerts-summary__table-head-shell" role="rowgroup">
-                <div className="dashboard-alerts-summary__table-head" role="row">
-                  <span id={recentAlertsAlertHeaderId} role="columnheader">{strings.recentAlertsColumns.alert}</span>
-                  <span id={recentAlertsWindowHeaderId} role="columnheader">{strings.recentAlertsColumns.timeRange}</span>
-                  <span id={recentAlertsReviewHeaderId} role="columnheader">{strings.recentAlertsColumns.review}</span>
-                </div>
-              </div>
-              <div className="dashboard-alerts-summary__table-body" role="rowgroup">
+            <Table className="dashboard-alerts-summary__groups block md:table" aria-label={strings.recentAlertsTitle}>
+              <TableHeader className="dashboard-alerts-summary__table-head-shell hidden md:table-header-group">
+                <TableRow className="dashboard-alerts-summary__table-head">
+                  <TableHead id={recentAlertsAlertHeaderId}>{strings.recentAlertsColumns.alert}</TableHead>
+                  <TableHead id={recentAlertsWindowHeaderId}>{strings.recentAlertsColumns.timeRange}</TableHead>
+                  <TableHead id={recentAlertsReviewHeaderId}>{strings.recentAlertsColumns.review}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="dashboard-alerts-summary__table-body block md:table-row-group">
                 {recentAlerts.topGroups.map((group, index) => {
                   const typeLabel = strings.recentAlertsTypeLabels[group.type]
                   const reasonBadgeLabel = getRecentAlertReasonBadgeLabel(group, typeLabel)
@@ -1068,29 +983,30 @@ export default function DashboardOverview({
                   const subjectLabel = group.subjectLabel.trim() || '—'
 
                   return (
-                    <article key={group.id} className="dashboard-alerts-summary__row" role="row">
-                      <div
-                        className="dashboard-alerts-summary__identity"
+                    <TableRow key={group.id} className="dashboard-alerts-summary__row flex flex-col gap-3 py-4 md:table-row md:py-0">
+                      <TableCell
+                        className="dashboard-alerts-summary__identity min-w-0"
                         role="cell"
                         aria-labelledby={`${recentAlertsAlertHeaderId} ${subjectId}`}
                         aria-describedby={summaryId}
                       >
-                        <span className="dashboard-alerts-summary__field-label text-xs text-muted-foreground" aria-hidden="true">{strings.recentAlertsColumns.alert}</span>
-                        <div className="dashboard-alerts-summary__identity-head">
+                        <span className="dashboard-alerts-summary__field-label mb-1 block text-xs text-muted-foreground md:hidden" aria-hidden="true">{strings.recentAlertsColumns.alert}</span>
+                        <div className="dashboard-alerts-summary__identity-head flex flex-wrap items-center gap-2">
                           {userSubjectId && onOpenUser ? (
-                            <button
+                            <Button
                               type="button"
+                              variant="link"
                               id={subjectId}
-                              className="dashboard-alerts-summary__subject-button"
+                              className="dashboard-alerts-summary__subject-button h-auto p-0"
                               onClick={() => onOpenUser(userSubjectId)}
                               aria-label={`${strings.recentAlertsOpenUser}: ${subjectLabel}`}
                             >
                               {subjectLabel}
-                            </button>
+                            </Button>
                           ) : (
                             <strong id={subjectId}>{subjectLabel}</strong>
                           )}
-                          <div className="dashboard-alerts-summary__identity-flags">
+                          <div className="dashboard-alerts-summary__identity-flags flex flex-wrap items-center gap-1">
                             <StatusBadge
                               tone={alertSummaryTone(group.type)}
                               className="dashboard-alerts-summary__type-badge"
@@ -1108,8 +1024,8 @@ export default function DashboardOverview({
                           </div>
                         </div>
                         {group.requestKind ? (
-                          <div className="dashboard-alerts-summary__identity-meta">
-                            <span className="dashboard-alerts-summary__meta-item">
+                          <div className="dashboard-alerts-summary__identity-meta mt-1 text-xs text-muted-foreground">
+                            <span className="dashboard-alerts-summary__meta-item inline-flex flex-wrap gap-1">
                               <span className="dashboard-alerts-summary__meta-label">
                                 {strings.recentAlertsColumns.requestKind}
                               </span>
@@ -1119,82 +1035,82 @@ export default function DashboardOverview({
                             </span>
                           </div>
                         ) : null}
-                        <div className="dashboard-alerts-summary__identity-copy" id={summaryId}>
+                        <div className="dashboard-alerts-summary__identity-copy mt-1 whitespace-normal text-sm text-muted-foreground" id={summaryId}>
                           <span>{group.latestEvent.summary}</span>
                         </div>
-                      </div>
-                      <div
-                        className="dashboard-alerts-summary__window"
+                      </TableCell>
+                      <TableCell
+                        className="dashboard-alerts-summary__window md:w-60"
                         role="cell"
                         aria-labelledby={`${recentAlertsWindowHeaderId} ${windowId}`}
                       >
-                        <span className="dashboard-alerts-summary__field-label text-xs text-muted-foreground" aria-hidden="true">{strings.recentAlertsColumns.timeRange}</span>
-                        <strong id={windowId} className="dashboard-alerts-summary__window-range">
+                        <span className="dashboard-alerts-summary__field-label mb-1 block text-xs text-muted-foreground md:hidden" aria-hidden="true">{strings.recentAlertsColumns.timeRange}</span>
+                        <strong id={windowId} className="dashboard-alerts-summary__window-range flex flex-wrap items-center gap-1 text-xs font-normal tabular-nums">
                           <time dateTime={formatAlertDateTimeIso(group.firstSeen)}>{formatAlertRange(group.firstSeen)}</time>
                           <span className="dashboard-alerts-summary__window-separator" aria-hidden="true">→</span>
                           <time dateTime={formatAlertDateTimeIso(group.lastSeen)}>{formatAlertRange(group.lastSeen)}</time>
                         </strong>
-                      </div>
-                      <div
-                        className="dashboard-alerts-summary__action"
+                      </TableCell>
+                      <TableCell
+                        className="dashboard-alerts-summary__action md:w-28"
                         role="cell"
                         aria-labelledby={recentAlertsReviewHeaderId}
                       >
-                        <span className="dashboard-alerts-summary__field-label text-xs text-muted-foreground" aria-hidden="true">{strings.recentAlertsColumns.review}</span>
+                        <span className="dashboard-alerts-summary__field-label mb-1 block text-xs text-muted-foreground md:hidden" aria-hidden="true">{strings.recentAlertsColumns.review}</span>
                         <span id={actionHintId} className="sr-only">
                           {group.subjectLabel} · {formatAlertRange(group.firstSeen)} → {formatAlertRange(group.lastSeen)}
                         </span>
-                        <button
+                        <Button
                           type="button"
-                          className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs dashboard-alerts-summary__action-button"
+                          variant="ghost" size="xs" className="dashboard-alerts-summary__action-button"
                           onClick={() => openRecentAlertGroup(group)}
                           aria-label={openGroupAriaLabel}
                           aria-describedby={actionHintId}
                         >
                           {strings.recentAlertsOpenGroup}
-                        </button>
-                      </div>
-                    </article>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
                   )
                 })}
-              </div>
-            </div>
-          </div>
+              </TableBody>
+            </Table>
+          </CardContent>
         )}
-      </section>
+      </Card>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{strings.actionsTitle}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{strings.actionsDescription}</p>
+            <CardTitle role="heading" aria-level={2}>{strings.actionsTitle}</CardTitle>
+            <CardDescription className="panel-description">{strings.actionsDescription}</CardDescription>
           </div>
-        </div>
-        <div className="dashboard-actions-grid">
-          <article className="dashboard-actions-card flex flex-col gap-3 rounded-lg border p-4">
-            <h3>{strings.recentRequests}</h3>
-            <ul>
+        </CardHeader>
+        <CardContent className="dashboard-actions-grid grid gap-4 md:grid-cols-2">
+          <Card size="sm" className="dashboard-actions-card">
+            <CardHeader><CardTitle role="heading" aria-level={3}>{strings.recentRequests}</CardTitle></CardHeader>
+            <CardContent><ul className="flex flex-col gap-2">
               {logs.slice(0, 5).map((log) => (
-                <li key={log.id}>
+                <li key={log.id} className="flex items-center justify-between gap-3">
                   <code>{log.key_id}</code>
-                  <span>{log.result_status}</span>
+                  <StatusBadge tone={log.result_status === 'success' ? 'success' : log.result_status === 'quota_exhausted' ? 'warning' : 'error'}>{log.result_status}</StatusBadge>
                 </li>
               ))}
-            </ul>
-          </article>
-          <article className="dashboard-actions-card flex flex-col gap-3 rounded-lg border p-4">
-            <h3>{strings.recentJobs}</h3>
-            <ul>
+            </ul></CardContent>
+          </Card>
+          <Card size="sm" className="dashboard-actions-card">
+            <CardHeader><CardTitle role="heading" aria-level={3}>{strings.recentJobs}</CardTitle></CardHeader>
+            <CardContent><ul className="flex flex-col gap-2">
               {jobs.slice(0, 5).map((job) => (
-                <li key={job.id}>
+                <li key={job.id} className="flex items-center justify-between gap-3">
                   <span>#{job.id}</span>
-                  <span>{job.status}</span>
+                  <StatusBadge tone={job.status === 'success' ? 'success' : job.status === 'failed' ? 'error' : 'neutral'}>{job.status}</StatusBadge>
                 </li>
               ))}
-            </ul>
-          </article>
-        </div>
-      </section>
+            </ul></CardContent>
+          </Card>
+        </CardContent>
+      </Card>
     </div>
   )
 }

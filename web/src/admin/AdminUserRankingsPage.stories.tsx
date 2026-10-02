@@ -138,21 +138,10 @@ export const InteractionContract: Story = {
   render: (args) => <InteractiveRender {...args} />,
   play: async ({ canvasElement }) => {
     await new Promise((resolve) => window.setTimeout(resolve, 240))
-    const canvas = within(canvasElement)
-    const firstRow = canvas.getByRole('button', { name: /^1\./ })
-
-    await userEvent.hover(firstRow)
-    await expect(canvasElement.querySelectorAll('.admin-ranking-chart-hit-target.is-interactive').length).toBeGreaterThanOrEqual(2)
-
-    await userEvent.unhover(firstRow)
-    await expect(canvasElement.querySelectorAll('.admin-ranking-chart-hit-target.is-interactive').length).toBe(0)
-
+    await expect(canvasElement.querySelectorAll('[data-slot="chart"] .recharts-surface').length).toBe(3)
+    const firstRow = within(canvasElement).getAllByRole('button', { name: /^1\./ })[0]
     firstRow.focus()
-    await new Promise((resolve) => window.setTimeout(resolve, 50))
-    await expect(canvasElement.querySelectorAll('.admin-ranking-chart-hit-target.is-interactive').length).toBeGreaterThanOrEqual(2)
-
-    firstRow.blur()
-    await new Promise((resolve) => window.setTimeout(resolve, 50))
-    await expect(canvasElement.querySelectorAll('.admin-ranking-chart-hit-target.is-interactive').length).toBe(0)
+    await expect(firstRow).toHaveFocus()
+    await userEvent.click(firstRow)
   },
 }

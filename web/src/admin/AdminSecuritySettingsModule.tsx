@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ClipboardEvent, KeyboardEvent } from 'react'
 
@@ -139,15 +140,15 @@ function TotpCodeInput({
   }
 
   return (
-    <div className="totp-code-input" role="group" aria-label={ariaLabel}>
+    <div className="totp-code-input flex max-w-full gap-2" role="group" aria-label={ariaLabel}>
       <input id={id} name={name} type="hidden" value={value} readOnly />
       {digits.map((digit, index) => (
-        <input
+        <Input
           key={`totp-code-cell-${index}`}
           ref={(node) => {
             inputsRef.current[index] = node
           }}
-          className="totp-code-input-cell"
+          className="totp-code--cell size-9 px-0 text-center tabular-nums"
           value={digit}
           disabled={disabled}
           inputMode="numeric"
@@ -466,9 +467,9 @@ export default function AdminSecuritySettingsModule({
   ])
 
   return (
-    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 system-settings-shell">
-      <div className="system-settings-form-layout" aria-label={copy.title}>
-        <section className="system-settings-config-section">
+    <Card className="surface panel system-settings-shell">
+      <div className="system-settings-form-layout flex min-w-0 flex-col gap-6 px-4" aria-label={copy.title}>
+        <section className="system-settings-config-section flex min-w-0 flex-col gap-4 border-b pb-6 last:border-0 last:pb-0 [&>h4]:text-base [&>h4]:font-semibold">
           <h4>{copy.postureSectionTitle}</h4>
           <div className="grid gap-3">
             <div className="grid gap-2 md:grid-cols-3">
@@ -493,7 +494,7 @@ export default function AdminSecuritySettingsModule({
           </div>
         </section>
 
-        <section className="system-settings-config-section">
+        <section className="system-settings-config-section flex min-w-0 flex-col gap-4 border-b pb-6 last:border-0 last:pb-0 [&>h4]:text-base [&>h4]:font-semibold">
           <h4>{copy.passwordSectionTitle}</h4>
           <AdminLoadingRegion
             loadState={passwordLoading ? 'initial_loading' : passwordError ? 'error' : 'ready'}
@@ -501,10 +502,10 @@ export default function AdminSecuritySettingsModule({
             errorLabel={passwordError ?? undefined}
             minHeight={160}
           >
-            <div className="system-settings-field-grid">
-              <div className="system-settings-action-row" aria-labelledby="admin-password-status-title">
-                <div className="system-settings-toggle-copy">
-                  <span className="system-settings-setting-title" id="admin-password-status-title">
+            <div className="system-settings-field-grid flex min-w-0 flex-col gap-4">
+              <div className="system-settings-action-row flex flex-col items-start justify-between gap-3 sm:flex-row" aria-labelledby="admin-password-status-title">
+                <div className="system-settings-toggle-copy min-w-0 space-y-1 [&_p]:text-sm [&_p]:text-muted-foreground [&_label]:font-medium">
+                  <span className="system-settings-setting-title font-medium" id="admin-password-status-title">
                     {copy.passwordStatusTitle}
                   </span>
                   <p>{copy.passwordDescription}</p>
@@ -514,7 +515,7 @@ export default function AdminSecuritySettingsModule({
                   {passwordStatusLabel}
                 </span>
               </div>
-              <div className="system-settings-password-controls">
+              <div className="system-settings-password-controls grid min-w-0 gap-3 sm:grid-cols-2">
                 <label className="grid gap-2 text-sm font-medium" htmlFor="admin-password-new">
                   <span>{copy.passwordNewLabel}</span>
                   <Input
@@ -537,7 +538,7 @@ export default function AdminSecuritySettingsModule({
                     autoComplete="new-password"
                   />
                 </label>
-                <div className="system-settings-password-actions">
+                <div className="system-settings-password-actions flex flex-wrap items-center gap-2 sm:col-span-2">
                   <Button
                     type="button"
                     disabled={passwordBusy || Boolean(passwordValidationError) || !passwordDraft}
@@ -557,12 +558,12 @@ export default function AdminSecuritySettingsModule({
                   </Button>
                 </div>
               </div>
-              {passwordValidationError ? <p className="form-error">{passwordValidationError}</p> : null}
+              {passwordValidationError ? <p className="form-error text-sm text-destructive">{passwordValidationError}</p> : null}
             </div>
           </AdminLoadingRegion>
         </section>
 
-        <section className="system-settings-config-section">
+        <section className="system-settings-config-section flex min-w-0 flex-col gap-4 border-b pb-6 last:border-0 last:pb-0 [&>h4]:text-base [&>h4]:font-semibold">
           <h4>{passkeySectionTitle}</h4>
           <AdminLoadingRegion
             loadState={passkeysLoading ? 'initial_loading' : passkeysError ? 'error' : 'ready'}
@@ -570,10 +571,10 @@ export default function AdminSecuritySettingsModule({
             errorLabel={passkeysError ?? undefined}
             minHeight={160}
           >
-            <div className="system-settings-field-grid">
-              <div className="system-settings-action-row" aria-labelledby="admin-passkey-status-title">
-                <div className="system-settings-toggle-copy">
-                  <span className="system-settings-setting-title" id="admin-passkey-status-title">
+            <div className="system-settings-field-grid flex min-w-0 flex-col gap-4">
+              <div className="system-settings-action-row flex flex-col items-start justify-between gap-3 sm:flex-row" aria-labelledby="admin-passkey-status-title">
+                <div className="system-settings-toggle-copy min-w-0 space-y-1 [&_p]:text-sm [&_p]:text-muted-foreground [&_label]:font-medium">
+                  <span className="system-settings-setting-title font-medium" id="admin-passkey-status-title">
                     {copy.passkeyStatusTitle}
                   </span>
                   <p>{copy.passkeyDescription}</p>
@@ -593,18 +594,18 @@ export default function AdminSecuritySettingsModule({
                 </span>
               </div>
               {passkeys?.credentials.length ? (
-                <div className="admin-passkey-list">
+                <div className="admin-passkey-list flex min-w-0 flex-col gap-3">
                   {passkeys.credentials.map((credential) => {
                     const labelDraft = labelDrafts[credential.credentialId] ?? credential.label ?? ''
                     const unchanged = labelDraft === (credential.label ?? '')
                     return (
                       <div
                         key={credential.credentialId}
-                        className="admin-passkey-card rounded-md border border-border/60 bg-muted/20 text-sm"
+                        className="admin-passkey-card space-y-3 p-3 rounded-md border border-border/60 bg-muted/20 text-sm"
                       >
-                        <div className="admin-passkey-edit-row">
+                        <div className="admin-passkey-edit-row flex flex-wrap items-center gap-2">
                           <Input
-                            className="admin-passkey-note-input"
+                            className="admin-passkey-note-input min-w-0 flex-1"
                             value={labelDraft}
                             onChange={(event) => setLabelDrafts((drafts) => ({
                               ...drafts,
@@ -637,7 +638,7 @@ export default function AdminSecuritySettingsModule({
                             {copy.passkeyDelete}
                           </Button>
                         </div>
-                        <p className="admin-passkey-meta-row text-sm font-medium text-muted-foreground">
+                        <p className="admin-passkey-meta-row flex flex-wrap gap-3 text-xs text-muted-foreground">
                           <span>
                             {copy.passkeyCreatedAt.replace('{time}', formatTimestamp(credential.createdAt, language))}
                           </span>
@@ -657,7 +658,7 @@ export default function AdminSecuritySettingsModule({
                   {copy.passkeyEmpty}
                 </p>
               )}
-              <div className="admin-passkey-add-row">
+              <div className="admin-passkey-add-row flex flex-wrap items-center gap-2 [&_input]:min-w-0 [&_input]:flex-1">
                 <label className="sr-only" htmlFor="admin-passkey-new-label">
                   {copy.passkeyNewLabel}
                 </label>
@@ -680,12 +681,12 @@ export default function AdminSecuritySettingsModule({
           </AdminLoadingRegion>
         </section>
 
-        <section className="system-settings-config-section">
+        <section className="system-settings-config-section flex min-w-0 flex-col gap-4 border-b pb-6 last:border-0 last:pb-0 [&>h4]:text-base [&>h4]:font-semibold">
           <h4>{strings.form.totpTitle}</h4>
-          <div className="system-settings-field-grid">
-            <div className="system-settings-action-row system-settings-totp-row" aria-labelledby="system-settings-totp-title">
-              <div className="system-settings-toggle-copy">
-                <span className="system-settings-setting-title" id="system-settings-totp-title">
+          <div className="system-settings-field-grid flex min-w-0 flex-col gap-4">
+            <div className="system-settings-action-row system-settings-totp-row flex flex-col items-start justify-between gap-4 lg:flex-row" aria-labelledby="system-settings-totp-title">
+              <div className="system-settings-toggle-copy min-w-0 space-y-1 [&_p]:text-sm [&_p]:text-muted-foreground [&_label]:font-medium">
+                <span className="system-settings-setting-title font-medium" id="system-settings-totp-title">
                   {strings.form.totpTitle}
                 </span>
                 <p>
@@ -693,14 +694,14 @@ export default function AdminSecuritySettingsModule({
                     ? strings.form.totpBoundHint
                     : strings.form.totpUnboundHint}
                 </p>
-                {totpStatus?.missingCryptoKey && <p className="form-error">{strings.form.totpMissingCryptoKey}</p>}
-                {totpError && <p className="form-error">{totpError}</p>}
+                {totpStatus?.missingCryptoKey && <p className="form-error text-sm text-destructive">{strings.form.totpMissingCryptoKey}</p>}
+                {totpError && <p className="form-error text-sm text-destructive">{totpError}</p>}
                 {totpSetup && (
-                  <div className="system-settings-totp-setup">
+                  <div className="system-settings-totp-setup flex min-w-0 flex-col gap-3 pt-3">
                     <img
                       src={`data:image/png;base64,${totpSetup.qrPngBase64}`}
                       alt={strings.form.totpQrAlt}
-                      className="system-settings-totp-qr"
+                      width={192} height={192} className="system-settings-totp-qr size-48"
                     />
                     <Input value={totpSetup.secret} readOnly aria-label={strings.form.totpSetupSecretLabel} />
                     {totpStatus?.enabled && (
@@ -722,7 +723,7 @@ export default function AdminSecuritySettingsModule({
                   </div>
                 )}
               </div>
-              <div className="system-settings-totp-actions">
+              <div className="system-settings-totp-actions flex flex-col items-start gap-3">
                 {!totpSetup && (
                   <Button
                     type="button"
@@ -763,8 +764,8 @@ export default function AdminSecuritySettingsModule({
                 )}
               </div>
             </div>
-            <div className="system-settings-toggle-row">
-              <div className="system-settings-toggle-copy">
+            <div className="system-settings-toggle-row flex items-center justify-between gap-4">
+              <div className="system-settings-toggle-copy min-w-0 space-y-1 [&_p]:text-sm [&_p]:text-muted-foreground [&_label]:font-medium">
                 <label htmlFor="admin-login-totp-required">{copy.loginTotpRequiredTitle}</label>
                 <p>{totpEnabled ? copy.loginTotpRequiredDescription : copy.loginTotpRequiredUnavailable}</p>
               </div>
@@ -782,7 +783,7 @@ export default function AdminSecuritySettingsModule({
       <Dialog open={pendingSecurityAction != null} onOpenChange={(open) => {
         if (!open) closeSecurityAction()
       }}>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>{securityActionCopy?.title}</DialogTitle>
             <DialogDescription>{securityActionCopy?.description}</DialogDescription>
@@ -802,6 +803,6 @@ export default function AdminSecuritySettingsModule({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </section>
+    </Card>
   )
 }

@@ -1,3 +1,8 @@
+import { Area, AreaChart, Bar, BarChart, YAxis } from 'recharts'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { useMemo } from 'react'
 
 import type {
@@ -12,7 +17,7 @@ import { useTranslate } from '../i18n'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import AdminTablePagination from '../components/AdminTablePagination'
 import { StatusBadge } from '../components/StatusBadge'
-import { Table } from '@/components/ui/table'
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import type { QueryLoadState } from './queryLoadState'
 import { isBlockingLoadState, isRefreshingLoadState } from './queryLoadState'
 
@@ -87,148 +92,41 @@ function stickyUserSecondary(user: StickyUserIdentityLike): string | null {
   return user.username ? `@${user.username}` : null
 }
 
-function buildVisibleBarHeights(successCount: number, failureCount: number, scaleMax: number, totalHeightPx: number) {
-  if (scaleMax <= 0 || totalHeightPx <= 0) {
-    return { empty: totalHeightPx, failure: 0, success: 0 }
-  }
-
-  let success = successCount > 0 ? Math.max((successCount / scaleMax) * totalHeightPx, 1) : 0
-  let failure = failureCount > 0 ? Math.max((failureCount / scaleMax) * totalHeightPx, 1) : 0
-  const maxVisible = Math.max(totalHeightPx, 0)
-  let overflow = success + failure - maxVisible
-
-  const shrink = (value: number, minVisible: number, amount: number) => {
-    if (amount <= 0 || value <= minVisible) return { nextValue: value, remaining: amount }
-    const delta = Math.min(value - minVisible, amount)
-    return { nextValue: value - delta, remaining: amount - delta }
-  }
-
-  if (overflow > 0) {
-    const first = success >= failure ? 'success' : 'failure'
-    const second = first === 'success' ? 'failure' : 'success'
-    for (const key of [first, second] as const) {
-      const minVisible = key === 'success' ? (successCount > 0 ? 1 : 0) : failureCount > 0 ? 1 : 0
-      const current = key === 'success' ? success : failure
-      const result = shrink(current, minVisible, overflow)
-      if (key === 'success') {
-        success = result.nextValue
-      } else {
-        failure = result.nextValue
-      }
-      overflow = result.remaining
-    }
-  }
-
-  const used = Math.min(success + failure, maxVisible)
-  return {
-    empty: Math.max(maxVisible - used, 0),
-    failure,
-    success,
-  }
+function StickyCreditsTrendCell({ buckets, scaleMax }: { buckets: StickyUserDailyBucket[]; scaleMax: number }): JSX.Element {
+  if (!buckets.length) return <span>—</span>
+  const data = buckets.map((bucket) => ({ label: formatDateOnly(bucket.bucketStart), success: bucket.successCredits, failure: bucket.failureCredits }))
+  return <ChartContainer config={{ success: { label: 'Success', color: 'var(--chart-1)' }, failure: { label: 'Failure', color: 'var(--chart-2)' } }} className="h-16 w-40 aspect-auto">
+    <BarChart accessibilityLayer data={data}>
+      <YAxis hide domain={[0, Math.max(scaleMax, 1)]} />
+      <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.label} />} />
+      <Bar dataKey="success" stackId="activity" fill="var(--color-success)" radius={2} />
+      <Bar dataKey="failure" stackId="activity" fill="var(--color-failure)" radius={2} />
+    </BarChart>
+  </ChartContainer>
 }
 
-function StickyCreditsTrendCell({
-  buckets,
-  scaleMax,
-}: {
-  buckets: StickyUserDailyBucket[]
-  scaleMax: number
-}): JSX.Element {
-  if (buckets.length === 0) return <span className="token-owner-empty">—</span>
-
-  return (
-    <div className="flex h-10 items-end gap-px">
-      {buckets.map((bucket) => {
-        const total = bucket.successCredits + bucket.failureCredits
-        const heights = buildVisibleBarHeights(bucket.successCredits, bucket.failureCredits, scaleMax, 40)
-        return (
-          <div
-            key={bucket.bucketStart}
-            className="relative flex h-10 min-w-0 flex-1 flex-col overflow-hidden rounded-[3px] border border-border/40 bg-muted/35"
-            title={`${formatDateOnly(bucket.bucketStart)} · ${bucket.successCredits}/${bucket.failureCredits}`}
-          >
-            <div style={{ height: `${heights.empty}px` }} />
-            <div className={total > 0 ? 'bg-destructive/80' : 'bg-transparent'} style={{ height: `${heights.failure}px` }} />
-            <div className={total > 0 ? 'bg-success/85' : 'bg-transparent'} style={{ height: `${heights.success}px` }} />
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function ProxyActivityTrendCell({
-  buckets,
-  scaleMax,
-}: {
-  buckets: ForwardProxyActivityBucket[]
-  scaleMax: number
-}): JSX.Element {
-  if (buckets.length === 0) return <span className="token-owner-empty">—</span>
-
-  return (
-    <div className="flex h-10 items-end gap-px">
-      {buckets.map((bucket) => {
-        const total = bucket.successCount + bucket.failureCount
-        const heights = buildVisibleBarHeights(bucket.successCount, bucket.failureCount, scaleMax, 40)
-        return (
-          <div
-            key={bucket.bucketStart}
-            className="relative flex h-10 min-w-0 flex-1 flex-col overflow-hidden rounded-[3px] border border-border/40 bg-muted/35"
-            title={`${formatTrendTimeRange(bucket.bucketStart, bucket.bucketEnd)} · ${bucket.successCount}/${bucket.failureCount}`}
-          >
-            <div style={{ height: `${heights.empty}px` }} />
-            <div className={total > 0 ? 'bg-destructive/80' : 'bg-transparent'} style={{ height: `${heights.failure}px` }} />
-            <div className={total > 0 ? 'bg-success/85' : 'bg-transparent'} style={{ height: `${heights.success}px` }} />
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function buildWeightTrendGeometry(buckets: ForwardProxyWeightBucket[], scale: WeightTrendScale) {
-  if (buckets.length === 0) return null
-
-  const chartWidth = 216
-  const chartHeight = 40
-  const span = Math.max(scale.maxValue - scale.minValue, Number.EPSILON)
-  const bucketWidth = chartWidth / buckets.length
-  const points = buckets.map((bucket, index) => {
-    const ratio = Math.max(0, Math.min(1, (bucket.lastWeight - scale.minValue) / span))
-    const x = bucketWidth * index + bucketWidth / 2
-    const y = chartHeight - ratio * chartHeight
-    return { x, y }
-  })
-  const firstPoint = points[0]
-  const lastPoint = points[points.length - 1]
-  if (!firstPoint || !lastPoint) return null
-
-  const zeroRatio = (0 - scale.minValue) / span
-  const zeroY = chartHeight - Math.max(0, Math.min(1, zeroRatio)) * chartHeight
-  const linePath = points
-    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
-    .join(' ')
-  const areaPath = `${linePath} L ${lastPoint.x.toFixed(2)} ${zeroY.toFixed(2)} L ${firstPoint.x.toFixed(2)} ${zeroY.toFixed(2)} Z`
-
-  return { chartWidth, chartHeight, linePath, areaPath, zeroY }
+function ProxyActivityTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyActivityBucket[]; scaleMax: number }): JSX.Element {
+  if (!buckets.length) return <span>—</span>
+  const data = buckets.map((bucket) => ({ label: formatTrendTimeRange(bucket.bucketStart, bucket.bucketEnd), success: bucket.successCount, failure: bucket.failureCount }))
+  return <ChartContainer config={{ success: { label: 'Success', color: 'var(--chart-1)' }, failure: { label: 'Failure', color: 'var(--chart-2)' } }} className="h-16 w-40 aspect-auto">
+    <BarChart accessibilityLayer data={data}>
+      <YAxis hide domain={[0, Math.max(scaleMax, 1)]} />
+      <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.label} />} />
+      <Bar dataKey="success" stackId="activity" fill="var(--color-success)" radius={2} />
+      <Bar dataKey="failure" stackId="activity" fill="var(--color-failure)" radius={2} />
+    </BarChart>
+  </ChartContainer>
 }
 
 function ProxyWeightTrendCell({ buckets, scale }: { buckets: ForwardProxyWeightBucket[]; scale: WeightTrendScale }): JSX.Element {
-  const geometry = buildWeightTrendGeometry(buckets, scale)
-  if (!geometry) return <span className="token-owner-empty">—</span>
-
-  return (
-    <svg
-      viewBox={`0 0 ${geometry.chartWidth} ${geometry.chartHeight}`}
-      className="block h-10 w-full rounded-md border border-border/55 bg-background/45"
-      aria-hidden="true"
-    >
-      <line x1={0} y1={geometry.zeroY} x2={geometry.chartWidth} y2={geometry.zeroY} stroke="hsl(var(--legacy-foreground) / 0.14)" strokeWidth="1" />
-      <path d={geometry.areaPath} fill="hsl(var(--legacy-success) / 0.18)" />
-      <path d={geometry.linePath} fill="none" stroke="hsl(var(--legacy-success))" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" />
-    </svg>
-  )
+  if (!buckets.length) return <span>—</span>
+  return <ChartContainer config={{ lastWeight: { label: 'Weight', color: 'var(--chart-1)' } }} className="h-16 w-40 aspect-auto">
+    <AreaChart accessibilityLayer data={buckets.map((bucket) => ({ ...bucket, label: formatTrendTimeRange(bucket.bucketStart, bucket.bucketEnd) }))}>
+      <YAxis hide domain={[scale.minValue, scale.maxValue]} />
+      <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.label} />} />
+      <Area dataKey="lastWeight" type="natural" stroke="var(--color-lastWeight)" fill="var(--color-lastWeight)" fillOpacity={0.4} />
+    </AreaChart>
+  </ChartContainer>
 }
 
 function resolveStickyNodeWeightBuckets(node: ForwardProxyStatsNode): ForwardProxyWeightBucket[] {
@@ -288,7 +186,7 @@ function StickyWindowValue({
   failureLabel: string
 }): JSX.Element {
   return (
-    <span className="sticky-window-values">
+    <span className="sticky-window-values inline-flex items-center gap-1 tabular-nums">
       <span
         className="sticky-window-value sticky-window-value-success"
         aria-label={`${successLabel} ${formatNumber(successValue)}`}
@@ -355,14 +253,14 @@ export default function KeyStickyPanels({
   const stickyNodesLoadingLabel = stickyNodesRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching
 
   return (
-    <div className="key-sticky-panels-stack">
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+    <div className="key-sticky-panels-stack flex min-w-0 flex-col gap-6">
+      <Card className="surface panel min-w-0">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{keyDetailsStrings.stickyUsers.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.stickyUsers.description}</p>
+            <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.stickyUsers.title}</CardTitle>
+            <CardDescription className="panel-description">{keyDetailsStrings.stickyUsers.description}</CardDescription>
           </div>
-        </div>
+        </CardHeader>
         <AdminLoadingRegion
           className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
           loadState={stickyUsersLoadState}
@@ -371,65 +269,65 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyUsers.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyUsers.empty}</div>
+            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyUsers.empty}</EmptyDescription></Empty>
           ) : (
             <Table>
-              <thead>
-                <tr>
-                  <th>{keyDetailsStrings.stickyUsers.user}</th>
-                  <th>{keyDetailsStrings.stickyUsers.yesterday}</th>
-                  <th>{keyDetailsStrings.stickyUsers.today}</th>
-                  <th>{keyDetailsStrings.stickyUsers.month}</th>
-                  <th>{keyDetailsStrings.stickyUsers.lastSuccess}</th>
-                  <th>{keyDetailsStrings.stickyUsers.trend}</th>
-                </tr>
-              </thead>
-              <tbody>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{keyDetailsStrings.stickyUsers.user}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyUsers.yesterday}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyUsers.today}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyUsers.month}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyUsers.lastSuccess}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyUsers.trend}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {stickyUsers.map((item) => {
                   const secondary = stickyUserSecondary(item.user)
                   return (
-                    <tr key={item.user.userId}>
-                      <td>
-                        <div className="token-owner-block">
-                          <button type="button" className="link-button token-owner-trigger" onClick={() => onOpenUser(item.user.userId)}>
+                    <TableRow key={item.user.userId}>
+                      <TableCell>
+                        <div className="token-owner-block flex flex-col gap-1">
+                          <Button type="button" variant="link" size="sm" className="h-auto p-0 token-owner-trigger" onClick={() => onOpenUser(item.user.userId)}>
                             <span className="token-owner-link">{stickyUserPrimary(item.user)}</span>
                             {secondary ? <span className="token-owner-secondary">{secondary}</span> : null}
-                          </button>
+                          </Button>
                           {!item.user.active ? <span className="token-owner-empty">{keyDetailsStrings.stickyUsers.inactive}</span> : null}
                         </div>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StickyWindowValue
                           successValue={item.windows.yesterday.successCredits}
                           failureValue={item.windows.yesterday.failureCredits}
                           successLabel={keyDetailsStrings.stickyUsers.success}
                           failureLabel={keyDetailsStrings.stickyUsers.failure}
                         />
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StickyWindowValue
                           successValue={item.windows.today.successCredits}
                           failureValue={item.windows.today.failureCredits}
                           successLabel={keyDetailsStrings.stickyUsers.success}
                           failureLabel={keyDetailsStrings.stickyUsers.failure}
                         />
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         <StickyWindowValue
                           successValue={item.windows.month.successCredits}
                           failureValue={item.windows.month.failureCredits}
                           successLabel={keyDetailsStrings.stickyUsers.success}
                           failureLabel={keyDetailsStrings.stickyUsers.failure}
                         />
-                      </td>
-                      <td>{formatTimestamp(item.lastSuccessAt)}</td>
-                      <td style={{ minWidth: 180 }}>
+                      </TableCell>
+                      <TableCell>{formatTimestamp(item.lastSuccessAt)}</TableCell>
+                      <TableCell style={{ minWidth: 180 }}>
                         <StickyCreditsTrendCell buckets={item.dailyBuckets} scaleMax={stickyUserScaleMax} />
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   )
                 })}
-              </tbody>
+              </TableBody>
             </Table>
           )}
         </AdminLoadingRegion>
@@ -441,7 +339,7 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyUsers.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyUsers.empty}</div>
+            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyUsers.empty}</EmptyDescription></Empty>
           ) : (
             stickyUsers.map((item) => {
               const secondary = stickyUserSecondary(item.user)
@@ -450,10 +348,10 @@ export default function KeyStickyPanels({
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.user}</span>
                     <strong>
-                      <button type="button" className="link-button token-owner-trigger" onClick={() => onOpenUser(item.user.userId)}>
+                      <Button type="button" variant="link" size="sm" className="h-auto p-0 token-owner-trigger" onClick={() => onOpenUser(item.user.userId)}>
                         <span className="token-owner-link">{stickyUserPrimary(item.user)}</span>
                         {secondary ? <span className="token-owner-secondary">{secondary}</span> : null}
-                      </button>
+                      </Button>
                     </strong>
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
@@ -524,15 +422,15 @@ export default function KeyStickyPanels({
             onNext={onStickyUsersNext ?? (() => undefined)}
           />
         ) : null}
-      </section>
+      </Card>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
+      <Card className="surface panel min-w-0">
+        <CardHeader className="panel-header border-b">
           <div>
-            <h2>{keyDetailsStrings.stickyNodes.title}</h2>
-            <p className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.stickyNodes.description}</p>
+            <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.stickyNodes.title}</CardTitle>
+            <CardDescription className="panel-description">{keyDetailsStrings.stickyNodes.description}</CardDescription>
           </div>
-        </div>
+        </CardHeader>
         <AdminLoadingRegion
           className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
           loadState={stickyNodesLoadState}
@@ -541,49 +439,49 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyNodes.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyNodes.empty}</div>
+            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyNodes.empty}</EmptyDescription></Empty>
           ) : (
             <Table className="key-sticky-nodes-table">
-              <thead>
-                <tr>
-                  <th>{keyDetailsStrings.stickyNodes.role}</th>
-                  <th>{keyDetailsStrings.stickyNodes.node}</th>
-                  <th>{keyDetailsStrings.stickyNodes.window}</th>
-                  <th>{keyDetailsStrings.stickyNodes.activity}</th>
-                  <th>{keyDetailsStrings.stickyNodes.weight}</th>
-                </tr>
-              </thead>
-              <tbody>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{keyDetailsStrings.stickyNodes.role}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyNodes.node}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyNodes.window}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyNodes.activity}</TableHead>
+                  <TableHead>{keyDetailsStrings.stickyNodes.weight}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {stickyNodes.map((node) => {
                   const assignmentSummary = stickyNodeAssignmentSummary(node, keyDetailsStrings.stickyNodes)
                   return (
-                    <tr key={`${node.role}:${node.key}`}>
-                      <td className="key-sticky-nodes-role-cell">
+                    <TableRow key={`${node.role}:${node.key}`}>
+                      <TableCell className="key-sticky-nodes-role-cell">
                         <StatusBadge tone={node.role === 'primary' ? 'success' : 'info'}>
                           {node.role === 'primary' ? keyDetailsStrings.stickyNodes.primary : keyDetailsStrings.stickyNodes.secondary}
                         </StatusBadge>
-                      </td>
-                      <td className="key-sticky-nodes-node-cell">
-                        <div className="sticky-node-summary" title={`${node.displayName} · ${assignmentSummary.detail}`}>
+                      </TableCell>
+                      <TableCell className="key-sticky-nodes-node-cell">
+                        <div className="sticky-node-summary flex flex-col gap-1" title={`${node.displayName} · ${assignmentSummary.detail}`}>
                           <strong className="sticky-node-summary-title">{node.displayName}</strong>
-                          <div className="sticky-node-summary-meta">
-                            <span className="sticky-node-summary-chip" aria-label={assignmentSummary.detail}>
+                          <div className="sticky-node-summary-meta flex flex-wrap gap-1 text-xs text-muted-foreground">
+                            <span className="sticky-node-summary-chip rounded border bg-muted px-1.5 py-0.5" aria-label={assignmentSummary.detail}>
                               {assignmentSummary.compact}
                             </span>
                           </div>
                         </div>
-                      </td>
-                      <td>{stickyNodeWindowSummary(node)}</td>
-                      <td style={{ minWidth: 180 }}>
+                      </TableCell>
+                      <TableCell>{stickyNodeWindowSummary(node)}</TableCell>
+                      <TableCell style={{ minWidth: 180 }}>
                         <ProxyActivityTrendCell buckets={node.last24h} scaleMax={stickyNodeScaleMax} />
-                      </td>
-                      <td style={{ minWidth: 180 }}>
+                      </TableCell>
+                      <TableCell style={{ minWidth: 180 }}>
                         <ProxyWeightTrendCell buckets={resolveStickyNodeWeightBuckets(node)} scale={stickyNodeWeightScale} />
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   )
                 })}
-              </tbody>
+              </TableBody>
             </Table>
           )}
         </AdminLoadingRegion>
@@ -595,7 +493,7 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyNodes.length === 0 ? (
-            <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{keyDetailsStrings.stickyNodes.empty}</div>
+            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyNodes.empty}</EmptyDescription></Empty>
           ) : (
             stickyNodes.map((node) => {
               const assignmentSummary = stickyNodeAssignmentSummary(node, keyDetailsStrings.stickyNodes)
@@ -609,10 +507,10 @@ export default function KeyStickyPanels({
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.node}</span>
-                    <div className="sticky-node-summary" title={`${node.displayName} · ${assignmentSummary.detail}`}>
+                    <div className="sticky-node-summary flex flex-col gap-1" title={`${node.displayName} · ${assignmentSummary.detail}`}>
                       <strong className="sticky-node-summary-title">{node.displayName}</strong>
-                      <div className="sticky-node-summary-meta">
-                        <span className="sticky-node-summary-chip" aria-label={assignmentSummary.detail}>
+                      <div className="sticky-node-summary-meta flex flex-wrap gap-1 text-xs text-muted-foreground">
+                        <span className="sticky-node-summary-chip rounded border bg-muted px-1.5 py-0.5" aria-label={assignmentSummary.detail}>
                           {assignmentSummary.compact}
                         </span>
                       </div>
@@ -635,7 +533,7 @@ export default function KeyStickyPanels({
             })
           )}
         </AdminLoadingRegion>
-      </section>
+      </Card>
     </div>
   )
 }

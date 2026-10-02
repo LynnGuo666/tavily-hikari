@@ -21,7 +21,7 @@ export default function AccessStatePanel({ state, text, onHome }: AccessStatePan
       : { icon: 'mdi:account-arrow-right-outline', copy: text.loginRequired, action: () => { window.location.href = USER_CONSOLE_LOGIN_START_PATH } }
 
   return (
-    <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 access-panel mx-auto w-full max-w-xl gap-0 py-0">
+    <Card className="surface panel access-panel mx-auto w-full max-w-xl gap-0 py-0">
       <Alert className="console-unavailable-state m-4 items-start gap-4 rounded-lg border-none">
         <span
           className="console-unavailable-icon flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"

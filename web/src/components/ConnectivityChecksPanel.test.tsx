@@ -67,7 +67,9 @@ describe('ConnectivityChecksPanel', () => {
 
     expect(html).toContain('user-console-probe-bubble-item-label-structured')
     expect(html).toContain('<span class="user-console-probe-bubble-item-label-text">调用</span>')
-    expect(html).toContain('<code class="user-console-probe-bubble-item-tool">tavily_search</code>')
+    const toolChip = document.querySelector('code.user-console-probe-bubble-item-tool')
+    expect(toolChip?.textContent).toBe('tavily_search')
+    expect(toolChip?.classList.contains('font-mono')).toBe(true)
     expect(html).toContain('<span class="user-console-probe-bubble-item-label-text">工具</span>')
     expect(html).toContain('mock upstream replied in 42ms')
 

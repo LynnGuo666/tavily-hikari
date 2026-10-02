@@ -2,7 +2,7 @@ import { Icon } from '../lib/icons'
 
 import { languageOptions, type Language, useLanguage, useTranslate } from '../i18n'
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 
 const LANGUAGE_META: Record<Language, { icon: string; short: string }> = {
   en: { icon: 'circle-flags:gb', short: 'EN' },
@@ -39,22 +39,24 @@ function LanguageSwitcher(): JSX.Element {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="language-switcher-menu w-44 p-1">
-        {languageOptions.map((option) => {
-          const meta = LANGUAGE_META[option.value]
-          const isActive = option.value === language
-          return (
-            <DropdownMenuItem
-              key={option.value}
-              className={`language-option cursor-pointer ${isActive ? 'active' : ''}`}
-              onClick={() => handleSelect(option.value as Language)}
-            >
-              <span className="language-flag" aria-hidden="true">
-                <Icon icon={meta.icon} width={18} height={18} />
-              </span>
-              <span className="language-full">{strings.common[option.labelKey]}</span>
-            </DropdownMenuItem>
-          )
-        })}
+        <DropdownMenuGroup>
+          {languageOptions.map((option) => {
+            const meta = LANGUAGE_META[option.value]
+            const isActive = option.value === language
+            return (
+              <DropdownMenuItem
+                key={option.value}
+                className={`language-option cursor-pointer ${isActive ? 'active' : ''}`}
+                onClick={() => handleSelect(option.value as Language)}
+              >
+                <span className="language-flag" aria-hidden="true">
+                  <Icon icon={meta.icon} width={18} height={18} />
+                </span>
+                <span className="language-full">{strings.common[option.labelKey]}</span>
+              </DropdownMenuItem>
+            )
+          })}
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { cn } from '../lib/utils'
+import { Card, CardHeader, CardContent } from '@/components/ui/card'
 
 interface AdminModuleSurfaceProps {
   children: ReactNode
@@ -16,13 +17,13 @@ export default function AdminModuleSurface({
   toolbarClassName,
 }: AdminModuleSurfaceProps): JSX.Element {
   return (
-    <section className={cn('surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-module-surface', className)}>
+    <Card className={cn('surface panel admin-module-surface', className)}>
       {toolbar ? (
-        <div className={cn('flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3', toolbarClassName)}>
+        <CardHeader className={cn('flex flex-wrap items-center justify-between gap-3 border-b', toolbarClassName)}>
           {toolbar}
-        </div>
+        </CardHeader>
       ) : null}
-      {children}
-    </section>
+      <CardContent className="flex flex-col gap-4">{children}</CardContent>
+    </Card>
   )
 }

@@ -163,7 +163,7 @@ export default function AdminShell({
           onSelectItem={onSelectItem}
           onUtilityHostChange={setSidebarUtilityHost}
         />
-        <SidebarInset>
+        <SidebarInset className="min-w-0">
           <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
             <SidebarTrigger />
             <a
@@ -173,9 +173,9 @@ export default function AdminShell({
               {skipToContentLabel}
             </a>
           </header>
-          <main id="admin-main-content" role="main" className="flex-1 p-4 lg:p-6 admin-main-content">
-            <div className="admin-shell-content">{children}</div>
-          </main>
+          <div id="admin-main-content" tabIndex={-1} className="flex min-w-0 flex-1 flex-col p-4 lg:p-6 admin-main-content">
+            <div className="admin-shell-content flex min-w-0 flex-1 flex-col gap-6">{children}</div>
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </AdminSidebarUtilityContext.Provider>

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import SegmentedTabs from '../components/SegmentedTabs'
+import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Icon } from '../lib/icons'
 
@@ -56,37 +57,27 @@ export default function TokenLogsHeader({
   onFilterChange,
 }: TokenLogsHeaderProps): JSX.Element {
   return (
-    <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
+    <div className="user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
       <h2 className="text-base font-semibold">{title}</h2>
       <div className="user-console-logs-header-actions flex items-center gap-2">
-        <Tabs
+        <SegmentedTabs<UserTokenLogFilter>
           value={filter}
-          onValueChange={(next) => onFilterChange(next as UserTokenLogFilter)}
-        >
-          <TabsList className="user-console-log-filter-tabs" aria-label={filterAriaLabel}>
-            {filterOptions.map((option) => (
-              <TabsTrigger
-                key={option.value}
-                value={option.value}
-                className="segmented-tab"
-                disabled={filterDisabled || option.disabled}
-              >
-                {option.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+          onChange={onFilterChange}
+          options={filterOptions}
+          ariaLabel={filterAriaLabel}
+          disabled={filterDisabled}
+        />
         {pushIssue ? (
           <div className="user-console-push-status-slot is-active flex items-center">
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
+                <Button variant="ghost" size="icon"
                   type="button"
-                  className="user-console-push-status-trigger flex size-8 items-center justify-center rounded-md text-warning transition-colors hover:bg-warning/10"
+                  className="user-console-push-status-trigger text-warning"
                   aria-label={pushStatusText.ariaLabel}
                 >
                   <Icon icon="mdi:alert-circle-outline" width={18} height={18} aria-hidden="true" />
-                </button>
+                </Button>
               </TooltipTrigger>
               <TooltipContent side="top" align="end" className="max-w-[min(20rem,calc(100vw-2rem))]">
                 {resolveDetailLogsPushIssueMessage(pushIssue, pushStatusText)}

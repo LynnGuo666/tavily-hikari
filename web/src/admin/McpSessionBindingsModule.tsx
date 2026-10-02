@@ -1,3 +1,6 @@
+import { Empty, EmptyDescription } from '@/components/ui/empty'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { useEffect, useMemo, useState } from 'react'
 
 import type {
@@ -331,9 +334,9 @@ export default function McpSessionBindingsModule({
   }
 
   return (
-    <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10" style={{ display: 'grid', gap: 16 }}>
+    <Card className="surface panel min-w-0" style={{ display: 'grid', gap: 16 }}>
       {showStatusTabs ? (
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ justifyContent: 'flex-end', gap: 12 }}>
+        <CardHeader className="panel-header border-b" style={{ justifyContent: 'flex-end', gap: 12 }}>
           <McpSessionBindingsStatusTabs
             language={language}
             value={query.status ?? 'active'}
@@ -345,11 +348,11 @@ export default function McpSessionBindingsModule({
               })
             }}
           />
-        </div>
+        </CardHeader>
       ) : null}
 
-      <div className="surface" style={{ display: 'grid', gap: 12, padding: 16 }}>
-        <div className="mcp-session-bindings-filters">
+      <CardContent className="grid gap-4">
+        <div className="mcp-session-bindings-filters grid items-end gap-4 lg:grid-cols-[1fr_1fr_auto]">
           <DateTimeRangeField
             className="mcp-session-bindings-filters__field"
             label={copy.filters.createdRange}
@@ -383,7 +386,7 @@ export default function McpSessionBindingsModule({
             onEndChange={setDraftUpdatedTo}
           />
 
-          <div className="mcp-session-bindings-filters__actions">
+          <div className="mcp-session-bindings-filters__actions flex flex-wrap gap-2">
             <Button type="button" size="sm" onClick={applyFilters} disabled={busy}>
               {copy.filters.apply}
             </Button>
@@ -392,9 +395,9 @@ export default function McpSessionBindingsModule({
             </Button>
           </div>
         </div>
-      </div>
+      </CardContent>
 
-      <div className="grid gap-3 md:grid-cols-3">
+      <CardContent className="grid gap-3 md:grid-cols-3">
         <SummaryCard label={copy.summary.total} value={numberFormatter.format(data?.total ?? 0)} />
         <SummaryCard
           label={copy.summary.activeMatching}
@@ -404,9 +407,9 @@ export default function McpSessionBindingsModule({
           label={copy.summary.currentPageActionable}
           value={numberFormatter.format(actionableItems.length)}
         />
-      </div>
+      </CardContent>
 
-      <div
+      <CardContent
         style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -414,7 +417,7 @@ export default function McpSessionBindingsModule({
           gap: 8,
           flexWrap: 'wrap',
           paddingBottom: 8,
-          borderBottom: '1px solid hsl(var(--legacy-border) / 0.46)',
+          borderBottom: '1px solid color-mix(in oklab, var(--border) 46%, transparent)',
         }}
       >
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
@@ -454,31 +457,30 @@ export default function McpSessionBindingsModule({
               : copy.actions.releaseFiltered}
           </Button>
         </div>
-      </div>
+      </CardContent>
 
-      <AdminLoadingRegion
+      <CardContent className="min-w-0"><AdminLoadingRegion
         loadState={loadState}
         loadingLabel={copy.loading}
         errorLabel={error ?? copy.loadFailed}
         minHeight={260}
       >
         {!data || data.items.length === 0 ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{copy.empty}</div>
+          <Empty className="empty-state"><EmptyDescription>{copy.empty}</EmptyDescription></Empty>
         ) : (
           <>
             <div className="table-wrapper overflow-hidden rounded-lg border">
-              <Table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b mcp-session-bindings-table">
+              <Table className="mcp-session-bindings-table">
                 <TableHeader>
                   <TableRow>
                     <TableHead>
                       <label style={selectionCheckboxLabelStyle}>
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           aria-label={copy.selection.page}
-                          checked={allActionableSelected}
+                          checked={allActionableSelected ? true : selectedCount > 0 ? 'indeterminate' : false}
                           disabled={actionableIds.length === 0 || busy}
-                          onChange={(event) => {
-                            if (event.currentTarget.checked) {
+                          onCheckedChange={(checked) => {
+                            if (checked === true) {
                               setSelectedIds(new Set(actionableIds))
                             } else {
                               setSelectedIds(new Set())
@@ -506,15 +508,14 @@ export default function McpSessionBindingsModule({
                       <TableRow key={item.proxySessionId}>
                         <TableCell>
                           <label style={selectionCheckboxLabelStyle}>
-                            <input
-                              type="checkbox"
+                            <Checkbox
                               aria-label={copy.selection.row.replace('{id}', item.proxySessionId)}
                               checked={selectedIds.has(item.proxySessionId)}
                               disabled={!selectable || busy}
-                              onChange={(event) => {
+                              onCheckedChange={(checked) => {
                                 setSelectedIds((current) => {
                                   const next = new Set(current)
-                                  if (event.currentTarget.checked) next.add(item.proxySessionId)
+                                  if (checked === true) next.add(item.proxySessionId)
                                   else next.delete(item.proxySessionId)
                                   return next
                                 })
@@ -588,7 +589,7 @@ export default function McpSessionBindingsModule({
             />
           </>
         )}
-      </AdminLoadingRegion>
+      </AdminLoadingRegion></CardContent>
 
       <Dialog open={confirmReleaseAllOpen} onOpenChange={setConfirmReleaseAllOpen}>
         <DialogContent>
@@ -617,16 +618,16 @@ export default function McpSessionBindingsModule({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </section>
+    </Card>
   )
 }
 
 function SummaryCard({ label, value }: { label: string; value: string }): JSX.Element {
   return (
-    <article className="upstream-privacy-stat">
+    <Card size="sm"><CardContent className="flex flex-col gap-1">
       <span>{label}</span>
       <strong>{value}</strong>
-    </article>
+    </CardContent></Card>
   )
 }
 
@@ -637,12 +638,13 @@ function renderRelated(
 ): JSX.Element {
   if (!value) return <span>{emptyLabel}</span>
   return (
-    <button
+    <Button
       type="button"
-      className="text-left font-mono text-xs text-primary underline-offset-2 hover:underline"
+      variant="link"
+      className="h-auto justify-start p-0 text-left font-mono text-xs"
       onClick={() => onOpen(value)}
     >
       {value}
-    </button>
+    </Button>
   )
 }

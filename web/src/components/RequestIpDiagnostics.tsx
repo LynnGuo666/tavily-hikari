@@ -1,3 +1,4 @@
+import RequestLogDetailSection from '@/components/RequestLogDetailSection'
 import type { RequestLog } from '../api'
 
 type Language = 'en' | 'zh'
@@ -16,9 +17,8 @@ export default function RequestIpDiagnostics({
     return null
   }
   return (
-    <div className="log-details-headers">
-      <div className="flex flex-col gap-2">
-        <header>{language === 'zh' ? 'IP 诊断' : 'IP diagnostics'}</header>
+    <div className="log-details-headers grid min-w-0 gap-3 lg:grid-cols-2">
+      <RequestLogDetailSection title={language === 'zh' ? 'IP 诊断' : 'IP diagnostics'}>
         <ul>
           <li>
             remoteAddr: <code>{log.remote_addr ?? '-'}</code>
@@ -31,10 +31,9 @@ export default function RequestIpDiagnostics({
           </li>
           <li>{language === 'zh' ? '可信代理' : 'trusted proxy'}: {log.client_ip_trusted ? 'yes' : 'no'}</li>
         </ul>
-      </div>
+      </RequestLogDetailSection>
       {ipHeaders.length > 0 ? (
-        <div className="flex flex-col gap-2">
-          <header>{language === 'zh' ? 'IP 头值快照' : 'IP header values'}</header>
+        <RequestLogDetailSection title={language === 'zh' ? 'IP 头值快照' : 'IP header values'}>
           <ul>
             {ipHeaders.map((header, index) => (
               <li key={`ip-header-${index}-${header.name}-${header.value}`}>
@@ -42,7 +41,7 @@ export default function RequestIpDiagnostics({
               </li>
             ))}
           </ul>
-        </div>
+        </RequestLogDetailSection>
       ) : null}
     </div>
   )

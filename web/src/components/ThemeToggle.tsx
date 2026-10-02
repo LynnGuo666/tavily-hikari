@@ -3,7 +3,7 @@ import { CheckIcon, MonitorIcon, MoonIcon, SunIcon } from 'lucide-react'
 import { useLanguage } from '../i18n'
 import { type ThemeMode, useTheme } from '../theme'
 import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuGroup } from '@/components/ui/dropdown-menu'
 
 const labels = {
   en: {
@@ -47,21 +47,23 @@ export default function ThemeToggle(): JSX.Element {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuItem onClick={() => setMode('light')} className="cursor-pointer">
-          <SunIcon aria-hidden="true" />
-          <span>{copy.light}</span>
-          {mode === 'light' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setMode('dark')} className="cursor-pointer">
-          <MoonIcon aria-hidden="true" />
-          <span>{copy.dark}</span>
-          {mode === 'dark' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setMode('system')} className="cursor-pointer">
-          <MonitorIcon aria-hidden="true" />
-          <span>{copy.system}</span>
-          {mode === 'system' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => setMode('light')} className="cursor-pointer">
+            <SunIcon aria-hidden="true" />
+            <span>{copy.light}</span>
+            {mode === 'light' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setMode('dark')} className="cursor-pointer">
+            <MoonIcon aria-hidden="true" />
+            <span>{copy.dark}</span>
+            {mode === 'dark' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setMode('system')} className="cursor-pointer">
+            <MonitorIcon aria-hidden="true" />
+            <span>{copy.system}</span>
+            {mode === 'system' ? <CheckIcon className="ml-auto" aria-hidden="true" /> : null}
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )

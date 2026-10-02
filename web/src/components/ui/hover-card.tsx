@@ -10,20 +10,21 @@ function HoverCard({
   return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />
 }
 
-function HoverCardTrigger({
+const HoverCardTrigger = React.forwardRef<React.ElementRef<typeof HoverCardPrimitive.Trigger>, React.ComponentProps<typeof HoverCardPrimitive.Trigger>>(function HoverCardTrigger({
   ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
+}, ref) {
   return (
-    <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+    <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" ref={ref}
+      {...props} />
   )
-}
+})
 
-function HoverCardContent({
+const HoverCardContent = React.forwardRef<React.ElementRef<typeof HoverCardPrimitive.Content>, React.ComponentProps<typeof HoverCardPrimitive.Content>>(function HoverCardContent({
   className,
   align = "center",
   sideOffset = 4,
   ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
+}, ref) {
   return (
     <HoverCardPrimitive.Portal data-slot="hover-card-portal">
       <HoverCardPrimitive.Content
@@ -34,10 +35,11 @@ function HoverCardContent({
           "z-50 w-64 origin-(--radix-hover-card-content-transform-origin) rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
+        ref={ref}
         {...props}
       />
     </HoverCardPrimitive.Portal>
   )
-}
+})
 
 export { HoverCard, HoverCardTrigger, HoverCardContent }
