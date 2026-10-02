@@ -465,13 +465,13 @@ export default function UpstreamPrivacyStatusModule({
 
   return (
     <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 upstream-privacy-shell">
-      <div className="upstream-privacy-shell__toolbar">
+      <div className="upstream-privacy-shell__toolbar flex flex-wrap items-center justify-between gap-2 border-b px-4 py-3">
         {status ? (
-          <p className="upstream-privacy-shell__meta">
+          <p className="upstream-privacy-shell__meta flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
             {strings.generatedAt} · {timestampFormatter.format(new Date(status.generatedAt * 1000))}
           </p>
         ) : null}
-        <div className="upstream-privacy-shell__actions">
+        <div className="upstream-privacy-shell__actions flex flex-wrap items-center gap-2">
           <div className="upstream-privacy-auto-refresh" role="group" aria-labelledby={autoRefreshLabelId}>
             <span id={autoRefreshLabelId}>{strings.autoRefresh}</span>
             <Switch
@@ -503,9 +503,9 @@ export default function UpstreamPrivacyStatusModule({
                 </div>
                 <p className="upstream-privacy-overview__summary">{phaseDescription}</p>
                 {summarySignals.length > 0 ? (
-                  <div className="upstream-privacy-signal-list">
+                  <div className="upstream-privacy-signal-list flex flex-col gap-2">
                     {summarySignals.map((signal) => (
-                      <article key={signal.label} className="upstream-privacy-signal">
+                      <article key={signal.label} className="upstream-privacy-signal flex items-start gap-2 text-sm">
                         <span>{signal.label}</span>
                         <strong>{signal.value}</strong>
                       </article>
@@ -570,10 +570,10 @@ export default function UpstreamPrivacyStatusModule({
               </div>
             </section>
 
-            <section className="upstream-privacy-section">
+            <section className="upstream-privacy-section flex flex-col gap-3 px-4">
               <button
                 type="button"
-                className="upstream-privacy-stat"
+                className="upstream-privacy-stat flex min-w-0 flex-col gap-1 rounded-lg border p-3"
                 style={{ width: '100%', textAlign: 'left', cursor: 'pointer' }}
                 onClick={onOpenMcpSessionBindings}
               >
@@ -588,7 +588,7 @@ export default function UpstreamPrivacyStatusModule({
               </button>
             </section>
 
-            <section className="upstream-privacy-section">
+            <section className="upstream-privacy-section flex flex-col gap-3 px-4">
               <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{strings.attentionTitle}</h3>
@@ -599,7 +599,7 @@ export default function UpstreamPrivacyStatusModule({
                 <StatusBadge tone={phaseTone(status.phase)}>{phaseLabel}</StatusBadge>
               </div>
               {statusIssues.length === 0 ? (
-                <div className="upstream-privacy-empty-note">{strings.attentionClear}</div>
+                <div className="upstream-privacy-empty-note text-sm text-muted-foreground">{strings.attentionClear}</div>
               ) : (
                 <div className="upstream-privacy-issue-list">
                   {statusIssues.map((issue) => (
@@ -617,13 +617,13 @@ export default function UpstreamPrivacyStatusModule({
               )}
             </section>
 
-            <section className="upstream-privacy-section">
+            <section className="upstream-privacy-section flex flex-col gap-3 px-4">
               <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{strings.countersTitle}</h3>
                 </div>
               </div>
-              <div className="upstream-privacy-counters">
+              <div className="upstream-privacy-counters grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-4">
                 <PrivacyStat label={sessionBindingSummaryLabel} value={numberFormatter.format(status.activeUpstreamMcpSessions)} />
                 <PrivacyStat
                   label={strings.counterPendingResearch}
@@ -781,7 +781,7 @@ export default function UpstreamPrivacyStatusModule({
               </div>
             </section>
 
-            <section className="upstream-privacy-section" data-testid="system-status-reconciliation-progress">
+            <section className="upstream-privacy-section flex flex-col gap-3 px-4" data-testid="system-status-reconciliation-progress">
               <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{diagnosticsLabels.progressTitle}</h3>
@@ -816,7 +816,7 @@ export default function UpstreamPrivacyStatusModule({
                   <span>{numberFormatter.format(dailyKeyProgressRows.length)}</span>
                 </div>
                 {dailyKeyProgressRows.length === 0 ? (
-                  <div className="upstream-privacy-empty-note">{diagnosticsLabels.keyProgressEmpty}</div>
+                  <div className="upstream-privacy-empty-note text-sm text-muted-foreground">{diagnosticsLabels.keyProgressEmpty}</div>
                 ) : (
                   <div className="upstream-privacy-key-progress__rows">
                     {dailyKeyProgressRows.map((key) => (
@@ -836,14 +836,14 @@ export default function UpstreamPrivacyStatusModule({
               </div>
             </section>
 
-            <section className="upstream-privacy-section" data-testid="system-status-retry-buckets">
+            <section className="upstream-privacy-section flex flex-col gap-3 px-4" data-testid="system-status-retry-buckets">
               <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{diagnosticsLabels.retryBucketsTitle}</h3>
                   <p className="panel-description text-sm text-muted-foreground">{diagnosticsLabels.retryBucketsDescription}</p>
                 </div>
               </div>
-              <div className="upstream-privacy-counters">
+              <div className="upstream-privacy-counters grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-4">
                 <PrivacyStat
                   label={diagnosticsLabels.retryBucketUpstream429}
                   value={numberFormatter.format(status.retryBuckets.upstream429)}
@@ -863,7 +863,7 @@ export default function UpstreamPrivacyStatusModule({
               </div>
             </section>
 
-            <section className="upstream-privacy-section" data-testid="system-status-key-activity">
+            <section className="upstream-privacy-section flex flex-col gap-3 px-4" data-testid="system-status-key-activity">
               <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                 <div>
                   <h3>{diagnosticsLabels.keyActivityTitle}</h3>
@@ -903,7 +903,7 @@ export default function UpstreamPrivacyStatusModule({
                 </div>
               </summary>
               <div className="upstream-privacy-details__body">
-                <section className="upstream-privacy-detail-section">
+                <section className="upstream-privacy-detail-section flex flex-col gap-2 rounded-lg border p-4">
                   <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.configurationTitle}</h3>
@@ -912,7 +912,7 @@ export default function UpstreamPrivacyStatusModule({
                       </p>
                     </div>
                   </div>
-                  <div className="upstream-privacy-counters">
+                  <div className="upstream-privacy-counters grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-4">
                     <PrivacyStat
                       label={strings.projectIdModeConfigured}
                       value={modeLabel(formStrings, status.configuredProjectIdMode)}
@@ -943,7 +943,7 @@ export default function UpstreamPrivacyStatusModule({
                   </div>
                 </section>
 
-                <section className="upstream-privacy-detail-section">
+                <section className="upstream-privacy-detail-section flex flex-col gap-2 rounded-lg border p-4">
                   <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.gateTitle}</h3>
@@ -965,7 +965,7 @@ export default function UpstreamPrivacyStatusModule({
                   </div>
                 </section>
 
-                <section className="upstream-privacy-detail-section">
+                <section className="upstream-privacy-detail-section flex flex-col gap-2 rounded-lg border p-4">
                   <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.headersTitle}</h3>
@@ -977,7 +977,7 @@ export default function UpstreamPrivacyStatusModule({
                   </div>
                 </section>
 
-                <section className="upstream-privacy-detail-section">
+                <section className="upstream-privacy-detail-section flex flex-col gap-2 rounded-lg border p-4">
                   <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
                     <div>
                       <h3>{strings.adjustmentsTitle}</h3>
@@ -1054,7 +1054,7 @@ function KeyActivityChart({
         <span>{numberFormatter.format(points.length)}</span>
       </div>
       {points.length === 0 ? (
-        <div className="upstream-privacy-empty-note">{emptyLabel}</div>
+        <div className="upstream-privacy-empty-note text-sm text-muted-foreground">{emptyLabel}</div>
       ) : (
         <div className="upstream-privacy-activity-bars">
           {points.map((point) => {
@@ -1118,7 +1118,7 @@ function PrivacyStat({
   monospace?: boolean
 }): JSX.Element {
   return (
-    <article className="upstream-privacy-stat">
+    <article className="upstream-privacy-stat flex min-w-0 flex-col gap-1 rounded-lg border p-3">
       <span>{label}</span>
       <strong className={monospace ? 'font-mono' : undefined}>{value}</strong>
       {supportingText ? <small>{supportingText}</small> : null}

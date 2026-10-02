@@ -833,8 +833,8 @@ export default function AlertsCenter({
           </div>
 
           <div className="alerts-center-filters alerts-center-filters--primary">
-            <div className="alerts-center-filter-field alerts-center-filter-field--type">
-              <span className="alerts-center-filter-label">{copy.filters.type}</span>
+            <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--type">
+              <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.type}</span>
               <SearchableFacetSelect
                 value={type}
                 options={typeOptions}
@@ -850,8 +850,8 @@ export default function AlertsCenter({
               />
             </div>
 
-            <div className="alerts-center-filter-field alerts-center-filter-field--request-kinds">
-              <span className="alerts-center-filter-label">{copy.filters.requestKinds}</span>
+            <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--request-kinds">
+              <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.requestKinds}</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button
@@ -892,8 +892,8 @@ export default function AlertsCenter({
               </DropdownMenu>
             </div>
 
-            <div className="alerts-center-filter-field alerts-center-filter-field--since">
-              <span className="alerts-center-filter-label">{copy.filters.since}</span>
+            <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--since">
+              <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.since}</span>
               <Input
                 type="datetime-local"
                 className="alerts-center-time-input alerts-center-filter-control"
@@ -901,8 +901,8 @@ export default function AlertsCenter({
                 onChange={(event) => setDraftSince(event.target.value)}
               />
             </div>
-            <div className="alerts-center-filter-field alerts-center-filter-field--until">
-              <span className="alerts-center-filter-label">{copy.filters.until}</span>
+            <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--until">
+              <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.until}</span>
               <Input
                 type="datetime-local"
                 className="alerts-center-time-input alerts-center-filter-control"
@@ -910,8 +910,8 @@ export default function AlertsCenter({
                 onChange={(event) => setDraftUntil(event.target.value)}
               />
             </div>
-            <div className="alerts-center-filter-field alerts-center-filter-field--user">
-              <span className="alerts-center-filter-label">{copy.filters.user}</span>
+            <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--user">
+              <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.user}</span>
               <SearchableFacetSelect
                 value={userId}
                 options={catalog?.users ?? []}
@@ -926,8 +926,8 @@ export default function AlertsCenter({
                 onChange={(nextUserId) => navigateWith({ userId: nextUserId, page: 1 })}
               />
             </div>
-            <div className="alerts-center-filter-field alerts-center-filter-field--token">
-              <span className="alerts-center-filter-label">{copy.filters.token}</span>
+            <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--token">
+              <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.token}</span>
               <SearchableFacetSelect
                 value={tokenId}
                 options={catalog?.tokens ?? []}
@@ -943,8 +943,8 @@ export default function AlertsCenter({
                 labelVariant="mono"
               />
             </div>
-            <div className="alerts-center-filter-field alerts-center-filter-field--key">
-              <span className="alerts-center-filter-label">{copy.filters.key}</span>
+            <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-filter-field--key">
+              <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.filters.key}</span>
               <SearchableFacetSelect
                 value={keyId}
                 options={catalog?.keys ?? []}
@@ -1008,13 +1008,13 @@ export default function AlertsCenter({
             >
               <TableHeader>
                 <TableRow>
-                  <TableHead className="alerts-center-col alerts-center-col--time">{copy.table.events.time}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--type">{copy.table.events.type}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--subject">{copy.table.events.subject}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--request-kind">{copy.table.events.requestKind}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--related">{copy.table.events.related}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--request">{copy.table.events.request}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--summary">{copy.table.events.summary}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--time">{copy.table.events.time}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--type">{copy.table.events.type}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">{copy.table.events.subject}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--request-kind">{copy.table.events.requestKind}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--related">{copy.table.events.related}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--request">{copy.table.events.request}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">{copy.table.events.summary}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -1027,50 +1027,50 @@ export default function AlertsCenter({
                 ) : (
                   eventsPage.items.map((event) => (
                     <TableRow key={event.id}>
-                      <TableCell className="alerts-center-col alerts-center-col--time">
+                      <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--time">
                         <div className="alerts-center-time-cell">
                           <strong>{formatTime(event.occurredAt)}</strong>
                           <span>{formatTimeDetail(event.occurredAt)}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="alerts-center-col alerts-center-col--type">
+                      <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--type">
                         <StatusBadge tone={alertTypeTone(event.type)}>{copy.types[event.type]}</StatusBadge>
                       </TableCell>
-                      <TableCell className="alerts-center-col alerts-center-col--subject">
+                      <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">
                         <div className="alerts-center-subject-cell">
                           <strong>{subjectDisplayLabel(event)}</strong>
                         </div>
                       </TableCell>
-                      <TableCell className="alerts-center-col alerts-center-col--request-kind">
+                      <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--request-kind">
                         {event.requestKind ? (
                           <RequestKindBadge requestKindKey={event.requestKind.key} requestKindLabel={event.requestKind.label} size="sm" />
                         ) : '—'}
                       </TableCell>
-                      <TableCell className="alerts-center-col alerts-center-col--related">
+                      <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--related">
                         <div className="alerts-center-related-actions">
                           {event.user ? (
-                            <button type="button" className="alerts-center-related-link" onClick={() => onOpenUser(event.user!.userId)}>
+                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline" onClick={() => onOpenUser(event.user!.userId)}>
                               {event.user.displayName ?? event.user.username ?? event.user.userId}
                             </button>
                           ) : null}
                           {event.token ? (
-                            <button type="button" className="alerts-center-related-link alerts-center-related-link--mono" onClick={() => onOpenToken(event.token!.id)}>
+                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenToken(event.token!.id)}>
                               {event.token.label ?? event.token.id}
                             </button>
                           ) : null}
                           {event.key ? (
-                            <button type="button" className="alerts-center-related-link alerts-center-related-link--mono" onClick={() => onOpenKey(event.key!.id)}>
+                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenKey(event.key!.id)}>
                               {event.key.label ?? event.key.id}
                             </button>
                           ) : null}
                           {event.job ? (
-                            <button type="button" className="alerts-center-related-link alerts-center-related-link--mono" onClick={() => onNavigate(modulePath('jobs'))}>
+                            <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onNavigate(modulePath('jobs'))}>
                               {`${copy.openJobs} #${event.job.id}`}
                             </button>
                           ) : null}
                         </div>
                       </TableCell>
-                      <TableCell className="alerts-center-col alerts-center-col--request">
+                      <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--request">
                         {event.request ? (
                           <button type="button" className="alerts-center-request-link" onClick={() => setSelectedRequest(event.request)}>
                             {requestSummary(event.request)}
@@ -1079,8 +1079,8 @@ export default function AlertsCenter({
                           '—'
                         )}
                       </TableCell>
-                      <TableCell className="alerts-center-col alerts-center-col--summary">
-                        <div className="alerts-center-summary-cell">
+                      <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">
+                        <div className="alerts-center-summary-cell px-3 py-2 align-top">
                           <strong>{event.title}</strong>
                           <span>{event.summary}</span>
                         </div>
@@ -1100,12 +1100,12 @@ export default function AlertsCenter({
             >
               <TableHeader>
                 <TableRow>
-                  <TableHead className="alerts-center-col alerts-center-col--expander" />
-                  <TableHead className="alerts-center-col alerts-center-col--time">{copy.table.groups.time}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--type">{copy.table.groups.type}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--subject">{copy.table.groups.subject}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--request-kind">{copy.table.groups.requestKind}</TableHead>
-                  <TableHead className="alerts-center-col alerts-center-col--summary">{copy.table.groups.latest}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--expander" />
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--time">{copy.table.groups.time}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--type">{copy.table.groups.type}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">{copy.table.groups.subject}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--request-kind">{copy.table.groups.requestKind}</TableHead>
+                  <TableHead className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">{copy.table.groups.latest}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -1123,7 +1123,7 @@ export default function AlertsCenter({
                     return (
                       <Fragment key={group.id}>
                         <TableRow key={group.id}>
-                          <TableCell className="alerts-center-col alerts-center-col--expander">
+                          <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--expander">
                             {canExpand ? (
                               <button
                                 type="button"
@@ -1136,21 +1136,21 @@ export default function AlertsCenter({
                               </button>
                             ) : null}
                           </TableCell>
-                          <TableCell className="alerts-center-col alerts-center-col--time">
+                          <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--time">
                             <div className="alerts-center-time-cell alerts-center-time-cell--range">
                               <strong>{formatMonthDayTimeWithSeconds(group.firstSeen, language)}</strong>
                               <span>{formatMonthDayTimeWithSeconds(group.lastSeen, language)}</span>
                             </div>
                           </TableCell>
-                          <TableCell className="alerts-center-col alerts-center-col--type">
+                          <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--type">
                             <StatusBadge tone={alertTypeTone(group.type)}>{copy.types[group.type]}</StatusBadge>
                           </TableCell>
-                          <TableCell className="alerts-center-col alerts-center-col--subject">
+                          <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">
                             <div className="alerts-center-subject-cell">
                               {hasClickableGroupSubject(group) ? (
                                 <button
                                   type="button"
-                                  className={`alerts-center-related-link${group.subjectKind !== 'user' ? ' alerts-center-related-link--mono' : ''}`}
+                                  className={`alerts-center-related-link text-primary underline-offset-4 hover:underline${group.subjectKind !== 'user' ? ' alerts-center-related-link--mono font-mono text-xs' : ''}`}
                                   onClick={() => {
                                     if (group.subjectKind === 'user' && group.user?.userId) {
                                       onOpenUser(group.user.userId)
@@ -1176,8 +1176,8 @@ export default function AlertsCenter({
                               )}
                             </div>
                           </TableCell>
-                          <TableCell className="alerts-center-col alerts-center-col--request-kind">
-                            <div className="alerts-center-summary-cell">
+                          <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--request-kind">
+                            <div className="alerts-center-summary-cell px-3 py-2 align-top">
                               <strong>{compatibilityGroup ? '—' : semanticWindowLabel(group, language)}</strong>
                               {(group.groupingKind ?? 'compat') === 'mother' ? (
                                 <span>{`x${group.eventCount ?? group.count} · ${group.childCount ?? group.children?.length ?? 0} ${copy.groupUi.children}`}</span>
@@ -1186,8 +1186,8 @@ export default function AlertsCenter({
                               )}
                             </div>
                           </TableCell>
-                          <TableCell className="alerts-center-col alerts-center-col--summary">
-                            <div className="alerts-center-summary-cell">
+                          <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">
+                            <div className="alerts-center-summary-cell px-3 py-2 align-top">
                               <strong>{group.latestEvent.title}</strong>
                               <span>{group.latestEvent.summary}</span>
                             </div>
@@ -1198,8 +1198,8 @@ export default function AlertsCenter({
                               return (
                                 <Fragment key={child.id}>
                                   <TableRow key={`${child.id}:summary`} className="alerts-center-child-row">
-                                    <TableCell className="alerts-center-col alerts-center-col--expander alerts-center-child-row__expander" />
-                                    <TableCell className="alerts-center-col alerts-center-col--time">
+                                    <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--expander alerts-center-child-row__expander" />
+                                    <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--time">
                                       <div className="alerts-center-time-cell alerts-center-child-window">
                                         <strong>{semanticWindowLabel(child, language)}</strong>
                                         {child.semanticWindowStart != null && child.semanticWindowEnd != null ? (
@@ -1209,27 +1209,27 @@ export default function AlertsCenter({
                                         ) : null}
                                       </div>
                                     </TableCell>
-                                    <TableCell className="alerts-center-col alerts-center-col--type">
+                                    <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--type">
                                       <div className="alerts-center-child-stat">
                                         <strong>x{child.eventCount ?? child.count}</strong>
                                         <span>{copy.groupUi.children}</span>
                                       </div>
                                     </TableCell>
-                                    <TableCell className="alerts-center-col alerts-center-col--subject">
-                                      <div className="alerts-center-summary-cell">
+                                    <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--subject">
+                                      <div className="alerts-center-summary-cell px-3 py-2 align-top">
                                         <strong>{`${formatTime(child.firstSeen)} · ${formatTimeDetail(child.firstSeen)}`}</strong>
                                         <span>{copy.groupUi.firstHit}</span>
                                       </div>
                                     </TableCell>
-                                    <TableCell className="alerts-center-col alerts-center-col--request-kind">
-                                      <div className="alerts-center-summary-cell">
+                                    <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--request-kind">
+                                      <div className="alerts-center-summary-cell px-3 py-2 align-top">
                                         <strong>{`${formatTime(child.lastSeen)} · ${formatTimeDetail(child.lastSeen)}`}</strong>
                                         <span>{copy.groupUi.lastHit}</span>
                                       </div>
                                     </TableCell>
-                                    <TableCell className="alerts-center-col alerts-center-col--summary">
+                                    <TableCell className="alerts-center-col px-3 py-2 align-top alerts-center-col--summary">
                                       <div className="alerts-center-child-summary-row">
-                                        <div className="alerts-center-summary-cell">
+                                        <div className="alerts-center-summary-cell px-3 py-2 align-top">
                                           <strong>{child.latestEvent.title}</strong>
                                           <span>{child.latestEvent.summary}</span>
                                         </div>
@@ -1342,8 +1342,8 @@ export default function AlertsCenter({
             </header>
 
             <div className="alerts-center-child-request-filters">
-              <div className="alerts-center-filter-field">
-                <span className="alerts-center-filter-label">{copy.childDrawer.requestKind}</span>
+              <div className="alerts-center-filter-field flex flex-col gap-1">
+                <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.childDrawer.requestKind}</span>
                 <SearchableFacetSelect
                   value={childRequestFilters.requestKind}
                   options={childRequestKindOptions}
@@ -1366,8 +1366,8 @@ export default function AlertsCenter({
                     }))}
                 />
               </div>
-              <div className="alerts-center-filter-field">
-                <span className="alerts-center-filter-label">{copy.childDrawer.outcome}</span>
+              <div className="alerts-center-filter-field flex flex-col gap-1">
+                <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.childDrawer.outcome}</span>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button type="button" className="searchable-facet-select__trigger alerts-center-request-kinds-trigger">
@@ -1414,8 +1414,8 @@ export default function AlertsCenter({
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className="alerts-center-filter-field alerts-center-child-request-filters__search">
-                <span className="alerts-center-filter-label">{copy.childDrawer.search}</span>
+              <div className="alerts-center-filter-field flex flex-col gap-1 alerts-center-child-request-filters__search">
+                <span className="alerts-center-filter-label text-xs font-medium text-muted-foreground">{copy.childDrawer.search}</span>
                 <Input
                   value={childRequestFilters.text}
                   onChange={(event) =>
@@ -1431,15 +1431,15 @@ export default function AlertsCenter({
 
             <div className="alerts-center-child-events alerts-center-child-request-list">
               {selectedChildDetails == null ? (
-                <div className="alerts-center-inline-muted">{copy.childDrawer.empty}</div>
+                <div className="alerts-center-inline-muted text-muted-foreground">{copy.childDrawer.empty}</div>
               ) : childRequestLoadState === 'error' ? (
-                <div className="alerts-center-inline-muted">{childRequestLoadError ?? copy.childDrawer.empty}</div>
+                <div className="alerts-center-inline-muted text-muted-foreground">{childRequestLoadError ?? copy.childDrawer.empty}</div>
               ) : childRequestLoadState !== 'ready' ? (
-                <div className="alerts-center-inline-muted">{copy.requestDrawer.loading}</div>
+                <div className="alerts-center-inline-muted text-muted-foreground">{copy.requestDrawer.loading}</div>
               ) : childRequestRecords.length === 0 ? (
-                <div className="alerts-center-inline-muted">{copy.childDrawer.empty}</div>
+                <div className="alerts-center-inline-muted text-muted-foreground">{copy.childDrawer.empty}</div>
               ) : filteredChildRequestRecords.length === 0 ? (
-                <div className="alerts-center-inline-muted">{copy.childDrawer.emptyFiltered}</div>
+                <div className="alerts-center-inline-muted text-muted-foreground">{copy.childDrawer.emptyFiltered}</div>
               ) : (
                 filteredChildRequestRecords.map((log) => (
                   <div key={log.id} className="alerts-center-child-event alerts-center-child-request-item">
@@ -1454,23 +1454,23 @@ export default function AlertsCenter({
                         <RequestKindBadge requestKindKey={log.request_kind_key} requestKindLabel={log.request_kind_label ?? log.request_kind_key} size="sm" />
                       ) : null}
                     </div>
-                    <div className="alerts-center-summary-cell">
+                    <div className="alerts-center-summary-cell px-3 py-2 align-top">
                       <strong>{`${log.method} ${log.path}${log.query ? `?${log.query}` : ''}`}</strong>
                       <span>{log.error_message?.trim() || requestSummary({ id: log.id, method: log.method, path: log.path, query: log.query })}</span>
                     </div>
                     <div className="alerts-center-related-actions">
                       {selectedChildDetails?.child.user?.userId ? (
-                        <button type="button" className="alerts-center-related-link" onClick={() => onOpenUser(selectedChildDetails.child.user!.userId)}>
+                        <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline" onClick={() => onOpenUser(selectedChildDetails.child.user!.userId)}>
                           {selectedChildDetails.child.user.displayName ?? selectedChildDetails.child.user.username ?? selectedChildDetails.child.user.userId}
                         </button>
                       ) : null}
                       {log.auth_token_id ? (
-                        <button type="button" className="alerts-center-related-link alerts-center-related-link--mono" onClick={() => onOpenToken(log.auth_token_id!)}>
+                        <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenToken(log.auth_token_id!)}>
                           {log.auth_token_id}
                         </button>
                       ) : null}
                       {log.key_id ? (
-                        <button type="button" className="alerts-center-related-link alerts-center-related-link--mono" onClick={() => onOpenKey(log.key_id!)}>
+                        <button type="button" className="alerts-center-related-link text-primary underline-offset-4 hover:underline alerts-center-related-link--mono font-mono text-xs" onClick={() => onOpenKey(log.key_id!)}>
                           {log.key_id}
                         </button>
                       ) : null}

@@ -527,14 +527,14 @@ function RankingsChartCard({
   const interactiveRows = useMemo(() => buildInteractiveRows(rows, compact), [compact, rows])
 
   return (
-    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card">
+    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card relative min-w-0 overflow-hidden rounded-lg border bg-card">
       <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
         <div>
           <h3>{title}</h3>
           <p className="panel-description text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
-      <div className="admin-ranking-card-body">
+      <div className="admin-ranking-card-body flex flex-col gap-3 p-4">
         {rows.length === 0 ? (
           <div className="admin-ranking-empty-state" role="status" aria-live="polite">
             <div className="admin-ranking-empty-orb" aria-hidden="true">
@@ -542,9 +542,9 @@ function RankingsChartCard({
             </div>
             <p className="admin-ranking-empty-copy">{strings.empty}</p>
             <div className="admin-ranking-empty-ghostbars" aria-hidden="true">
-              <span className="admin-ranking-empty-ghostbar admin-ranking-empty-ghostbar--long" />
-              <span className="admin-ranking-empty-ghostbar admin-ranking-empty-ghostbar--mid" />
-              <span className="admin-ranking-empty-ghostbar admin-ranking-empty-ghostbar--short" />
+              <span className="admin-ranking-empty-ghostbar h-2 rounded-full bg-muted admin-ranking-empty-ghostbar--long" />
+              <span className="admin-ranking-empty-ghostbar h-2 rounded-full bg-muted admin-ranking-empty-ghostbar--mid" />
+              <span className="admin-ranking-empty-ghostbar h-2 rounded-full bg-muted admin-ranking-empty-ghostbar--short" />
             </div>
           </div>
         ) : (
@@ -607,14 +607,14 @@ function RankingsLoadingCard({
   }))
 
   return (
-    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card">
+    <article className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-ranking-card relative min-w-0 overflow-hidden rounded-lg border bg-card">
       <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
         <div>
           <h3>{title}</h3>
           <p className="panel-description text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
-      <div className="admin-ranking-card-body">
+      <div className="admin-ranking-card-body flex flex-col gap-3 p-4">
         <div
           className="admin-ranking-skeleton-stage"
           role="status"
@@ -809,12 +809,12 @@ export function RankingsMeta({
 
   return (
     <div className="admin-rankings-meta" aria-live="polite">
-      <span className="admin-rankings-meta-item">
+      <span className="admin-rankings-meta-item flex items-center gap-2 text-xs text-muted-foreground">
         <Icon icon="mdi:refresh" width={16} height={16} className="admin-rankings-meta-icon" aria-hidden="true" />
-        <span className="admin-rankings-meta-copy">{refreshCopy}</span>
+        <span className="admin-rankings-meta-copy flex flex-col">{refreshCopy}</span>
       </span>
       {updatedCopy || pendingCopy ? (
-        <span className="admin-rankings-meta-item">
+        <span className="admin-rankings-meta-item flex items-center gap-2 text-xs text-muted-foreground">
           <Icon
             icon="mdi:clock-time-four-outline"
             width={16}
@@ -822,7 +822,7 @@ export function RankingsMeta({
             className="admin-rankings-meta-icon"
             aria-hidden="true"
           />
-          <span className="admin-rankings-meta-copy">{updatedCopy ?? pendingCopy}</span>
+          <span className="admin-rankings-meta-copy flex flex-col">{updatedCopy ?? pendingCopy}</span>
         </span>
       ) : null}
       <span className={`admin-ranking-connection ${connectionToneClass(connectionState)}`}>
@@ -909,9 +909,9 @@ export default function AdminUserRankingsPage({
           {error ? (
             <div className={`alert ${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
               <div>{error}</div>
-              {snapshot ? <div className="admin-ranking-stale-hint">{strings.staleHint}</div> : null}
+              {snapshot ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
               {!snapshot ? (
-                <div className="admin-ranking-inline-actions">
+                <div className="admin-ranking-inline-actions flex flex-wrap items-center gap-2">
                   <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" onClick={onRetry}>
                     {strings.retry}
                   </button>
@@ -949,9 +949,9 @@ export default function AdminUserRankingsPage({
       {!showHeader && error ? (
         <div className={`alert ${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
           <div>{error}</div>
-          {snapshot ? <div className="admin-ranking-stale-hint">{strings.staleHint}</div> : null}
+          {snapshot ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
           {!snapshot ? (
-            <div className="admin-ranking-inline-actions">
+            <div className="admin-ranking-inline-actions flex flex-wrap items-center gap-2">
               <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" onClick={onRetry}>
                 {strings.retry}
               </button>
@@ -960,11 +960,11 @@ export default function AdminUserRankingsPage({
         </div>
       ) : null}
 
-      {!error && showStaleHint ? <div className="admin-ranking-stale-hint">{strings.staleHint}</div> : null}
+      {!error && showStaleHint ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
 
       {showLoadingSkeleton ? (
-        <section className="admin-ranking-window">
-          <div className="admin-ranking-window-grid">
+        <section className="admin-ranking-window flex min-w-0 flex-col gap-2 rounded-lg border p-3">
+          <div className="admin-ranking-window-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {loadingCards.map((card) => (
               <RankingsLoadingCard
                 key={card.key}
@@ -976,8 +976,8 @@ export default function AdminUserRankingsPage({
           </div>
         </section>
       ) : snapshot && renderedCards.length > 0 ? (
-        <section className="admin-ranking-window">
-          <div className="admin-ranking-window-grid">
+        <section className="admin-ranking-window flex min-w-0 flex-col gap-2 rounded-lg border p-3">
+          <div className="admin-ranking-window-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {renderedCards.map((card) => (
               <RankingsChartCard
                 key={card.key}

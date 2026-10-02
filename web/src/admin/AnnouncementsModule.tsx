@@ -351,7 +351,7 @@ function MilkdownPreviewContent({
       onChange={() => {}}
       fallback={(
         <textarea
-          className="textarea announcements-body-fallback announcements-body-fallback--readonly"
+          className="textarea announcements-body-fallback text-sm text-muted-foreground announcements-body-fallback--readonly"
           value={value}
           aria-label={label}
           rows={5}
@@ -416,7 +416,7 @@ function AnnouncementEditorPanel({
           <Button
             type="button"
             size="sm"
-            className="announcements-publish-action"
+            className="announcements-publish-action flex flex-wrap items-center gap-2"
             title={strings.publishImpact}
             onClick={() => onSubmit('publish')}
             disabled={saving}
@@ -427,7 +427,7 @@ function AnnouncementEditorPanel({
           </Button>
         </div>
       </div>
-      <label className="announcements-field">
+      <label className="announcements-field flex flex-col gap-1">
         <span>{strings.displayLabel}</span>
         <Select
           name="announcement-display-kind"
@@ -448,7 +448,7 @@ function AnnouncementEditorPanel({
           </SelectContent>
         </Select>
       </label>
-      <div className="announcements-field">
+      <div className="announcements-field flex flex-col gap-1">
         <div className="announcements-body-heading">
           <span id="announcement-body-editor-label">{strings.bodyLabel}</span>
           <SegmentedTabs<AnnouncementBodyMode>
@@ -484,7 +484,7 @@ function AnnouncementListPrimaryCopy({
 }): JSX.Element {
   const parsed = parseAnnouncementContent(item.content)
   if (!parsed.titleMarkdown) {
-    return <span className="announcements-summary-text">{parsed.summary}</span>
+    return <span className="announcements-summary-text text-sm text-muted-foreground">{parsed.summary}</span>
   }
 
   return (
@@ -520,7 +520,7 @@ function TextareaFallback({
     <textarea
       id={id}
       name={name}
-      className="textarea announcements-body-fallback"
+      className="textarea announcements-body-fallback text-sm text-muted-foreground"
       value={value}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
@@ -616,8 +616,8 @@ function AnnouncementsListPanel({
           </div>
         ) : (
           <>
-            <div className="table-wrapper overflow-hidden rounded-lg border announcements-table-wrapper hidden md:flex">
-              <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b announcements-table">
+            <div className="table-wrapper overflow-hidden rounded-lg border announcements-table-wrapper overflow-hidden rounded-lg border hidden md:flex">
+              <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b announcements-table w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:align-middle [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_td]:align-middle [&_tbody_tr]:border-b">
                 <colgroup>
                   <col className="announcements-col-title" />
                   <col className="announcements-col-display" />
@@ -690,7 +690,7 @@ function AnnouncementsListPanel({
                 const parsed = parseAnnouncementContent(item.content)
                 return (
                   <article key={item.id} className="rounded-lg border p-3 announcements-mobile-card">
-                    <header className="announcements-mobile-header">
+                    <header className="announcements-mobile-header flex flex-col gap-1">
                       {parsed.titleMarkdown ? (
                         <MarkdownContent
                           content={parsed.titleMarkdown}
@@ -698,7 +698,7 @@ function AnnouncementsListPanel({
                           className="announcements-title-markdown"
                         />
                       ) : (
-                        <strong className="announcements-summary-text">{parsed.summary}</strong>
+                        <strong className="announcements-summary-text text-sm text-muted-foreground">{parsed.summary}</strong>
                       )}
                       <StatusBadge tone={statusTone(item.status)}>
                         {strings.status[item.status]}
@@ -769,7 +769,7 @@ function AnnouncementUserPreview({
   if (!item) return null
 
   return (
-    <div className="announcements-user-preview">
+    <div className="announcements-user-preview max-h-40 overflow-y-auto rounded-md bg-muted/50 p-3 text-sm">
       <UserConsoleAnnouncements
         language={language}
         text={language === 'zh' ? USER_CONSOLE_ZH : USER_CONSOLE_EN}

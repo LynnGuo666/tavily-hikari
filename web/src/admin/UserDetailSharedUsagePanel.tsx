@@ -787,7 +787,7 @@ export function UserDetailSharedUsagePanel({
       data-tooltip-pinned={pinnedTooltip != null ? 'true' : 'false'}
     >
       {title || description ? (
-        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-user-shared-usage-panel-header">
+        <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-user-shared-usage-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
           <div className="admin-user-shared-usage-heading">
             {title ? <h2>{title}</h2> : null}
             {description ? <p className="panel-description text-sm text-muted-foreground">{description}</p> : null}
@@ -807,7 +807,7 @@ export function UserDetailSharedUsagePanel({
           />
         </div>
       ) : (
-        <div className="admin-user-shared-usage-panel-header">
+        <div className="admin-user-shared-usage-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
           <SegmentedTabs<AdminUserUsagePanelTab>
             value={activeSeries}
             onChange={setActiveSeries}
@@ -827,24 +827,24 @@ export function UserDetailSharedUsagePanel({
       {activeSeries === 'ip' ? null : (
         <div className="admin-user-shared-usage-meta">
           <div className="admin-user-shared-usage-legend">
-            <span className="admin-user-shared-usage-legend-item">
-              <span className="admin-user-shared-usage-legend-chip admin-user-shared-usage-legend-chip-bar" />
+            <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-bar" />
               {activeSeries === 'businessCalls1h'
                 ? usersStrings.detail.sharedUsageLegendSuccess
                 : usersStrings.detail.sharedUsageLegendUsed}
             </span>
             {activeSeries === 'businessCalls1h' ? (
               <>
-                <span className="admin-user-shared-usage-legend-item">
+                <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span
-                    className="admin-user-shared-usage-legend-chip"
+                    className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm"
                     style={{ backgroundColor: readChartColorVar('--destructive', '#ef4444') }}
                   />
                   {usersStrings.detail.sharedUsageLegendFailure}
                 </span>
-                <span className="admin-user-shared-usage-legend-item">
+                <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span
-                    className="admin-user-shared-usage-legend-chip admin-user-shared-usage-legend-chip-line"
+                    className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-line size-2.5 shrink-0 rounded-t-sm"
                     style={
                       {
                         '--admin-user-shared-usage-line-color': chartPalette.pressureLine,
@@ -854,9 +854,9 @@ export function UserDetailSharedUsagePanel({
                   />
                   {usersStrings.detail.sharedUsageLegendPressure}
                 </span>
-                <span className="admin-user-shared-usage-legend-item">
+                <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span
-                    className="admin-user-shared-usage-legend-chip admin-user-shared-usage-legend-chip-line"
+                    className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-line size-2.5 shrink-0 rounded-t-sm"
                     style={
                       {
                         '--admin-user-shared-usage-line-color': chartPalette.limitLine,
@@ -868,8 +868,8 @@ export function UserDetailSharedUsagePanel({
                 </span>
               </>
             ) : (
-              <span className="admin-user-shared-usage-legend-item">
-                <span className="admin-user-shared-usage-legend-chip admin-user-shared-usage-legend-chip-line" />
+              <span className="admin-user-shared-usage-legend-item flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="admin-user-shared-usage-legend-chip size-2.5 shrink-0 rounded-sm admin-user-shared-usage-legend-chip-line size-2.5 shrink-0 rounded-t-sm" />
                 {usersStrings.detail.sharedUsageLegendLimit}
               </span>
             )}
@@ -909,7 +909,7 @@ export function UserDetailSharedUsagePanel({
             <Chart type="bar" data={chartData} options={chartOptions} />
             {activeTooltip && activeTooltipPoint ? (
               <div
-                className="admin-user-shared-usage-tooltip layer-popover"
+                className="admin-user-shared-usage-tooltip rounded-lg border bg-popover p-3 text-xs shadow-lg layer-popover rounded-lg border bg-popover p-3 text-xs shadow-lg"
                 data-vertical-placement={activeTooltip.verticalPlacement}
                 data-horizontal-placement={activeTooltip.horizontalPlacement}
                 data-tooltip-mode={pinnedTooltip ? 'pinned' : 'hover'}
@@ -918,7 +918,7 @@ export function UserDetailSharedUsagePanel({
                   top: `${activeTooltip.y}px`,
                 }}
               >
-                <div className="admin-user-shared-usage-tooltip-header">
+                <div className="admin-user-shared-usage-tooltip-header font-medium">
                   <strong>
                     {formatBucketTooltipLabel(
                       language,
@@ -934,7 +934,7 @@ export function UserDetailSharedUsagePanel({
                     )}
                   </strong>
                 </div>
-                <dl className="admin-user-shared-usage-tooltip-grid">
+                <dl className="admin-user-shared-usage-tooltip-grid grid grid-cols-2 gap-x-4 gap-y-1">
                   {'value' in activeTooltipPoint ? (
                     <>
                       <div>
@@ -990,7 +990,7 @@ export function UserDetailSharedUsagePanel({
                   )}
                 </dl>
                 {tooltipHasGap ? (
-                  <p className="admin-user-shared-usage-tooltip-note">{usersStrings.detail.sharedUsagePartialHint}</p>
+                  <p className="admin-user-shared-usage-tooltip-note text-muted-foreground">{usersStrings.detail.sharedUsagePartialHint}</p>
                 ) : null}
               </div>
             ) : null}

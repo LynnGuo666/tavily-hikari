@@ -838,29 +838,29 @@ function buildErrorActivityBubbleContent(bucket: ForwardProxyErrorActivityBucket
   const errorTotal = bucket.errors.reduce((sum, item) => sum + item.count, 0)
   return (
     <div className="forward-proxy-chart-bubble-stack">
-      <div className="forward-proxy-chart-bubble-row">
+      <div className="forward-proxy-chart-bubble-row flex items-center gap-2">
         <span>Success</span>
         <strong>{formatNumber(bucket.successCount)}</strong>
       </div>
       {bucket.errors.length > 0 ? (
         bucket.errors.map((item) => (
-          <div className="forward-proxy-chart-bubble-row" key={item.kind}>
+          <div className="forward-proxy-chart-bubble-row flex items-center gap-2" key={item.kind}>
             <span>{formatErrorKind(item.kind)}</span>
             <strong>{formatNumber(item.count)}</strong>
           </div>
         ))
       ) : (
-        <div className="forward-proxy-chart-bubble-row">
+        <div className="forward-proxy-chart-bubble-row flex items-center gap-2">
           <span>Errors</span>
           <strong>0</strong>
         </div>
       )}
       <div className="forward-proxy-chart-bubble-divider" />
-      <div className="forward-proxy-chart-bubble-row">
+      <div className="forward-proxy-chart-bubble-row flex items-center gap-2">
         <span>Total</span>
         <strong>{formatNumber(bucket.totalCount)}</strong>
       </div>
-      <div className="forward-proxy-chart-bubble-row">
+      <div className="forward-proxy-chart-bubble-row flex items-center gap-2">
         <span>Error rate</span>
         <strong>{formatPercent(bucket.totalCount > 0 ? errorTotal / bucket.totalCount : null)}</strong>
       </div>
@@ -877,7 +877,7 @@ function buildErrorDistributionBubbleContent(
     <div className="forward-proxy-chart-bubble-stack">
       {distribution.map((item) => (
         <div
-          className={`forward-proxy-chart-bubble-row forward-proxy-chart-bubble-distribution-row ${
+          className={`forward-proxy-chart-bubble-row flex items-center gap-2 forward-proxy-chart-bubble-distribution-row ${
             item.kind === activeKind ? 'is-active' : ''
           }`}
           key={item.kind}
@@ -890,7 +890,7 @@ function buildErrorDistributionBubbleContent(
         </div>
       ))}
       <div className="forward-proxy-chart-bubble-divider" />
-      <div className="forward-proxy-chart-bubble-row">
+      <div className="forward-proxy-chart-bubble-row flex items-center gap-2">
         <span>Total</span>
         <strong>{formatNumber(total)}</strong>
       </div>
@@ -1204,7 +1204,7 @@ function ForwardProxyStatusDetailBubble({
   return createPortal(
     <div
       ref={bubbleRef}
-      className="forward-proxy-status-bubble layer-popover"
+      className="forward-proxy-status-bubble layer-popover rounded-lg border bg-popover p-3 text-xs shadow-lg"
       role="dialog"
       aria-label={strings.config.resultDetails}
       data-placement={position?.placement ?? 'right'}
@@ -1286,7 +1286,7 @@ function ForwardProxyChartDetailBubble({
   return createPortal(
     <div
       ref={bubbleRef}
-      className="forward-proxy-chart-bubble layer-popover"
+      className="forward-proxy-chart-bubble layer-popover rounded-lg border bg-popover p-3 text-xs shadow-lg"
       role="dialog"
       aria-label={state.title}
       data-placement={position?.placement ?? 'top'}
@@ -1592,7 +1592,7 @@ export function ForwardProxyCandidateDialog({
 
       <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-5 pt-4">
         <div className="space-y-4">
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-foreground" htmlFor="forward-proxy-dialog-input">
               {dialogIsSubscription ? strings.config.subscriptionDialogInputLabel : strings.config.manualDialogInputLabel}
             </label>
@@ -2359,8 +2359,8 @@ export default function ForwardProxySettingsModule({
   return (
     <div className="forward-proxy-stack">
       <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 forward-proxy-summary-panel">
-        <CardHeader className="forward-proxy-panel-header forward-proxy-summary-header">
-          <div className="forward-proxy-panel-heading forward-proxy-panel-heading--compact">
+        <CardHeader className="forward-proxy-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4 forward-proxy-summary-header">
+          <div className="forward-proxy-panel-heading text-base font-semibold forward-proxy-panel-heading--compact">
             <CardTitle>{strings.summary.range}</CardTitle>
             <CardDescription className="panel-description text-sm text-muted-foreground">
               {formatTimeRange(stats?.rangeStart, stats?.rangeEnd)}
@@ -2381,7 +2381,7 @@ export default function ForwardProxySettingsModule({
             </div>
           </div>
         </CardHeader>
-        <CardContent className="forward-proxy-panel-content forward-proxy-summary-content">
+        <CardContent className="forward-proxy-panel-content flex flex-col gap-4 p-4 forward-proxy-summary-content">
           {revalidateError && (
             <div className="mb-4 alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {revalidateError}
@@ -2407,8 +2407,8 @@ export default function ForwardProxySettingsModule({
       </Card>
 
       <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <CardHeader className="forward-proxy-panel-header">
-          <div className="forward-proxy-panel-heading">
+        <CardHeader className="forward-proxy-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
+          <div className="forward-proxy-panel-heading text-base font-semibold">
             <CardTitle>{strings.nodes.title}</CardTitle>
             <CardDescription className="panel-description text-sm text-muted-foreground">{strings.nodes.description}</CardDescription>
           </div>
@@ -2431,7 +2431,7 @@ export default function ForwardProxySettingsModule({
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="forward-proxy-panel-content">
+        <CardContent className="forward-proxy-panel-content flex flex-col gap-4 p-4">
           {statsError && (
             <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {statsError}
@@ -2469,17 +2469,17 @@ export default function ForwardProxySettingsModule({
                             <input
                               aria-label={`${strings.bulk.selectRow} ${node.displayName}`}
                               checked={selectedNodeKeys.has(node.key)}
-                              className="forward-proxy-row-checkbox"
+                              className="forward-proxy-row-checkbox size-4"
                               onChange={() => toggleNodeSelection(node.key)}
                               type="checkbox"
                             />
                             <CardTitle className="text-base">{node.displayName}</CardTitle>
                           </div>
-                          <div className="forward-proxy-node-chip-row">
-                            <span className="forward-proxy-node-chip-text">
+                          <div className="forward-proxy-node-chip-row flex flex-wrap items-center gap-1.5">
+                            <span className="forward-proxy-node-chip-text text-xs">
                               {strings.nodes.primary}: <strong>{formatNumber(node.primaryAssignmentCount)}</strong>
                             </span>
-                            <span className="forward-proxy-node-chip-text">
+                            <span className="forward-proxy-node-chip-text text-xs">
                               {strings.nodes.secondary}: <strong>{formatNumber(node.secondaryAssignmentCount)}</strong>
                             </span>
                             <Badge variant={node.source === 'subscription' ? 'info' : node.source === 'manual' ? 'outline' : 'neutral'}>
@@ -2543,16 +2543,16 @@ export default function ForwardProxySettingsModule({
                         <TableHead className="w-[30%]">{strings.nodes.table.node}</TableHead>
                         {WINDOW_KEYS.map((windowDefinition, index) => (
                           <TableHead
-                            className={`${getWindowColumnClassName(index)} forward-proxy-table-head-nowrap`}
+                            className={`${getWindowColumnClassName(index)} forward-proxy-table-head-nowrap whitespace-nowrap`}
                             key={`head-${windowDefinition.key}`}
                           >
                             {strings.windows[windowDefinition.translationKey]}
                           </TableHead>
                         ))}
-                        <TableHead className="w-[18%] forward-proxy-table-head-nowrap">
+                        <TableHead className="w-[18%] forward-proxy-table-head-nowrap whitespace-nowrap">
                           {strings.nodes.table.activity24h}
                         </TableHead>
-                        <TableHead className="w-[18%] forward-proxy-table-head-nowrap">
+                        <TableHead className="w-[18%] forward-proxy-table-head-nowrap whitespace-nowrap">
                           {strings.nodes.table.weight24h}
                         </TableHead>
                       </TableRow>
@@ -2566,7 +2566,7 @@ export default function ForwardProxySettingsModule({
                               <input
                                 aria-label={`${strings.bulk.selectRow} ${node.displayName}`}
                                 checked={selectedNodeKeys.has(node.key)}
-                                className="forward-proxy-row-checkbox"
+                                className="forward-proxy-row-checkbox size-4"
                                 onChange={() => toggleNodeSelection(node.key)}
                                 type="checkbox"
                               />
@@ -2576,11 +2576,11 @@ export default function ForwardProxySettingsModule({
                                 <div className="forward-proxy-node-cell-title-row">
                                   <strong className="truncate text-sm">{node.displayName}</strong>
                                 </div>
-                                <div className="forward-proxy-node-chip-row">
-                                  <span className="forward-proxy-node-chip-text">
+                                <div className="forward-proxy-node-chip-row flex flex-wrap items-center gap-1.5">
+                                  <span className="forward-proxy-node-chip-text text-xs">
                                     {strings.nodes.primary}: <strong>{formatNumber(node.primaryAssignmentCount)}</strong>
                                   </span>
-                                  <span className="forward-proxy-node-chip-text">
+                                  <span className="forward-proxy-node-chip-text text-xs">
                                     {strings.nodes.secondary}: <strong>{formatNumber(node.secondaryAssignmentCount)}</strong>
                                   </span>
                                   <Badge variant={node.source === 'subscription' ? 'info' : node.source === 'manual' ? 'outline' : 'neutral'}>
@@ -2602,7 +2602,7 @@ export default function ForwardProxySettingsModule({
                               )
                             })}
                             <TableCell className="py-3">
-                              <div className="space-y-2">
+                              <div className="flex flex-col gap-2">
                                 <RequestTrendCell buckets={node.last24h} scaleMax={requestBucketScaleMax} />
                                 <div className="text-[11px] text-muted-foreground">
                                   {strings.nodes.successCountLabel}: <strong>{formatNumber(activity.success)}</strong>
@@ -2612,7 +2612,7 @@ export default function ForwardProxySettingsModule({
                               </div>
                             </TableCell>
                             <TableCell className="py-3">
-                              <div className="space-y-2">
+                              <div className="flex flex-col gap-2">
                                 <WeightTrendCell buckets={weightBuckets} scale={weightTrendScale} />
                                 <div className="text-[11px] text-muted-foreground">
                                   {strings.nodes.lastWeightLabel}: <strong>{formatWeight(weight.lastWeight)}</strong>
@@ -2650,16 +2650,16 @@ export default function ForwardProxySettingsModule({
                         <TableHead className="w-[34%]">{strings.nodes.table.node}</TableHead>
                         {WINDOW_KEYS.map((windowDefinition, index) => (
                           <TableHead
-                            className={`${getWindowColumnClassName(index)} forward-proxy-table-head-nowrap`}
+                            className={`${getWindowColumnClassName(index)} forward-proxy-table-head-nowrap whitespace-nowrap`}
                             key={`error-head-${windowDefinition.key}`}
                           >
                             {strings.windows[windowDefinition.translationKey]}
                           </TableHead>
                         ))}
-                        <TableHead className="w-[20%] forward-proxy-table-head-nowrap">
+                        <TableHead className="w-[20%] forward-proxy-table-head-nowrap whitespace-nowrap">
                           {strings.nodes.errorStats.activity24h}
                         </TableHead>
-                        <TableHead className="w-[18%] forward-proxy-table-head-nowrap">
+                        <TableHead className="w-[18%] forward-proxy-table-head-nowrap whitespace-nowrap">
                           {strings.nodes.errorStats.distribution24h}
                         </TableHead>
                       </TableRow>
@@ -2671,7 +2671,7 @@ export default function ForwardProxySettingsModule({
                             <input
                               aria-label={`${strings.bulk.selectRow} ${node.displayName}`}
                               checked={selectedNodeKeys.has(node.key)}
-                              className="forward-proxy-row-checkbox"
+                              className="forward-proxy-row-checkbox size-4"
                               onChange={() => toggleNodeSelection(node.key)}
                               type="checkbox"
                             />
@@ -2681,15 +2681,15 @@ export default function ForwardProxySettingsModule({
                               <div className="forward-proxy-node-cell-title-row">
                                 <strong className="truncate text-sm">{node.displayName}</strong>
                               </div>
-                              <div className="forward-proxy-node-chip-row">
+                              <div className="forward-proxy-node-chip-row flex flex-wrap items-center gap-1.5">
                                 <Badge variant={node.source === 'subscription' ? 'info' : node.source === 'manual' ? 'outline' : 'neutral'}>
                                   {getSourceLabel(strings, node.source)}
                                 </Badge>
                                 {node.disabled && <Badge variant="neutral">{strings.states.disabled}</Badge>}
-                                <span className="forward-proxy-node-chip-text">
+                                <span className="forward-proxy-node-chip-text text-xs">
                                   {strings.nodes.errorStats.total24h}: <strong>{formatNumber(node.total24h)}</strong>
                                 </span>
-                                <span className="forward-proxy-node-chip-text">
+                                <span className="forward-proxy-node-chip-text text-xs">
                                   {strings.nodes.errorStats.error24h}: <strong>{formatNumber(node.error24h)}</strong>
                                 </span>
                               </div>
@@ -2763,13 +2763,13 @@ export default function ForwardProxySettingsModule({
       </Card>
 
       <Card className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <CardHeader className="forward-proxy-panel-header">
-          <div className="forward-proxy-panel-heading">
+        <CardHeader className="forward-proxy-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
+          <div className="forward-proxy-panel-heading text-base font-semibold">
             <CardTitle>{strings.config.title}</CardTitle>
             <CardDescription className="panel-description text-sm text-muted-foreground">{strings.config.description}</CardDescription>
           </div>
         </CardHeader>
-        <CardContent className="forward-proxy-panel-content">
+        <CardContent className="forward-proxy-panel-content flex flex-col gap-4 p-4">
           {saveError && !activeEgressProgress && (
             <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {saveError}
@@ -2851,7 +2851,7 @@ export default function ForwardProxySettingsModule({
                     {subscriptionUrls.length === 0 ? (
                       <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.config.subscriptionListEmpty}</div>
                     ) : (
-                      <ul className="space-y-2">
+                      <ul className="flex flex-col gap-2">
                         {subscriptionUrls.map((subscriptionUrl, index) => (
                           <li
                             key={`subscription-${subscriptionUrl}`}
@@ -2894,7 +2894,7 @@ export default function ForwardProxySettingsModule({
                     {manualUrls.length === 0 ? (
                       <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.config.manualListEmpty}</div>
                     ) : (
-                      <ul className="space-y-2">
+                      <ul className="flex flex-col gap-2">
                         {manualUrls.map((proxyUrl, index) => (
                           <li
                             key={`manual-${proxyUrl}`}
