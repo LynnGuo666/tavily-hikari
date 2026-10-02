@@ -232,7 +232,7 @@ export default function ConnectivityChecksPanel({
             ref={handleMcpButtonRef}
             type="button"
             data-probe-kind="mcp"
-            className={`btn btn-sm user-console-probe-btn ${probeButtonTone(mcpProbe.state)}`}
+            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(mcpProbe.state)}`}
             onClick={onMcpClick}
             disabled={anyProbeRunning}
           >
@@ -249,7 +249,7 @@ export default function ConnectivityChecksPanel({
             ref={handleApiButtonRef}
             type="button"
             data-probe-kind="api"
-            className={`btn btn-sm user-console-probe-btn ${probeButtonTone(apiProbe.state)}`}
+            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(apiProbe.state)}`}
             onClick={onApiClick}
             disabled={anyProbeRunning}
           >

@@ -299,7 +299,7 @@ export default function AdminRechargeRecordsModule({
           </div>
         ) : (
           <div className="admin-recharge-table-scroll">
-            <table className="admin-table admin-recharge-table">
+            <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:align-middle [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_td]:align-middle [&_tbody_tr]:border-b admin-recharge-table">
               <thead>
                 <tr>
                   <th>{strings.table.user}</th>

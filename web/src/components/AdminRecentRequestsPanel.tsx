@@ -635,24 +635,24 @@ function RecentRequestDetails({
     <div className="log-details-panel">
       <div className="log-details-summary">
         <div>
-          <span className="log-details-label">{strings.logs.table.time}</span>
-          <span className="log-details-value">{formatTime(log.created_at)}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logs.table.time}</span>
+          <span className="text-xs leading-5">{formatTime(log.created_at)}</span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logDetails.request}</span>
-          <span className="log-details-value">{formatRequestLine(log)}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.request}</span>
+          <span className="text-xs leading-5">{formatRequestLine(log)}</span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logs.table.status}</span>
-          <span className="log-details-value">{formatRequestStatusPair(log.http_status, log.mcp_status)}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logs.table.status}</span>
+          <span className="text-xs leading-5">{formatRequestStatusPair(log.http_status, log.mcp_status)}</span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logs.table.chargedCredits}</span>
-          <span className="log-details-value">{formatChargedCredits(log.business_credits)}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logs.table.chargedCredits}</span>
+          <span className="text-xs leading-5">{formatChargedCredits(log.business_credits)}</span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logs.table.requestType}</span>
-          <span className="log-details-value">
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logs.table.requestType}</span>
+          <span className="text-xs leading-5">
             <RequestKindBadge
               requestKindKey={log.request_kind_key ?? null}
               requestKindLabel={requestKindLabel}
@@ -661,41 +661,41 @@ function RecentRequestDetails({
           </span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logDetails.outcome}</span>
-          <span className="log-details-value">{statusLabel(log.result_status, strings)}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.outcome}</span>
+          <span className="text-xs leading-5">{statusLabel(log.result_status, strings)}</span>
         </div>
         {effectEntries.length === 0 ? (
           <div>
-            <span className="log-details-label">{strings.logDetails.keyEffect}</span>
-            <span className="log-details-value">{strings.logDetails.noKeyEffect}</span>
+            <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.keyEffect}</span>
+            <span className="text-xs leading-5">{strings.logDetails.noKeyEffect}</span>
           </div>
         ) : (
           effectEntries.map((entry) => (
             <div key={entry.label}>
-              <span className="log-details-label">{entry.label}</span>
-              <span className="log-details-value">{entry.value}</span>
+              <span className="min-w-24 text-xs font-medium text-muted-foreground">{entry.label}</span>
+              <span className="text-xs leading-5">{entry.value}</span>
             </div>
           ))
         )}
         {diagnosticEntries.map((entry) => (
           <div key={entry.label}>
-            <span className="log-details-label">{entry.label}</span>
-            <span className="log-details-value">
+            <span className="min-w-24 text-xs font-medium text-muted-foreground">{entry.label}</span>
+            <span className="text-xs leading-5">
               <code>{entry.value}</code>
             </span>
           </div>
         ))}
       </div>
       <div className="log-details-body">
-        <div className="log-details-section">
+        <div className="flex flex-col gap-2">
           <header>{strings.logs.table.error}</header>
           <pre>{formatErrorMessage(log, strings.logs.errors)}</pre>
         </div>
-        <div className="log-details-section">
+        <div className="flex flex-col gap-2">
           <header>{strings.logDetails.requestBody}</header>
           <pre>{requestBody}</pre>
         </div>
-        <div className="log-details-section">
+        <div className="flex flex-col gap-2">
           <header>{strings.logDetails.responseBody}</header>
           <pre>{responseBody}</pre>
         </div>
@@ -714,7 +714,7 @@ function RecentRequestDetails({
       {(forwarded.length > 0 || dropped.length > 0) && (
         <div className="log-details-headers">
           {forwarded.length > 0 ? (
-            <div className="log-details-section">
+            <div className="flex flex-col gap-2">
               <header>{strings.logDetails.forwardedHeaders}</header>
               <ul>
                 {forwarded.map((header, index) => (
@@ -724,7 +724,7 @@ function RecentRequestDetails({
             </div>
           ) : null}
           {dropped.length > 0 ? (
-            <div className="log-details-section">
+            <div className="flex flex-col gap-2">
               <header>{strings.logDetails.droppedHeaders}</header>
               <ul>
                 {dropped.map((header, index) => (
@@ -887,13 +887,13 @@ export default function AdminRecentRequestsPanel({
   const desktopClassName = `recent-requests-desktop recent-requests-desktop--${variant}`
   const mobileClassName = `recent-requests-mobile-list recent-requests-mobile-list--${variant}`
   const mobileCardClassName =
-    variant === 'token' ? 'user-console-mobile-card' : 'admin-mobile-card'
+    variant === 'token' ? 'user-console-mobile-card' : 'rounded-lg border p-3'
   const mobileKvClassName =
-    variant === 'token' ? 'user-console-mobile-kv' : 'admin-mobile-kv'
+    variant === 'token' ? 'user-console-mobile-kv' : 'flex items-center justify-between gap-2 text-sm'
   const mobileStackedClassName =
     variant === 'token'
       ? 'user-console-mobile-kv user-console-mobile-kv--stacked'
-      : 'admin-mobile-kv admin-mobile-kv--stacked'
+      : 'flex items-center justify-between gap-2 text-sm admin-mobile-kv--stacked'
   const headerCopyVisible = showHeaderCopy && (title.trim().length > 0 || description.trim().length > 0)
   const renderFilters = (className?: string) => (
     <div className={['panel-actions recent-requests-filters', className].filter(Boolean).join(' ')}>

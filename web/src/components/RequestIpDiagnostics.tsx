@@ -17,7 +17,7 @@ export default function RequestIpDiagnostics({
   }
   return (
     <div className="log-details-headers">
-      <div className="log-details-section">
+      <div className="flex flex-col gap-2">
         <header>{language === 'zh' ? 'IP 诊断' : 'IP diagnostics'}</header>
         <ul>
           <li>
@@ -33,7 +33,7 @@ export default function RequestIpDiagnostics({
         </ul>
       </div>
       {ipHeaders.length > 0 ? (
-        <div className="log-details-section">
+        <div className="flex flex-col gap-2">
           <header>{language === 'zh' ? 'IP 头值快照' : 'IP header values'}</header>
           <ul>
             {ipHeaders.map((header, index) => (

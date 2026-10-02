@@ -1015,7 +1015,7 @@ export default function DashboardOverview({
             <h2>{strings.recentAlertsTitle}</h2>
             <p className="panel-description text-sm text-muted-foreground">{strings.recentAlertsDescription}</p>
           </div>
-          <button type="button" className="btn btn-outline" onClick={onOpenRecentAlerts}>
+          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={onOpenRecentAlerts}>
             {strings.recentAlertsOpen}
           </button>
         </div>
@@ -1146,7 +1146,7 @@ export default function DashboardOverview({
                         </span>
                         <button
                           type="button"
-                          className="btn btn-ghost btn-sm dashboard-alerts-summary__action-button"
+                          className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs dashboard-alerts-summary__action-button"
                           onClick={() => openRecentAlertGroup(group)}
                           aria-label={openGroupAriaLabel}
                           aria-describedby={actionHintId}

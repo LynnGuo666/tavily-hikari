@@ -2156,8 +2156,8 @@ function StoryMonthlyBrokenDrawer({
               <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{users.brokenKeys.empty}</div>
             ) : (
               <>
-                <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-responsive-up">
-                  <table className="jobs-table admin-users-table">
+                <div className="table-wrapper overflow-hidden rounded-lg border hidden md:flex">
+                  <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b">
                     <thead>
                       <tr>
                         <th>{users.brokenKeys.table.key}</th>
@@ -2201,10 +2201,10 @@ function StoryMonthlyBrokenDrawer({
                     </tbody>
                   </table>
                 </div>
-                <div className="admin-mobile-list admin-responsive-down">
+                <div className="flex flex-col gap-3 md:hidden flex md:hidden">
                   {items.map((item) => (
-                    <article key={`${item.keyId}:${item.latestBreakAt}`} className="admin-mobile-card">
-                      <div className="admin-mobile-kv">
+                    <article key={`${item.keyId}:${item.latestBreakAt}`} className="rounded-lg border p-3">
+                      <div className="flex items-center justify-between gap-2 text-sm">
                         <span>{users.brokenKeys.table.key}</span>
                         <strong>
                           <StoryMonthlyBrokenKeyValue
@@ -2218,23 +2218,23 @@ function StoryMonthlyBrokenDrawer({
                           />
                         </strong>
                       </div>
-                      <div className="admin-mobile-kv">
+                      <div className="flex items-center justify-between gap-2 text-sm">
                         <span>{users.brokenKeys.table.status}</span>
                         <strong>{admin.statuses[item.currentStatus] ?? item.currentStatus}</strong>
                       </div>
-                      <div className="admin-mobile-kv">
+                      <div className="flex items-center justify-between gap-2 text-sm">
                         <span>{users.brokenKeys.table.reason}</span>
                         <strong>{item.reasonSummary || item.reasonCode || users.brokenKeys.noReason}</strong>
                       </div>
-                      <div className="admin-mobile-kv">
+                      <div className="flex items-center justify-between gap-2 text-sm">
                         <span>{users.brokenKeys.table.latestBreakAt}</span>
                         <strong>{formatTimestamp(item.latestBreakAt)}</strong>
                       </div>
-                      <div className="admin-mobile-kv">
+                      <div className="flex items-center justify-between gap-2 text-sm">
                         <span>{users.brokenKeys.table.breaker}</span>
                         <strong>{formatMonthlyBrokenBreaker(item, users.brokenKeys)}</strong>
                       </div>
-                      <div className="admin-mobile-kv">
+                      <div className="flex items-center justify-between gap-2 text-sm">
                         <span>{users.brokenKeys.table.relatedUsers}</span>
                         <strong>
                           {formatMonthlyBrokenRelatedUsers(
@@ -2842,7 +2842,7 @@ function StoryUserTagCatalogCard({
 
       <div className="user-tag-catalog-body">
         {isBlockAll ? (
-          <div className="alert alert-warning user-tag-catalog-block-note" role="note">
+          <div className="alert border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note">
             {users.catalog.blockDescription}
           </div>
         ) : (
@@ -3616,16 +3616,16 @@ function TokensPageCanvas(): JSX.Element {
   const admin = useAdminTranslations()
   const tokenStrings = admin.tokens
   const tokenToolbar = (
-    <div className="admin-module-toolbar admin-module-toolbar--tokens">
+    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--tokens">
       <button
         type="button"
-        className="btn btn-outline admin-token-toolbar-secondary-action"
+        className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 admin-token-toolbar-secondary-action"
         aria-label={tokenStrings.actions.viewLeaderboard}
       >
         <Icon icon="mdi:chart-timeline-variant" width={16} height={16} aria-hidden="true" />
         <span>{tokenStrings.actions.viewLeaderboard}</span>
       </button>
-      <div className="admin-module-toolbar-actions admin-module-toolbar-actions--tokens">
+      <div className="flex flex-wrap items-center gap-2 admin-module-toolbar-actions--tokens">
         <input
           type="text"
           className="input input-bordered"
@@ -3633,10 +3633,10 @@ function TokensPageCanvas(): JSX.Element {
           value="marketing-ab-test"
           aria-label={tokenStrings.notePlaceholder}
         />
-        <button type="button" className="btn btn-primary">
+        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50">
           {tokenStrings.newToken}
         </button>
-        <button type="button" className="btn btn-outline">
+        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
           {tokenStrings.batchCreate}
         </button>
       </div>
@@ -3646,13 +3646,13 @@ function TokensPageCanvas(): JSX.Element {
   return (
     <AdminPageFrame activeModule="tokens" introActions={tokenToolbar}>
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="admin-stacked-only">
+        <div className="block md:hidden">
           {tokenToolbar}
         </div>
         <div className="token-filters-bar">
           <div className="token-filter-search">
             <input type="text" className="input input-bordered" readOnly value="legacy" aria-label={tokenStrings.filters.searchPlaceholder} />
-            <button type="button" className="btn btn-outline btn-sm">
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs">
               <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
               {tokenStrings.filters.search}
             </button>
@@ -3662,12 +3662,12 @@ function TokensPageCanvas(): JSX.Element {
             `${tokenStrings.filters.owner}: ${tokenStrings.filters.ownerUnbound}`,
             `${tokenStrings.filters.quota}: ${tokenStrings.filters.quotaAll}`,
             `${tokenStrings.filters.status}: ${tokenStrings.filters.statusFrozen}`,
-          ].map((label) => <button key={label} type="button" className="btn btn-outline btn-sm token-filter-select">{label}</button>)}
-          <button type="button" className="btn btn-ghost btn-sm">{tokenStrings.filters.clear}</button>
+          ].map((label) => <button key={label} type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs token-filter-select">{label}</button>)}
+          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs">{tokenStrings.filters.clear}</button>
         </div>
 
-        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-users-usage-table-wrapper">
-          <table className="jobs-table tokens-table">
+        <div className="table-wrapper overflow-hidden rounded-lg border admin-users-usage-table-wrapper">
+          <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b tokens-table">
             <thead>
               <tr>
                 <th className="token-select-col"><input type="checkbox" className="token-selection-checkbox" checked readOnly aria-label="selected page" /></th>
@@ -3718,13 +3718,13 @@ function TokensPageCanvas(): JSX.Element {
                   <td>{formatTimestamp(token.last_used_at)}</td>
                   <td className="jobs-message-cell">
                     <div className="table-actions">
-                      <button type="button" className="btn btn-circle btn-ghost btn-sm" aria-label={tokenStrings.actions.copy}>
+                      <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-circle inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" aria-label={tokenStrings.actions.copy}>
                         C
                       </button>
-                      <button type="button" className="btn btn-circle btn-ghost btn-sm" aria-label={tokenStrings.actions.share}>
+                      <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-circle inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" aria-label={tokenStrings.actions.share}>
                         S
                       </button>
-                      <button type="button" className="btn btn-circle btn-ghost btn-sm" aria-label={tokenStrings.actions.delete}>
+                      <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-circle inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" aria-label={tokenStrings.actions.delete}>
                         D
                       </button>
                     </div>
@@ -3738,8 +3738,8 @@ function TokensPageCanvas(): JSX.Element {
         <div className="table-pagination">
           <span className="panel-description text-sm text-muted-foreground">{tokenStrings.pagination.page.replace('{page}', '1').replace('{total}', '3')}</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
-            <button type="button" className="btn btn-outline">{tokenStrings.pagination.prev}</button>
-            <button type="button" className="btn btn-outline">{tokenStrings.pagination.next}</button>
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{tokenStrings.pagination.prev}</button>
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{tokenStrings.pagination.next}</button>
           </div>
         </div>
         <div className="token-bulk-action-panel" role="region" aria-live="polite">
@@ -3750,16 +3750,16 @@ function TokensPageCanvas(): JSX.Element {
           </div>
           <div className="token-bulk-action-buttons">
             {[
-              ['mdi:play-circle-outline', tokenStrings.bulk.activate, 'btn-outline token-bulk-secondary-action'],
-              ['mdi:pause-circle-outline', tokenStrings.bulk.freeze, 'btn-outline token-bulk-secondary-action'],
+              ['mdi:play-circle-outline', tokenStrings.bulk.activate, 'inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 token-bulk-secondary-action'],
+              ['mdi:pause-circle-outline', tokenStrings.bulk.freeze, 'inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 token-bulk-secondary-action'],
               ['mdi:trash-outline', tokenStrings.bulk.delete, 'btn-error token-bulk-delete-action'],
             ].map(([icon, label, variant]) => (
-              <button key={label} type="button" className={`btn ${variant} btn-sm`}>
+              <button key={label} type="button" className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors ${variant} px-2.5 py-1 text-xs`}>
                 <Icon icon={icon} width={16} height={16} aria-hidden="true" />
                 {label}
               </button>
             ))}
-            <button type="button" className="btn btn-ghost btn-sm token-bulk-clear-action">{tokenStrings.bulk.clear}</button>
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs token-bulk-clear-action">{tokenStrings.bulk.clear}</button>
           </div>
         </div>
       </section>
@@ -3959,7 +3959,7 @@ function KeysPageCanvas({
                 aria-label={keyStrings.placeholder}
                 style={{ flex: '1 1 260px', minWidth: 260, maxWidth: '100%' }}
               />
-              <button type="button" className="btn btn-primary btn-sm" style={{ whiteSpace: 'nowrap' }}>
+              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50 px-2.5 py-1 text-xs" style={{ whiteSpace: 'nowrap' }}>
                 {keyStrings.addButton}
               </button>
             </div>
@@ -4170,7 +4170,7 @@ function KeysPageCanvas({
         ) : null}
         {bulkFeedback ? (
           <div
-            className={bulkFeedback.kind === 'error' ? 'alert alert-error' : 'alert alert-warning'}
+            className={bulkFeedback.kind === 'error' ? 'alert border-destructive/30 bg-destructive/10 text-destructive' : 'alert border-warning/40 bg-warning/10 text-warning'}
             role={bulkFeedback.kind === 'error' ? 'alert' : 'status'}
             style={{ marginBottom: 16 }}
           >
@@ -4178,8 +4178,8 @@ function KeysPageCanvas({
           </div>
         ) : null}
 
-        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
-          <table className="jobs-table api-keys-table api-keys-table--admin">
+        <div className="table-wrapper overflow-hidden rounded-lg border">
+          <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b api-keys-table api-keys-table--admin">
             <thead>
               <tr>
                 <th style={{ width: 52 }}>
@@ -4263,7 +4263,7 @@ function KeysPageCanvas({
                         <code>{item.id}</code>
                         <button
                           type="button"
-                          className="btn btn-ghost btn-xs btn-circle"
+                          className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 btn-xs btn-circle"
                           aria-label={keyStrings.actions.copy}
                           title={keyStrings.actions.copy}
                           style={{
@@ -4686,8 +4686,8 @@ function JobsPageCanvas(): JSX.Element {
           {jobTriggerNotice}
         </div>
 
-        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper jobs-module-table-wrapper">
-          <table className="jobs-table jobs-module-table">
+        <div className="table-wrapper overflow-hidden rounded-lg border jobs-module-table-wrapper">
+          <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b jobs-module-table">
             <thead>
               <tr>
                 <th>{jobsStrings.table.id}</th>
@@ -4755,16 +4755,16 @@ function JobsPageCanvas(): JSX.Element {
                           <div className="log-details-panel">
                             <div className="log-details-summary">
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.id}</div>
-                                <div className="log-details-value">{job.id}</div>
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.id}</div>
+                                <div className="text-xs leading-5">{job.id}</div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.type}</div>
-                                <div className="log-details-value">{jobTypeDetail}</div>
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.type}</div>
+                                <div className="text-xs leading-5">{jobTypeDetail}</div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.key}</div>
-                                <div className="log-details-value">
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.key}</div>
+                                <div className="text-xs leading-5">
                                   <JobKeyLink
                                     keyId={job.key_id}
                                     keyGroup={job.key_group}
@@ -4774,18 +4774,18 @@ function JobsPageCanvas(): JSX.Element {
                                 </div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.status}</div>
-                                <div className="log-details-value">{admin.statuses[job.status] ?? job.status}</div>
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.status}</div>
+                                <div className="text-xs leading-5">{admin.statuses[job.status] ?? job.status}</div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.source}</div>
-                                <div className="log-details-value">
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.source}</div>
+                                <div className="text-xs leading-5">
                                   {jobSourceLabel(job.trigger_source, jobsStrings)}
                                 </div>
                               </div>
                             </div>
                             <div className="log-details-body">
-                              <section className="log-details-section">
+                              <section className="flex flex-col gap-2">
                                 <header>{jobsStrings.table.message}</header>
                                 <pre>{job.message}</pre>
                               </section>
@@ -4811,10 +4811,10 @@ function JobsPageCanvas(): JSX.Element {
         <div className="table-pagination">
           <span className="panel-description text-sm text-muted-foreground">{jobsStrings.description} (1 / 2)</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
-            <button type="button" className="btn btn-outline">
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
               {admin.tokens.pagination.prev}
             </button>
-            <button type="button" className="btn btn-outline">
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
               {admin.tokens.pagination.next}
             </button>
           </div>
@@ -4891,7 +4891,7 @@ function UsersPageCanvas({
     <AdminPageFrame activeModule="users">
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
-          <div className="admin-stacked-only">
+          <div className="block md:hidden">
             <h2>{users.title}</h2>
             <p className="panel-description text-sm text-muted-foreground">{users.description}</p>
           </div>
@@ -4921,11 +4921,11 @@ function UsersPageCanvas({
           </p>
         )}
 
-        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
+        <div className="table-wrapper overflow-hidden rounded-lg border">
           {filteredUsers.length === 0 ? (
             <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{users.empty.none}</div>
           ) : (
-            <table className={`jobs-table admin-users-table admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}>
+            <table className={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}>
               <thead>
                 <tr>
                   <th>{users.table.user}</th>
@@ -5067,7 +5067,7 @@ function UsersPageCanvas({
             <h2>{users.catalog.summaryTitle}</h2>
             <p className="panel-description text-sm text-muted-foreground">{users.catalog.summaryDescription}</p>
           </div>
-          <button type="button" className="btn btn-outline">
+          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
             {users.userTags.manageCatalog}
           </button>
         </div>
@@ -5395,15 +5395,15 @@ function UnboundTokenUsagePageCanvas({
       }
     >
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="admin-desktop-only">
+        <div className="hidden md:block">
           <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-selected-token>{selectedTokenId ? `Opened ${selectedTokenId}` : 'No token opened yet'}</p>
         </div>
 
-        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-users-usage-table-wrapper admin-responsive-up">
+        <div className="table-wrapper overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex">
           {pagedItems.length === 0 ? (
             <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{errorMessage ?? strings.empty.none}</div>
           ) : (
-            <table className="jobs-table admin-users-table admin-users-usage-table">
+            <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table">
               <thead>
                 <tr>
                   <th>{strings.table.identity}</th>
@@ -5575,14 +5575,14 @@ function UnboundTokenUsagePageCanvas({
           )}
         </div>
 
-        <div className="admin-mobile-list admin-responsive-down">
+        <div className="flex flex-col gap-3 md:hidden flex md:hidden">
           {pagedItems.length === 0 ? (
             <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{errorMessage ?? strings.empty.none}</div>
           ) : (
             pagedItems.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
               return (
-              <article key={item.tokenId} className="admin-mobile-card">
+              <article key={item.tokenId} className="rounded-lg border p-3">
                 <div className="admin-mobile-identity-block">
                   <div className="admin-mobile-identity-row">
                     <span className="admin-mobile-identity-label">{strings.table.identity}</span>
@@ -5598,29 +5598,29 @@ function UnboundTokenUsagePageCanvas({
                     {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                   </div>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.status}</span>
                   <StatusBadge tone={item.enabled ? 'success' : 'neutral'}>
                     {item.enabled ? users.status.enabled : users.status.disabled}
                   </StatusBadge>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{formatRequestRateSummary(requestRate, language)}</span>
                   <strong>{formatQuotaUsagePair(requestRate.used, requestRate.limit)}</strong>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.hourly}</span>
                   <strong>{formatQuotaUsagePair(item.quotaHourlyUsed, item.quotaHourlyLimit)}</strong>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.daily}</span>
                   <strong>{formatQuotaUsagePair(item.quotaDailyUsed, item.quotaDailyLimit)}</strong>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.monthly}</span>
                   <strong>{formatQuotaUsagePair(item.quotaMonthlyUsed, item.quotaMonthlyLimit)}</strong>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.monthlyBroken}</span>
                   {item.monthlyBrokenCount == null || item.monthlyBrokenLimit == null ? (
                     <strong>—</strong>
@@ -5640,15 +5640,15 @@ function UnboundTokenUsagePageCanvas({
                     <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
                   )}
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.dailySuccessRate}</span>
                   <strong>{formatCompactSuccessRateValue(item.dailySuccess, item.dailyFailure, language)}</strong>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.monthlySuccessRate}</span>
                   <strong>{formatCompactSuccessRateValue(item.monthlySuccess, item.monthlyFailure, language)}</strong>
                 </div>
-                <div className="admin-mobile-kv">
+                <div className="flex items-center justify-between gap-2 text-sm">
                   <span>{strings.table.lastUsed}</span>
                   <strong>{formatTimestamp(item.lastUsedAt)}</strong>
                 </div>
@@ -5658,7 +5658,7 @@ function UnboundTokenUsagePageCanvas({
         </div>
 
         {errorMessage && (
-          <div className="surface error-banner" style={{ marginTop: 12 }}>
+          <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" style={{ marginTop: 12 }}>
             {errorMessage}
           </div>
         )}
@@ -5718,8 +5718,8 @@ function UsersUsageTooltipProofCanvas(): JSX.Element {
             padding: 18,
           }}
         >
-          <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper" style={{ maxHeight: 180, overflow: 'auto' }}>
-            <table className="jobs-table admin-users-table admin-users-usage-table">
+          <div className="table-wrapper overflow-hidden rounded-lg border" style={{ maxHeight: 180, overflow: 'auto' }}>
+            <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table">
               <thead>
                 <tr>
                   <th>{users.usage.table.user}</th>
@@ -5790,29 +5790,29 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
 
   return (
     <AdminPageFrame activeModule="users">
-      <div className="admin-desktop-only">
+      <div className="hidden md:block">
         <AdminCompactIntro
           title={users.catalog.title}
           description={users.catalog.description}
           actions={
             <div className="user-tag-page-actions">
-              <button type="button" className="btn btn-outline">{users.catalog.backToUsers}</button>
-              <button type="button" className="btn btn-primary" disabled={editorMode === 'new'}>
+              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{users.catalog.backToUsers}</button>
+              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50" disabled={editorMode === 'new'}>
                 {users.catalog.actions.create}
               </button>
             </div>
           }
         />
       </div>
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-stacked-only">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 block md:hidden">
         <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <h2>{users.catalog.title}</h2>
             <p className="panel-description text-sm text-muted-foreground">{users.catalog.description}</p>
           </div>
           <div className="user-tag-page-actions">
-            <button type="button" className="btn btn-outline">{users.catalog.backToUsers}</button>
-            <button type="button" className="btn btn-primary" disabled={editorMode === 'new'}>
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">{users.catalog.backToUsers}</button>
+            <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50" disabled={editorMode === 'new'}>
               {users.catalog.actions.create}
             </button>
           </div>
@@ -5988,7 +5988,7 @@ function UserDetailPageCanvas({
             <h2>{users.userTags.title}</h2>
             <p className="panel-description text-sm text-muted-foreground">{users.userTags.description}</p>
           </div>
-          <button type="button" className="btn btn-outline">
+          <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50">
             {users.userTags.manageCatalog}
           </button>
         </div>
@@ -6039,7 +6039,7 @@ function UserDetailPageCanvas({
                       {tag.source === 'system_linuxdo' ? users.userTags.sourceSystem : users.userTags.sourceManual}
                     </StatusBadge>
                   </div>
-                  <button type="button" className="btn btn-ghost btn-sm" disabled={isSystem}>
+                  <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" disabled={isSystem}>
                     {isSystem ? users.userTags.readOnly : users.userTags.unbindAction}
                   </button>
                 </div>
@@ -6170,7 +6170,7 @@ function UserDetailPageCanvas({
             <span>{users.detail.addToken}</span>
           </Button>
         </div>
-        <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
+        <div className="table-wrapper overflow-hidden rounded-lg border">
           <UserDetailTokenTable
             tokens={detail.tokens}
             usersStrings={users}
@@ -6595,7 +6595,7 @@ export const Dashboard: Story = {
     const root = canvasElement.ownerDocument
     const utility = root.querySelector<HTMLElement>('.admin-sidebar-utility')
     const intro = root.querySelector<HTMLElement>('.admin-compact-intro')
-    const stackedChrome = root.querySelector<HTMLElement>('.admin-stacked-only')
+    const stackedChrome = root.querySelector<HTMLElement>('.block md:hidden')
 
     if (!utility || !intro || !stackedChrome) {
       throw new Error('Expected admin page chrome fixtures to render for dashboard story.')
@@ -7433,8 +7433,8 @@ export const UserDetail: Story = {
       throw new Error('Expected deleting a token to refresh the story table.')
     }
 
-    const tokenTableWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.admin-responsive-up')
-    const breakdownTableWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.admin-responsive-up')
+    const tokenTableWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.hidden md:flex')
+    const breakdownTableWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.hidden md:flex')
     for (const [label, wrapper] of [
       ['token table', tokenTableWrapper],
       ['quota breakdown table', breakdownTableWrapper],
@@ -7656,8 +7656,8 @@ export const UserDetailCompact: Story = {
       throw new Error('Expected compact user detail cards to render the denser metric-grid layout.')
     }
 
-    const desktopTokenWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.admin-responsive-up')
-    const desktopBreakdownWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.admin-responsive-up')
+    const desktopTokenWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.hidden md:flex')
+    const desktopBreakdownWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.hidden md:flex')
     if (
       (desktopTokenWrapper && getComputedStyle(desktopTokenWrapper).display !== 'none') ||
       (desktopBreakdownWrapper && getComputedStyle(desktopBreakdownWrapper).display !== 'none')
@@ -7791,7 +7791,7 @@ export const Announcements: Story = {
     if (canvasElement.querySelector('.announcements-list-header button') != null) {
       throw new Error('Expected the announcements list header to avoid a duplicate create action.')
     }
-    if (canvasElement.querySelector('.announcements-module .admin-module-toolbar') != null) {
+    if (canvasElement.querySelector('.announcements-module .flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3') != null) {
       throw new Error('Expected the announcements module to avoid rendering a refresh toolbar.')
     }
   },

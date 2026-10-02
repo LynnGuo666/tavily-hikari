@@ -616,8 +616,8 @@ function AnnouncementsListPanel({
           </div>
         ) : (
           <>
-            <div className="table-wrapper overflow-hidden rounded-lg border announcements-table-wrapper admin-responsive-up">
-              <table className="jobs-table announcements-table">
+            <div className="table-wrapper overflow-hidden rounded-lg border announcements-table-wrapper hidden md:flex">
+              <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b announcements-table">
                 <colgroup>
                   <col className="announcements-col-title" />
                   <col className="announcements-col-display" />
@@ -685,11 +685,11 @@ function AnnouncementsListPanel({
                 </tbody>
               </table>
             </div>
-            <div className="admin-mobile-list admin-responsive-down">
+            <div className="flex flex-col gap-3 md:hidden flex md:hidden">
               {items.map((item) => {
                 const parsed = parseAnnouncementContent(item.content)
                 return (
-                  <article key={item.id} className="admin-mobile-card announcements-mobile-card">
+                  <article key={item.id} className="rounded-lg border p-3 announcements-mobile-card">
                     <header className="announcements-mobile-header">
                       {parsed.titleMarkdown ? (
                         <MarkdownContent
@@ -710,11 +710,11 @@ function AnnouncementsListPanel({
                         className="announcements-mobile-body"
                       />
                     ) : null}
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{strings.table.display}</span>
                       <strong>{displayLabel(item.displayKind, strings)}</strong>
                     </div>
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{strings.table.updated}</span>
                       <strong>{formatTimestamp(item.updatedAt, language)}</strong>
                     </div>

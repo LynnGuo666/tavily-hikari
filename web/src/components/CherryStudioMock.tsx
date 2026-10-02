@@ -117,7 +117,7 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): JSX.Element
                   </div>
                   <button
                     type="button"
-                    className="btn btn-sm min-h-0 h-8 rounded-md border-primary/60 bg-primary/10 px-3 text-xs normal-case text-primary"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs min-h-0 h-8 rounded-md border-primary/60 bg-primary/10 px-3 text-xs normal-case text-primary"
                   >
                     <span className="flex items-center gap-2">
                       <TavilyLogo className="h-4 w-4" />
@@ -161,7 +161,7 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): JSX.Element
                     </div>
                     <button
                       type="button"
-                      className="btn btn-xs h-8 min-h-0 rounded-md border-base-300 bg-base-200 px-3 text-[0.7rem] font-medium text-base-content/80 normal-case pointer-events-none"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-xs h-8 min-h-0 rounded-md border-base-300 bg-base-200 px-3 text-[0.7rem] font-medium text-base-content/80 normal-case pointer-events-none"
                       {...disabledProps}
                     >
                       {t.tavilyCard.testButtonLabel}

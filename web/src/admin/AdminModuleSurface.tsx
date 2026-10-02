@@ -18,7 +18,7 @@ export default function AdminModuleSurface({
   return (
     <section className={cn('surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-module-surface', className)}>
       {toolbar ? (
-        <div className={cn('admin-module-toolbar', toolbarClassName)}>
+        <div className={cn('flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3', toolbarClassName)}>
           {toolbar}
         </div>
       ) : null}

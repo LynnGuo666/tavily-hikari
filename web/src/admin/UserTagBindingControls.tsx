@@ -52,7 +52,7 @@ export function UserTagBindingControls({
       </Select>
       <button
         type="button"
-        className="btn btn-primary"
+        className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
         onClick={() => void onBind()}
         disabled={isBusy || !selectedTagId}
       >

@@ -543,7 +543,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): JS
         {props.state ? (
           <>
             {props.state.importError && (
-              <div className="alert alert-error mb-3">
+              <div className="alert border-destructive/30 bg-destructive/10 text-destructive mb-3">
                 {props.state.importError}
               </div>
             )}
@@ -807,7 +807,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): JS
           </div>
         )}
         {props.state?.importWarning && (
-          <div className="alert alert-warning mb-2 text-sm">
+          <div className="alert border-warning/40 bg-warning/10 text-warning mb-2 text-sm">
             {props.state.importWarning}
           </div>
         )}

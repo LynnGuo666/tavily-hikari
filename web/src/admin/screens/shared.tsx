@@ -125,10 +125,10 @@ export function UsagePageIntro({
 }): JSX.Element {
   return (
     <>
-      <div className="admin-desktop-only">
+      <div className="hidden md:block">
         <AdminCompactIntro title={title} description={description} actions={searchControls} />
       </div>
-      <div className="admin-stacked-only">
+      <div className="block md:hidden">
         <section className="surface app-header admin-usage-stacked-intro">
           <div className="admin-usage-stacked-intro-main">
             <h1>{title}</h1>

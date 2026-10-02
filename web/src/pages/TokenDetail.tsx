@@ -1209,7 +1209,7 @@ export default function TokenDetail({
     >
       {tokenDetailSidebarUtility}
 
-      <div className="admin-stacked-only">
+      <div className="block md:hidden">
         <section className="surface app-header">
           <div className="title-group">
             <h1>Access Token Detail</h1>
@@ -1242,14 +1242,14 @@ export default function TokenDetail({
         </section>
       </div>
 
-      <div className="admin-desktop-only">
+      <div className="hidden md:block">
         <AdminCompactIntro
           title="Access Token Detail"
           description={<>Token <code>{id}</code></>}
         />
       </div>
 
-      {error && <div className="surface error-banner" role="alert">{error}</div>}
+      {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{error}</div>}
 
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 token-info-section">
         <AdminLoadingRegion
@@ -1404,7 +1404,7 @@ export default function TokenDetail({
           </div>
         </div>
         {warning && (
-          <div className="token-period-warning alert alert-warning" role="status">
+          <div className="token-period-warning alert border-warning/40 bg-warning/10 text-warning" role="status">
             <Icon icon="mdi:alert-circle-outline" width={18} height={18} aria-hidden="true" className="token-warning-icon" />
             <span>{warning}</span>
           </div>

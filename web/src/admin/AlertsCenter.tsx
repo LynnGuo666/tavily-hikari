@@ -818,7 +818,7 @@ export default function AlertsCenter({
     <div className="alerts-center-stack">
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 alerts-center-panel">
         <div className="alerts-center-toolbar">
-          <div className={`alerts-center-tabs-mobile${inlineTabsVariant === 'mobile' ? ' admin-stacked-only' : ''}`}>
+          <div className={`alerts-center-tabs-mobile${inlineTabsVariant === 'mobile' ? ' block md:hidden' : ''}`}>
             <SegmentedTabs<AlertsCenterView>
               className="alerts-center-tabs"
               value={view}

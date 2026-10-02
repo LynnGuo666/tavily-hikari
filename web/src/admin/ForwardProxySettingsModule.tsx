@@ -1633,7 +1633,7 @@ export function ForwardProxyCandidateDialog({
           </div>
 
           {dialogError && (
-            <div className="alert alert-error" role="alert">
+            <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {dialogError}
             </div>
           )}
@@ -2383,7 +2383,7 @@ export default function ForwardProxySettingsModule({
         </CardHeader>
         <CardContent className="forward-proxy-panel-content forward-proxy-summary-content">
           {revalidateError && (
-            <div className="mb-4 alert alert-error" role="alert">
+            <div className="mb-4 alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {revalidateError}
             </div>
           )}
@@ -2433,17 +2433,17 @@ export default function ForwardProxySettingsModule({
         </CardHeader>
         <CardContent className="forward-proxy-panel-content">
           {statsError && (
-            <div className="alert alert-error" role="alert">
+            <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {statsError}
             </div>
           )}
           {nodeView === 'errors' && errorStatsError && (
-            <div className="alert alert-error" role="alert">
+            <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {errorStatsError}
             </div>
           )}
           {bulkError && (
-            <div className="alert alert-error" role="alert">
+            <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {bulkError}
             </div>
           )}
@@ -2771,12 +2771,12 @@ export default function ForwardProxySettingsModule({
         </CardHeader>
         <CardContent className="forward-proxy-panel-content">
           {saveError && !activeEgressProgress && (
-            <div className="alert alert-error" role="alert">
+            <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {saveError}
             </div>
           )}
           {settingsError && (
-            <div className="alert alert-error" role="alert">
+            <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert">
               {settingsError}
             </div>
           )}

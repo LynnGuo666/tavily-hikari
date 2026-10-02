@@ -364,7 +364,7 @@ export default function KeyStickyPanels({
           </div>
         </div>
         <AdminLoadingRegion
-          className="table-wrapper overflow-hidden rounded-lg border admin-responsive-up"
+          className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
           loadState={stickyUsersLoadState}
           loadingLabel={stickyUsersLoadingLabel}
           errorLabel={stickyUsersError ?? adminStrings.errors.loadKeyDetails}
@@ -434,7 +434,7 @@ export default function KeyStickyPanels({
           )}
         </AdminLoadingRegion>
         <AdminLoadingRegion
-          className="admin-mobile-list admin-responsive-down"
+          className="flex flex-col gap-3 md:hidden flex md:hidden"
           loadState={stickyUsersLoadState}
           loadingLabel={stickyUsersLoadingLabel}
           errorLabel={stickyUsersError ?? adminStrings.errors.loadKeyDetails}
@@ -446,8 +446,8 @@ export default function KeyStickyPanels({
             stickyUsers.map((item) => {
               const secondary = stickyUserSecondary(item.user)
               return (
-                <article key={item.user.userId} className="admin-mobile-card">
-                  <div className="admin-mobile-kv">
+                <article key={item.user.userId} className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.user}</span>
                     <strong>
                       <button type="button" className="link-button token-owner-trigger" onClick={() => onOpenUser(item.user.userId)}>
@@ -456,7 +456,7 @@ export default function KeyStickyPanels({
                       </button>
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.yesterday}</span>
                     <strong>
                       <StickyWindowValue
@@ -467,7 +467,7 @@ export default function KeyStickyPanels({
                       />
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.today}</span>
                     <strong>
                       <StickyWindowValue
@@ -478,7 +478,7 @@ export default function KeyStickyPanels({
                       />
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.month}</span>
                     <strong>
                       <StickyWindowValue
@@ -489,11 +489,11 @@ export default function KeyStickyPanels({
                       />
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.lastSuccess}</span>
                     <strong>{formatTimestamp(item.lastSuccessAt)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.trend}</span>
                     <div style={{ width: '100%' }}>
                       <StickyCreditsTrendCell buckets={item.dailyBuckets} scaleMax={stickyUserScaleMax} />
@@ -534,7 +534,7 @@ export default function KeyStickyPanels({
           </div>
         </div>
         <AdminLoadingRegion
-          className="table-wrapper overflow-hidden rounded-lg border admin-responsive-up"
+          className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
           loadState={stickyNodesLoadState}
           loadingLabel={stickyNodesLoadingLabel}
           errorLabel={stickyNodesError ?? adminStrings.errors.loadKeyDetails}
@@ -588,7 +588,7 @@ export default function KeyStickyPanels({
           )}
         </AdminLoadingRegion>
         <AdminLoadingRegion
-          className="admin-mobile-list admin-responsive-down"
+          className="flex flex-col gap-3 md:hidden flex md:hidden"
           loadState={stickyNodesLoadState}
           loadingLabel={stickyNodesLoadingLabel}
           errorLabel={stickyNodesError ?? adminStrings.errors.loadKeyDetails}
@@ -600,14 +600,14 @@ export default function KeyStickyPanels({
             stickyNodes.map((node) => {
               const assignmentSummary = stickyNodeAssignmentSummary(node, keyDetailsStrings.stickyNodes)
               return (
-                <article key={`${node.role}:${node.key}`} className="admin-mobile-card">
-                  <div className="admin-mobile-kv">
+                <article key={`${node.role}:${node.key}`} className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.role}</span>
                     <StatusBadge tone={node.role === 'primary' ? 'success' : 'info'}>
                       {node.role === 'primary' ? keyDetailsStrings.stickyNodes.primary : keyDetailsStrings.stickyNodes.secondary}
                     </StatusBadge>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.node}</span>
                     <div className="sticky-node-summary" title={`${node.displayName} · ${assignmentSummary.detail}`}>
                       <strong className="sticky-node-summary-title">{node.displayName}</strong>
@@ -618,13 +618,13 @@ export default function KeyStickyPanels({
                       </div>
                     </div>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.activity}</span>
                     <div style={{ width: '100%' }}>
                       <ProxyActivityTrendCell buckets={node.last24h} scaleMax={stickyNodeScaleMax} />
                     </div>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.weight}</span>
                     <div style={{ width: '100%' }}>
                       <ProxyWeightTrendCell buckets={resolveStickyNodeWeightBuckets(node)} scale={stickyNodeWeightScale} />

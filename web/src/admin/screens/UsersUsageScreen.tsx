@@ -101,8 +101,8 @@ export function UsersUsageScreen({
 
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <AdminTableShell
-          className="jobs-table-wrapper admin-users-usage-table-wrapper admin-responsive-up"
-          tableClassName={`jobs-table admin-users-table admin-users-usage-table${showShadowDailyColumn ? ' admin-users-usage-table--shadow-compare' : ''}`}
+          className="overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex"
+          tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table${showShadowDailyColumn ? ' admin-users-usage-table--shadow-compare' : ''}`}
           loadState={loadState}
           loadingLabel={loadingLabel}
           errorLabel={errorLabel}
@@ -301,7 +301,7 @@ export function UsersUsageScreen({
         </AdminTableShell>
 
         <AdminLoadingRegion
-          className="admin-mobile-list admin-responsive-down"
+          className="flex flex-col gap-3 md:hidden flex md:hidden"
           loadState={loadState}
           loadingLabel={loadingLabel}
           errorLabel={errorLabel}
@@ -326,8 +326,8 @@ export function UsersUsageScreen({
                 formatQuotaStackValue,
               })
               return (
-                <article key={item.userId} className="admin-mobile-card">
-                  <div className="admin-mobile-kv">
+                <article key={item.userId} className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.user}</span>
                     <button
                       type="button"
@@ -338,17 +338,17 @@ export function UsersUsageScreen({
                       <strong>{formatAdminUserListPrimary(item)}</strong>
                     </button>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.status}</span>
                     <StatusBadge tone={item.active ? 'success' : 'neutral'}>
                       {item.active ? usersStrings.status.active : usersStrings.status.inactive}
                     </StatusBadge>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{formatRequestRateSummary(requestRate, language)}</span>
                     <strong>{formatQuotaUsagePair(requestRate.used, requestRate.limit)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.businessOneHour}</span>
                     <strong>
                       {formatQuotaUsagePair(item.businessCalls1h.totalCount, item.businessCalls1h.limit)}
@@ -358,21 +358,21 @@ export function UsersUsageScreen({
                         : `S ${formatNumber(item.businessCalls1h.successCount)} / F ${formatNumber(item.businessCalls1h.failureCount)}`}
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.daily}</span>
                     <AdminTableValueStack {...formatQuotaStackValue(item.dailyCreditsUsed, item.dailyCreditsLimit)} />
                   </div>
                   {showShadowDailyColumn ? (
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.usage.table.shadowDaily}</span>
                       <AdminTableValueStack {...shadowDailyUsage} />
                     </div>
                   ) : null}
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.monthly}</span>
                     <strong>{formatQuotaUsagePair(item.monthlyCreditsUsed, item.monthlyCreditsLimit)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.monthlyBroken}</span>
                     {item.monthlyBrokenCount > 0 ? (
                       <button
@@ -390,19 +390,19 @@ export function UsersUsageScreen({
                       <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
                     )}
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.ipCount}</span>
                     <strong>{formatNumber(item.recentIpCount7d)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.dailySuccessRate}</span>
                     <strong>{formatCompactSuccessRateValue(item.dailySuccess, item.dailyFailure, language)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.monthlySuccessRate}</span>
                     <strong>{formatCompactSuccessRateValue(item.monthlySuccess, item.monthlyFailure, language)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.lastUsed}</span>
                     <strong>{formatTimestamp(item.lastActivity)}</strong>
                   </div>

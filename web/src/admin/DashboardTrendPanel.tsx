@@ -597,7 +597,7 @@ export default function DashboardTrendPanel({
           <h2>{strings.trendsTitle}</h2>
           <p className="panel-description text-sm text-muted-foreground">{strings.trendsDescription}</p>
         </div>
-        <div className="dashboard-trend-meta">
+        <div className="dashboard-trend-meta flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
           <span>{chartMeta}</span>
           <span className={`dashboard-rollup-integrity is-${rollupIntegrity.state}`}>
             {integrityLabel}
@@ -614,9 +614,9 @@ export default function DashboardTrendPanel({
         ariaLabel={strings.trendsTitle}
       />
 
-      <div className="dashboard-chart-toolbar">
-        <span className="dashboard-chart-toolbar-label">{chartSeriesLabel}</span>
-        <div className="dashboard-chart-series-list" role="group" aria-label={chartSeriesLabel}>
+      <div className="dashboard-chart-toolbar flex flex-wrap items-center justify-between gap-2 px-4">
+        <span className="dashboard-chart-toolbar-label text-sm font-medium">{chartSeriesLabel}</span>
+        <div className="dashboard-chart-series-list flex flex-wrap items-center gap-x-4 gap-y-1" role="group" aria-label={chartSeriesLabel}>
           {(chartMode === 'results' || chartMode === 'resultsArea'
             ? DASHBOARD_RESULT_SERIES_ORDER.map((seriesId) => (
                 <DashboardChartSeriesButton
@@ -649,13 +649,13 @@ export default function DashboardTrendPanel({
         </div>
       </div>
 
-      <div className="dashboard-chart-shell">
+      <div className="dashboard-chart-shell flex flex-col gap-3 px-4">
         {!overviewReady ? (
           <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.loading}</div>
         ) : showEmpty ? (
           <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{strings.chartEmpty}</div>
         ) : (
-          <div className="dashboard-chart-canvas">
+          <div className="dashboard-chart-canvas aspect-[2/1] w-full">
             {isAreaMode ? (
               <Line options={lineChartOptions} data={lineChartData} />
             ) : (

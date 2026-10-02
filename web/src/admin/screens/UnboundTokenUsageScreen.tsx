@@ -87,8 +87,8 @@ export function UnboundTokenUsageScreen({
 
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
         <AdminTableShell
-          className="jobs-table-wrapper admin-users-usage-table-wrapper admin-responsive-up"
-          tableClassName="jobs-table admin-users-table admin-users-usage-table"
+          className="overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex"
+          tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table"
           loadState={loadState}
           loadingLabel={loadingLabel}
           errorLabel={errorLabel}
@@ -254,7 +254,7 @@ export function UnboundTokenUsageScreen({
         </AdminTableShell>
 
         <AdminLoadingRegion
-          className="admin-mobile-list admin-responsive-down"
+          className="flex flex-col gap-3 md:hidden flex md:hidden"
           loadState={loadState}
           loadingLabel={loadingLabel}
           errorLabel={errorLabel}
@@ -266,7 +266,7 @@ export function UnboundTokenUsageScreen({
             items.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
               return (
-                <article key={item.tokenId} className="admin-mobile-card">
+                <article key={item.tokenId} className="rounded-lg border p-3">
                   <div className="admin-mobile-identity-block">
                     <div className="admin-mobile-identity-row">
                       <span className="admin-mobile-identity-label">{unboundTokenUsageStrings.table.identity}</span>
@@ -282,29 +282,29 @@ export function UnboundTokenUsageScreen({
                       {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                     </div>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.status}</span>
                     <StatusBadge tone={item.enabled ? 'success' : 'neutral'}>
                       {item.enabled ? usersStrings.status.enabled : usersStrings.status.disabled}
                     </StatusBadge>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{formatRequestRateSummary(requestRate, language)}</span>
                     <strong>{formatQuotaUsagePair(requestRate.used, requestRate.limit)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.hourly}</span>
                     <strong>{formatQuotaUsagePair(item.quotaHourlyUsed, item.quotaHourlyLimit)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.daily}</span>
                     <strong>{formatQuotaUsagePair(item.quotaDailyUsed, item.quotaDailyLimit)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.monthly}</span>
                     <strong>{formatQuotaUsagePair(item.quotaMonthlyUsed, item.quotaMonthlyLimit)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.monthlyBroken}</span>
                     {item.monthlyBrokenCount == null || item.monthlyBrokenLimit == null ? (
                       <strong>—</strong>
@@ -320,15 +320,15 @@ export function UnboundTokenUsageScreen({
                       <strong>{formatQuotaUsagePair(item.monthlyBrokenCount, item.monthlyBrokenLimit)}</strong>
                     )}
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.dailySuccessRate}</span>
                     <strong>{formatCompactSuccessRateValue(item.dailySuccess, item.dailyFailure, language)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.monthlySuccessRate}</span>
                     <strong>{formatCompactSuccessRateValue(item.monthlySuccess, item.monthlyFailure, language)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{unboundTokenUsageStrings.table.lastUsed}</span>
                     <strong>{formatTimestamp(item.lastUsedAt)}</strong>
                   </div>

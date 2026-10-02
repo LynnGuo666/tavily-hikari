@@ -30,8 +30,8 @@ export function UserDetailTokenTable({
 
   return (
     <>
-      <div className="admin-responsive-up">
-        <Table className="jobs-table admin-users-table admin-user-tokens-table">
+      <div className="hidden md:flex">
+        <Table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-user-tokens-table">
           <thead>
             <tr>
               <th>{`${usersStrings.tokens.table.id} · ${usersStrings.tokens.table.note}`}</th>
@@ -129,14 +129,14 @@ export function UserDetailTokenTable({
         </Table>
       </div>
 
-      <div className="admin-mobile-list admin-responsive-down">
+      <div className="flex flex-col gap-3 md:hidden flex md:hidden">
         {tokens.map((token) => {
           const successDailyText = `${formatNumber(token.dailySuccess)} / ${formatNumber(token.dailyFailure)}`
           const canDelete = tokens.length > 1
           const isDeleting = deletingTokenId === token.tokenId
           const deleteLabel = canDelete ? usersStrings.tokens.actions.delete : usersStrings.tokens.actions.deleteDisabled
           return (
-            <article key={token.tokenId} className="admin-mobile-card admin-user-token-card">
+            <article key={token.tokenId} className="rounded-lg border p-3 admin-user-token-card">
               <div className="admin-user-mobile-card-head">
                 <div className="admin-mobile-identity-block admin-user-mobile-identity">
                   <span className="admin-mobile-identity-label">{usersStrings.tokens.table.id}</span>

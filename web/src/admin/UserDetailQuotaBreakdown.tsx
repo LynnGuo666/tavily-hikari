@@ -65,8 +65,8 @@ export function UserDetailQuotaBreakdown({
 
   return (
     <>
-      <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-responsive-up" style={{ marginTop: 12 }}>
-        <table className="jobs-table admin-users-table user-tag-breakdown-table">
+      <div className="table-wrapper overflow-hidden rounded-lg border hidden md:flex" style={{ marginTop: 12 }}>
+        <table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b user-tag-breakdown-table">
           <thead>
             <tr>
               <th>{usersStrings.effectiveQuota.columns.item}</th>
@@ -114,11 +114,11 @@ export function UserDetailQuotaBreakdown({
         </table>
       </div>
 
-      <div className="admin-mobile-list admin-responsive-down" style={{ marginTop: 12 }}>
+      <div className="flex flex-col gap-3 md:hidden flex md:hidden" style={{ marginTop: 12 }}>
         {entries.map((entry, index) => {
           const view = buildBreakdownViewModel(entry, usersStrings)
           return (
-            <article className="admin-mobile-card admin-user-breakdown-card" key={`${entry.kind}:${entry.tagId ?? 'row'}:${index}`}>
+            <article className="rounded-lg border p-3 admin-user-breakdown-card" key={`${entry.kind}:${entry.tagId ?? 'row'}:${index}`}>
               <div className="admin-user-mobile-card-head">
                 <div className="admin-mobile-identity-block admin-user-mobile-identity">
                   <span className="admin-mobile-identity-label">{usersStrings.effectiveQuota.columns.item}</span>

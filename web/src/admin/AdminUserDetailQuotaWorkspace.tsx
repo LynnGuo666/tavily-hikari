@@ -203,7 +203,7 @@ export function AdminUserDetailQuotaWorkspace({
       </div>
 
       {hasBlockAllTag && (
-        <div className="alert alert-warning" role="status">
+        <div className="alert border-warning/40 bg-warning/10 text-warning" role="status">
           {usersStrings.effectiveQuota.blockAllNotice}
         </div>
       )}

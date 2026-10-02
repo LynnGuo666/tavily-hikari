@@ -7993,13 +7993,13 @@ function AdminDashboard(): JSX.Element {
           <h2>{usersStrings.catalog.summaryTitle}</h2>
           <p className="panel-description text-sm text-muted-foreground">{usersStrings.catalog.summaryDescription}</p>
         </div>
-        <button type="button" className="btn btn-outline" onClick={navigateUserTags}>
+        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={navigateUserTags}>
           {usersStrings.userTags.manageCatalog}
         </button>
       </div>
 
       {tagCatalogError && (
-        <div className="alert alert-error" role="alert" style={{ marginBottom: 12 }}>
+        <div className="alert border-destructive/30 bg-destructive/10 text-destructive" role="alert" style={{ marginBottom: 12 }}>
           {tagCatalogError}
         </div>
       )}
@@ -8247,7 +8247,7 @@ function AdminDashboard(): JSX.Element {
 
         <div className="user-tag-catalog-body">
           {isBlockAll ? (
-            <div className="alert alert-warning user-tag-catalog-block-note" role="note">
+            <div className="alert border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note">
               {usersStrings.catalog.blockDescription}
             </div>
           ) : (
@@ -8288,7 +8288,7 @@ function AdminDashboard(): JSX.Element {
       skipToContentLabel={adminStrings.accessibility.skipToContent}
       onSelectItem={navigateModule}
     >
-      <div className="admin-desktop-only">
+      <div className="hidden md:block">
         <AdminCompactIntro
           title={usersStrings.catalog.title}
           description={usersStrings.catalog.description}
@@ -8296,7 +8296,7 @@ function AdminDashboard(): JSX.Element {
             <div className="user-tag-page-actions">
               <button
                 type="button"
-                className="btn btn-outline"
+                className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50"
                 onClick={() =>
                   navigateToPath(
                     buildUsersCollectionPath(
@@ -8313,7 +8313,7 @@ function AdminDashboard(): JSX.Element {
               </button>
               <button
                 type="button"
-                className="btn btn-primary"
+                className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
                 onClick={beginCreateUserTag}
                 disabled={activeUserTagEditorId === NEW_USER_TAG_CARD_ID}
               >
@@ -8324,7 +8324,7 @@ function AdminDashboard(): JSX.Element {
         />
       </div>
 
-      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-stacked-only">
+      <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 block md:hidden">
         <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <h2>{usersStrings.catalog.title}</h2>
@@ -8333,7 +8333,7 @@ function AdminDashboard(): JSX.Element {
           <div className="user-tag-page-actions">
             <button
               type="button"
-              className="btn btn-outline"
+              className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50"
               onClick={() =>
                 navigateToPath(
                   buildUsersCollectionPath(
@@ -8350,7 +8350,7 @@ function AdminDashboard(): JSX.Element {
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/80 disabled:opacity-50"
               onClick={beginCreateUserTag}
               disabled={activeUserTagEditorId === NEW_USER_TAG_CARD_ID}
             >
@@ -8361,7 +8361,7 @@ function AdminDashboard(): JSX.Element {
       </section>
 
       {tagCatalogError && (
-        <div className="surface error-banner" role="alert">
+        <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">
           {tagCatalogError}
         </div>
       )}
@@ -8475,7 +8475,7 @@ function AdminDashboard(): JSX.Element {
                 </div>
               </div>
               <AdminLoadingRegion
-                className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper admin-responsive-up"
+                className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
                 loadState={monthlyBrokenDrawerLoadState}
                 loadingLabel={usersStrings.brokenKeys.loading}
                 errorLabel={monthlyBrokenDrawerError ?? loadingStateStrings.error}
@@ -8484,7 +8484,7 @@ function AdminDashboard(): JSX.Element {
                 {monthlyBrokenDrawerItems.length === 0 ? (
                   <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{usersStrings.brokenKeys.empty}</div>
                 ) : (
-                  <Table className="jobs-table admin-users-table">
+                  <Table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b">
                     <thead>
                       <tr>
                         <th>{usersStrings.brokenKeys.table.key}</th>
@@ -8537,7 +8537,7 @@ function AdminDashboard(): JSX.Element {
                 )}
               </AdminLoadingRegion>
               <AdminLoadingRegion
-                className="admin-mobile-list admin-responsive-down"
+                className="flex flex-col gap-3 md:hidden flex md:hidden"
                 loadState={monthlyBrokenDrawerLoadState}
                 loadingLabel={usersStrings.brokenKeys.loading}
                 errorLabel={monthlyBrokenDrawerError ?? loadingStateStrings.error}
@@ -8550,8 +8550,8 @@ function AdminDashboard(): JSX.Element {
                     const stateKey = copyStateKey('brokenKeys', item.keyId)
                     const state = copyState.get(stateKey)
                     return (
-                      <article key={`${item.keyId}:${item.latestBreakAt}`} className="admin-mobile-card">
-                        <div className="admin-mobile-kv">
+                      <article key={`${item.keyId}:${item.latestBreakAt}`} className="rounded-lg border p-3">
+                        <div className="flex items-center justify-between gap-2 text-sm">
                           <span>{usersStrings.brokenKeys.table.key}</span>
                           <strong>
                             <MonthlyBrokenKeyValue
@@ -8568,23 +8568,23 @@ function AdminDashboard(): JSX.Element {
                             />
                           </strong>
                         </div>
-                        <div className="admin-mobile-kv">
+                        <div className="flex items-center justify-between gap-2 text-sm">
                           <span>{usersStrings.brokenKeys.table.status}</span>
                           <strong>{adminStrings.statuses[item.currentStatus] ?? item.currentStatus}</strong>
                         </div>
-                        <div className="admin-mobile-kv">
+                        <div className="flex items-center justify-between gap-2 text-sm">
                           <span>{usersStrings.brokenKeys.table.reason}</span>
                           <strong>{item.reasonSummary || item.reasonCode || usersStrings.brokenKeys.noReason}</strong>
                         </div>
-                        <div className="admin-mobile-kv">
+                        <div className="flex items-center justify-between gap-2 text-sm">
                           <span>{usersStrings.brokenKeys.table.latestBreakAt}</span>
                           <strong>{formatTimestamp(item.latestBreakAt)}</strong>
                         </div>
-                        <div className="admin-mobile-kv">
+                        <div className="flex items-center justify-between gap-2 text-sm">
                           <span>{usersStrings.brokenKeys.table.breaker}</span>
                           <strong>{formatMonthlyBrokenBreaker(item, usersStrings.brokenKeys)}</strong>
                         </div>
-                        <div className="admin-mobile-kv">
+                        <div className="flex items-center justify-between gap-2 text-sm">
                           <span>{usersStrings.brokenKeys.table.relatedUsers}</span>
                           <strong>
                             {formatMonthlyBrokenRelatedUsers(
@@ -8748,7 +8748,7 @@ function AdminDashboard(): JSX.Element {
     <div style={{ overflowY: 'auto', minHeight: 0, paddingTop: 12 }}>
       {keysBatchReport?.kind === 'error' ? (
         <>
-          <div className="alert alert-error">
+          <div className="alert border-destructive/30 bg-destructive/10 text-destructive">
             {keysBatchReport.message}
           </div>
           <div className="py-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
@@ -9354,10 +9354,10 @@ function AdminDashboard(): JSX.Element {
       >
         {userDetailSidebarUtility}
         {adminHaCompactAlert}
-        <div className="admin-desktop-only">
+        <div className="hidden md:block">
           <AdminCompactIntro title={userDetailTitle} description={userDetailDescription} actions={renderUserDetailTabs()} />
         </div>
-        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 admin-stacked-only">
+        <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 block md:hidden">
           <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
             <div>
               <h2>{userDetailTitle}</h2>
@@ -9368,13 +9368,13 @@ function AdminDashboard(): JSX.Element {
         </section>
 
         {userTagError && (
-          <div className="surface error-banner" role="alert">
+          <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">
             {userTagError}
           </div>
         )}
 
         {userQuotaError && (
-          <div className="surface error-banner" role="alert">
+          <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">
             {userQuotaError}
           </div>
         )}
@@ -9465,7 +9465,7 @@ function AdminDashboard(): JSX.Element {
                   <h2>{usersStrings.userTags.title}</h2>
                   <p className="panel-description text-sm text-muted-foreground">{usersStrings.userTags.description}</p>
                 </div>
-                <button type="button" className="btn btn-outline" onClick={navigateUserTags}>
+                <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={navigateUserTags}>
                   {usersStrings.userTags.manageCatalog}
                 </button>
               </div>
@@ -9536,7 +9536,7 @@ function AdminDashboard(): JSX.Element {
                           </div>
                           <button
                             type="button"
-                            className="btn btn-ghost btn-sm"
+                            className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs"
                             onClick={() => void unbindSelectedUserTag(tag)}
                             disabled={savingUserTagBinding || isSystem || tag.source !== 'manual'}
                           >
@@ -9624,7 +9624,7 @@ function AdminDashboard(): JSX.Element {
                   <span>{addingUserToken ? usersStrings.detail.addingToken : usersStrings.detail.addToken}</span>
                 </Button>
               </div>
-              <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
+              <div className="table-wrapper overflow-hidden rounded-lg border">
                 <AdminLazyBoundary loadingLabel={loadingStateStrings.switching} minHeight={220}>
                   <LazyUserDetailTokenTable
                     tokens={tokenItems}
@@ -9686,10 +9686,10 @@ function AdminDashboard(): JSX.Element {
     filterStatusTestId?: string
   }) => (
     <>
-      <div className="admin-desktop-only">
+      <div className="hidden md:block">
         <AdminCompactIntro title={title} description={description} actions={searchControls} />
       </div>
-      <div className="admin-stacked-only">
+      <div className="block md:hidden">
         <section className="surface app-header admin-usage-stacked-intro">
           <div className="admin-usage-stacked-intro-main">
             <h1>{title}</h1>
@@ -10201,7 +10201,7 @@ function AdminDashboard(): JSX.Element {
     </div>
   )
   const renderJobFilterToolbar = (className?: string) => (
-    <div className={['admin-module-toolbar admin-module-toolbar--end', className].filter(Boolean).join(' ')}>
+    <div className={['flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--end', className].filter(Boolean).join(' ')}>
       <div className="panel-actions admin-jobs-actions">
         <AdminJobTriggerMenu
           disabled={jobsBlocking}
@@ -10244,7 +10244,7 @@ function AdminDashboard(): JSX.Element {
     </div>
   )
   const renderTokenToolbar = () => (
-    <div className="admin-module-toolbar admin-module-toolbar--tokens">
+    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--tokens">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -10261,7 +10261,7 @@ function AdminDashboard(): JSX.Element {
         <TooltipContent side="top">{tokenStrings.actions.viewLeaderboard}</TooltipContent>
       </Tooltip>
       {isAdmin && (
-        <div className="admin-module-toolbar-actions admin-module-toolbar-actions--tokens">
+        <div className="flex flex-wrap items-center gap-2 admin-module-toolbar-actions--tokens">
           <Input
             type="text"
             name="new-token-note"
@@ -10387,7 +10387,7 @@ function AdminDashboard(): JSX.Element {
     </div>
   )
   const renderKeyQuickAddToolbar = () => (
-    <div className="admin-module-toolbar admin-module-toolbar--keys">
+    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--keys">
       <div
         ref={attachVisibleKeysBatchAnchor}
         onMouseEnter={(event) => {
@@ -10697,13 +10697,13 @@ function AdminDashboard(): JSX.Element {
 
       {showTokens && (
       <section ref={tokenPanelRef} className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="admin-stacked-only">
+        <div className="block md:hidden">
           {renderTokenToolbar()}
         </div>
         {renderTokenFilters()}
         <AdminTableShell
-          className="jobs-table-wrapper admin-responsive-up"
-          tableClassName="jobs-table tokens-table"
+          className="overflow-hidden rounded-lg border hidden md:flex"
+          tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b tokens-table"
           loadState={tokensLoadState}
           loadingLabel={tokensRefreshing ? loadingStateStrings.refreshing : tokenStrings.empty.loading}
           minHeight={320}
@@ -10913,7 +10913,7 @@ function AdminDashboard(): JSX.Element {
           )}
         </AdminTableShell>
         <AdminLoadingRegion
-          className="admin-mobile-list admin-responsive-down"
+          className="flex flex-col gap-3 md:hidden flex md:hidden"
           loadState={tokensLoadState}
           loadingLabel={tokensRefreshing ? loadingStateStrings.refreshing : tokenStrings.empty.loading}
           minHeight={260}
@@ -10929,9 +10929,9 @@ function AdminDashboard(): JSX.Element {
               const quotaStateKey = t.quota_state ?? 'normal'
               const quotaLabel = quotaLabels[quotaStateKey] ?? quotaLabels.normal
               return (
-                <article key={t.id} className="admin-mobile-card">
+                <article key={t.id} className="rounded-lg border p-3">
                   {isAdmin && (
-                    <div className="admin-mobile-kv token-mobile-select-row">
+                    <div className="flex items-center justify-between gap-2 text-sm token-mobile-select-row">
                       <span>{tokenStrings.bulk.selected.replace('{count}', '1')}</span>
                       <label style={keySelectionCheckboxLabelStyle}>
                         <input
@@ -10945,31 +10945,31 @@ function AdminDashboard(): JSX.Element {
                       </label>
                     </div>
                   )}
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{tokenStrings.table.id}</span>
                     <strong>
                       <code>{t.id}</code>
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{tokenStrings.table.owner}</span>
                     <TokenOwnerValue owner={t.owner} emptyLabel={tokenStrings.owner.unbound} onOpenUser={navigateUser} compact />
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{tokenStrings.table.note}</span>
                     <strong>{t.note || '—'}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{tokenStrings.table.usage}</span>
                     <strong>{formatNumber(t.total_requests)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{tokenStrings.table.quota}</span>
                     <StatusBadge tone={quotaTone(quotaStateKey)} className={`token-quota-pill token-quota-pill-${quotaStateKey}`}>
                       {quotaLabel}
                     </StatusBadge>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{tokenStrings.table.lastUsed}</span>
                     <strong>{formatTimestamp(t.last_used_at)}</strong>
                   </div>
@@ -11137,12 +11137,12 @@ function AdminDashboard(): JSX.Element {
           description="Dashboard data, HA controls, saves, and request streams stay unavailable until the connection returns."
         />
       ) : null}
-      {error && <div className="surface error-banner">{error}</div>}
+      {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
 
       {showKeys && (
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10" style={keysBatchVisible ? { position: 'relative', zIndex: 40 } : undefined}>
             {isAdmin && (
-              <div className="admin-stacked-only">
+              <div className="block md:hidden">
                 {renderKeyQuickAddToolbar()}
               </div>
             )}
@@ -11384,7 +11384,7 @@ function AdminDashboard(): JSX.Element {
           ) : null}
           {keysBulkFeedback ? (
             <div
-              className={keysBulkFeedback.kind === 'error' ? 'alert alert-error' : 'alert alert-warning'}
+              className={keysBulkFeedback.kind === 'error' ? 'alert border-destructive/30 bg-destructive/10 text-destructive' : 'alert border-warning/40 bg-warning/10 text-warning'}
               role={keysBulkFeedback.kind === 'error' ? 'alert' : 'status'}
               style={{ marginBottom: 16 }}
             >
@@ -11392,8 +11392,8 @@ function AdminDashboard(): JSX.Element {
             </div>
           ) : null}
         <AdminTableShell
-          className="jobs-table-wrapper admin-responsive-up"
-          tableClassName={`jobs-table api-keys-table${isAdmin ? ' api-keys-table--admin' : ''}`}
+          className="overflow-hidden rounded-lg border hidden md:flex"
+          tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b api-keys-table${isAdmin ? ' api-keys-table--admin' : ''}`}
           loadState={keysLoadState}
           loadingLabel={keysRefreshing ? loadingStateStrings.refreshing : keyStrings.empty.loading}
           errorLabel={keysError ?? loadingStateStrings.error}
@@ -11652,7 +11652,7 @@ function AdminDashboard(): JSX.Element {
           )}
         </AdminTableShell>
         <AdminLoadingRegion
-          className="admin-mobile-list admin-responsive-down"
+          className="flex flex-col gap-3 md:hidden flex md:hidden"
           loadState={keysLoadState}
           loadingLabel={keysRefreshing ? loadingStateStrings.refreshing : keyStrings.empty.loading}
           errorLabel={keysError ?? loadingStateStrings.error}
@@ -11668,7 +11668,7 @@ function AdminDashboard(): JSX.Element {
               const stateKey = copyStateKey('keys', item.id)
               const state = copyState.get(stateKey)
               return (
-                <article key={item.id} className="admin-mobile-card">
+                <article key={item.id} className="rounded-lg border p-3">
                   {isAdmin && (
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
                       <label style={keySelectionCheckboxLabelStyle}>
@@ -11683,21 +11683,21 @@ function AdminDashboard(): JSX.Element {
                       </label>
                     </div>
                   )}
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.keyId}</span>
                     <strong>
                       <code>{item.id}</code>
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.registrationIp}</span>
                     <strong>{formatRegistrationValue(item.registration_ip)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.registrationRegion}</span>
                     <strong>{formatRegistrationValue(item.registration_region)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.status}</span>
                     <div>
                       <StatusBadge tone={statusTone(keyBadgeStatus(item))}>
@@ -11710,19 +11710,19 @@ function AdminDashboard(): JSX.Element {
                       )}
                     </div>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.total}</span>
                     <strong>{formatNumber(total)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.success}</span>
                     <strong>{formatNumber(item.success_count)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.errors}</span>
                     <strong>{formatNumber(item.error_count)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.quotaLeft}</span>
                     <strong>
                       {item.quota_remaining != null && item.quota_limit != null
@@ -11730,11 +11730,11 @@ function AdminDashboard(): JSX.Element {
                         : '—'}
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.lastUsed}</span>
                     <strong>{formatTimestampNoYear(item.last_used_at)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyStrings.table.statusChanged}</span>
                     <strong>{formatTimestamp(item.status_changed_at)}</strong>
                   </div>
@@ -11883,12 +11883,12 @@ function AdminDashboard(): JSX.Element {
 
       {showJobs && (
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-        <div className="admin-stacked-only">
+        <div className="block md:hidden">
           {renderJobFilterToolbar()}
         </div>
         {jobTriggerNotice && (
           <div
-            className={jobTriggerNotice.kind === 'info' ? 'alert alert-warning' : 'alert'}
+            className={jobTriggerNotice.kind === 'info' ? 'alert border-warning/40 bg-warning/10 text-warning' : 'alert'}
             role="status"
             style={{ marginBottom: 12 }}
           >
@@ -11896,8 +11896,8 @@ function AdminDashboard(): JSX.Element {
           </div>
         )}
         <AdminTableShell
-          className="jobs-table-wrapper admin-responsive-up"
-          tableClassName="jobs-table jobs-module-table"
+          className="overflow-hidden rounded-lg border hidden md:flex"
+          tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b jobs-module-table"
           loadState={jobsLoadState}
           loadingLabel={jobsRefreshing ? loadingStateStrings.refreshing : jobsStrings.empty.loading}
           errorLabel={jobsError ?? loadingStateStrings.error}
@@ -12018,12 +12018,12 @@ function AdminDashboard(): JSX.Element {
                           <div className="log-details-panel">
                             <div className="log-details-summary">
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.id}</div>
-                                <div className="log-details-value">{j.id}</div>
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.id}</div>
+                                <div className="text-xs leading-5">{j.id}</div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.type}</div>
-                                <div className="log-details-value">
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.type}</div>
+                                <div className="text-xs leading-5">
                                   {jt ? (
                                     <Tooltip>
                                       <TooltipTrigger asChild>
@@ -12047,8 +12047,8 @@ function AdminDashboard(): JSX.Element {
                                 </div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.key}</div>
-                                <div className="log-details-value">
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.key}</div>
+                                <div className="text-xs leading-5">
                                   <JobKeyLink
                                     keyId={keyId}
                                     keyGroup={keyGroup}
@@ -12059,47 +12059,47 @@ function AdminDashboard(): JSX.Element {
                                 </div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.status}</div>
-                                <div className="log-details-value">{jobStatusText}</div>
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.status}</div>
+                                <div className="text-xs leading-5">{jobStatusText}</div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.source}</div>
-                                <div className="log-details-value">{jobSourceText}</div>
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.source}</div>
+                                <div className="text-xs leading-5">{jobSourceText}</div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.attempt}</div>
-                                <div className="log-details-value">{j.attempt}</div>
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.attempt}</div>
+                                <div className="text-xs leading-5">{j.attempt}</div>
                               </div>
                               <div>
-                                <div className="log-details-label">{jobsStrings.table.started}</div>
-                                <div className="log-details-value">
+                                <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.started}</div>
+                                <div className="text-xs leading-5">
                                   {startedSummary ?? jobsStrings.empty.none}
                                 </div>
                               </div>
                               {started == null && (
                                 <div>
-                                  <div className="log-details-label">{jobsStrings.detailLabels.queued}</div>
-                                  <div className="log-details-value">{queuedSummary}</div>
+                                  <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.detailLabels.queued}</div>
+                                  <div className="text-xs leading-5">{queuedSummary}</div>
                                 </div>
                               )}
                               {finishedSummary && (
                                 <div>
-                                  <div className="log-details-label">{jobsStrings.detailLabels.finished}</div>
-                                  <div className="log-details-value">
+                                  <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.detailLabels.finished}</div>
+                                  <div className="text-xs leading-5">
                                     {finishedSummary}
                                   </div>
                                 </div>
                               )}
                               {duration && (
                                 <div>
-                                  <div className="log-details-label">{jobsStrings.detailLabels.duration}</div>
-                                  <div className="log-details-value">{duration}</div>
+                                  <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.detailLabels.duration}</div>
+                                  <div className="text-xs leading-5">{duration}</div>
                                 </div>
                               )}
                             </div>
                             {jobMessage && (
                               <div className="log-details-body">
-                                <section className="log-details-section">
+                                <section className="flex flex-col gap-2">
                                   <header>{jobsStrings.table.message}</header>
                                   <pre>{jobMessage}</pre>
                                 </section>
@@ -12118,7 +12118,7 @@ function AdminDashboard(): JSX.Element {
           )}
         </AdminTableShell>
         <AdminLoadingRegion
-          className="admin-mobile-list admin-responsive-down"
+          className="flex flex-col gap-3 md:hidden flex md:hidden"
           loadState={jobsLoadState}
           loadingLabel={jobsRefreshing ? loadingStateStrings.refreshing : jobsStrings.empty.loading}
           errorLabel={jobsError ?? loadingStateStrings.error}
@@ -12133,16 +12133,16 @@ function AdminDashboard(): JSX.Element {
               const started: number | null = j.started_at ?? null
               const primaryTime = started ?? queued
               return (
-                <article key={j.id} className="admin-mobile-card">
-                  <div className="admin-mobile-kv">
+                <article key={j.id} className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.id}</span>
                     <strong>{j.id}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.type}</span>
                     <strong>{adminJobTypeLabel(jt, jobsStrings)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.key}</span>
                     <strong>
                       <JobKeyLink
@@ -12155,25 +12155,25 @@ function AdminDashboard(): JSX.Element {
                       />
                     </strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.status}</span>
                     <StatusBadge tone={statusTone(j.status)} title={String(j.status ?? '')}>
                       {jobStatusLabel(String(j.status ?? ''))}
                     </StatusBadge>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.source}</span>
                     <strong>{jobSourceLabel(j.trigger_source, jobsStrings)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.attempt}</span>
                     <strong>{j.attempt}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.started}</span>
                     <strong>{formatTimestamp(primaryTime)}</strong>
                   </div>
-                  <div className="admin-mobile-kv">
+                  <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.message}</span>
                     <strong>{j.message ?? '—'}</strong>
                   </div>
@@ -12206,7 +12206,7 @@ function AdminDashboard(): JSX.Element {
       {showUsers && (
         <>
           <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
-            <div className="admin-stacked-only">
+            <div className="block md:hidden">
               <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div style={{ flex: '1 1 340px', minWidth: 260 }}>
                   <h2>{usersStrings.title}</h2>
@@ -12218,8 +12218,8 @@ function AdminDashboard(): JSX.Element {
               </div>
             </div>
             <AdminTableShell
-              className="jobs-table-wrapper"
-              tableClassName={`jobs-table admin-users-table admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}
+              className="overflow-hidden rounded-lg border"
+              tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}
               loadState={usersLoadState}
               loadingLabel={usersRefreshing ? loadingStateStrings.refreshing : usersStrings.empty.loading}
               errorLabel={usersError ?? loadingStateStrings.error}
@@ -12350,7 +12350,7 @@ function AdminDashboard(): JSX.Element {
               )}
             </AdminTableShell>
             <AdminLoadingRegion
-              className="admin-mobile-list admin-responsive-down"
+              className="flex flex-col gap-3 md:hidden flex md:hidden"
               loadState={usersLoadState}
               loadingLabel={usersRefreshing ? loadingStateStrings.refreshing : usersStrings.empty.loading}
               errorLabel={usersError ?? loadingStateStrings.error}
@@ -12374,8 +12374,8 @@ function AdminDashboard(): JSX.Element {
                     formatQuotaStackValue,
                   })
                   return (
-                  <article key={item.userId} className="admin-mobile-card">
-                    <div className="admin-mobile-kv">
+                  <article key={item.userId} className="rounded-lg border p-3">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.user}</span>
                       <button
                         type="button"
@@ -12386,13 +12386,13 @@ function AdminDashboard(): JSX.Element {
                         <strong>{formatAdminUserListPrimary(item)}</strong>
                       </button>
                     </div>
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.status}</span>
                       <StatusBadge tone={item.active ? 'success' : 'neutral'}>
                         {item.active ? usersStrings.status.active : usersStrings.status.inactive}
                       </StatusBadge>
                     </div>
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.tags}</span>
                       <UserTagBadgeList
                         tags={item.tags}
@@ -12400,29 +12400,29 @@ function AdminDashboard(): JSX.Element {
                         emptyLabel={usersStrings.userTags.empty}
                       />
                     </div>
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.daily}</span>
                       <AdminTableValueStack {...formatQuotaStackValue(item.dailyCreditsUsed, item.dailyCreditsLimit)} />
                     </div>
                     {showShadowDailyUsageColumn ? (
-                      <div className="admin-mobile-kv">
+                      <div className="flex items-center justify-between gap-2 text-sm">
                         <span>{usersStrings.table.shadowDaily}</span>
                         <AdminTableValueStack {...shadowDailyUsage} />
                       </div>
                     ) : null}
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.monthly}</span>
                       <strong>{formatQuotaUsagePair(item.monthlyCreditsUsed, item.monthlyCreditsLimit)}</strong>
                     </div>
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.ipCount}</span>
                       <strong>{formatNumber(item.recentIpCount7d)}</strong>
                     </div>
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.lastActivity}</span>
                       <strong>{formatTimestamp(item.lastActivity)}</strong>
                     </div>
-                    <div className="admin-mobile-kv">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.lastLogin}</span>
                       <strong>{formatTimestamp(item.lastLoginAt)}</strong>
                     </div>
@@ -12835,36 +12835,36 @@ function LogDetails({
     <div className="log-details-panel">
       <div className="log-details-summary">
         <div>
-          <span className="log-details-label">{strings.logDetails.request}</span>
-          <span className="log-details-value">{requestLine}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.request}</span>
+          <span className="text-xs leading-5">{requestLine}</span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logDetails.response}</span>
-          <span className="log-details-value">
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.response}</span>
+          <span className="text-xs leading-5">
             {httpLabel}
             {` · ${mcpLabel}`}
           </span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logDetails.outcome}</span>
-          <span className="log-details-value">{requestLogLabel(log, language)}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.outcome}</span>
+          <span className="text-xs leading-5">{requestLogLabel(log, language)}</span>
         </div>
         <div>
-          <span className="log-details-label">{strings.logDetails.keyEffect}</span>
-          <span className="log-details-value">{keyEffect}</span>
+          <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.keyEffect}</span>
+          <span className="text-xs leading-5">{keyEffect}</span>
         </div>
       </div>
       <div className="log-details-body">
-        <div className="log-details-section">
+        <div className="flex flex-col gap-2">
           <header>{strings.logDetails.requestBody}</header>
           <pre>{requestBody}</pre>
         </div>
-        <div className="log-details-section">
+        <div className="flex flex-col gap-2">
           <header>{strings.logDetails.responseBody}</header>
           <pre>{responseBody}</pre>
         </div>
         {guidance ? (
-          <div className="log-details-section">
+          <div className="flex flex-col gap-2">
             <header>{strings.logDetails.solution}</header>
             <pre>{guidance}</pre>
           </div>
@@ -12873,7 +12873,7 @@ function LogDetails({
       {(forwarded.length > 0 || dropped.length > 0) && (
         <div className="log-details-headers">
           {forwarded.length > 0 && (
-            <div className="log-details-section">
+            <div className="flex flex-col gap-2">
               <header>{strings.logDetails.forwardedHeaders}</header>
               <ul>
                 {forwarded.map((header, index) => (
@@ -12883,7 +12883,7 @@ function LogDetails({
             </div>
           )}
           {dropped.length > 0 && (
-            <div className="log-details-section">
+            <div className="flex flex-col gap-2">
               <header>{strings.logDetails.droppedHeaders}</header>
               <ul>
                 {dropped.map((header, index) => (
@@ -13469,7 +13469,7 @@ export function KeyDetails({
     <div className="admin-detail-stack">
       {keyDetailSidebarUtility}
 
-      <div className="admin-stacked-only">
+      <div className="block md:hidden">
         <section className="surface app-header">
           <div className="title-group">
             <h1>{keyDetailsStrings.title}</h1>
@@ -13512,7 +13512,7 @@ export function KeyDetails({
         </section>
       </div>
 
-      <div className="admin-desktop-only">
+      <div className="hidden md:block">
         <AdminCompactIntro
           title={keyDetailsStrings.title}
           description={(
@@ -13523,7 +13523,7 @@ export function KeyDetails({
         />
       </div>
 
-      {error && <div className="surface error-banner" style={{ marginTop: 8, marginBottom: 0 }}>{error}</div>}
+      {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" style={{ marginTop: 8, marginBottom: 0 }}>{error}</div>}
 
       {detail && (
         <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10">
@@ -13534,15 +13534,15 @@ export function KeyDetails({
             </div>
           </div>
           <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
-            <div className="admin-mobile-kv">
+            <div className="flex items-center justify-between gap-2 text-sm">
               <span>{keyDetailsStrings.metadata.group}</span>
               <strong>{formatKeyGroupName(detail.group, keyStrings.groups.ungrouped)}</strong>
             </div>
-            <div className="admin-mobile-kv">
+            <div className="flex items-center justify-between gap-2 text-sm">
               <span>{keyDetailsStrings.metadata.registrationIp}</span>
               <strong>{formatRegistrationValue(detail.registration_ip)}</strong>
             </div>
-            <div className="admin-mobile-kv">
+            <div className="flex items-center justify-between gap-2 text-sm">
               <span>{keyDetailsStrings.metadata.registrationRegion}</span>
               <strong>{formatRegistrationValue(detail.registration_region)}</strong>
             </div>
@@ -13575,15 +13575,15 @@ export function KeyDetails({
                 : keyDetailsStrings.quarantine.clearAction}
             </Button>
           </div>
-          <div className="admin-mobile-kv">
+          <div className="flex items-center justify-between gap-2 text-sm">
             <span>{keyDetailsStrings.quarantine.source}</span>
             <strong>{detail.quarantine.source}</strong>
           </div>
-          <div className="admin-mobile-kv">
+          <div className="flex items-center justify-between gap-2 text-sm">
             <span>{keyDetailsStrings.quarantine.reason}</span>
             <strong>{detail.quarantine.reasonSummary || keyStrings.quarantine.noReason}</strong>
           </div>
-          <div className="admin-mobile-kv">
+          <div className="flex items-center justify-between gap-2 text-sm">
             <span>{keyDetailsStrings.quarantine.createdAt}</span>
             <strong>{formatTimestamp(detail.quarantine.createdAt)}</strong>
           </div>

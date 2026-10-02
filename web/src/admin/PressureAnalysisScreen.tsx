@@ -446,7 +446,7 @@ export default function PressureAnalysisScreen({
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 pressure-analysis-empty-state" role="alert">
         <h2>{strings.errorTitle}</h2>
         <p className="panel-description text-sm text-muted-foreground">{error}</p>
-        <button type="button" className="btn btn-outline" onClick={onRetry}>
+        <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50" onClick={onRetry}>
           {strings.retry}
         </button>
       </section>

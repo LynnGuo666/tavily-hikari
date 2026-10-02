@@ -907,12 +907,12 @@ export default function AdminUserRankingsPage({
             </div>
           </div>
           {error ? (
-            <div className={`alert ${snapshot ? '' : 'alert-error'}`}>
+            <div className={`alert ${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
               <div>{error}</div>
               {snapshot ? <div className="admin-ranking-stale-hint">{strings.staleHint}</div> : null}
               {!snapshot ? (
                 <div className="admin-ranking-inline-actions">
-                  <button type="button" className="btn btn-outline btn-sm" onClick={onRetry}>
+                  <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" onClick={onRetry}>
                     {strings.retry}
                   </button>
                 </div>
@@ -947,12 +947,12 @@ export default function AdminUserRankingsPage({
       ) : null}
 
       {!showHeader && error ? (
-        <div className={`alert ${snapshot ? '' : 'alert-error'}`}>
+        <div className={`alert ${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
           <div>{error}</div>
           {snapshot ? <div className="admin-ranking-stale-hint">{strings.staleHint}</div> : null}
           {!snapshot ? (
             <div className="admin-ranking-inline-actions">
-              <button type="button" className="btn btn-outline btn-sm" onClick={onRetry}>
+              <button type="button" className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 px-2.5 py-1 text-xs" onClick={onRetry}>
                 {strings.retry}
               </button>
             </div>

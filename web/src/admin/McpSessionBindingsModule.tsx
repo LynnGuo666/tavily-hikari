@@ -466,8 +466,8 @@ export default function McpSessionBindingsModule({
           <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert">{copy.empty}</div>
         ) : (
           <>
-            <div className="table-wrapper overflow-hidden rounded-lg border jobs-table-wrapper">
-              <Table className="jobs-table admin-users-table mcp-session-bindings-table">
+            <div className="table-wrapper overflow-hidden rounded-lg border">
+              <Table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b mcp-session-bindings-table">
                 <TableHeader>
                   <TableRow>
                     <TableHead>
