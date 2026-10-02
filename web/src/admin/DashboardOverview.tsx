@@ -222,9 +222,9 @@ function MetricValue({
   const splitValue = value.split(' / ')
   if (splitValue.length === 2) {
     return (
-      <div className={`metric-value font-mono text-2xl font-semibold tabular-nums dashboard-metric-value-split${compact ? ' dashboard-metric-value-split-compact' : ''}`}>
+      <div className={`metric-value font-mono text-2xl font-semibold tabular-nums dashboard-metric-value-split flex items-baseline gap-1${compact ? ' dashboard-metric-value-split-compact' : ''}`}>
         <span>{splitValue[0]}</span>
-        <span className="dashboard-metric-value-divider">/ {splitValue[1]}</span>
+        <span className="dashboard-metric-value-divider text-base font-normal text-muted-foreground">/ {splitValue[1]}</span>
       </div>
     )
   }
@@ -261,12 +261,12 @@ function SummaryMetricCard({
 
   return (
     <div
-      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative min-w-0 flex flex-col gap-2 overflow-hidden rounded-lg border p-4${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width' : ''}`}
+      className={`metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4 dashboard-summary-card relative min-w-0 flex flex-col gap-2 overflow-hidden rounded-lg border p-4${backdrop ? ' dashboard-summary-card-with-backdrop' : ''}${compact ? ' dashboard-summary-card-compact' : ''}${metric.fullWidth ? ' dashboard-summary-card-full-width sm:col-span-2 xl:col-span-1' : ''}`}
     >
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={metric.label}
-          className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0"
+          className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0 z-0 opacity-50"
           primaryValues={backdrop.current}
           comparisonValues={backdrop.comparison}
           primaryColor={backdrop.color ?? readChartColorVar('--primary', 'hsl(262 83% 58%)')}
@@ -275,24 +275,24 @@ function SummaryMetricCard({
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <div className="dashboard-summary-card-content flex flex-col gap-1.5">
-        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2">
+      <div className="dashboard-summary-card-content relative z-10 flex flex-col gap-1.5">
+        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2 [&_h3]:text-sm [&_h3]:font-medium">
           <h3>{metric.label}</h3>
           {metric.marker ? (
-            <span className={`dashboard-summary-card-marker dashboard-summary-card-marker-${metric.markerTone ?? 'neutral'}`}>
+            <span className={`dashboard-summary-card-marker inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium dashboard-summary-card-marker-${metric.markerTone ?? 'neutral'}`}>
               {metric.marker}
             </span>
           ) : null}
         </div>
-        <div className="dashboard-summary-card-value-row">
+        <div className="dashboard-summary-card-value-row flex items-baseline gap-2">
           <MetricValue value={metric.value} valueNumber={metric.valueNumber} compact={compact} />
         </div>
         {metric.comparison ? (
-          <div className="dashboard-summary-card-comparison-stack">
-            {metric.valueMeta ? <div className="dashboard-summary-card-value-meta">{metric.valueMeta}</div> : null}
-            <div className={`metric-delta metric-delta-${deltaTone}`}>
-              <span className="metric-delta-label">{metric.comparison.label}</span>
-              <span className="metric-delta-value">{metric.comparison.value}</span>
+          <div className="dashboard-summary-card-comparison-stack flex flex-col gap-0.5">
+            {metric.valueMeta ? <div className="dashboard-summary-card-value-meta text-xs text-muted-foreground">{metric.valueMeta}</div> : null}
+            <div className={`metric-delta inline-flex items-center gap-1.5 text-xs metric-delta-${deltaTone}`}>
+              <span className="metric-delta-label text-muted-foreground">{metric.comparison.label}</span>
+              <span className="metric-delta-value font-mono font-medium tabular-nums">{metric.comparison.value}</span>
             </div>
           </div>
         ) : metric.subtitle ? (
@@ -317,7 +317,7 @@ function QuotaChargeCard({
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={card.title}
-          className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0"
+          className="dashboard-summary-card-backdrop pointer-events-none absolute inset-0 z-0 opacity-50"
           primaryValues={backdrop.current}
           comparisonValues={backdrop.comparison}
           primaryColor={backdrop.color ?? readChartColorVar('--primary', 'hsl(262 83% 58%)')}
@@ -326,24 +326,24 @@ function QuotaChargeCard({
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <div className="dashboard-summary-card-content flex flex-col gap-1.5">
-        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2">
+      <div className="dashboard-summary-card-content relative z-10 flex flex-col gap-1.5">
+        <div className="dashboard-summary-card-heading flex items-center justify-between gap-2 [&_h3]:text-sm [&_h3]:font-medium">
           <h3>{card.title}</h3>
         </div>
         <div className="dashboard-quota-charge-grid">
-          <div className="dashboard-quota-charge-value">
-            <span className="dashboard-quota-charge-label">{card.localLabel}</span>
+          <div className="dashboard-quota-charge-value font-mono text-sm font-semibold tabular-nums">
+            <span className="dashboard-quota-charge-label text-xs text-muted-foreground">{card.localLabel}</span>
             <MetricValue value={card.localValue} valueNumber={card.localValueNumber} />
           </div>
-          <div className="dashboard-quota-charge-value">
-            <span className="dashboard-quota-charge-label">{card.upstreamLabel}</span>
+          <div className="dashboard-quota-charge-value font-mono text-sm font-semibold tabular-nums">
+            <span className="dashboard-quota-charge-label text-xs text-muted-foreground">{card.upstreamLabel}</span>
             <MetricValue value={card.upstreamValue} valueNumber={card.upstreamValueNumber} />
           </div>
         </div>
         <div className="dashboard-quota-charge-footer">
-          <div className={`metric-delta metric-delta-${card.deltaTone ?? 'neutral'}`}>
-            <span className="metric-delta-label">{card.deltaLabel}</span>
-            <span className="metric-delta-value">{card.deltaValue}</span>
+          <div className={`metric-delta inline-flex items-center gap-1.5 text-xs metric-delta-${card.deltaTone ?? 'neutral'}`}>
+            <span className="metric-delta-label text-muted-foreground">{card.deltaLabel}</span>
+            <span className="metric-delta-value font-mono font-medium tabular-nums">{card.deltaValue}</span>
           </div>
           <div className="dashboard-quota-charge-meta">
             <span>{card.coverage}</span>
@@ -1075,7 +1075,7 @@ export default function DashboardOverview({
                         aria-labelledby={`${recentAlertsAlertHeaderId} ${subjectId}`}
                         aria-describedby={summaryId}
                       >
-                        <span className="dashboard-alerts-summary__field-label" aria-hidden="true">{strings.recentAlertsColumns.alert}</span>
+                        <span className="dashboard-alerts-summary__field-label text-xs text-muted-foreground" aria-hidden="true">{strings.recentAlertsColumns.alert}</span>
                         <div className="dashboard-alerts-summary__identity-head">
                           {userSubjectId && onOpenUser ? (
                             <button
@@ -1128,7 +1128,7 @@ export default function DashboardOverview({
                         role="cell"
                         aria-labelledby={`${recentAlertsWindowHeaderId} ${windowId}`}
                       >
-                        <span className="dashboard-alerts-summary__field-label" aria-hidden="true">{strings.recentAlertsColumns.timeRange}</span>
+                        <span className="dashboard-alerts-summary__field-label text-xs text-muted-foreground" aria-hidden="true">{strings.recentAlertsColumns.timeRange}</span>
                         <strong id={windowId} className="dashboard-alerts-summary__window-range">
                           <time dateTime={formatAlertDateTimeIso(group.firstSeen)}>{formatAlertRange(group.firstSeen)}</time>
                           <span className="dashboard-alerts-summary__window-separator" aria-hidden="true">→</span>
@@ -1140,7 +1140,7 @@ export default function DashboardOverview({
                         role="cell"
                         aria-labelledby={recentAlertsReviewHeaderId}
                       >
-                        <span className="dashboard-alerts-summary__field-label" aria-hidden="true">{strings.recentAlertsColumns.review}</span>
+                        <span className="dashboard-alerts-summary__field-label text-xs text-muted-foreground" aria-hidden="true">{strings.recentAlertsColumns.review}</span>
                         <span id={actionHintId} className="sr-only">
                           {group.subjectLabel} · {formatAlertRange(group.firstSeen)} → {formatAlertRange(group.lastSeen)}
                         </span>
@@ -1171,7 +1171,7 @@ export default function DashboardOverview({
           </div>
         </div>
         <div className="dashboard-actions-grid">
-          <article className="dashboard-actions-card">
+          <article className="dashboard-actions-card flex flex-col gap-3 rounded-lg border p-4">
             <h3>{strings.recentRequests}</h3>
             <ul>
               {logs.slice(0, 5).map((log) => (
@@ -1182,7 +1182,7 @@ export default function DashboardOverview({
               ))}
             </ul>
           </article>
-          <article className="dashboard-actions-card">
+          <article className="dashboard-actions-card flex flex-col gap-3 rounded-lg border p-4">
             <h3>{strings.recentJobs}</h3>
             <ul>
               {jobs.slice(0, 5).map((job) => (
