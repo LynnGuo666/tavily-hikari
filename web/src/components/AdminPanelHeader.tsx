@@ -1,11 +1,12 @@
 import { type ReactNode } from 'react'
-
-import { Icon } from '../lib/icons'
+import { CrownIcon, RefreshCwIcon } from 'lucide-react'
 
 import AdminReturnToConsoleLink from './AdminReturnToConsoleLink'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
+import { cn } from '@/lib/utils'
 
 interface AdminPanelHeaderProps {
   title: string
@@ -25,27 +26,47 @@ interface AdminPanelHeaderProps {
 
 export default function AdminPanelHeader(props: AdminPanelHeaderProps): JSX.Element {
   return (
-    <section className={`surface app-header admin-panel-header${props.stackActions ? ' admin-panel-header--stacked-actions' : ''}`}>
-      <div className="admin-panel-header-main">
-        <h1>{props.title}</h1>
-        {props.subtitle ? <p className="admin-panel-header-subtitle">{props.subtitle}</p> : null}
+    <section
+      className={cn(
+        'admin-panel-header flex flex-wrap items-start justify-between gap-3 border-b bg-background px-4 py-3',
+        props.stackActions && 'admin-panel-header--stacked-actions',
+      )}
+    >
+      <div className="admin-panel-header-main flex min-w-0 flex-col gap-1">
+        <h1 className="truncate text-lg font-semibold">{props.title}</h1>
+        {props.subtitle ? (
+          <p className="admin-panel-header-subtitle text-sm text-muted-foreground">{props.subtitle}</p>
+        ) : null}
       </div>
 
-      <div className="admin-panel-header-side">
-        <div className="admin-panel-header-tools">
-          <div className="admin-language-switcher">
+      <div className="admin-panel-header-side flex flex-col items-end gap-2">
+        <div className="admin-panel-header-tools flex items-center gap-2">
+          <div className="admin-language-switcher flex items-center gap-1">
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
           {props.displayName && (
-            <div className={`user-badge${props.isAdmin ? ' user-badge-admin' : ''}`} title={props.displayName}>
-              {props.isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />}
-              <span>{props.displayName}</span>
+            <div
+              className={cn(
+                'user-badge inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium',
+                props.isAdmin
+                  ? 'user-badge-admin border-warning/40 bg-warning/10 text-warning'
+                  : 'border-border bg-muted text-muted-foreground',
+              )}
+              title={props.displayName}
+            >
+              {props.isAdmin && <CrownIcon className="size-3.5" aria-hidden="true" />}
+              <span className="max-w-40 truncate">{props.displayName}</span>
             </div>
           )}
         </div>
 
-        <div className={`admin-panel-header-actions${props.stackActions ? ' admin-panel-header-actions--stacked' : ''}`}>
+        <div
+          className={cn(
+            'admin-panel-header-actions flex flex-wrap items-center gap-2',
+            props.stackActions && 'admin-panel-header-actions--stacked flex-col items-stretch',
+          )}
+        >
           {props.extraActions}
 
           {props.userConsoleLabel && (
@@ -64,13 +85,11 @@ export default function AdminPanelHeader(props: AdminPanelHeaderProps): JSX.Elem
             onClick={props.onRefresh}
             disabled={props.isRefreshing || props.refreshDisabled}
           >
-            <Icon
-              icon={props.isRefreshing ? 'mdi:loading' : 'mdi:refresh'}
-              width={16}
-              height={16}
-              className={props.isRefreshing ? 'icon-spin' : undefined}
-              aria-hidden="true"
-            />
+            {props.isRefreshing ? (
+              <Spinner data-icon="inline-start" />
+            ) : (
+              <RefreshCwIcon data-icon="inline-start" />
+            )}
             <span>{props.isRefreshing ? props.refreshingLabel : props.refreshLabel}</span>
           </Button>
         </div>

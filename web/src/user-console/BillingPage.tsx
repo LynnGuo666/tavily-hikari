@@ -298,12 +298,12 @@ function SummaryRow({
   badge?: string | null
 }): JSX.Element {
   return (
-    <li className="user-console-billing-summary-row">
+    <li className="user-console-billing-summary-row flex items-center justify-between gap-3 px-4 py-3">
       <div className="user-console-billing-summary-row-copy">
-        <div className="user-console-billing-summary-row-title">
+        <div className="user-console-billing-summary-row-title text-sm text-muted-foreground">
           <h3>{title}</h3>
           {description ? <span className="user-console-billing-summary-row-note">{description}</span> : null}
-          {badge ? <span className="user-console-billing-inline-badge">{badge}</span> : null}
+          {badge ? <span className="user-console-billing-inline-badge inline-flex items-center rounded-full border bg-primary/10 px-2 py-0.5 text-xs text-primary">{badge}</span> : null}
         </div>
       </div>
       <QuotaStrip quota={quota} muted={isZeroQuota(quota)} />
@@ -319,8 +319,8 @@ function TimelineQuotaRow({
   quota: BillingQuota
 }): JSX.Element {
   return (
-    <div className="user-console-billing-timeline-row">
-      <span className="user-console-billing-timeline-row-label">{label}</span>
+    <div className="user-console-billing-timeline-row flex items-center justify-between gap-2 text-xs">
+      <span className="user-console-billing-timeline-row-label text-muted-foreground">{label}</span>
       <QuotaStrip quota={quota} tone="micro" muted={isZeroQuota(quota)} />
     </div>
   )
@@ -396,7 +396,7 @@ function TimelineCard({
 
   return (
     <article
-      className={`user-console-billing-timeline-card${selected ? ' is-selected' : ''}`}
+      className={`user-console-billing-timeline-card relative flex w-64 shrink-0 cursor-pointer flex-col gap-3 rounded-lg border bg-card p-4 transition-colors hover:bg-muted/40${selected ? ' border-primary/50 ring-1 ring-primary/30' : ''}`}
       data-timeline-index={index}
       role="button"
       tabIndex={0}
@@ -405,18 +405,18 @@ function TimelineCard({
       onClick={() => onSelect(index)}
       onKeyDown={handleKeyDown}
     >
-      <div className="user-console-billing-timeline-card-head">
-        <div className="user-console-billing-timeline-card-aside">
+      <div className="user-console-billing-timeline-card-head flex items-start justify-between gap-2">
+        <div className="user-console-billing-timeline-card-aside flex flex-col [&_p]:text-xs [&_p]:uppercase [&_p]:tracking-wide [&_p]:text-muted-foreground [&_h3]:text-base [&_h3]:font-semibold">
           <p>{phaseLabel}</p>
           <h3>{monthLabel}</h3>
         </div>
-        {rechargeBadge ? <span className="user-console-billing-inline-badge">{rechargeBadge}</span> : null}
+        {rechargeBadge ? <span className="user-console-billing-inline-badge inline-flex items-center rounded-full border bg-primary/10 px-2 py-0.5 text-xs text-primary">{rechargeBadge}</span> : null}
       </div>
-      <div className="user-console-billing-timeline-total">
+      <div className="user-console-billing-timeline-total flex items-center justify-between gap-2 rounded-md bg-muted/50 px-2.5 py-1.5 text-xs">
         <span>{text.timelineEffective}</span>
         <QuotaStrip quota={month.effectiveTotal} tone="micro" />
       </div>
-      <div className="user-console-billing-timeline-card-body">
+      <div className="user-console-billing-timeline-card-body flex flex-col gap-2">
         <TimelineQuotaRow label={text.timelinePersistent} quota={month.persistentTotal} />
         <TimelineQuotaRow label={text.timelineAdjustments} quota={month.monthlyAdjustments} />
         <TimelineQuotaRow label={text.timelineRecharge} quota={month.recharge.quota} />
@@ -715,23 +715,23 @@ export default function BillingPage({
   }
 
   return (
-    <div className="user-console-billing-stack">
+    <div className="user-console-billing-stack flex flex-col gap-4">
       <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-section user-console-billing-section">
-        <header className="user-console-billing-stage-head">
-          <div className="user-console-billing-stage-intro">
+        <header className="user-console-billing-stage-head flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
+          <div className="user-console-billing-stage-intro flex flex-col gap-1.5 [&_h2]:text-lg [&_h2]:font-semibold [&_p]:text-sm [&_p]:text-muted-foreground">
             <h2>{text.timelineTitle}</h2>
             <p>{text.timelineDescription}</p>
           </div>
           {summary ? (
-            <div className="user-console-billing-stage-meta">
-              <span className="user-console-billing-meta-pill">
+            <div className="user-console-billing-stage-meta flex flex-wrap items-center gap-1.5">
+              <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">
                 {formatMonthLabel(summary.currentMonthStart, language)}
               </span>
               {effectiveUntilLabel ? (
-                <span className="user-console-billing-meta-pill">{effectiveUntilLabel}</span>
+                <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{effectiveUntilLabel}</span>
               ) : null}
               {summary.blockAll ? (
-                <span className="user-console-billing-meta-pill is-warning">block_all</span>
+                <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground border-warning/40 bg-warning/10 text-warning">block_all</span>
               ) : null}
             </div>
           ) : null}
@@ -740,7 +740,7 @@ export default function BillingPage({
           <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">Loading timeline...</div>
         ) : timeline.length > 0 ? (
           <>
-            <div className="user-console-billing-timeline-stage">
+            <div className="user-console-billing-timeline-stage flex items-center gap-2 px-4">
               {viewportMode === 'small' ? null : (
                 <TimelineNavButton
                   direction="prev"
@@ -751,10 +751,10 @@ export default function BillingPage({
               )}
               <div
                 ref={timelineViewportRef}
-                className="user-console-billing-timeline-viewport"
+                className="user-console-billing-timeline-viewport min-w-0 flex-1 overflow-x-auto scroll-smooth"
                 style={timelineViewportStyle}
               >
-                <div className="user-console-billing-timeline-track">
+                <div className="user-console-billing-timeline-track flex gap-3">
                   {timeline.map((month, index) => (
                     <TimelineCard
                       key={month.monthStart}
@@ -780,14 +780,14 @@ export default function BillingPage({
             </div>
 
             {viewportMode === 'small' ? (
-              <div className="user-console-billing-timeline-mobile-controls">
+              <div className="user-console-billing-timeline-mobile-controls flex items-center justify-between gap-2 px-4">
                 <TimelineNavButton
                   direction="prev"
                   label={text.timelineBack}
                   disabled={safeTimelineWindowIndex <= 0}
                   onClick={() => moveTimeline(-1)}
                 />
-                <div className="user-console-billing-timeline-status">
+                <div className="user-console-billing-timeline-status flex items-center gap-2 text-xs text-muted-foreground [&_strong]:text-foreground">
                   {visibleTimelineRangeLabel ? <strong>{visibleTimelineRangeLabel}</strong> : null}
                   {visibleTimelineProgress ? <span>{visibleTimelineProgress}</span> : null}
                 </div>
@@ -799,7 +799,7 @@ export default function BillingPage({
                 />
               </div>
             ) : (
-              <div className="user-console-billing-timeline-status-bar">
+              <div className="user-console-billing-timeline-status-bar flex items-center justify-end gap-2 px-4 text-xs text-muted-foreground [&_strong]:text-foreground">
                 {visibleTimelineRangeLabel ? <strong>{visibleTimelineRangeLabel}</strong> : null}
                 {visibleTimelineProgress ? <span>{visibleTimelineProgress}</span> : null}
               </div>
@@ -809,12 +809,12 @@ export default function BillingPage({
           <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{text.timelineNoFuture}</div>
         )}
         {timeline.length > 0 && !hasFutureScheduledEntitlement ? (
-          <p className="user-console-billing-inline-note">{text.timelineNoScheduledChanges}</p>
+          <p className="user-console-billing-inline-note px-4 text-xs text-muted-foreground">{text.timelineNoScheduledChanges}</p>
         ) : null}
       </section>
 
-      <div className="user-console-billing-workbench">
-        <div className="user-console-billing-main-column">
+      <div className="user-console-billing-workbench grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="user-console-billing-main-column flex min-w-0 flex-col gap-4">
           <section className="surface panel flex flex-col gap-4 overflow-hidden rounded-xl bg-card py-4 text-card-foreground ring-1 ring-foreground/10 user-console-section user-console-billing-section user-console-billing-summary-section">
             <header className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4 user-console-section-header user-console-billing-summary-head">
               <div>
@@ -822,15 +822,15 @@ export default function BillingPage({
                 <p className="panel-description text-sm text-muted-foreground">{text.summaryDescription}</p>
               </div>
               {selectedTimelineMonth ? (
-                <div className="user-console-billing-summary-meta">
-                  <span className="user-console-billing-meta-pill">
+                <div className="user-console-billing-summary-meta flex flex-wrap items-center gap-1.5">
+                  <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">
                     {formatMonthLabel(selectedTimelineMonth.monthStart, language)}
                   </span>
                   {selectedTimelinePhaseLabel ? (
-                    <span className="user-console-billing-meta-pill">{selectedTimelinePhaseLabel}</span>
+                    <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{selectedTimelinePhaseLabel}</span>
                   ) : null}
                   {selectedTimelineRechargeBadge ? (
-                    <span className="user-console-billing-meta-pill">{selectedTimelineRechargeBadge}</span>
+                    <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{selectedTimelineRechargeBadge}</span>
                   ) : null}
                 </div>
               ) : null}
@@ -839,11 +839,11 @@ export default function BillingPage({
               <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">Loading billing summary...</div>
             ) : summary && selectedTimelineMonth ? (
               <>
-                <div className="user-console-billing-current-total-row">
+                <div className="user-console-billing-current-total-row flex items-center justify-between gap-3 bg-muted/50 px-4 py-3">
                   <span>{text.timelineEffective}</span>
                   <QuotaStrip quota={selectedTimelineMonth.effectiveTotal} tone="table" />
                 </div>
-                <ul className="user-console-billing-summary-list">
+                <ul className="user-console-billing-summary-list flex flex-col divide-y">
                   {summaryRows.map((row) => (
                     <SummaryRow
                       key={row.title}
@@ -855,7 +855,7 @@ export default function BillingPage({
                   ))}
                 </ul>
                 {summary.blockAll ? (
-                  <p className="user-console-billing-notice">{text.blockAllNotice}</p>
+                  <p className="user-console-billing-notice mx-4 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm text-warning">{text.blockAllNotice}</p>
                 ) : null}
               </>
             ) : (
@@ -864,9 +864,9 @@ export default function BillingPage({
           </section>
         </div>
 
-        <aside className="user-console-landing-rail user-console-billing-side-column">
-          <section className="user-console-billing-pricing-inline" aria-label={text.pricingTitle}>
-            <div className="user-console-billing-pricing-inline-head">
+        <aside className="user-console-landing-rail min-w-0 user-console-billing-side-column min-w-0">
+          <section className="user-console-billing-pricing-inline flex flex-col gap-2 px-4" aria-label={text.pricingTitle}>
+            <div className="user-console-billing-pricing-inline-head flex flex-col gap-1">
               <div>
                 <h3>{text.pricingTitle}</h3>
                 {text.pricingDescription ? <p>{text.pricingDescription}</p> : null}
@@ -879,7 +879,7 @@ export default function BillingPage({
                 <StatusBadge tone="neutral">{rechargeText.disabled}</StatusBadge>
               )}
             </div>
-            <div className="user-console-billing-pricing-inline-metrics">
+            <div className="user-console-billing-pricing-inline-metrics flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
               <div>
                 <span>{text.unitPrice}</span>
                 <strong>{unitPriceText}</strong>
@@ -894,10 +894,10 @@ export default function BillingPage({
               </div>
             </div>
             {config?.testPriceEnabled && text.testPriceEnabled ? (
-              <p className="user-console-billing-inline-note">{text.testPriceEnabled}</p>
+              <p className="user-console-billing-inline-note px-4 text-xs text-muted-foreground">{text.testPriceEnabled}</p>
             ) : null}
             {!config?.enabled || !rechargeVisible ? (
-              <p className="user-console-billing-inline-note">{text.unavailableNotice}</p>
+              <p className="user-console-billing-inline-note px-4 text-xs text-muted-foreground">{text.unavailableNotice}</p>
             ) : null}
           </section>
           <RechargePanel
@@ -930,37 +930,37 @@ export default function BillingPage({
             <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground">{rechargeText.noOrders}</div>
           ) : (
             <>
-              <div className="user-console-billing-orders-table" role="list">
+              <div className="user-console-billing-orders-table w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tbody_tr]:border-b" role="list">
                 {visibleOrders.map((order) => {
                   const detail = orderStatusDetail(order, rechargeText, language)
                   return (
                     <article key={order.outTradeNo} className="user-console-billing-order-row" role="listitem">
-                      <div className="user-console-billing-order-primary">
-                        <div className="user-console-billing-order-title-row">
+                      <div className="user-console-billing-order-primary flex flex-col">
+                        <div className="user-console-billing-order-title-row flex flex-wrap items-center gap-2">
                           <h3>{formatNumber(order.credits)} × {order.months}</h3>
                           {order.monthEndClampApplied ? (
-                            <span className="user-console-billing-inline-badge is-warm">{text.orderClampApplied}</span>
+                            <span className="user-console-billing-inline-badge inline-flex items-center rounded-full border bg-primary/10 px-2 py-0.5 text-xs text-primary border-warning/40 bg-warning/10 text-warning">{text.orderClampApplied}</span>
                           ) : null}
                         </div>
                         <p>{formatTemplate(text.orderCreatedAt, {
                           time: formatDateTime(order.createdAt, language),
                         })}</p>
                       </div>
-                      <div className="user-console-billing-order-facts">
+                      <div className="user-console-billing-order-facts flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                         <strong>{formatNumber(order.credits)} / {order.months}</strong>
                         <strong>{order.money} LDC</strong>
                         <strong>{formatMonthLabel(order.quoteMonthStart, language)}</strong>
                       </div>
-                      <div className="user-console-billing-order-impact">
+                      <div className="user-console-billing-order-impact font-mono text-xs tabular-nums">
                         <span>{text.timelineEffective}</span>
                         <strong>{formatTemplate(text.orderImpact, {
                           hourly: formatNumber(order.finalHourlyDelta),
                           daily: formatNumber(order.finalDailyDelta),
                           monthly: formatNumber(order.finalMonthlyDelta),
                         })}</strong>
-                        {detail ? <p className="user-console-billing-order-detail">{detail}</p> : null}
+                        {detail ? <p className="user-console-billing-order-detail text-xs text-muted-foreground">{detail}</p> : null}
                       </div>
-                      <div className="user-console-billing-order-status">
+                      <div className="user-console-billing-order-status inline-flex items-center">
                         <StatusBadge tone={orderStatusTone(order.status)}>
                           {rechargeText.status[order.status] ?? order.status}
                         </StatusBadge>
