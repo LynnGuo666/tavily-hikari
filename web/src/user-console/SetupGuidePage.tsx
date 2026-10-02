@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
 import type { UserTokenSummary } from '../api'
 import type { EN } from './text'
 

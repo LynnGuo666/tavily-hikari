@@ -1,12 +1,12 @@
 import { Icon } from '../lib/icons'
-import { Button } from '../components/ui/button'
+import { Button } from '../components/ui-legacy/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu'
+} from '../components/ui-legacy/dropdown-menu'
 import type { AdminTranslations } from '../i18n'
 import { MANUAL_JOB_ACTIONS } from './jobFilters'
 

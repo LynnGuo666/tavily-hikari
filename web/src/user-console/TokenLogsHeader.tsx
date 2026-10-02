@@ -1,6 +1,6 @@
 import { Icon } from '../lib/icons'
-import SegmentedTabs, { type SegmentedTabsOption } from '../components/ui/SegmentedTabs'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../components/ui/tooltip'
+import SegmentedTabs, { type SegmentedTabsOption } from '../components/ui-legacy/SegmentedTabs'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../components/ui-legacy/tooltip'
 
 export type DetailLogsPushIssueCode = 'unsupported' | 'reconnecting' | 'closed'
 export type UserTokenLogFilter = 'all' | 'billable'

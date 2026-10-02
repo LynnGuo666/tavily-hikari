@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Badge } from '../components/ui/badge'
-import { Button } from '../components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Badge } from '../components/ui-legacy/badge'
+import { Button } from '../components/ui-legacy/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui-legacy/card'
 import {
   Dialog,
   DialogContent,
@@ -10,12 +10,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
-import { Input } from '../components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select'
-import { Switch } from '../components/ui/switch'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
-import { Textarea } from '../components/ui/textarea'
+} from '../components/ui-legacy/dialog'
+import { Input } from '../components/ui-legacy/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
+import { Switch } from '../components/ui-legacy/switch'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui-legacy/table'
+import { Textarea } from '../components/ui-legacy/textarea'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import { Icon } from '../lib/icons'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'

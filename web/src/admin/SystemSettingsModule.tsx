@@ -14,11 +14,11 @@ import type { AdminTranslations } from '../i18n'
 import type { AdminDisplayDensity } from './displayDensity'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import { Icon } from '../lib/icons'
-import { Button } from '../components/ui/button'
-import { Input } from '../components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select'
-import { Switch } from '../components/ui/switch'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/ui/tooltip'
+import { Button } from '../components/ui-legacy/button'
+import { Input } from '../components/ui-legacy/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
+import { Switch } from '../components/ui-legacy/switch'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/ui-legacy/tooltip'
 import {
   Dialog,
   DialogContent,
@@ -26,7 +26,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
+} from '../components/ui-legacy/dialog'
 
 interface SystemSettingsModuleProps {
   strings: AdminTranslations['systemSettings']

@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import { LanguageProvider } from '../i18n'
 import { ThemeProvider } from '../theme'
-import { TooltipProvider } from './ui/tooltip'
+import { TooltipProvider } from './ui-legacy/tooltip'
 import meta, * as panelStories from './AdminRecentRequestsPanel.stories'
 
 describe('AdminRecentRequestsPanel Storybook proofs', () => {

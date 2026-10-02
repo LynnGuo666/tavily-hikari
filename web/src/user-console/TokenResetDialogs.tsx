@@ -1,12 +1,12 @@
-import { Button } from '../components/ui/button'
+import { Button } from '../components/ui-legacy/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
-import { Textarea } from '../components/ui/textarea'
+} from '../components/ui-legacy/dialog'
+import { Textarea } from '../components/ui-legacy/textarea'
 import { selectAllReadonlyText } from '../lib/clipboard'
 import type { TokenSecretCopyState } from '../components/TokenSecretField'
 import type { RefObject } from 'react'

@@ -3,14 +3,14 @@ import { useMemo, useState } from 'react'
 import type { Announcement } from '../api'
 import MarkdownContent from '../components/MarkdownContent'
 import { StatusBadge } from '../components/StatusBadge'
-import { Button } from '../components/ui/button'
+import { Button } from '../components/ui-legacy/button'
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
+} from '../components/ui-legacy/dialog'
 import {
   Drawer,
   DrawerClose,
@@ -18,7 +18,7 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from '../components/ui/drawer'
+} from '../components/ui-legacy/drawer'
 import type { Language } from '../i18n'
 import { Icon } from '../lib/icons'
 import { useViewportMode } from '../lib/responsive'

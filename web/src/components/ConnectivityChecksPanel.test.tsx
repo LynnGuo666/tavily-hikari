@@ -5,7 +5,7 @@ import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 
 import ConnectivityChecksPanel, { type ProbeButtonModel, type ProbeStepStatus } from './ConnectivityChecksPanel'
-import { TooltipProvider } from './ui/tooltip'
+import { TooltipProvider } from './ui-legacy/tooltip'
 
 const stepStatusText: Record<ProbeStepStatus, string> = {
   running: '进行中',

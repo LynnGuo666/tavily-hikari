@@ -22,7 +22,7 @@ import {
   type Profile,
 } from '../api'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
-import { Button } from '../components/ui/button'
+import { Button } from '../components/ui-legacy/button'
 import {
   Dialog,
   DialogContent,
@@ -30,9 +30,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
-import { Input } from '../components/ui/input'
-import { Switch } from '../components/ui/switch'
+} from '../components/ui-legacy/dialog'
+import { Input } from '../components/ui-legacy/input'
+import { Switch } from '../components/ui-legacy/switch'
 import type { AdminTranslations } from '../i18n'
 import { Icon } from '../lib/icons'
 

@@ -6,14 +6,14 @@ import { useTranslate } from "../i18n";
 import { useAnchoredFloatingLayer } from "../lib/useAnchoredFloatingLayer";
 import { useViewportMode } from "../lib/responsive";
 import { StatusBadge, type StatusTone } from "./StatusBadge";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
+import { Button } from "./ui-legacy/button";
+import { Badge } from "./ui-legacy/badge";
 import {
   Dialog,
   DialogContent,
-} from "./ui/dialog";
-import { Drawer, DrawerContent } from "./ui/drawer";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+} from "./ui-legacy/dialog";
+import { Drawer, DrawerContent } from "./ui-legacy/drawer";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui-legacy/tooltip";
 import {
   Table,
   TableBody,
@@ -21,7 +21,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "./ui-legacy/table";
 import type { AddApiKeysBatchResponse, ValidateAssignedProxyMatchKind } from "../api";
 
 export type KeyValidationStatus =

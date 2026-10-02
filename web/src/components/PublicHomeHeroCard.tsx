@@ -6,7 +6,7 @@ import type { PublicMetrics } from '../api'
 import type { Translations } from '../i18n'
 import { useTheme } from '../theme'
 import RollingNumber from './RollingNumber'
-import { Button } from './ui/button'
+import { Button } from './ui-legacy/button'
 
 export interface PublicHomeHeroCardProps {
   publicStrings: Translations['public']

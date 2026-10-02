@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react'
 
-import { Input } from './ui/input'
+import { Input } from './ui-legacy/input'
 
 interface QuotaRangeFieldProps {
   label: ReactNode

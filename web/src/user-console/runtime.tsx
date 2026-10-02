@@ -84,14 +84,14 @@ import {
 import RollingNumber from '../components/RollingNumber'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import UserConsoleFooter from '../components/UserConsoleFooter'
-import { Button } from '../components/ui/button'
-import SegmentedTabs, { type SegmentedTabsOption } from '../components/ui/SegmentedTabs'
+import { Button } from '../components/ui-legacy/button'
+import SegmentedTabs, { type SegmentedTabsOption } from '../components/ui-legacy/SegmentedTabs'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu'
+} from '../components/ui-legacy/dropdown-menu'
 import { useLanguage, useTranslate, type Language } from '../i18n'
 import { copyText, isCopyIntentKey, selectAllReadonlyText, shouldPrewarmSecretCopy } from '../lib/clipboard'
 import {

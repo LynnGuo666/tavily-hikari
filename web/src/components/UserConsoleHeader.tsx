@@ -8,7 +8,7 @@ import { languageOptions, type Language, useLanguage, useTranslate } from '../i1
 import { type ThemeMode, useTheme } from '../theme'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
-import { Button } from './ui/button'
+import { Button } from './ui-legacy/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+} from './ui-legacy/dropdown-menu'
 
 interface UserConsoleHeaderProps {
   title: string

@@ -3,7 +3,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 import { ThemeProvider } from '../theme'
-import { TooltipProvider } from '../components/ui/tooltip'
+import { TooltipProvider } from '../components/ui-legacy/tooltip'
 import * as stories from './AdminUserRankingsPage.stories'
 
 describe('AdminUserRankingsPage Storybook proofs', () => {

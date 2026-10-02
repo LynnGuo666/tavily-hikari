@@ -14,9 +14,9 @@ import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import AdminTablePagination from '../components/AdminTablePagination'
 import DateTimeRangeField from '../components/DateTimeRangeField'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
-import { Button } from '../components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui/dialog'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+import { Button } from '../components/ui-legacy/button'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui-legacy/dialog'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui-legacy/table'
 import McpSessionBindingsStatusTabs from './McpSessionBindingsStatusTabs'
 
 interface McpSessionBindingsModuleProps {

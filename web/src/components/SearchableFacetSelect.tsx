@@ -2,8 +2,8 @@ import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Icon } from '../lib/icons'
 import { cn } from '../lib/utils'
-import { Input } from './ui/input'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { Input } from './ui-legacy/input'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from './ui-legacy/dropdown-menu'
 
 export interface SearchableFacetSelectOption {
   value: string

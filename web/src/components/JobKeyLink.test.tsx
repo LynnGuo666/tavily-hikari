@@ -2,7 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 import JobKeyLink from './JobKeyLink'
-import { TooltipProvider } from './ui/tooltip'
+import { TooltipProvider } from './ui-legacy/tooltip'
 
 describe('JobKeyLink', () => {
   it('renders the desktop link without legacy tooltip attributes', () => {

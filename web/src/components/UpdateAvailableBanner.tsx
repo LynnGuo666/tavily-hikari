@@ -2,7 +2,7 @@ import { AlertTriangle, DownloadCloud, Loader2, RefreshCw } from 'lucide-react'
 
 import type { PublicTranslations } from '../i18n'
 import type { PwaUpdateStatus } from '../pwa/runtime'
-import { Button } from './ui/button'
+import { Button } from './ui-legacy/button'
 import useUpdateAvailable from '../hooks/useUpdateAvailable'
 
 interface UpdateAvailableBannerProps {

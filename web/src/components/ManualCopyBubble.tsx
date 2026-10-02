@@ -5,9 +5,9 @@ import { X } from 'lucide-react'
 import { selectAllReadonlyText } from '../lib/clipboard'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
 import { cn } from '../lib/utils'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { Textarea } from './ui/textarea'
+import { Button } from './ui-legacy/button'
+import { Input } from './ui-legacy/input'
+import { Textarea } from './ui-legacy/textarea'
 
 export interface ManualCopyBubbleProps {
   open: boolean

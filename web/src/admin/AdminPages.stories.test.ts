@@ -5,7 +5,7 @@ import { createElement } from 'react'
 
 import { LanguageProvider, translations } from '../i18n'
 import { ThemeProvider } from '../theme'
-import { TooltipProvider } from '../components/ui/tooltip'
+import { TooltipProvider } from '../components/ui-legacy/tooltip'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 import meta, * as adminPageStories from './AdminPages.stories'

@@ -2,8 +2,8 @@ import { Icon } from '../lib/icons'
 import type { AdminUserTokenSummary } from '../api'
 import type { AdminTranslations } from '../i18n'
 import { StatusBadge } from '../components/StatusBadge'
-import { Button } from '../components/ui/button'
-import { Table } from '../components/ui/table'
+import { Button } from '../components/ui-legacy/button'
+import { Table } from '../components/ui-legacy/table'
 
 interface UserDetailTokenTableProps {
   tokens: AdminUserTokenSummary[]

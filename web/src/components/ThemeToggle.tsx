@@ -2,8 +2,8 @@ import { Check, Monitor, Moon, Sun } from 'lucide-react'
 
 import { useLanguage } from '../i18n'
 import { type ThemeMode, useTheme } from '../theme'
-import { Button } from './ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { Button } from './ui-legacy/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui-legacy/dropdown-menu'
 
 const labels = {
   en: {

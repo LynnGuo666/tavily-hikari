@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Crepe, CrepeFeature } from '@milkdown/crepe'
 import { replaceAll } from '@milkdown/kit/utils'
 
-import { Textarea } from './ui/textarea'
+import { Textarea } from './ui-legacy/textarea'
 import { cn } from '../lib/utils'
 
 interface MarkdownEditorProps {

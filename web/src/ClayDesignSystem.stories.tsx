@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import type { ReactNode } from 'react'
 import { Activity, AlertTriangle, CheckCircle2, Database, KeyRound, Search } from 'lucide-react'
 
-import { Badge } from './components/ui/badge'
-import { Button } from './components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
-import { Input } from './components/ui/input'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/ui/table'
+import { Badge } from './components/ui-legacy/badge'
+import { Button } from './components/ui-legacy/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui-legacy/card'
+import { Input } from './components/ui-legacy/input'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/ui-legacy/table'
 
 const meta = {
   title: 'Design System/Claymorphism',

@@ -11,7 +11,7 @@ import {
   formatHaTimelineStatusLabel,
   formatHaTimelineSummary,
 } from '../lib/haCopy'
-import { Button } from './ui/button'
+import { Button } from './ui-legacy/button'
 import { StatusBadge, type StatusTone } from './StatusBadge'
 
 interface HaStatusBannerProps {

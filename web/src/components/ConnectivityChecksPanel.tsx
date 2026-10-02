@@ -3,7 +3,7 @@ import { type CSSProperties, useCallback, useMemo, useState } from 'react'
 
 import { Icon } from '../lib/icons'
 import { useAnchoredFloatingLayer } from '../lib/useAnchoredFloatingLayer'
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui-legacy/tooltip'
 
 export type ProbeButtonState = 'idle' | 'running' | 'success' | 'partial' | 'failed'
 export type ProbeStepStatus = 'running' | 'success' | 'failed' | 'blocked' | 'skipped'

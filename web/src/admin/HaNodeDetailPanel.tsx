@@ -2,7 +2,7 @@ import { ArrowLeft, RotateCcw, Server } from 'lucide-react'
 
 import type { HaNodeDetail, HaTimelineEvent } from '../api'
 import type { AdminTranslations } from '../i18n'
-import { Button } from '../components/ui/button'
+import { Button } from '../components/ui-legacy/button'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import {
   formatHaPeerMessage,

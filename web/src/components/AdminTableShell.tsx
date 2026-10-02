@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import type { QueryLoadState } from '../admin/queryLoadState'
 import { cn } from '../lib/utils'
 import AdminLoadingRegion from './AdminLoadingRegion'
-import { Table, type TableDensity } from './ui/table'
+import { Table, type TableDensity } from './ui-legacy/table'
 
 interface AdminTableShellProps {
   children: ReactNode

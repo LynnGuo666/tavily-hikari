@@ -27,20 +27,20 @@ import RollingNumber from './components/RollingNumber'
 import PublicHomeFooter from './components/PublicHomeFooter'
 import PublicHomeHeroCard from './components/PublicHomeHeroCard'
 import TokenSecretField from './components/TokenSecretField'
-import { Button } from './components/ui/button'
+import { Button } from './components/ui-legacy/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from './components/ui/dialog'
+} from './components/ui-legacy/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './components/ui/dropdown-menu'
+} from './components/ui-legacy/dropdown-menu'
 import { useLanguage, useTranslate, type Language } from './i18n'
 import { copyText, selectAllReadonlyText } from './lib/clipboard'
 import { useResponsiveModes } from './lib/responsive'

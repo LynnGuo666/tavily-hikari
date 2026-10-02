@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import AdminTableShell from './AdminTableShell'
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui-legacy/table'
 
 const meta = {
   title: 'Admin/Wrappers/AdminTableShell',

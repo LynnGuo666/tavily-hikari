@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../components/ui/dropdown-menu'
-import { Button } from '../components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../components/ui-legacy/dropdown-menu'
+import { Button } from '../components/ui-legacy/button'
 import { Icon, getGuideClientIconName } from '../lib/icons'
 import { copyText } from '../lib/clipboard'
 import type { Language } from '../i18n'

@@ -3,15 +3,15 @@ import type { UserDashboard } from '../api'
 import { CircleHelp, Eye, Minus, Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Icon } from '../lib/icons'
-import { Button } from '../components/ui/button'
-import { AnchoredInfoDisclosure } from '../components/ui/anchored-info-disclosure'
+import { Button } from '../components/ui-legacy/button'
+import { AnchoredInfoDisclosure } from '../components/ui-legacy/anchored-info-disclosure'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
+} from '../components/ui-legacy/dialog'
 import {
   Drawer,
   DrawerClose,
@@ -20,7 +20,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '../components/ui/drawer'
+} from '../components/ui-legacy/drawer'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import { useViewportMode } from '../lib/responsive'
 import {

@@ -28,17 +28,17 @@ import AdminReturnToConsoleLink from '../components/AdminReturnToConsoleLink'
 import { AdminSidebarUtilityCard, AdminSidebarUtilityStack } from '../components/AdminSidebarUtility'
 import ThemeToggle from '../components/ThemeToggle'
 import { StatusBadge } from '../components/StatusBadge'
-import { Button } from '../components/ui/button'
+import { Button } from '../components/ui-legacy/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '../components/ui/dialog'
-import { Input } from '../components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select'
-import { Textarea } from '../components/ui/textarea'
+} from '../components/ui-legacy/dialog'
+import { Input } from '../components/ui-legacy/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui-legacy/select'
+import { Textarea } from '../components/ui-legacy/textarea'
 import { useLanguage, useTranslate } from '../i18n'
 import { ADMIN_USER_CONSOLE_HREF } from '../lib/adminUserConsoleEntry'
 import { copyText, selectAllReadonlyText } from '../lib/clipboard'

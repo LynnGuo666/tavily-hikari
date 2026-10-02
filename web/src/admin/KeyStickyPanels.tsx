@@ -12,7 +12,7 @@ import { useTranslate } from '../i18n'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import AdminTablePagination from '../components/AdminTablePagination'
 import { StatusBadge } from '../components/StatusBadge'
-import { Table } from '../components/ui/table'
+import { Table } from '../components/ui-legacy/table'
 import type { QueryLoadState } from './queryLoadState'
 import { isBlockingLoadState, isRefreshingLoadState } from './queryLoadState'
 

@@ -1,7 +1,7 @@
 import { type PublicTokenLog } from '../api'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import TokenLogsHeader, { type DetailLogsPushIssueCode, type UserTokenLogFilter } from './TokenLogsHeader'
-import { type SegmentedTabsOption } from '../components/ui/SegmentedTabs'
+import { type SegmentedTabsOption } from '../components/ui-legacy/SegmentedTabs'
 
 interface TokenLogsPanelText {
   logs: string

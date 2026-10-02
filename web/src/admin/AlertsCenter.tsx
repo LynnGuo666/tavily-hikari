@@ -43,17 +43,17 @@ import SearchableFacetSelect from '../components/SearchableFacetSelect'
 import RequestKindBadge from '../components/RequestKindBadge'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import { cleanedRequestLogBodySummary } from '../requestLogBodySummary'
-import { Button } from '../components/ui/button'
-import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '../components/ui/drawer'
+import { Button } from '../components/ui-legacy/button'
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '../components/ui-legacy/drawer'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu'
-import { Input } from '../components/ui/input'
-import SegmentedTabs from '../components/ui/SegmentedTabs'
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+} from '../components/ui-legacy/dropdown-menu'
+import { Input } from '../components/ui-legacy/input'
+import SegmentedTabs from '../components/ui-legacy/SegmentedTabs'
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui-legacy/table'
 
 const EMPTY_ALERT_EVENTS_PAGE: AlertsPage<AlertEvent> = {
   items: [],

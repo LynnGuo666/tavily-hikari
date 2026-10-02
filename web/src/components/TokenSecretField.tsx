@@ -3,8 +3,8 @@ import type { InputHTMLAttributes, KeyboardEvent as ReactKeyboardEvent, Ref } fr
 
 import { isCopyIntentKey } from '../lib/clipboard'
 import { cn } from '../lib/utils'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
+import { Button } from './ui-legacy/button'
+import { Input } from './ui-legacy/input'
 
 export type TokenSecretCopyState = 'idle' | 'copied' | 'error'
 

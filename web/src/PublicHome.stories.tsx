@@ -5,14 +5,14 @@ import PublicHomeHeroCard from './components/PublicHomeHeroCard'
 import LanguageSwitcher from './components/LanguageSwitcher'
 import ThemeToggle from './components/ThemeToggle'
 import TokenSecretField from './components/TokenSecretField'
-import { Button } from './components/ui/button'
+import { Button } from './components/ui-legacy/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './components/ui/dropdown-menu'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './components/ui/dialog'
+} from './components/ui-legacy/dropdown-menu'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './components/ui-legacy/dialog'
 import { useTranslate } from './i18n'
 import { Icon, getGuideClientIconName } from './lib/icons'
 import { __testables as publicHomeTestables } from './PublicHome'

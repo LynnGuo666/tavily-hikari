@@ -5,7 +5,7 @@ import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 
 import { ThemeProvider } from '../theme'
-import { TooltipProvider } from '../components/ui/tooltip'
+import { TooltipProvider } from '../components/ui-legacy/tooltip'
 import { ZH } from '../i18n/translations/zh'
 import AdminUserRankingsPage, { type RankingTabKey } from './AdminUserRankingsPage'
 import { rankingsStorySnapshot } from './rankingsStoryData'

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Badge } from './ui/badge'
+import { Badge } from './ui-legacy/badge'
 
 export type StatusTone = 'success' | 'warning' | 'error' | 'info' | 'neutral'
 
