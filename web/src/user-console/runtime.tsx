@@ -3199,13 +3199,13 @@ export default function UserConsole(): JSX.Element {
 
             <CardContent className="flex flex-col gap-6">
               <div className="grid gap-3 sm:grid-cols-3">
-                <div className="flex flex-col gap-1.5 rounded-lg border p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.dailySuccess}</p>
+                <div className="flex flex-col gap-1.5 p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.dailySuccess}</p>
                   <p className="font-mono text-xl font-semibold tabular-nums"><RollingNumber value={detailLoading ? null : detail?.dailySuccess ?? 0} /></p>
                 </div>
-                <div className="flex flex-col gap-1.5 rounded-lg border p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.dailyFailure}</p>
+                <div className="flex flex-col gap-1.5 p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.dailyFailure}</p>
                   <p className="font-mono text-xl font-semibold tabular-nums"><RollingNumber value={detailLoading ? null : detail?.dailyFailure ?? 0} /></p>
                 </div>
-                <div className="flex flex-col gap-1.5 rounded-lg border p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.monthlySuccessUtc}</p>
+                <div className="flex flex-col gap-1.5 p-4"><p className="text-xs font-medium text-muted-foreground">{text.dashboard.monthlySuccessUtc}</p>
                   <p className="font-mono text-xl font-semibold tabular-nums"><RollingNumber value={detailLoading ? null : detail?.monthlySuccess ?? 0} /></p>
                 </div>
               </div>

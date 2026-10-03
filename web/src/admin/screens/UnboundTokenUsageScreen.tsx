@@ -6,7 +6,6 @@ import type { ReactNode } from 'react'
 import type React from 'react'
 
 import AdminLoadingRegion from '../../components/AdminLoadingRegion'
-import AdminTablePagination from '../../components/AdminTablePagination'
 import AdminTableShell from '../../components/AdminTableShell'
 import { StatusBadge } from '../../components/StatusBadge'
 import type {
@@ -92,7 +91,7 @@ export function UnboundTokenUsageScreen({
 
       <Card className="surface panel">
         <AdminTableShell
-          className="overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex"
+          className="overflow-hidden admin-users-usage-table-wrapper hidden md:flex"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table"
           loadState={loadState}
           loadingLabel={loadingLabel}
@@ -259,7 +258,7 @@ export function UnboundTokenUsageScreen({
         </AdminTableShell>
 
         <AdminLoadingRegion
-          className="flex flex-col gap-3 md:hidden flex md:hidden"
+          className="flex flex-col divide-y md:hidden flex md:hidden"
           loadState={loadState}
           loadingLabel={loadingLabel}
           errorLabel={errorLabel}
@@ -271,7 +270,7 @@ export function UnboundTokenUsageScreen({
             items.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
               return (
-                <article key={item.tokenId} className="rounded-lg border p-3">
+                <article key={item.tokenId} className="py-3">
                   <div className="admin-mobile-identity-block">
                     <div className="admin-mobile-identity-row">
                       <span className="admin-mobile-identity-label">{unboundTokenUsageStrings.table.identity}</span>

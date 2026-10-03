@@ -3,15 +3,13 @@ import { ChartColumnIncreasing } from 'lucide-react'
 import { useState } from 'react'
 import type React from 'react'
 
-import AdminCompactIntro from '../components/AdminCompactIntro'
 import AdminPanelHeader from '../components/AdminPanelHeader'
 import AdminReturnToConsoleLink from '../components/AdminReturnToConsoleLink'
-import { AdminSidebarUtilityCard, AdminSidebarUtilityStack } from '../components/AdminSidebarUtility'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import ThemeToggle from '../components/ThemeToggle'
-import TokenUsageHeader from '../components/TokenUsageHeader'
 import SegmentedTabs from '@/components/SegmentedTabs'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { translations, useLanguage, useTranslate, type AdminTranslations } from '../i18n'
 import { Icon } from '../lib/icons'
 import AdminShell, { AdminShellSidebarUtility, type AdminNavItem, type AdminNavTarget } from './AdminShell'
@@ -135,33 +133,37 @@ function PanelHeaderLayoutStory(): React.JSX.Element {
       onSelectItem={setActiveModule}
     >
       <AdminShellSidebarUtility>
-        <AdminSidebarUtilityStack>
-          <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-toolbar">
-              <ThemeToggle />
-              <LanguageSwitcher />
-            </div>
-            <div className="admin-sidebar-utility-meta">
-              <div className="user-badge user-badge-admin" title={displayName}>
-                <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />
-                <span>{displayName}</span>
+        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
+              <div className="admin-sidebar-utility-toolbar">
+                <ThemeToggle />
+                <LanguageSwitcher />
               </div>
-            </div>
-          </AdminSidebarUtilityCard>
-          <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-actions">
-              <AdminReturnToConsoleLink
-                label={admin.header.returnToConsole}
-                href="/console"
-                className="admin-sidebar-utility-action"
-              />
-              <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
-                <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
-                <span>{admin.header.refreshNow}</span>
-              </Button>
-            </div>
-          </AdminSidebarUtilityCard>
-        </AdminSidebarUtilityStack>
+              <div className="admin-sidebar-utility-meta">
+                <div className="user-badge user-badge-admin" title={displayName}>
+                  <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />
+                  <span>{displayName}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
+              <div className="admin-sidebar-utility-actions">
+                <AdminReturnToConsoleLink
+                  label={admin.header.returnToConsole}
+                  href="/console"
+                  className="admin-sidebar-utility-action"
+                />
+                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                  <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
+                  <span>{admin.header.refreshNow}</span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </AdminShellSidebarUtility>
 
       <div className="admin-stacked-only">
@@ -179,10 +181,14 @@ function PanelHeaderLayoutStory(): React.JSX.Element {
         />
       </div>
       <div className="admin-desktop-only">
-        <AdminCompactIntro
-          title={admin.header.title}
-          description={admin.header.subtitle}
-        />
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">{admin.header.title}</h1>
+            {admin.header.subtitle ? (
+              <p className="admin-compact-intro-description text-sm text-muted-foreground">{admin.header.subtitle}</p>
+            ) : null}
+          </div>
+        </section>
       </div>
       <LayoutBody title={layoutBody.title} description={layoutBody.description} />
     </AdminShell>
@@ -224,60 +230,41 @@ function TokenUsageLayoutStory(): React.JSX.Element {
       onSelectItem={setActiveModule}
     >
       <AdminShellSidebarUtility>
-        <AdminSidebarUtilityStack>
-          <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-toolbar">
-              <ThemeToggle />
-            </div>
-            <div className="admin-sidebar-utility-actions">
-              <AdminReturnToConsoleLink
-                label={admin.header.returnToConsole}
-                href="/console"
-                className="admin-sidebar-utility-action"
-              />
-              <Button type="button" variant="ghost" size="sm" className="token-usage-back-button admin-sidebar-utility-action" onClick={() => setActiveModule('tokens')}>
-                <Icon icon="mdi:arrow-left" width={16} height={16} aria-hidden="true" />
-                <span>{copy.back}</span>
-              </Button>
-              <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
-                <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
-                <span>{admin.header.refreshNow}</span>
-              </Button>
-            </div>
-          </AdminSidebarUtilityCard>
-        </AdminSidebarUtilityStack>
+        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
+              <div className="admin-sidebar-utility-toolbar">
+                <ThemeToggle />
+              </div>
+              <div className="admin-sidebar-utility-actions">
+                <AdminReturnToConsoleLink
+                  label={admin.header.returnToConsole}
+                  href="/console"
+                  className="admin-sidebar-utility-action"
+                />
+                <Button type="button" variant="ghost" size="sm" className="token-usage-back-button admin-sidebar-utility-action" onClick={() => setActiveModule('tokens')}>
+                  <Icon icon="mdi:arrow-left" width={16} height={16} aria-hidden="true" />
+                  <span>{copy.back}</span>
+                </Button>
+                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                  <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
+                  <span>{admin.header.refreshNow}</span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </AdminShellSidebarUtility>
 
-      <div className="admin-stacked-only">
-        <TokenUsageHeader
-          title={copy.title}
-          subtitle={copy.subtitle}
-          visualPreset="accent"
-          backLabel={copy.back}
-          userConsoleLabel={admin.header.returnToConsole}
-          userConsoleHref="/console"
-          period={period}
-          focus={focus}
-          periodOptions={[
-            { value: 'day', label: copy.periods[0] },
-            { value: 'month', label: copy.periods[1] },
-            { value: 'all', label: copy.periods[2] },
-          ]}
-          focusOptions={[
-            { value: 'usage', label: copy.focuses[0] },
-            { value: 'errors', label: copy.focuses[1] },
-            { value: 'other', label: copy.focuses[2] },
-          ]}
-          onBack={() => setActiveModule('tokens')}
-          onPeriodChange={setPeriod}
-          onFocusChange={setFocus}
-        />
-      </div>
       <div className="admin-desktop-only" style={{ display: 'grid', gap: 14 }}>
-        <AdminCompactIntro
-          title={copy.title}
-          description={copy.subtitle}
-        />
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">{copy.title}</h1>
+            {copy.subtitle ? (
+              <p className="admin-compact-intro-description text-sm text-muted-foreground">{copy.subtitle}</p>
+            ) : null}
+          </div>
+        </section>
         <div className="surface panel" style={{ padding: 14 }}>
           <div className="token-usage-header-filters">
             <SegmentedTabs<'day' | 'month' | 'all'>

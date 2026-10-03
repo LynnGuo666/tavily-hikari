@@ -610,7 +610,7 @@ function PublicHome(): React.JSX.Element {
               </CardHeader>
               <CardContent className="flex flex-col gap-6">
                 <div className="grid gap-3 sm:grid-cols-3">
-                  <div className="flex flex-col gap-1.5 rounded-lg border p-4">
+                  <div className="flex flex-col gap-1.5">
                     <p className="text-xs font-medium text-muted-foreground">{publicStrings.accessPanel.stats.dailySuccess}</p>
                     {tokenMetricsPending ? (
                       <Skeleton className="h-7 w-14" />
@@ -618,7 +618,7 @@ function PublicHome(): React.JSX.Element {
                       <p className="font-mono text-xl font-semibold tabular-nums">{formatNumber(tokenMetrics?.dailySuccess ?? 0)}</p>
                     )}
                   </div>
-                  <div className="flex flex-col gap-1.5 rounded-lg border p-4">
+                  <div className="flex flex-col gap-1.5">
                     <p className="text-xs font-medium text-muted-foreground">{publicStrings.accessPanel.stats.dailyFailure}</p>
                     {tokenMetricsPending ? (
                       <Skeleton className="h-7 w-14" />
@@ -626,7 +626,7 @@ function PublicHome(): React.JSX.Element {
                       <p className="font-mono text-xl font-semibold tabular-nums">{formatNumber(tokenMetrics?.dailyFailure ?? 0)}</p>
                     )}
                   </div>
-                  <div className="flex flex-col gap-1.5 rounded-lg border p-4">
+                  <div className="flex flex-col gap-1.5">
                     <p className="text-xs font-medium text-muted-foreground">{publicStrings.accessPanel.stats.monthlySuccess}</p>
                     {tokenMetricsPending ? (
                       <Skeleton className="h-7 w-14" />
@@ -703,7 +703,7 @@ function PublicHome(): React.JSX.Element {
                 {hasValidTokenForLogs && publicLogs.length > 0 ? (
                   <>
                     {/* Desktop table */}
-                    <div className="hidden overflow-hidden rounded-lg border md:block">
+                    <div className="hidden overflow-hidden md:block">
                       <Table>
                         <TableHeader>
                           <TableRow>
@@ -763,7 +763,7 @@ function PublicHome(): React.JSX.Element {
                       {publicLogs.map((log) => {
                         const expanded = expandedPublicLogs.has(log.id)
                         return (
-                          <div key={log.id} className="rounded-lg border">
+                          <div key={log.id}>
                             <button
                               type="button"
                               className="flex w-full flex-col gap-2 p-3 text-left"
@@ -833,7 +833,7 @@ function PublicHome(): React.JSX.Element {
                 const sampleKey = `${guideDescription.title}-${sample.title}`
                 const sampleCopyState = guideCopyState[sampleKey]
                 return (
-                  <div key={sampleKey} className="overflow-hidden rounded-lg border">
+                  <div key={sampleKey} className="overflow-hidden">
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted/40 px-3 py-2">
                       <p className="text-sm font-medium">{sample.title}</p>
                       <div className="flex items-center gap-2">

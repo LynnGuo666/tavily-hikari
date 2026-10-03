@@ -162,7 +162,7 @@ function RankingsLoadingCard({
   }))
 
   return (
-    <Card className="surface panel admin-ranking-card relative min-w-0 overflow-hidden rounded-lg border bg-card">
+    <Card className="surface panel admin-ranking-card relative min-w-0 overflow-hidden">
       <CardHeader className="panel-header border-b">
         <div>
           <CardTitle role="heading" aria-level={3}>{title}</CardTitle>

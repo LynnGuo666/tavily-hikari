@@ -251,7 +251,7 @@ export default function RechargePanel({
       <div className={cn('user-console-recharge-grid p-4', showOrders ? 'grid gap-5 @3xl:grid-cols-[1fr_320px]' : 'user-console-recharge-grid-composer')}>
         <div className="user-console-recharge-main flex flex-col gap-4">
           {showSummary ? (
-            <div className="user-console-recharge-summary grid gap-3 rounded-lg border border-border bg-muted/30 p-4 text-sm @xs:grid-cols-2 @xl:grid-cols-3">
+            <div className="user-console-recharge-summary grid gap-3 bg-muted/30 p-4 text-sm @xs:grid-cols-2 @xl:grid-cols-3">
               <div className="flex flex-col gap-0.5">
                 <span className="text-xs text-muted-foreground">{text.currentEntitlement}</span>
                 <strong className="font-semibold tabular-nums">{formatNumber(currentEntitlement)}</strong>
@@ -352,14 +352,14 @@ export default function RechargePanel({
                       { kind: 'daily' as const, label: text.dailyDelta, value: 0 },
                       { kind: 'monthly' as const, label: text.monthlyDelta, value: 0 },
                     ]).map(({ kind, label, value }) => (
-                  <div key={label} className="user-console-recharge-delta-pill flex min-w-0 flex-col gap-1 rounded-lg border border-border bg-card px-3 py-2 text-sm @xl:flex-row @xl:items-center @xl:justify-between">
+                  <div key={label} className="user-console-recharge-delta-pill flex min-w-0 flex-col gap-1 px-3 py-2 text-sm @xl:flex-row @xl:items-center @xl:justify-between">
                     <span className="text-xs text-muted-foreground">{label}</span>
                     <strong className="font-semibold tabular-nums">{formatRechargeDeltaValue(kind, Number(value), language)}</strong>
                   </div>
                 ))}
               </div>
 
-              <div className="user-console-recharge-checkout flex flex-col gap-3 rounded-lg border border-border bg-muted/30 p-4">
+              <div className="user-console-recharge-checkout flex flex-col gap-3 bg-muted/30 p-4">
                 <div className="user-console-recharge-amount flex items-baseline justify-between gap-2">
                   <span className="text-sm text-muted-foreground">{quote?.monthEndClampApplied ? text.discountedAmount : text.amount}</span>
                   <strong className="text-lg font-semibold tabular-nums">{formatRechargeMoney(amountCents / 100)} LDC</strong>
@@ -383,7 +383,7 @@ export default function RechargePanel({
               {error ? <p className="user-console-recharge-error text-sm text-destructive" role="status" aria-live="polite">{error}</p> : null}
             </div>
           ) : (
-            <Empty className="empty-state user-console-recharge-disabled rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>{text.unavailable}</EmptyDescription></Empty>
+            <Empty className="empty-state user-console-recharge-disabled bg-muted/30 p-4"><EmptyDescription>{text.unavailable}</EmptyDescription></Empty>
           )}
         </div>
 
@@ -392,11 +392,11 @@ export default function RechargePanel({
             <h3 className="text-sm font-semibold">{text.orders}</h3>
             <div className="user-console-recharge-orders-panel flex flex-col gap-3">
               {orders.length === 0 ? (
-                <Empty className="empty-state rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>{text.noOrders}</EmptyDescription></Empty>
+                <Empty className="empty-state bg-muted/30 p-4"><EmptyDescription>{text.noOrders}</EmptyDescription></Empty>
               ) : (
-                <ul className="flex flex-col gap-2">
+                <ul className="flex flex-col divide-y">
                   {orders.slice(0, ordersLimit).map((order) => (
-                    <li key={order.outTradeNo} className="flex items-start justify-between gap-3 rounded-lg border border-border bg-card p-3 text-sm">
+                    <li key={order.outTradeNo} className="flex items-start justify-between gap-3 p-3 text-sm">
                       <div className="flex min-w-0 flex-col gap-0.5">
                         <strong className="font-semibold tabular-nums">{formatNumber(order.credits)} × {order.months}</strong>
                         <span className="text-xs text-muted-foreground">{order.money} LDC · {formatTimestamp(order.createdAt)}{order.monthEndClampApplied ? ` · ${text.discountedAmount}` : ''}</span>

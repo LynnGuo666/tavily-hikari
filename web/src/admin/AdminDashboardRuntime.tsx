@@ -1,5 +1,4 @@
 import RequestLogDetailSection from '@/components/RequestLogDetailSection'
-import AppFooter from '../components/AppFooter'
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -7,7 +6,6 @@ import { Icon } from '../lib/icons'
 import { cleanedRequestLogBodySummary } from '../requestLogBodySummary'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import type { RecentRequestsOutcomeFilter } from '../components/AdminRecentRequestsPanel'
-import AdminTablePagination from '../components/AdminTablePagination'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import AdminTableShell from '../components/AdminTableShell'
 import JobKeyLink from '../components/JobKeyLink'
@@ -17,6 +15,7 @@ import {
   lazy,
   useCallback,
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -27,7 +26,6 @@ import { createPortal } from 'react-dom'
 import ThemeToggle from '../components/ThemeToggle'
 import AdminReturnToConsoleLink from '../components/AdminReturnToConsoleLink'
 import AdminPanelHeader from '../components/AdminPanelHeader'
-import AdminCompactIntro from '../components/AdminCompactIntro'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import NotFoundFallbackPreview from '../components/NotFoundFallbackPreview'
 import HaStatusBanner from '../components/HaStatusBanner'
@@ -36,7 +34,6 @@ import { ConnectedUpdateAvailableBanner } from '../components/UpdateAvailableBan
 import { buildOctoRillReleaseLink, formatVersionDisplay } from '../lib/releaseLinks'
 import HaSourceSettingsDialog from './HaSourceSettingsDialog'
 import HaNodeDetailPanel from './HaNodeDetailPanel'
-import { AdminSidebarUtilityCard, AdminSidebarUtilityStack } from '../components/AdminSidebarUtility'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -71,8 +68,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
 import { AnchoredInfoDisclosure } from '@/components/anchored-info-disclosure'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
+import { Field, FieldLabel } from '@/components/ui/field'
+import { Separator } from '@/components/ui/separator'
 import SegmentedTabs from '@/components/SegmentedTabs'
-import { ArrowDown, ArrowUp, ArrowUpDown, ChartColumnIncreasing } from 'lucide-react'
+import { ArrowDown, ArrowUp, ArrowUpDown, ChartColumnIncreasing, ChevronLeftIcon, ChevronRightIcon, GithubIcon } from 'lucide-react'
 import { UserTagBindingControls } from './UserTagBindingControls'
 import { AdminUserDetailQuotaWorkspace } from './AdminUserDetailQuotaWorkspace'
 import { UsersUsageScreen } from './screens/UsersUsageScreen'
@@ -1766,6 +1766,8 @@ type AdminTokenFilterDraft = {
 
 function AdminDashboard(): React.JSX.Element {
   const [route, setRoute] = useState<AdminPathRoute>(() => parseAdminPath(window.location.pathname))
+  const tokensPerPageSelectId = useId()
+  const keysPerPageSelectId = useId()
   const offline = useOfflineState()
   const [locationSearch, setLocationSearch] = useState(() => window.location.search)
   const { language } = useLanguage()
@@ -8292,10 +8294,12 @@ function AdminDashboard(): React.JSX.Element {
       onSelectItem={navigateModule}
     >
       <div className="hidden md:block">
-        <AdminCompactIntro
-          title={usersStrings.catalog.title}
-          description={usersStrings.catalog.description}
-          actions={
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">{usersStrings.catalog.title}</h1>
+            {usersStrings.catalog.description ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{usersStrings.catalog.description}</p> : null}
+          </div>
+          <div className="admin-compact-intro-actions max-w-full">
             <div className="user-tag-page-actions">
               <Button
                 type="button"
@@ -8323,8 +8327,8 @@ function AdminDashboard(): React.JSX.Element {
                 {usersStrings.catalog.actions.create}
               </Button>
             </div>
-          }
-        />
+          </div>
+        </section>
       </div>
 
       <Card className="surface panel block md:hidden">
@@ -8416,20 +8420,28 @@ function AdminDashboard(): React.JSX.Element {
   )
 
   const appFooter = (
-    <AppFooter
-      className="mt-auto"
-      title={footerStrings.title}
-      githubLabel={footerStrings.githubLabel}
-      githubAria={footerStrings.githubAria}
-      version={version ? (() => {
-        const raw = version.backend || ''
-        const release = buildOctoRillReleaseLink(raw)
-        const displayVersion = formatVersionDisplay(raw)
-        return <>{footerStrings.tagPrefix}{release ? (
-          <a href={release.href} className="footer-link underline-offset-4 hover:underline" target="_blank" rel="noreferrer">{release.label}</a>
-        ) : <span>{displayVersion ?? raw}</span>}</>
-      })() : footerStrings.loadingVersion}
-    />
+    <footer className="app-footer mt-6 flex flex-col gap-3 text-sm text-muted-foreground mt-auto">
+      <Separator />
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        {footerStrings.title ? <span>{footerStrings.title}</span> : null}
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <Button asChild variant="link" size="sm">
+            <a href="https://github.com/IvanLi-CN/tavily-hikari" className="footer-link" target="_blank" rel="noreferrer" aria-label={footerStrings.githubAria}>
+              <GithubIcon data-icon="inline-start" />
+              {footerStrings.githubLabel}
+            </a>
+          </Button>
+          <span className="footer-meta inline-flex flex-wrap items-center gap-1">{version ? (() => {
+            const raw = version.backend || ''
+            const release = buildOctoRillReleaseLink(raw)
+            const displayVersion = formatVersionDisplay(raw)
+            return <>{footerStrings.tagPrefix}{release ? (
+              <a href={release.href} className="footer-link underline-offset-4 hover:underline" target="_blank" rel="noreferrer">{release.label}</a>
+            ) : <span>{displayVersion ?? raw}</span>}</>
+          })() : footerStrings.loadingVersion}</span>
+        </div>
+      </div>
+    </footer>
   )
 
   const renderAdminGlobalOverlayHost = (): React.JSX.Element => (
@@ -8444,17 +8456,17 @@ function AdminDashboard(): React.JSX.Element {
         <DrawerContent className="request-entity-drawer-content-fit overflow-hidden" aria-describedby={undefined}>
           <DrawerTitle className="sr-only">{usersStrings.brokenKeys.drawerTitle}</DrawerTitle>
           <div className="request-entity-drawer-body-fit min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
-            <Card className="surface panel user-detail-panel-compact" id="user-detail-tags">
-              <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+            <section className="surface panel user-detail-panel-compact border-t" id="user-detail-tags">
+              <div className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div>
-                  <CardTitle role="heading" aria-level={2}>{usersStrings.brokenKeys.drawerTitle}</CardTitle>
-                  <CardDescription className="panel-description">
+                  <h2 className="text-sm font-medium">{usersStrings.brokenKeys.drawerTitle}</h2>
+                  <p className="panel-description text-sm text-muted-foreground">
                     {usersStrings.brokenKeys.drawerDescription.replace('{label}', monthlyBrokenDrawer?.label ?? '—')}
-                  </CardDescription>
+                  </p>
                 </div>
-              </CardHeader>
+              </div>
               <AdminLoadingRegion
-                className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
+                className="table-wrapper overflow-hidden hidden md:flex"
                 loadState={monthlyBrokenDrawerLoadState}
                 loadingLabel={usersStrings.brokenKeys.loading}
                 errorLabel={monthlyBrokenDrawerError ?? loadingStateStrings.error}
@@ -8516,7 +8528,7 @@ function AdminDashboard(): React.JSX.Element {
                 )}
               </AdminLoadingRegion>
               <AdminLoadingRegion
-                className="flex flex-col gap-3 md:hidden flex md:hidden"
+                className="flex flex-col divide-y md:hidden flex md:hidden"
                 loadState={monthlyBrokenDrawerLoadState}
                 loadingLabel={usersStrings.brokenKeys.loading}
                 errorLabel={monthlyBrokenDrawerError ?? loadingStateStrings.error}
@@ -8529,7 +8541,7 @@ function AdminDashboard(): React.JSX.Element {
                     const stateKey = copyStateKey('brokenKeys', item.keyId)
                     const state = copyState.get(stateKey)
                     return (
-                      <article key={`${item.keyId}:${item.latestBreakAt}`} className="rounded-lg border p-3">
+                      <article key={`${item.keyId}:${item.latestBreakAt}`} className="py-3">
                         <div className="flex items-center justify-between gap-2 text-sm">
                           <span>{usersStrings.brokenKeys.table.key}</span>
                           <strong>
@@ -8577,7 +8589,7 @@ function AdminDashboard(): React.JSX.Element {
                   })
                 )}
               </AdminLoadingRegion>
-            </Card>
+            </section>
           </div>
         </DrawerContent>
       </Drawer>
@@ -9307,8 +9319,9 @@ function AdminDashboard(): React.JSX.Element {
     }
     const userDetailSidebarUtility = (
       <AdminShellSidebarUtility>
-        <AdminSidebarUtilityStack>
-          <AdminSidebarUtilityCard>
+        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
             <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
@@ -9320,8 +9333,9 @@ function AdminDashboard(): React.JSX.Element {
                 {usersStrings.detail.back}
               </Button>
             </div>
-          </AdminSidebarUtilityCard>
-        </AdminSidebarUtilityStack>
+            </CardContent>
+          </Card>
+        </div>
       </AdminShellSidebarUtility>
     )
 
@@ -9335,7 +9349,13 @@ function AdminDashboard(): React.JSX.Element {
         {userDetailSidebarUtility}
         {adminHaCompactAlert}
         <div className="hidden md:block">
-          <AdminCompactIntro title={userDetailTitle} description={userDetailDescription} actions={renderUserDetailTabs()} />
+          <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
+            <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+              <h1 className="text-xl font-semibold tracking-tight">{userDetailTitle}</h1>
+              {userDetailDescription ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{userDetailDescription}</p> : null}
+            </div>
+            <div className="admin-compact-intro-actions max-w-full">{renderUserDetailTabs()}</div>
+          </section>
         </div>
         <Card className="surface panel block md:hidden">
           <CardHeader className="panel-header border-b">
@@ -9371,13 +9391,13 @@ function AdminDashboard(): React.JSX.Element {
           <>
             {activeUserDetailTab === 'account' && (
             <>
-            <Card className="surface panel user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
-              <CardHeader className="panel-header border-b">
+            <section className="surface panel user-detail-panel-compact border-t" id="user-detail-identity" role="tabpanel">
+              <div className="panel-header border-b">
                 <div>
-                  <CardTitle role="heading" aria-level={2}>{usersStrings.detail.identityTitle}</CardTitle>
-                  <CardDescription className="panel-description">{usersStrings.detail.identityDescription}</CardDescription>
+                  <h2 className="text-sm font-medium">{usersStrings.detail.identityTitle}</h2>
+                  <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.identityDescription}</p>
                 </div>
-              </CardHeader>
+              </div>
               <dl className="user-detail-definition-grid">
                 <div className="user-detail-definition-grid__item--wide">
                   <dt>{usersStrings.detail.userId}</dt>
@@ -9437,7 +9457,7 @@ function AdminDashboard(): React.JSX.Element {
                   <dd>{formatNumber(detail.recentIpCount7d)}</dd>
                 </div>
               </dl>
-            </Card>
+            </section>
 
             <Card className="surface panel">
               <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
@@ -9604,7 +9624,7 @@ function AdminDashboard(): React.JSX.Element {
                   <span>{addingUserToken ? usersStrings.detail.addingToken : usersStrings.detail.addToken}</span>
                 </Button>
               </CardHeader>
-              <div className="table-wrapper overflow-hidden rounded-lg border">
+              <div className="table-wrapper overflow-hidden">
                 <AdminLazyBoundary loadingLabel={loadingStateStrings.switching} minHeight={220}>
                   <LazyUserDetailTokenTable
                     tokens={tokenItems}
@@ -9667,7 +9687,13 @@ function AdminDashboard(): React.JSX.Element {
   }) => (
     <>
       <div className="hidden md:block">
-        <AdminCompactIntro title={title} description={description} actions={searchControls} />
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
+            {description ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{description}</p> : null}
+          </div>
+          <div className="admin-compact-intro-actions max-w-full">{searchControls}</div>
+        </section>
       </div>
       <div className="block md:hidden">
         <section className="surface app-header admin-usage-stacked-intro">
@@ -9689,8 +9715,9 @@ function AdminDashboard(): React.JSX.Element {
   if (route.name === 'module' && route.module === 'analysis' && route.analysisView === 'usage') {
     const userUsageSidebarUtility = (
       <AdminShellSidebarUtility>
-        <AdminSidebarUtilityStack>
-          <AdminSidebarUtilityCard>
+        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
             <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
               <ThemeToggle />
               <LanguageSwitcher />
@@ -9703,8 +9730,10 @@ function AdminDashboard(): React.JSX.Element {
                 </div>
               )}
             </div>
-          </AdminSidebarUtilityCard>
-          <AdminSidebarUtilityCard>
+            </CardContent>
+          </Card>
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
             <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
@@ -9729,8 +9758,9 @@ function AdminDashboard(): React.JSX.Element {
                 <span>{loading ? headerStrings.refreshing : headerStrings.refreshNow}</span>
               </Button>
             </div>
-          </AdminSidebarUtilityCard>
-        </AdminSidebarUtilityStack>
+            </CardContent>
+          </Card>
+        </div>
       </AdminShellSidebarUtility>
     )
     return renderAdminPageWithGlobalOverlays(
@@ -9797,24 +9827,45 @@ function AdminDashboard(): React.JSX.Element {
           formatMonthlyBrokenStackValue={formatMonthlyBrokenStackValue}
           pagination={
             usersTotal > USERS_PER_PAGE ? (
-              <AdminTablePagination
-                page={usersPage}
-                totalPages={usersTotalPages}
-                pageSummary={
-                  <span className="panel-description text-sm text-muted-foreground">
-                    {usersStrings.pagination
-                      .replace('{page}', String(usersPage))
-                      .replace('{total}', String(usersTotalPages))}
+              <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
+                  <span className="table-pagination-summary text-sm text-muted-foreground">
+                    <span className="panel-description text-sm text-muted-foreground">
+                      {usersStrings.pagination
+                        .replace('{page}', String(usersPage))
+                        .replace('{total}', String(usersTotalPages))}
+                    </span>
                   </span>
-                }
-                previousLabel={tokenStrings.pagination.prev}
-                nextLabel={tokenStrings.pagination.next}
-                previousDisabled={usersPage <= 1}
-                nextDisabled={usersPage >= usersTotalPages}
-                disabled={usersBlocking}
-                onPrevious={goPrevUsersPage}
-                onNext={goNextUsersPage}
-              />
+                </div>
+                <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="table-pagination-button"
+                        onClick={() => void goPrevUsersPage()}
+                        disabled={usersBlocking || usersPage <= 1}
+                      >
+                        <ChevronLeftIcon data-icon="inline-start" />
+                        {tokenStrings.pagination.prev}
+                      </Button>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="table-pagination-button"
+                        onClick={() => void goNextUsersPage()}
+                        disabled={usersBlocking || usersPage >= usersTotalPages}
+                      >
+                        {tokenStrings.pagination.next}
+                        <ChevronRightIcon data-icon="inline-end" />
+                      </Button>
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
             ) : null
           }
         />
@@ -9832,8 +9883,9 @@ function AdminDashboard(): React.JSX.Element {
         onSelectItem={navigateModule}
       >
         <AdminShellSidebarUtility>
-          <AdminSidebarUtilityStack>
-            <AdminSidebarUtilityCard>
+          <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+            <Card size="sm" className="admin-sidebar-utility-card">
+              <CardContent className="flex flex-col gap-3">
               <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
                 <ThemeToggle />
               </div>
@@ -9844,8 +9896,9 @@ function AdminDashboard(): React.JSX.Element {
                   className="admin-sidebar-utility-action"
                 />
               </div>
-            </AdminSidebarUtilityCard>
-          </AdminSidebarUtilityStack>
+              </CardContent>
+            </Card>
+          </div>
         </AdminShellSidebarUtility>
 
         <UnboundTokenUsageScreen
@@ -9910,24 +9963,45 @@ function AdminDashboard(): React.JSX.Element {
           formatMonthlyBrokenStackValue={formatMonthlyBrokenStackValue}
           pagination={
             unboundTokenUsageTotal > USERS_PER_PAGE ? (
-              <AdminTablePagination
-                page={unboundTokenUsagePage}
-                totalPages={unboundTokenUsageTotalPages}
-                pageSummary={
-                  <span className="panel-description text-sm text-muted-foreground">
-                    {usersStrings.pagination
-                      .replace('{page}', String(unboundTokenUsagePage))
-                      .replace('{total}', String(unboundTokenUsageTotalPages))}
+              <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
+                  <span className="table-pagination-summary text-sm text-muted-foreground">
+                    <span className="panel-description text-sm text-muted-foreground">
+                      {usersStrings.pagination
+                        .replace('{page}', String(unboundTokenUsagePage))
+                        .replace('{total}', String(unboundTokenUsageTotalPages))}
+                    </span>
                   </span>
-                }
-                previousLabel={tokenStrings.pagination.prev}
-                nextLabel={tokenStrings.pagination.next}
-                previousDisabled={unboundTokenUsagePage <= 1}
-                nextDisabled={unboundTokenUsagePage >= unboundTokenUsageTotalPages}
-                disabled={unboundTokenUsageBlocking}
-                onPrevious={goPrevUnboundTokenUsagePage}
-                onNext={goNextUnboundTokenUsagePage}
-              />
+                </div>
+                <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="table-pagination-button"
+                        onClick={() => void goPrevUnboundTokenUsagePage()}
+                        disabled={unboundTokenUsageBlocking || unboundTokenUsagePage <= 1}
+                      >
+                        <ChevronLeftIcon data-icon="inline-start" />
+                        {tokenStrings.pagination.prev}
+                      </Button>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="table-pagination-button"
+                        onClick={() => void goNextUnboundTokenUsagePage()}
+                        disabled={unboundTokenUsageBlocking || unboundTokenUsagePage >= unboundTokenUsageTotalPages}
+                      >
+                        {tokenStrings.pagination.next}
+                        <ChevronRightIcon data-icon="inline-end" />
+                      </Button>
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
             ) : null
           }
         />
@@ -9958,8 +10032,9 @@ function AdminDashboard(): React.JSX.Element {
   const showProxySettings = activeModule === 'proxy-settings'
   const moduleDesktopUtility = (
     <AdminShellSidebarUtility>
-      <AdminSidebarUtilityStack>
-        <AdminSidebarUtilityCard>
+      <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <Card size="sm" className="admin-sidebar-utility-card">
+          <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
@@ -9972,9 +10047,11 @@ function AdminDashboard(): React.JSX.Element {
               </div>
             )}
           </div>
-        </AdminSidebarUtilityCard>
+          </CardContent>
+        </Card>
 
-        <AdminSidebarUtilityCard>
+        <Card size="sm" className="admin-sidebar-utility-card">
+          <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <AdminReturnToConsoleLink
               label={headerStrings.returnToConsole}
@@ -9999,8 +10076,9 @@ function AdminDashboard(): React.JSX.Element {
               <span>{loading ? headerStrings.refreshing : headerStrings.refreshNow}</span>
             </Button>
           </div>
-        </AdminSidebarUtilityCard>
-      </AdminSidebarUtilityStack>
+          </CardContent>
+        </Card>
+      </div>
     </AdminShellSidebarUtility>
   )
   const moduleDesktopIntro = (() => {
@@ -10584,42 +10662,45 @@ function AdminDashboard(): React.JSX.Element {
         )
       )}
 
-      {!showNotFound && !isStackedAdminLayout && route.name !== 'ha-node' && (
-        <AdminCompactIntro
-          title={moduleDesktopIntro.title}
-          description={moduleDesktopIntro.description}
-          actions={
-            showRankings
-              ? (
-                <RankingsMeta
-                  strings={adminStrings.rankings}
-                  snapshot={rankingsSnapshot}
-                  connectionState={rankingsConnectionState}
-                  language={language}
-                />
-              )
-              : showTokens
-              ? renderTokenToolbar()
-              : showPressure
-                ? undefined
-              : showKeys && isAdmin
-                  ? renderKeyQuickAddToolbar()
-                  : showUsers
-                      ? renderUsersSearchControls('users-search-controls--header')
-                      : showRequests
-                        ? <div id={REQUESTS_HEADER_FILTERS_ID} className="admin-header-filter-slot" />
-                        : showJobs
-                          ? renderJobFilterToolbar('admin-module-toolbar--header-filter')
-                          : showAlerts
-                            ? renderAlertsViewTabs()
-                            : showAnnouncements
-                              ? <div id={ANNOUNCEMENTS_HEADER_ACTION_SLOT_ID} />
-                              : showMcpSessionBindings
-                                ? renderMcpSessionBindingsHeaderTabs()
-                              : undefined
-          }
-        />
-      )}
+      {!showNotFound && !isStackedAdminLayout && route.name !== 'ha-node' && (() => {
+        const moduleDesktopIntroActions = showRankings
+          ? (
+            <RankingsMeta
+              strings={adminStrings.rankings}
+              snapshot={rankingsSnapshot}
+              connectionState={rankingsConnectionState}
+              language={language}
+            />
+          )
+          : showTokens
+          ? renderTokenToolbar()
+          : showPressure
+            ? undefined
+            : showKeys && isAdmin
+              ? renderKeyQuickAddToolbar()
+              : showUsers
+                  ? renderUsersSearchControls('users-search-controls--header')
+                  : showRequests
+                    ? <div id={REQUESTS_HEADER_FILTERS_ID} className="admin-header-filter-slot" />
+                    : showJobs
+                      ? renderJobFilterToolbar('admin-module-toolbar--header-filter')
+                      : showAlerts
+                        ? renderAlertsViewTabs()
+                        : showAnnouncements
+                          ? <div id={ANNOUNCEMENTS_HEADER_ACTION_SLOT_ID} />
+                          : showMcpSessionBindings
+                            ? renderMcpSessionBindingsHeaderTabs()
+                          : undefined
+        return (
+          <section className={`admin-compact-intro flex flex-wrap items-end justify-between gap-4${moduleDesktopIntroActions ? ' admin-compact-intro--with-actions' : ''}`}>
+            <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+              <h1 className="text-xl font-semibold tracking-tight">{moduleDesktopIntro.title}</h1>
+              {moduleDesktopIntro.description ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{moduleDesktopIntro.description}</p> : null}
+            </div>
+            {moduleDesktopIntroActions ? <div className="admin-compact-intro-actions max-w-full">{moduleDesktopIntroActions}</div> : null}
+          </section>
+        )
+      })()}
 
       {showNotFound && (
         <NotFoundFallbackPreview originalPath={notFoundPath} returnHref="/admin" />
@@ -10691,7 +10772,7 @@ function AdminDashboard(): React.JSX.Element {
         </div>
         {renderTokenFilters()}
         <AdminTableShell
-          className="overflow-hidden rounded-lg border hidden md:flex"
+          className="overflow-hidden hidden md:flex"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b tokens-table"
           loadState={tokensLoadState}
           loadingLabel={tokensRefreshing ? loadingStateStrings.refreshing : tokenStrings.empty.loading}
@@ -10897,7 +10978,7 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminTableShell>
         <AdminLoadingRegion
-          className="flex flex-col gap-3 md:hidden flex md:hidden"
+          className="flex flex-col divide-y md:hidden flex md:hidden"
           loadState={tokensLoadState}
           loadingLabel={tokensRefreshing ? loadingStateStrings.refreshing : tokenStrings.empty.loading}
           minHeight={260}
@@ -10913,7 +10994,7 @@ function AdminDashboard(): React.JSX.Element {
               const quotaStateKey = t.quota_state ?? 'normal'
               const quotaLabel = quotaLabels[quotaStateKey] ?? quotaLabels.normal
               return (
-                <article key={t.id} className="rounded-lg border p-3">
+                <article key={t.id} className="py-3">
                   {isAdmin && (
                     <div className="flex items-center justify-between gap-2 text-sm token-mobile-select-row">
                       <span>{tokenStrings.bulk.selected.replace('{count}', '1')}</span>
@@ -11090,29 +11171,65 @@ function AdminDashboard(): React.JSX.Element {
           document.body,
         )}
         {tokensTotal > tokensPerPage && (
-          <AdminTablePagination
-            page={tokensPage}
-            totalPages={totalPages}
-            pageSummary={
-              <span className="panel-description text-sm text-muted-foreground">
-                {tokenStrings.pagination.page
-                  .replace('{page}', String(tokensPage))
-                  .replace('{total}', String(totalPages))}
+          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
+              <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+                <FieldLabel htmlFor={tokensPerPageSelectId}>{tokenStrings.pagination.perPage}</FieldLabel>
+                <Select value={String(tokensPerPage)} onValueChange={(value) => void changeTokensPerPage(Number(value))} disabled={tokensBlocking}>
+                  <SelectTrigger id={tokensPerPageSelectId} aria-label={tokenStrings.pagination.perPage} className="table-pagination-select w-20" disabled={tokensBlocking}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent position="popper" align="start">
+                    <SelectGroup>
+                      {((TOKEN_PER_PAGE_OPTIONS as readonly number[]).includes(tokensPerPage)
+                        ? [...TOKEN_PER_PAGE_OPTIONS]
+                        : [...TOKEN_PER_PAGE_OPTIONS, tokensPerPage].sort((left, right) => left - right)
+                      ).map((option) => (
+                        <SelectItem key={option} value={String(option)}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <span className="table-pagination-summary text-sm text-muted-foreground">
+                <span className="panel-description text-sm text-muted-foreground">
+                  {tokenStrings.pagination.page
+                    .replace('{page}', String(tokensPage))
+                    .replace('{total}', String(totalPages))}
+                </span>
               </span>
-            }
-            perPage={tokensPerPage}
-            perPageOptions={[...TOKEN_PER_PAGE_OPTIONS]}
-            perPageLabel={tokenStrings.pagination.perPage}
-            perPageAriaLabel={tokenStrings.pagination.perPage}
-            previousLabel={tokenStrings.pagination.prev}
-            nextLabel={tokenStrings.pagination.next}
-            previousDisabled={tokensPage <= 1}
-            nextDisabled={tokensPage >= totalPages}
-            disabled={tokensBlocking}
-            onPrevious={goPrevPage}
-            onNext={goNextPage}
-            onPerPageChange={changeTokensPerPage}
-          />
+            </div>
+            <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+              <PaginationContent>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => void goPrevPage()}
+                    disabled={tokensBlocking || tokensPage <= 1}
+                  >
+                    <ChevronLeftIcon data-icon="inline-start" />
+                    {tokenStrings.pagination.prev}
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => void goNextPage()}
+                    disabled={tokensBlocking || tokensPage >= totalPages}
+                  >
+                    {tokenStrings.pagination.next}
+                    <ChevronRightIcon data-icon="inline-end" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         )}
       </Card>
       )}
@@ -11384,7 +11501,7 @@ function AdminDashboard(): React.JSX.Element {
             </div>
           ) : null}
         <AdminTableShell
-          className="overflow-hidden rounded-lg border hidden md:flex"
+          className="overflow-hidden hidden md:flex"
           tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b api-keys-table${isAdmin ? ' api-keys-table--admin' : ''}`}
           loadState={keysLoadState}
           loadingLabel={keysRefreshing ? loadingStateStrings.refreshing : keyStrings.empty.loading}
@@ -11641,7 +11758,7 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminTableShell>
         <AdminLoadingRegion
-          className="flex flex-col gap-3 md:hidden flex md:hidden"
+          className="flex flex-col divide-y md:hidden flex md:hidden"
           loadState={keysLoadState}
           loadingLabel={keysRefreshing ? loadingStateStrings.refreshing : keyStrings.empty.loading}
           errorLabel={keysError ?? loadingStateStrings.error}
@@ -11657,7 +11774,7 @@ function AdminDashboard(): React.JSX.Element {
               const stateKey = copyStateKey('keys', item.id)
               const state = copyState.get(stateKey)
               return (
-                <article key={item.id} className="rounded-lg border p-3">
+                <article key={item.id} className="py-3">
                   {isAdmin && (
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
                       <label style={keySelectionCheckboxLabelStyle}>
@@ -11795,28 +11912,65 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminLoadingRegion>
         {keysTotal > keysPerPage && (
-          <AdminTablePagination
-            page={keysPage}
-            totalPages={keysTotalPages}
-            pageSummary={
-              <span className="panel-description text-sm text-muted-foreground">
-                {keyStrings.pagination.page
-                  .replace('{page}', String(keysPage))
-                  .replace('{total}', String(keysTotalPages))}
+          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
+              <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+                <FieldLabel htmlFor={keysPerPageSelectId}>{keyStrings.pagination.perPage}</FieldLabel>
+                <Select value={String(keysPerPage)} onValueChange={(value) => void changeKeysPerPage(Number(value))} disabled={keysBlocking}>
+                  <SelectTrigger id={keysPerPageSelectId} aria-label={keyStrings.pagination.perPage} className="table-pagination-select w-20" disabled={keysBlocking}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent position="popper" align="start">
+                    <SelectGroup>
+                      {([10, 20, 50, 100].includes(keysPerPage)
+                        ? [10, 20, 50, 100]
+                        : [10, 20, 50, 100, keysPerPage].sort((left, right) => left - right)
+                      ).map((option) => (
+                        <SelectItem key={option} value={String(option)}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <span className="table-pagination-summary text-sm text-muted-foreground">
+                <span className="panel-description text-sm text-muted-foreground">
+                  {keyStrings.pagination.page
+                    .replace('{page}', String(keysPage))
+                    .replace('{total}', String(keysTotalPages))}
+                </span>
               </span>
-            }
-            perPage={keysPerPage}
-            perPageLabel={keyStrings.pagination.perPage}
-            perPageAriaLabel={keyStrings.pagination.perPage}
-            previousLabel={tokenStrings.pagination.prev}
-            nextLabel={tokenStrings.pagination.next}
-            previousDisabled={keysPage <= 1}
-            nextDisabled={keysPage >= keysTotalPages}
-            disabled={keysBlocking}
-            onPrevious={goPrevKeysPage}
-            onNext={goNextKeysPage}
-            onPerPageChange={changeKeysPerPage}
-          />
+            </div>
+            <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+              <PaginationContent>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => void goPrevKeysPage()}
+                    disabled={keysBlocking || keysPage <= 1}
+                  >
+                    <ChevronLeftIcon data-icon="inline-start" />
+                    {tokenStrings.pagination.prev}
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => void goNextKeysPage()}
+                    disabled={keysBlocking || keysPage >= keysTotalPages}
+                  >
+                    {tokenStrings.pagination.next}
+                    <ChevronRightIcon data-icon="inline-end" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         )}
       </Card>
       )}
@@ -11886,7 +12040,7 @@ function AdminDashboard(): React.JSX.Element {
           </div>
         )}
         <AdminTableShell
-          className="overflow-hidden rounded-lg border hidden md:flex"
+          className="overflow-hidden hidden md:flex"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b jobs-module-table"
           loadState={jobsLoadState}
           loadingLabel={jobsRefreshing ? loadingStateStrings.refreshing : jobsStrings.empty.loading}
@@ -12107,7 +12261,7 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminTableShell>
         <AdminLoadingRegion
-          className="flex flex-col gap-3 md:hidden flex md:hidden"
+          className="flex flex-col divide-y md:hidden flex md:hidden"
           loadState={jobsLoadState}
           loadingLabel={jobsRefreshing ? loadingStateStrings.refreshing : jobsStrings.empty.loading}
           errorLabel={jobsError ?? loadingStateStrings.error}
@@ -12122,7 +12276,7 @@ function AdminDashboard(): React.JSX.Element {
               const started: number | null = j.started_at ?? null
               const primaryTime = started ?? queued
               return (
-                <article key={j.id} className="rounded-lg border p-3">
+                <article key={j.id} className="py-3">
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.id}</span>
                     <strong>{j.id}</strong>
@@ -12172,22 +12326,43 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminLoadingRegion>
         {jobsTotal > jobsPerPage && (
-          <AdminTablePagination
-            page={jobsPage}
-            totalPages={Math.max(1, Math.ceil(jobsTotal / jobsPerPage))}
-            pageSummary={
-              <span className="panel-description text-sm text-muted-foreground">
-                {jobsStrings.description} ({jobsPage} / {Math.max(1, Math.ceil(jobsTotal / jobsPerPage))})
+          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
+              <span className="table-pagination-summary text-sm text-muted-foreground">
+                <span className="panel-description text-sm text-muted-foreground">
+                  {jobsStrings.description} ({jobsPage} / {Math.max(1, Math.ceil(jobsTotal / jobsPerPage))})
+                </span>
               </span>
-            }
-            previousLabel={tokenStrings.pagination.prev}
-            nextLabel={tokenStrings.pagination.next}
-            previousDisabled={jobsPage <= 1}
-            nextDisabled={jobsPage >= Math.ceil(jobsTotal / jobsPerPage)}
-            disabled={jobsBlocking}
-            onPrevious={() => setJobsPage((page) => Math.max(1, page - 1))}
-            onNext={() => setJobsPage((page) => page + 1)}
-          />
+            </div>
+            <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+              <PaginationContent>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => setJobsPage((page) => Math.max(1, page - 1))}
+                    disabled={jobsBlocking || jobsPage <= 1}
+                  >
+                    <ChevronLeftIcon data-icon="inline-start" />
+                    {tokenStrings.pagination.prev}
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => setJobsPage((page) => page + 1)}
+                    disabled={jobsBlocking || jobsPage >= Math.ceil(jobsTotal / jobsPerPage)}
+                  >
+                    {tokenStrings.pagination.next}
+                    <ChevronRightIcon data-icon="inline-end" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         )}
       </Card>
       )}
@@ -12207,7 +12382,7 @@ function AdminDashboard(): React.JSX.Element {
               </CardHeader>
             </div>
             <AdminTableShell
-              className="overflow-hidden rounded-lg border"
+              className="overflow-hidden"
               tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}
               loadState={usersLoadState}
               loadingLabel={usersRefreshing ? loadingStateStrings.refreshing : usersStrings.empty.loading}
@@ -12339,7 +12514,7 @@ function AdminDashboard(): React.JSX.Element {
               )}
             </AdminTableShell>
             <AdminLoadingRegion
-              className="flex flex-col gap-3 md:hidden flex md:hidden"
+              className="flex flex-col divide-y md:hidden flex md:hidden"
               loadState={usersLoadState}
               loadingLabel={usersRefreshing ? loadingStateStrings.refreshing : usersStrings.empty.loading}
               errorLabel={usersError ?? loadingStateStrings.error}
@@ -12363,7 +12538,7 @@ function AdminDashboard(): React.JSX.Element {
                     formatQuotaStackValue,
                   })
                   return (
-                  <article key={item.userId} className="rounded-lg border p-3">
+                  <article key={item.userId} className="py-3">
                     <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{usersStrings.table.user}</span>
                       <Button
@@ -12422,24 +12597,45 @@ function AdminDashboard(): React.JSX.Element {
             </AdminLoadingRegion>
 
             {usersTotal > USERS_PER_PAGE && (
-              <AdminTablePagination
-                page={usersPage}
-                totalPages={usersTotalPages}
-                pageSummary={
-                  <span className="panel-description text-sm text-muted-foreground">
-                    {usersStrings.pagination
-                      .replace('{page}', String(usersPage))
-                      .replace('{total}', String(usersTotalPages))}
+              <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
+                  <span className="table-pagination-summary text-sm text-muted-foreground">
+                    <span className="panel-description text-sm text-muted-foreground">
+                      {usersStrings.pagination
+                        .replace('{page}', String(usersPage))
+                        .replace('{total}', String(usersTotalPages))}
+                    </span>
                   </span>
-                }
-                previousLabel={tokenStrings.pagination.prev}
-                nextLabel={tokenStrings.pagination.next}
-                previousDisabled={usersPage <= 1}
-                nextDisabled={usersPage >= usersTotalPages}
-                disabled={usersBlocking}
-                onPrevious={goPrevUsersPage}
-                onNext={goNextUsersPage}
-              />
+                </div>
+                <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="table-pagination-button"
+                        onClick={() => void goPrevUsersPage()}
+                        disabled={usersBlocking || usersPage <= 1}
+                      >
+                        <ChevronLeftIcon data-icon="inline-start" />
+                        {tokenStrings.pagination.prev}
+                      </Button>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="table-pagination-button"
+                        onClick={() => void goNextUsersPage()}
+                        disabled={usersBlocking || usersPage >= usersTotalPages}
+                      >
+                        {tokenStrings.pagination.next}
+                        <ChevronRightIcon data-icon="inline-end" />
+                      </Button>
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
             )}
           </Card>
 
@@ -13403,8 +13599,9 @@ export function KeyDetails({
   const hasQuarantineRawDetail = quarantineRawDetail.length > 0
   const keyDetailSidebarUtility = (
     <AdminShellSidebarUtility>
-      <AdminSidebarUtilityStack>
-        <AdminSidebarUtilityCard>
+      <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <Card size="sm" className="admin-sidebar-utility-card">
+          <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
             <ThemeToggle />
           </div>
@@ -13419,9 +13616,11 @@ export function KeyDetails({
               {keyDetailsStrings.back}
             </Button>
           </div>
-        </AdminSidebarUtilityCard>
+          </CardContent>
+        </Card>
 
-        <AdminSidebarUtilityCard>
+        <Card size="sm" className="admin-sidebar-utility-card">
+          <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <Button
               type="button"
@@ -13444,8 +13643,9 @@ export function KeyDetails({
                   : keyDetailsStrings.syncAction}
             </Button>
           </div>
-        </AdminSidebarUtilityCard>
-      </AdminSidebarUtilityStack>
+          </CardContent>
+        </Card>
+      </div>
     </AdminShellSidebarUtility>
   )
 
@@ -13498,14 +13698,14 @@ export function KeyDetails({
       </div>
 
       <div className="hidden md:block">
-        <AdminCompactIntro
-          title={keyDetailsStrings.title}
-          description={(
-            <>
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">{keyDetailsStrings.title}</h1>
+            <p className="admin-compact-intro-description text-sm text-muted-foreground">
               {keyDetailsStrings.descriptionPrefix} <code>{id}</code>
-            </>
-          )}
-        />
+            </p>
+          </div>
+        </section>
       </div>
 
       {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" style={{ marginTop: 8, marginBottom: 0 }}>{error}</div>}
@@ -13636,8 +13836,8 @@ export function KeyDetails({
                   { id: 'remaining', label: 'Remaining', value: remaining != null ? formatNumber(remaining) : '—', subtitle: percent },
                   { id: 'synced', label: 'Synced', value: detail?.quota_synced_at ? formatTimestamp(detail.quota_synced_at) : '—', subtitle: '' },
                 ].map((m) => (
-                  <div key={m.id} className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4">
-                    <h3>{m.label}</h3>
+                  <div key={m.id} className="metric-card flex flex-col gap-1.5 p-4">
+                    <h3 className="text-xs text-muted-foreground">{m.label}</h3>
                     <div className={`metric-value min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
                     <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
                   </div>
@@ -13690,8 +13890,8 @@ export function KeyDetails({
               <Empty className="empty-state" style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
             ) : (
               metricCards.map((m) => (
-                <div key={m.id} className="metric-card flex flex-col gap-1.5 rounded-lg border bg-card p-4">
-                  <h3>{m.label}</h3>
+                <div key={m.id} className="metric-card flex flex-col gap-1.5 p-4">
+                  <h3 className="text-xs text-muted-foreground">{m.label}</h3>
                   <div className={`metric-value min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
                   <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
                 </div>

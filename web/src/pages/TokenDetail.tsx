@@ -1,7 +1,7 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, type ChartConfig } from '@/components/ui/chart'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 import { Empty, EmptyDescription } from '@/components/ui/empty'
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Fragment, type ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../lib/icons'
 import {
@@ -25,9 +25,7 @@ import {
 } from '../admin/requestLogsUi'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import AdminRecentRequestsPanel, { type RecentRequestsOutcomeFilter } from '../components/AdminRecentRequestsPanel'
-import AdminCompactIntro from '../components/AdminCompactIntro'
 import AdminReturnToConsoleLink from '../components/AdminReturnToConsoleLink'
-import { AdminSidebarUtilityCard, AdminSidebarUtilityStack } from '../components/AdminSidebarUtility'
 import ThemeToggle from '../components/ThemeToggle'
 import { StatusBadge } from '../components/StatusBadge'
 import { Button } from '@/components/ui/button'
@@ -1156,49 +1154,53 @@ export default function TokenDetail({
   }, [rotatedToken])
   const tokenDetailSidebarUtility = (
     <AdminShellSidebarUtility>
-      <AdminSidebarUtilityStack>
-        <AdminSidebarUtilityCard>
-          <div className="admin-sidebar-utility-toolbar">
-            <ThemeToggle />
-          </div>
-          <div className="admin-sidebar-utility-meta">
-            <span className={`sse-chip inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
-              <span className="sse-dot size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
-            </span>
-          </div>
-          <div className="admin-sidebar-utility-actions flex flex-col gap-1">
-            <AdminReturnToConsoleLink
-              label={translations.admin.header.returnToConsole}
-              href={ADMIN_USER_CONSOLE_HREF}
-              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
-              onClick={() => (onBack ? onBack() : window.history.back())}
-            >
-              <Icon icon="mdi:arrow-left" width={18} height={18} />
-              Back
-            </Button>
-          </div>
-        </AdminSidebarUtilityCard>
+      <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <Card size="sm" className="admin-sidebar-utility-card">
+          <CardContent className="flex flex-col gap-3">
+            <div className="admin-sidebar-utility-toolbar">
+              <ThemeToggle />
+            </div>
+            <div className="admin-sidebar-utility-meta">
+              <span className={`sse-chip inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
+                <span className="sse-dot size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
+              </span>
+            </div>
+            <div className="admin-sidebar-utility-actions flex flex-col gap-1">
+              <AdminReturnToConsoleLink
+                label={translations.admin.header.returnToConsole}
+                href={ADMIN_USER_CONSOLE_HREF}
+                className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
+                onClick={() => (onBack ? onBack() : window.history.back())}
+              >
+                <Icon icon="mdi:arrow-left" width={18} height={18} />
+                Back
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
-        <AdminSidebarUtilityCard>
-          <div className="admin-sidebar-utility-actions flex flex-col gap-1">
-            <Button
-              type="button"
-              variant="outline"
-              className="admin-sidebar-utility-action flex items-center gap-2 rounded-md border-warning/40 bg-warning/10 px-2 py-1.5 text-sm text-warning hover:bg-warning/20"
-              onClick={() => setIsRotateDialogOpen(true)}
-              aria-label="Regenerate secret"
-            >
-              <Icon icon="mdi:key-change" width={18} height={18} />
-              Regenerate Secret
-            </Button>
-          </div>
-        </AdminSidebarUtilityCard>
-      </AdminSidebarUtilityStack>
+        <Card size="sm" className="admin-sidebar-utility-card">
+          <CardContent className="flex flex-col gap-3">
+            <div className="admin-sidebar-utility-actions flex flex-col gap-1">
+              <Button
+                type="button"
+                variant="outline"
+                className="admin-sidebar-utility-action flex items-center gap-2 rounded-md border-warning/40 bg-warning/10 px-2 py-1.5 text-sm text-warning hover:bg-warning/20"
+                onClick={() => setIsRotateDialogOpen(true)}
+                aria-label="Regenerate secret"
+              >
+                <Icon icon="mdi:key-change" width={18} height={18} />
+                Regenerate Secret
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </AdminShellSidebarUtility>
   )
 
@@ -1246,10 +1248,12 @@ export default function TokenDetail({
       </div>
 
       <div className="hidden md:block">
-        <AdminCompactIntro
-          title="Access Token Detail"
-          description={<>Token <code>{id}</code></>}
-        />
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">Access Token Detail</h1>
+            <p className="admin-compact-intro-description text-sm text-muted-foreground">Token <code>{id}</code></p>
+          </div>
+        </section>
       </div>
 
       {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{error}</div>}
@@ -1348,7 +1352,7 @@ export default function TokenDetail({
             <CardDescription className="panel-description">Aggregated metrics for the selected window.</CardDescription>
           </div>
           <div className="token-period-controls flex flex-wrap items-center gap-2 px-4" role="group" aria-label="Period filter">
-            <div className="token-period-control inline-flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted">
+            <div className="token-period-control inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
               <label htmlFor={periodSelectId}>Period</label>
               <Select
                 value={period}
@@ -1373,7 +1377,7 @@ export default function TokenDetail({
                 </SelectContent>
               </Select>
             </div>
-            <div className="token-period-control inline-flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted">
+            <div className="token-period-control inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
               <label htmlFor={sinceInputId}>Start</label>
               {period === 'day' && (
                 <Input

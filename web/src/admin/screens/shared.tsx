@@ -4,7 +4,6 @@ import type React from 'react'
 
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 
-import AdminCompactIntro from '../../components/AdminCompactIntro'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -128,7 +127,17 @@ export function UsagePageIntro({
   return (
     <>
       <div className="hidden md:block">
-        <AdminCompactIntro title={title} description={description} actions={searchControls} />
+        <section
+          className={`admin-compact-intro flex flex-wrap items-end justify-between gap-4${searchControls ? ' admin-compact-intro--with-actions' : ''}`}
+        >
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
+            {description ? (
+              <p className="admin-compact-intro-description text-sm text-muted-foreground">{description}</p>
+            ) : null}
+          </div>
+          {searchControls ? <div className="admin-compact-intro-actions max-w-full">{searchControls}</div> : null}
+        </section>
       </div>
       <div className="block md:hidden">
         <section className="surface app-header admin-usage-stacked-intro">

@@ -474,17 +474,17 @@ export default function AdminSecuritySettingsModule({
           <h4>{copy.postureSectionTitle}</h4>
           <div className="grid gap-3">
             <div className="grid gap-2 md:grid-cols-3">
-              <div className="rounded-md border border-border/60 bg-muted/20 px-3 py-2">
+              <div className="bg-muted/20 px-3 py-2">
                 <p className="m-0 text-xs font-bold text-muted-foreground">{copy.posturePassword}</p>
                 <p className="m-0 text-sm font-semibold text-foreground">{passwordStatusLabel}</p>
               </div>
-              <div className="rounded-md border border-border/60 bg-muted/20 px-3 py-2">
+              <div className="bg-muted/20 px-3 py-2">
                 <p className="m-0 text-xs font-bold text-muted-foreground">{copy.posturePasskeys}</p>
                 <p className="m-0 text-sm font-semibold text-foreground">
                   {copy.posturePasskeyCount.replace('{count}', String(passkeyCredentialCount))}
                 </p>
               </div>
-              <div className="rounded-md border border-border/60 bg-muted/20 px-3 py-2">
+              <div className="bg-muted/20 px-3 py-2">
                 <p className="m-0 text-xs font-bold text-muted-foreground">{copy.postureTotp}</p>
                 <p className="m-0 text-sm font-semibold text-foreground">{totpStatusLabel}</p>
               </div>
@@ -602,7 +602,7 @@ export default function AdminSecuritySettingsModule({
                     return (
                       <div
                         key={credential.credentialId}
-                        className="admin-passkey-card space-y-3 p-3 rounded-md border border-border/60 bg-muted/20 text-sm"
+                        className="admin-passkey-card space-y-3 p-3 bg-muted/20 text-sm"
                       >
                         <div className="admin-passkey-edit-row flex flex-wrap items-center gap-2">
                           <Input
@@ -655,7 +655,7 @@ export default function AdminSecuritySettingsModule({
                   })}
                 </div>
               ) : (
-                <p className="rounded-md border border-border/60 bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
+                <p className="bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
                   {copy.passkeyEmpty}
                 </p>
               )}

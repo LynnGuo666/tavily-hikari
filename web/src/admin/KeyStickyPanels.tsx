@@ -16,9 +16,10 @@ import type {
 } from '../api'
 import { useTranslate } from '../i18n'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
-import AdminTablePagination from '../components/AdminTablePagination'
 import { StatusBadge } from '../components/StatusBadge'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import type { QueryLoadState } from './queryLoadState'
 import { isBlockingLoadState, isRefreshingLoadState } from './queryLoadState'
 
@@ -263,7 +264,7 @@ export default function KeyStickyPanels({
           </div>
         </CardHeader>
         <AdminLoadingRegion
-          className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
+          className="table-wrapper overflow-hidden hidden md:flex"
           loadState={stickyUsersLoadState}
           loadingLabel={stickyUsersLoadingLabel}
           errorLabel={stickyUsersError ?? adminStrings.errors.loadKeyDetails}
@@ -333,7 +334,7 @@ export default function KeyStickyPanels({
           )}
         </AdminLoadingRegion>
         <AdminLoadingRegion
-          className="flex flex-col gap-3 md:hidden flex md:hidden"
+          className="flex flex-col divide-y md:hidden flex md:hidden"
           loadState={stickyUsersLoadState}
           loadingLabel={stickyUsersLoadingLabel}
           errorLabel={stickyUsersError ?? adminStrings.errors.loadKeyDetails}
@@ -345,7 +346,7 @@ export default function KeyStickyPanels({
             stickyUsers.map((item) => {
               const secondary = stickyUserSecondary(item.user)
               return (
-                <article key={item.user.userId} className="rounded-lg border p-3">
+                <article key={item.user.userId} className="py-3">
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.user}</span>
                     <strong>
@@ -404,24 +405,48 @@ export default function KeyStickyPanels({
           )}
         </AdminLoadingRegion>
         {stickyUsersTotal > stickyUsersPerPage ? (
-          <AdminTablePagination
-            page={stickyUsersPage}
-            totalPages={stickyUsersTotalPages}
-            pageSummary={
-              <span className="panel-description text-sm text-muted-foreground">
-                {keyStrings.pagination.page
-                  .replace('{page}', String(stickyUsersPage))
-                  .replace('{total}', String(stickyUsersTotalPages))}
+          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
+              <span className="table-pagination-summary text-sm text-muted-foreground">
+                <span className="panel-description text-sm text-muted-foreground">
+                  {keyStrings.pagination.page
+                    .replace('{page}', String(stickyUsersPage))
+                    .replace('{total}', String(stickyUsersTotalPages))}
+                </span>
               </span>
-            }
-            previousLabel={tokenStrings.pagination.prev}
-            nextLabel={tokenStrings.pagination.next}
-            previousDisabled={stickyUsersPage <= 1}
-            nextDisabled={stickyUsersPage >= stickyUsersTotalPages}
-            disabled={stickyUsersBlocking}
-            onPrevious={onStickyUsersPrevious ?? (() => undefined)}
-            onNext={onStickyUsersNext ?? (() => undefined)}
-          />
+            </div>
+            <Pagination
+              className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+              aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}
+            >
+              <PaginationContent>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => void (onStickyUsersPrevious ?? (() => undefined))()}
+                    disabled={stickyUsersBlocking || stickyUsersPage <= 1}
+                  >
+                    <ChevronLeftIcon data-icon="inline-start" />
+                    {tokenStrings.pagination.prev}
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => void (onStickyUsersNext ?? (() => undefined))()}
+                    disabled={stickyUsersBlocking || stickyUsersPage >= stickyUsersTotalPages}
+                  >
+                    {tokenStrings.pagination.next}
+                    <ChevronRightIcon data-icon="inline-end" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         ) : null}
       </Card>
 
@@ -433,7 +458,7 @@ export default function KeyStickyPanels({
           </div>
         </CardHeader>
         <AdminLoadingRegion
-          className="table-wrapper overflow-hidden rounded-lg border hidden md:flex"
+          className="table-wrapper overflow-hidden hidden md:flex"
           loadState={stickyNodesLoadState}
           loadingLabel={stickyNodesLoadingLabel}
           errorLabel={stickyNodesError ?? adminStrings.errors.loadKeyDetails}
@@ -487,7 +512,7 @@ export default function KeyStickyPanels({
           )}
         </AdminLoadingRegion>
         <AdminLoadingRegion
-          className="flex flex-col gap-3 md:hidden flex md:hidden"
+          className="flex flex-col divide-y md:hidden flex md:hidden"
           loadState={stickyNodesLoadState}
           loadingLabel={stickyNodesLoadingLabel}
           errorLabel={stickyNodesError ?? adminStrings.errors.loadKeyDetails}
@@ -499,7 +524,7 @@ export default function KeyStickyPanels({
             stickyNodes.map((node) => {
               const assignmentSummary = stickyNodeAssignmentSummary(node, keyDetailsStrings.stickyNodes)
               return (
-                <article key={`${node.role}:${node.key}`} className="rounded-lg border p-3">
+                <article key={`${node.role}:${node.key}`} className="py-3">
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.role}</span>
                     <StatusBadge tone={node.role === 'primary' ? 'success' : 'info'}>

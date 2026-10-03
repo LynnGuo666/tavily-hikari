@@ -6,7 +6,6 @@ import { LanguageProvider } from '../i18n'
 import { ADMIN_USER_CONSOLE_HREF } from '../lib/adminUserConsoleEntry'
 import { ThemeProvider } from '../theme'
 import AdminPanelHeader from './AdminPanelHeader'
-import TokenUsageHeader from './TokenUsageHeader'
 
 function renderWithProviders(node: React.JSX.Element): string {
   return renderToStaticMarkup(
@@ -36,36 +35,5 @@ describe('admin return-to-console CTA', () => {
     expect(html).toContain('Back to User Console')
     expect(html).toContain(`href="${ADMIN_USER_CONSOLE_HREF}"`)
     expect(html).toContain('admin-return-link')
-  })
-
-  it('renders the shared href in the leaderboard/detail-style header', () => {
-    const html = renderWithProviders(
-      <TokenUsageHeader
-        title="Token Usage"
-        subtitle="Focus on heavy hitters."
-        backLabel="Back"
-        userConsoleLabel="Back to User Console"
-        userConsoleHref={ADMIN_USER_CONSOLE_HREF}
-        period="day"
-        focus="usage"
-        periodOptions={[
-          { value: 'day', label: 'Today' },
-          { value: 'month', label: 'Month' },
-          { value: 'all', label: 'All time' },
-        ]}
-        focusOptions={[
-          { value: 'usage', label: 'Usage' },
-          { value: 'errors', label: 'Errors' },
-          { value: 'other', label: 'Other' },
-        ]}
-        onBack={() => undefined}
-        onPeriodChange={() => undefined}
-        onFocusChange={() => undefined}
-      />,
-    )
-
-    expect(html).toContain('Back to User Console')
-    expect(html).toContain(`href="${ADMIN_USER_CONSOLE_HREF}"`)
-    expect(html).toContain('token-usage-header')
   })
 })

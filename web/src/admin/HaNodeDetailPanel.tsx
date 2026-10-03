@@ -312,9 +312,9 @@ export default function HaNodeDetailPanel({
           {channelHealth.length === 0 ? (
             <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground"><span>—</span></div>
           ) : (
-            <div className="ha-channel-health-list flex min-w-0 flex-col gap-4">
+            <div className="ha-channel-health-list flex min-w-0 flex-col divide-y divide-border">
               {channelHealth.map((health) => (
-                <div key={health.channel} className="ha-channel-health-row space-y-4 rounded-lg border p-3 [&_dl]:grid [&_dl]:grid-cols-1 [&_dl]:gap-3 sm:[&_dl]:grid-cols-2 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:break-all [&_dd]:tabular-nums">
+                <div key={health.channel} className="ha-channel-health-row space-y-4 py-4 [&_dl]:grid [&_dl]:grid-cols-1 [&_dl]:gap-3 sm:[&_dl]:grid-cols-2 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:break-all [&_dd]:tabular-nums">
                   <div className="ha-channel-health-heading flex flex-wrap items-center justify-between gap-2">
                     <strong>{channelLabel(health.channel, language)}</strong>
                     <div className="ha-channel-health-badges flex flex-wrap gap-2">

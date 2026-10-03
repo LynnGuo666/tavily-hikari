@@ -1,6 +1,8 @@
 import { Icon } from '../lib/icons'
 import type React from 'react'
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+
 interface OfflineStatusBannerProps {
   title: string
   description: string
@@ -11,14 +13,10 @@ export default function OfflineStatusBanner({
   description,
 }: OfflineStatusBannerProps): React.JSX.Element {
   return (
-    <section className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive offline-status-banner" role="status" aria-live="polite">
-      <div className="offline-status-banner-icon" aria-hidden="true">
-        <Icon icon="mdi:web-off" width={20} height={20} />
-      </div>
-      <div className="offline-status-banner-copy">
-        <strong>{title}</strong>
-        <span>{description}</span>
-      </div>
-    </section>
+    <Alert variant="destructive" className="surface offline-status-banner" role="status" aria-live="polite">
+      <Icon icon="mdi:web-off" width={20} height={20} className="offline-status-banner-icon" aria-hidden="true" />
+      <AlertTitle>{title}</AlertTitle>
+      <AlertDescription>{description}</AlertDescription>
+    </Alert>
   )
 }

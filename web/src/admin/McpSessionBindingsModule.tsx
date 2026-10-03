@@ -15,10 +15,11 @@ import type {
   AdminMcpSessionBindingsPathContext,
 } from './routes'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
-import AdminTablePagination from '../components/AdminTablePagination'
 import DateTimeRangeField from '../components/DateTimeRangeField'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import { Button } from '@/components/ui/button'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import McpSessionBindingsStatusTabs from './McpSessionBindingsStatusTabs'
@@ -471,7 +472,7 @@ export default function McpSessionBindingsModule({
           <Empty className="empty-state"><EmptyDescription>{copy.empty}</EmptyDescription></Empty>
         ) : (
           <>
-            <div className="table-wrapper overflow-hidden rounded-lg border">
+            <div className="table-wrapper overflow-hidden">
               <Table className="mcp-session-bindings-table">
                 <TableHeader>
                   <TableRow>
@@ -571,24 +572,48 @@ export default function McpSessionBindingsModule({
               </Table>
             </div>
 
-            <AdminTablePagination
-              page={data.page}
-              totalPages={totalPages}
-              pageSummary={
-                <span className="panel-description text-sm text-muted-foreground">
-                  {copy.pagination
-                    .replace('{page}', String(data.page))
-                    .replace('{total}', String(totalPages))}
+            <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
+                <span className="table-pagination-summary text-sm text-muted-foreground">
+                  <span className="panel-description text-sm text-muted-foreground">
+                    {copy.pagination
+                      .replace('{page}', String(data.page))
+                      .replace('{total}', String(totalPages))}
+                  </span>
                 </span>
-              }
-              previousLabel={language === 'zh' ? '上一页' : 'Previous'}
-              nextLabel={language === 'zh' ? '下一页' : 'Next'}
-              previousDisabled={data.page <= 1 || busy}
-              nextDisabled={data.page >= totalPages || busy}
-              disabled={busy}
-              onPrevious={() => onNavigate({ ...query, page: Math.max(1, (query.page ?? 1) - 1) })}
-              onNext={() => onNavigate({ ...query, page: Math.min(totalPages, (query.page ?? 1) + 1) })}
-            />
+              </div>
+              <Pagination
+                className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+                aria-label={`${language === 'zh' ? '上一页' : 'Previous'} / ${language === 'zh' ? '下一页' : 'Next'}`}
+              >
+                <PaginationContent>
+                  <PaginationItem>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="table-pagination-button"
+                      onClick={() => onNavigate({ ...query, page: Math.max(1, (query.page ?? 1) - 1) })}
+                      disabled={busy || data.page <= 1}
+                    >
+                      <ChevronLeftIcon data-icon="inline-start" />
+                      {language === 'zh' ? '上一页' : 'Previous'}
+                    </Button>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="table-pagination-button"
+                      onClick={() => onNavigate({ ...query, page: Math.min(totalPages, (query.page ?? 1) + 1) })}
+                      disabled={busy || data.page >= totalPages}
+                    >
+                      {language === 'zh' ? '下一页' : 'Next'}
+                      <ChevronRightIcon data-icon="inline-end" />
+                    </Button>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           </>
         )}
       </AdminLoadingRegion></CardContent>

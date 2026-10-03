@@ -1,7 +1,8 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import type {
   AlertCatalog,
   AlertEvent,
@@ -39,13 +40,14 @@ import {
   type AlertsCenterView,
 } from './routes'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
-import AdminTablePagination from '../components/AdminTablePagination'
 import AdminTableShell from '../components/AdminTableShell'
 import SearchableFacetSelect from '../components/SearchableFacetSelect'
 import RequestKindBadge from '../components/RequestKindBadge'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import { cleanedRequestLogBodySummary } from '../requestLogBodySummary'
 import { Button } from '@/components/ui/button'
+import { Field, FieldLabel } from '@/components/ui/field'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/ui/drawer'
 import {
   DropdownMenu,
@@ -557,6 +559,7 @@ export default function AlertsCenter({
   const lastListQueryKeyRef = useRef<string | null>(
     hasInitialListPage ? currentListQueryKey : null,
   )
+  const paginationPerPageId = useId()
 
   useEffect(() => {
     setDraftSince(isoToDateTimeLocal(since))
@@ -732,6 +735,9 @@ export default function AlertsCenter({
 
   const currentPage = view === 'events' ? eventsPage : groupsPage
   const totalPageCount = totalPages(currentPage.total, currentPage.perPage)
+  const paginationPerPageOptions = [10, 20, 50, 100].includes(currentPage.perPage)
+    ? [10, 20, 50, 100]
+    : [...[10, 20, 50, 100], currentPage.perPage].sort((left, right) => left - right)
   const typeOptions = useMemo(
     () =>
       (catalog?.types ?? []).map((option) => ({
@@ -992,7 +998,7 @@ export default function AlertsCenter({
           </div>
         </div>
         {alertsCoverage ? (
-          <div className="alerts-center-stale-notice mx-4 flex flex-wrap items-start gap-3 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm [&_span]:block" role="status">
+          <div className="alerts-center-stale-notice mx-4 flex flex-wrap items-start gap-3 rounded-lg bg-warning/10 p-3 text-sm [&_span]:block" role="status">
             <Icon icon="mdi:alert-circle-outline" width={17} height={17} aria-hidden="true" />
             <div>
               <strong>{copy.stale.title}</strong>
@@ -1271,27 +1277,73 @@ export default function AlertsCenter({
             </AdminTableShell>
           )}
 
-          <CardFooter className="mt-4 -mx-4 -mb-4"><AdminTablePagination
-            page={currentPage.page}
-            totalPages={totalPageCount}
-            pageSummary={paginationSummary(copy, currentPage.total, currentPage.page, currentPage.perPage)}
-            perPage={currentPage.perPage}
-            perPageLabel={language === 'zh' ? '每页条数' : 'Per page'}
-            previousLabel={copy.paginationPrevious}
-            nextLabel={copy.paginationNext}
-            previousDisabled={currentPage.page <= 1}
-            nextDisabled={currentPage.page >= totalPageCount}
-            onPrevious={() => navigateWith({ page: Math.max(1, currentPage.page - 1) })}
-            onNext={() => navigateWith({ page: Math.min(totalPageCount, currentPage.page + 1) })}
-            onPerPageChange={(nextPerPage) => {
-              if (view === 'events') {
-                setEventsPage((current) => ({ ...current, perPage: nextPerPage, page: 1 }))
-              } else {
-                setGroupsPage((current) => ({ ...current, perPage: nextPerPage, page: 1 }))
-              }
-              navigateWith({ page: 1 })
-            }}
-          />
+          <CardFooter className="mt-4 -mx-4 -mb-4">
+            <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
+                <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+                  <FieldLabel htmlFor={paginationPerPageId}>{language === 'zh' ? '每页条数' : 'Per page'}</FieldLabel>
+                  <Select
+                    value={String(currentPage.perPage)}
+                    onValueChange={(value) => {
+                      const nextPerPage = Number(value)
+                      if (view === 'events') {
+                        setEventsPage((current) => ({ ...current, perPage: nextPerPage, page: 1 }))
+                      } else {
+                        setGroupsPage((current) => ({ ...current, perPage: nextPerPage, page: 1 }))
+                      }
+                      navigateWith({ page: 1 })
+                    }}
+                  >
+                    <SelectTrigger id={paginationPerPageId} aria-label="Rows per page" className="table-pagination-select w-20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent position="popper" align="start">
+                      <SelectGroup>
+                        {paginationPerPageOptions.map((option) => (
+                          <SelectItem key={option} value={String(option)}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <span className="table-pagination-summary text-sm text-muted-foreground">
+                  {paginationSummary(copy, currentPage.total, currentPage.page, currentPage.perPage)}
+                </span>
+              </div>
+              <Pagination
+                className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+                aria-label={`${copy.paginationPrevious} / ${copy.paginationNext}`}
+              >
+                <PaginationContent>
+                  <PaginationItem>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="table-pagination-button"
+                      onClick={() => navigateWith({ page: Math.max(1, currentPage.page - 1) })}
+                      disabled={currentPage.page <= 1}
+                    >
+                      <ChevronLeftIcon data-icon="inline-start" />
+                      {copy.paginationPrevious}
+                    </Button>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="table-pagination-button"
+                      onClick={() => navigateWith({ page: Math.min(totalPageCount, currentPage.page + 1) })}
+                      disabled={currentPage.page >= totalPageCount}
+                    >
+                      {copy.paginationNext}
+                      <ChevronRightIcon data-icon="inline-end" />
+                    </Button>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           </CardFooter>
         </AdminLoadingRegion>
         </CardContent>

@@ -1,7 +1,8 @@
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Empty, EmptyDescription } from '@/components/ui/empty'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import { useId, useMemo } from 'react'
 import type React from 'react'
 
@@ -593,23 +594,24 @@ export default function UpstreamPrivacyStatusModule({
               </Button>
             </section>
 
-            <Card className="upstream-privacy-section min-w-0">
-              <CardHeader className="panel-header border-b">
-                <div>
-                  <CardTitle role="heading" aria-level={3}>{strings.attentionTitle}</CardTitle>
-                  <CardDescription className="panel-description">
+            <section className="upstream-privacy-section min-w-0">
+              <div className="panel-header flex flex-wrap items-start justify-between gap-2">
+                <div className="space-y-1">
+                  <h3 className="text-sm font-medium">{strings.attentionTitle}</h3>
+                  <p className="panel-description text-sm text-muted-foreground">
                     {statusIssues.length === 0 ? strings.attentionClear : strings.attentionDescription}
-                  </CardDescription>
+                  </p>
                 </div>
                 <StatusBadge tone={phaseTone(status.phase)}>{phaseLabel}</StatusBadge>
-              </CardHeader>
-              <CardContent className="min-w-0">
+              </div>
+              <Separator className="my-3" />
+              <div className="min-w-0">
               {statusIssues.length === 0 ? (
                 <div className="upstream-privacy-empty-note text-sm text-muted-foreground">{strings.attentionClear}</div>
               ) : (
-                <div className="upstream-privacy-issue-list flex min-w-0 flex-col gap-3">
+                <div className="upstream-privacy-issue-list flex min-w-0 flex-col divide-y divide-border">
                   {statusIssues.map((issue) => (
-                    <article key={issue.key} className="upstream-privacy-issue flex flex-col gap-3 rounded-lg border p-3 sm:flex-row sm:items-start sm:justify-between">
+                    <article key={issue.key} className="upstream-privacy-issue flex flex-col gap-3 py-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="upstream-privacy-issue__copy min-w-0 space-y-1 [&_p]:text-sm [&_p]:text-muted-foreground">
                         <strong>{issue.title}</strong>
                         <p>{issue.detail}</p>
@@ -621,16 +623,15 @@ export default function UpstreamPrivacyStatusModule({
                   ))}
                 </div>
               )}
-            </CardContent>
-            </Card>
+            </div>
+            </section>
 
-            <Card className="upstream-privacy-section min-w-0">
-              <CardHeader className="panel-header border-b">
-                <div>
-                  <CardTitle role="heading" aria-level={3}>{strings.countersTitle}</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="min-w-0">
+            <section className="upstream-privacy-section min-w-0">
+              <div className="panel-header space-y-1">
+                <h3 className="text-sm font-medium">{strings.countersTitle}</h3>
+              </div>
+              <Separator className="my-3" />
+              <div className="min-w-0">
               <div className="upstream-privacy-counters grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <PrivacyStat label={sessionBindingSummaryLabel} value={numberFormatter.format(status.activeUpstreamMcpSessions)} />
                 <PrivacyStat
@@ -787,17 +788,16 @@ export default function UpstreamPrivacyStatusModule({
                     : `Foreground ${numberFormatter.format(status.reconciliationResearchPollDiagnostics?.foregroundPressureDefers ?? 0)} · Lease ${numberFormatter.format(status.reconciliationResearchPollDiagnostics?.remoteLeaseDefers ?? 0)} · Read ${numberFormatter.format(status.reconciliationResearchPollDiagnostics?.readBudgetDefers ?? 0)} · Control ${numberFormatter.format(status.reconciliationResearchPollDiagnostics?.controlDefers ?? 0)}`}
                 />
               </div>
-            </CardContent>
-            </Card>
+            </div>
+            </section>
 
-            <Card className="upstream-privacy-section min-w-0" data-testid="system-status-reconciliation-progress">
-              <CardHeader className="panel-header border-b">
-                <div>
-                  <CardTitle role="heading" aria-level={3}>{diagnosticsLabels.progressTitle}</CardTitle>
-                  <CardDescription className="panel-description">{diagnosticsLabels.progressDescription}</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="min-w-0">
+            <section className="upstream-privacy-section min-w-0" data-testid="system-status-reconciliation-progress">
+              <div className="panel-header space-y-1">
+                <h3 className="text-sm font-medium">{diagnosticsLabels.progressTitle}</h3>
+                <p className="panel-description text-sm text-muted-foreground">{diagnosticsLabels.progressDescription}</p>
+              </div>
+              <Separator className="my-3" />
+              <div className="min-w-0">
               <div className="upstream-privacy-progress-grid grid min-w-0 gap-3 md:grid-cols-3">
                 <ReconciliationProgressMeter
                   label={diagnosticsLabels.accountCoverage}
@@ -828,9 +828,9 @@ export default function UpstreamPrivacyStatusModule({
                 {dailyKeyProgressRows.length === 0 ? (
                   <div className="upstream-privacy-empty-note text-sm text-muted-foreground">{diagnosticsLabels.keyProgressEmpty}</div>
                 ) : (
-                  <div className="upstream-privacy-key-progress__rows flex flex-col gap-2">
+                  <div className="upstream-privacy-key-progress__rows flex flex-col divide-y divide-border">
                     {dailyKeyProgressRows.map((key) => (
-                      <article key={key.keyIdHint} className="upstream-privacy-key-progress__row flex flex-wrap items-center gap-3 rounded-lg border p-3 text-xs">
+                      <article key={key.keyIdHint} className="upstream-privacy-key-progress__row flex flex-wrap items-center gap-3 py-3 text-xs">
                         <code>{key.keyIdHint}</code>
                         <span>{diagnosticsLabels.pendingResearch} {numberFormatter.format(key.pendingResearch)}</span>
                         <span>{diagnosticsLabels.pendingProjectIds} {numberFormatter.format(key.pendingProjectIds)}</span>
@@ -844,17 +844,16 @@ export default function UpstreamPrivacyStatusModule({
                   </div>
                 )}
               </div>
-            </CardContent>
-            </Card>
+            </div>
+            </section>
 
-            <Card className="upstream-privacy-section min-w-0" data-testid="system-status-retry-buckets">
-              <CardHeader className="panel-header border-b">
-                <div>
-                  <CardTitle role="heading" aria-level={3}>{diagnosticsLabels.retryBucketsTitle}</CardTitle>
-                  <CardDescription className="panel-description">{diagnosticsLabels.retryBucketsDescription}</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="min-w-0">
+            <section className="upstream-privacy-section min-w-0" data-testid="system-status-retry-buckets">
+              <div className="panel-header space-y-1">
+                <h3 className="text-sm font-medium">{diagnosticsLabels.retryBucketsTitle}</h3>
+                <p className="panel-description text-sm text-muted-foreground">{diagnosticsLabels.retryBucketsDescription}</p>
+              </div>
+              <Separator className="my-3" />
+              <div className="min-w-0">
               <div className="upstream-privacy-counters grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 <PrivacyStat
                   label={diagnosticsLabels.retryBucketUpstream429}
@@ -873,18 +872,19 @@ export default function UpstreamPrivacyStatusModule({
                   value={numberFormatter.format(status.retryBuckets.other)}
                 />
               </div>
-            </CardContent>
-            </Card>
+            </div>
+            </section>
 
-            <Card className="upstream-privacy-section min-w-0" data-testid="system-status-key-activity">
-              <CardHeader className="panel-header border-b">
-                <div>
-                  <CardTitle role="heading" aria-level={3}>{diagnosticsLabels.keyActivityTitle}</CardTitle>
-                  <CardDescription className="panel-description">{diagnosticsLabels.keyActivityDescription}</CardDescription>
+            <section className="upstream-privacy-section min-w-0" data-testid="system-status-key-activity">
+              <div className="panel-header flex flex-wrap items-start justify-between gap-2">
+                <div className="space-y-1">
+                  <h3 className="text-sm font-medium">{diagnosticsLabels.keyActivityTitle}</h3>
+                  <p className="panel-description text-sm text-muted-foreground">{diagnosticsLabels.keyActivityDescription}</p>
                 </div>
                 <StatusBadge tone="info">{status.currentPeriodCode}</StatusBadge>
-              </CardHeader>
-              <CardContent className="min-w-0">
+              </div>
+              <Separator className="my-3" />
+              <div className="min-w-0">
               <div className="upstream-privacy-activity-grid grid min-w-0 gap-4 lg:grid-cols-2">
                 <KeyActivityChart
                   title={diagnosticsLabels.boundUsersByKeyTitle}
@@ -899,8 +899,8 @@ export default function UpstreamPrivacyStatusModule({
                   numberFormatter={numberFormatter}
                 />
               </div>
-            </CardContent>
-            </Card>
+            </div>
+            </section>
 
             <details className="upstream-privacy-details min-w-0 rounded-xl border" data-testid="system-status-technical-details">
               <summary className="upstream-privacy-details__summary cursor-pointer space-y-2 p-4 [&_p]:text-sm [&_p]:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
@@ -918,16 +918,15 @@ export default function UpstreamPrivacyStatusModule({
                 </div>
               </summary>
               <div className="upstream-privacy-details__body flex min-w-0 flex-col gap-4 border-t p-4">
-                <Card className="upstream-privacy-detail-section min-w-0">
-                  <CardHeader className="panel-header border-b">
-                    <div>
-                      <CardTitle role="heading" aria-level={3}>{strings.configurationTitle}</CardTitle>
-                      <CardDescription className="panel-description">
-                        {configurationDriftCount === 0 ? strings.configurationAligned : strings.detailsDescription}
-                      </CardDescription>
-                    </div>
-                  </CardHeader>
-              <CardContent className="min-w-0">
+                <section className="upstream-privacy-detail-section min-w-0">
+                  <div className="panel-header space-y-1">
+                    <h3 className="text-sm font-medium">{strings.configurationTitle}</h3>
+                    <p className="panel-description text-sm text-muted-foreground">
+                      {configurationDriftCount === 0 ? strings.configurationAligned : strings.detailsDescription}
+                    </p>
+                  </div>
+                  <Separator className="my-3" />
+              <div className="min-w-0">
                   <div className="upstream-privacy-counters grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                     <PrivacyStat
                       label={strings.projectIdModeConfigured}
@@ -957,20 +956,19 @@ export default function UpstreamPrivacyStatusModule({
                     />
                     <PrivacyStat label={strings.generatedAt} value={timestampFormatter.format(new Date(status.generatedAt * 1000))} />
                   </div>
-                </CardContent>
-            </Card>
+                </div>
+            </section>
 
-                <Card className="upstream-privacy-detail-section min-w-0">
-                  <CardHeader className="panel-header border-b">
-                    <div>
-                      <CardTitle role="heading" aria-level={3}>{strings.gateTitle}</CardTitle>
-                      <CardDescription className="panel-description">{strings.gateDescription}</CardDescription>
-                    </div>
-                  </CardHeader>
-              <CardContent className="min-w-0">
-                  <div className="upstream-privacy-gates grid min-w-0 gap-3 sm:grid-cols-2">
+                <section className="upstream-privacy-detail-section min-w-0">
+                  <div className="panel-header space-y-1">
+                    <h3 className="text-sm font-medium">{strings.gateTitle}</h3>
+                    <p className="panel-description text-sm text-muted-foreground">{strings.gateDescription}</p>
+                  </div>
+                  <Separator className="my-3" />
+              <div className="min-w-0">
+                  <div className="upstream-privacy-gates flex min-w-0 flex-col divide-y divide-border">
                     {status.gates.map((gate) => (
-                      <article key={gate.key} className="upstream-privacy-gate min-w-0 space-y-2 rounded-lg border p-3 [&_code]:block [&_code]:break-all [&_code]:text-xs">
+                      <article key={gate.key} className="upstream-privacy-gate min-w-0 space-y-2 py-3 [&_code]:block [&_code]:break-all [&_code]:text-xs">
                         <div className="upstream-privacy-gate__head flex flex-wrap items-center justify-between gap-2">
                           <strong>{gateLabel(strings, language, gate)}</strong>
                           <StatusBadge tone={gate.ready ? 'success' : 'warning'}>
@@ -981,36 +979,34 @@ export default function UpstreamPrivacyStatusModule({
                       </article>
                     ))}
                   </div>
-                </CardContent>
-            </Card>
+                </div>
+            </section>
 
-                <Card className="upstream-privacy-detail-section min-w-0">
-                  <CardHeader className="panel-header border-b">
-                    <div>
-                      <CardTitle role="heading" aria-level={3}>{strings.headersTitle}</CardTitle>
-                    </div>
-                  </CardHeader>
-              <CardContent className="min-w-0">
+                <section className="upstream-privacy-detail-section min-w-0">
+                  <div className="panel-header space-y-1">
+                    <h3 className="text-sm font-medium">{strings.headersTitle}</h3>
+                  </div>
+                  <Separator className="my-3" />
+              <div className="min-w-0">
                   <div className="upstream-privacy-header-groups grid min-w-0 gap-4 sm:grid-cols-2">
                     <HeaderList title={strings.headersHttpTitle} items={status.httpAllowedHeaders} />
                     <HeaderList title={strings.headersControlTitle} items={status.controlMcpAllowedHeaders} />
                   </div>
-                </CardContent>
-            </Card>
+                </div>
+            </section>
 
-                <Card className="upstream-privacy-detail-section min-w-0">
-                  <CardHeader className="panel-header border-b">
-                    <div>
-                      <CardTitle role="heading" aria-level={3}>{strings.adjustmentsTitle}</CardTitle>
-                    </div>
-                  </CardHeader>
-              <CardContent className="min-w-0">
+                <section className="upstream-privacy-detail-section min-w-0">
+                  <div className="panel-header space-y-1">
+                    <h3 className="text-sm font-medium">{strings.adjustmentsTitle}</h3>
+                  </div>
+                  <Separator className="my-3" />
+              <div className="min-w-0">
                   {status.recentAdjustments.length === 0 ? (
                     <Empty className="empty-state"><EmptyDescription>{strings.adjustmentsEmpty}</EmptyDescription></Empty>
                   ) : (
-                    <div className="upstream-privacy-adjustments grid min-w-0 gap-3 sm:grid-cols-2">
+                    <div className="upstream-privacy-adjustments flex min-w-0 flex-col divide-y divide-border">
                       {status.recentAdjustments.map((adjustment) => (
-                        <article key={adjustment.settlementKey} className="upstream-privacy-adjustment min-w-0 space-y-3 rounded-lg border p-3 [&_dl]:space-y-3">
+                        <article key={adjustment.settlementKey} className="upstream-privacy-adjustment min-w-0 space-y-3 py-3 [&_dl]:space-y-3">
                           <div className="upstream-privacy-adjustment__head flex flex-wrap items-center justify-between gap-2">
                             <strong>{adjustment.periodCode}</strong>
                             <StatusBadge tone={adjustment.deltaCredits >= 0 ? 'warning' : 'success'}>
@@ -1029,8 +1025,8 @@ export default function UpstreamPrivacyStatusModule({
                       ))}
                     </div>
                   )}
-                </CardContent>
-            </Card>
+                </div>
+            </section>
               </div>
             </details>
           </div>

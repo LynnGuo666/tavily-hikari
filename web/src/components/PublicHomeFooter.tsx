@@ -1,6 +1,9 @@
-import AppFooter from './AppFooter'
-import { buildOctoRillReleaseLink, formatVersionDisplay } from '../lib/releaseLinks'
+import { GithubIcon } from 'lucide-react'
 import type React from 'react'
+
+import { buildOctoRillReleaseLink, formatVersionDisplay } from '../lib/releaseLinks'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 
 export default function PublicHomeFooter({
   versionLabel,
@@ -13,14 +16,25 @@ export default function PublicHomeFooter({
   const displayVersion = formatVersionDisplay(version)
 
   return (
-    <AppFooter
-      className="public-home-footer"
-      githubLabel="GitHub"
-      version={<>{versionLabel} {release ? (
-        <a className="underline-offset-4 hover:underline" href={release.href} target="_blank" rel="noreferrer">
-          <code>{release.label}</code>
-        </a>
-      ) : <code>{displayVersion ?? '—'}</code>}</>}
-    />
+    <footer className="app-footer public-home-footer mt-6 flex flex-col gap-3 text-sm text-muted-foreground">
+      <Separator />
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <Button asChild variant="link" size="sm">
+            <a href="https://github.com/IvanLi-CN/tavily-hikari" className="footer-link" target="_blank" rel="noreferrer">
+              <GithubIcon data-icon="inline-start" />
+              GitHub
+            </a>
+          </Button>
+          <span className="footer-meta inline-flex flex-wrap items-center gap-1">
+            {versionLabel} {release ? (
+              <a className="underline-offset-4 hover:underline" href={release.href} target="_blank" rel="noreferrer">
+                <code>{release.label}</code>
+              </a>
+            ) : <code>{displayVersion ?? '—'}</code>}
+          </span>
+        </div>
+      </div>
+    </footer>
   )
 }

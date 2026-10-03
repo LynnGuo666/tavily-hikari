@@ -19,7 +19,6 @@ import RequestKindBadge from './RequestKindBadge'
 import RequestIpDiagnostics from './RequestIpDiagnostics'
 import AdminRecentRequestsRequestKindFilter from './AdminRecentRequestsRequestKindFilter'
 import AdminLoadingRegion from './AdminLoadingRegion'
-import AdminTablePagination from './AdminTablePagination'
 import AdminTableShell from './AdminTableShell'
 import {
   RebalanceGatewayMarker,
@@ -37,6 +36,8 @@ import {
 import SearchableFacetSelect from './SearchableFacetSelect'
 import { StatusBadge, type StatusTone } from './StatusBadge'
 import { Button } from '@/components/ui/button'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -786,6 +787,7 @@ export default function AdminRecentRequestsPanel({
   loadLogBodies,
 }: AdminRecentRequestsPanelProps): React.JSX.Element {
   const filterId = useId()
+  const paginationPerPageId = useId()
   const [expandedLogs, setExpandedLogs] = useState<Set<number>>(() => new Set())
   const [logBodiesById, setLogBodiesById] = useState<Record<number, LogBodiesLoadState>>({})
   const [headerFiltersTarget, setHeaderFiltersTarget] = useState<HTMLElement | null>(null)
@@ -887,6 +889,9 @@ export default function AdminRecentRequestsPanel({
     [keyOptions, selectedKeyId],
   )
   const summaryColumnCount = 6 + Number(showKeyColumn) + Number(showTokenColumn)
+  const paginationPerPageOptions = [10, 20, 50, 100].includes(perPage)
+    ? [10, 20, 50, 100]
+    : [...[10, 20, 50, 100], perPage].sort((left, right) => left - right)
   const desktopClassName = `recent-requests-desktop hidden md:block recent-requests-desktop--${variant}`
   const mobileClassName = `recent-requests-mobile-list flex flex-col gap-3 px-4 md:hidden recent-requests-mobile-list--${variant}`
   const mobileCardClassName =
@@ -1071,7 +1076,7 @@ export default function AdminRecentRequestsPanel({
         {renderFilters(headerFiltersTarget ? 'recent-requests-filters--mobile-only md:hidden' : undefined)}
       </CardHeader>
       <AdminTableShell
-        className={cn(desktopClassName, 'rounded-none border-0')}
+        className={desktopClassName}
         tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:align-middle [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_td]:align-middle [&_tbody_tr]:border-b recent-requests-table recent-requests-table--${variant}`}
         loadState={loadState}
         loadingLabel={loadingLabel}
@@ -1404,22 +1409,68 @@ export default function AdminRecentRequestsPanel({
         )}
       </AdminLoadingRegion>
       <CardFooter>
-      <AdminTablePagination
-        page={1}
-        totalPages={1}
-        pageSummary={paginationSummary}
-        perPage={perPage}
-        perPageLabel={language === 'zh' ? '每页条数' : 'Rows per page'}
-        perPageAriaLabel={language === 'zh' ? '每页条数' : 'Rows per page'}
-        previousLabel={strings.logs.pagination.newer}
-        nextLabel={strings.logs.pagination.older}
-        previousDisabled={!hasNewer}
-        nextDisabled={!hasOlder}
-        disabled={paginationDisabled}
-        onPrevious={onNewerPage}
-        onNext={onOlderPage}
-        onPerPageChange={onPerPageChange}
-      />
+        <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
+            <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+              <FieldLabel htmlFor={paginationPerPageId}>{language === 'zh' ? '每页条数' : 'Rows per page'}</FieldLabel>
+              <Select
+                value={String(perPage)}
+                onValueChange={(value) => void onPerPageChange(Number(value))}
+                disabled={paginationDisabled}
+              >
+                <SelectTrigger
+                  id={paginationPerPageId}
+                  aria-label={language === 'zh' ? '每页条数' : 'Rows per page'}
+                  className="table-pagination-select w-20"
+                  disabled={paginationDisabled}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent position="popper" align="start">
+                  <SelectGroup>
+                    {paginationPerPageOptions.map((option) => (
+                      <SelectItem key={option} value={String(option)}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Field>
+            <span className="table-pagination-summary text-sm text-muted-foreground">{paginationSummary ?? 'Page 1 / 1'}</span>
+          </div>
+          <Pagination
+            className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+            aria-label={`${strings.logs.pagination.newer} / ${strings.logs.pagination.older}`}
+          >
+            <PaginationContent>
+              <PaginationItem>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="table-pagination-button"
+                  onClick={() => void onNewerPage()}
+                  disabled={paginationDisabled || !hasNewer}
+                >
+                  <ChevronLeftIcon data-icon="inline-start" />
+                  {strings.logs.pagination.newer}
+                </Button>
+              </PaginationItem>
+              <PaginationItem>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="table-pagination-button"
+                  onClick={() => void onOlderPage()}
+                  disabled={paginationDisabled || !hasOlder}
+                >
+                  {strings.logs.pagination.older}
+                  <ChevronRightIcon data-icon="inline-end" />
+                </Button>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </CardFooter>
     </Card>
   )

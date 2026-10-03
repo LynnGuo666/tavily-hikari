@@ -45,7 +45,7 @@ function HeroMetric({
   loading: boolean
 }): React.JSX.Element {
   return (
-    <div className="flex flex-col gap-1.5 rounded-lg border p-4">
+    <div className="flex flex-col gap-1.5">
       <p className="text-xs font-medium text-muted-foreground">{title}</p>
       {loading ? (
         <Skeleton className="h-8 w-16" />

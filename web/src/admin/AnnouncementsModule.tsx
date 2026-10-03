@@ -15,12 +15,12 @@ import {
   type AnnouncementMutationPayload,
   type AnnouncementStatus,
 } from '../api'
-import AdminModuleSurface from './AdminModuleSurface'
 import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import MarkdownContent from '../components/MarkdownContent'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import SegmentedTabs, { type SegmentedTabsOption } from '@/components/SegmentedTabs'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from '@/components/ui/select'
 import UserConsoleAnnouncements from '../user-console/Announcements'
 import { EN as USER_CONSOLE_EN, ZH as USER_CONSOLE_ZH } from '../user-console/text'
@@ -983,52 +983,54 @@ export default function AnnouncementsModule({
     : null
 
   return (
-    <AdminModuleSurface className="announcements-module">
-      {headerAction}
-      {message ? <div className="announcements-message">{message}</div> : null}
-      {error && !loading ? <div className="announcements-error">{error}</div> : null}
+    <Card className="surface panel admin-module-surface announcements-module">
+      <CardContent className="flex flex-col gap-4">
+        {headerAction}
+        {message ? <div className="announcements-message">{message}</div> : null}
+        {error && !loading ? <div className="announcements-error">{error}</div> : null}
 
-      {isEditorRoute ? (
-        editorMode ? (
-          <AnnouncementEditorPanel
-            mode={editorMode}
-            draft={draft}
-            submittingAction={submittingAction}
-            strings={strings}
-            onBack={closeEditor}
-            onChangeDraft={setDraft}
-            onSubmit={(action) => void submit(action)}
-          />
+        {isEditorRoute ? (
+          editorMode ? (
+            <AnnouncementEditorPanel
+              mode={editorMode}
+              draft={draft}
+              submittingAction={submittingAction}
+              strings={strings}
+              onBack={closeEditor}
+              onChangeDraft={setDraft}
+              onSubmit={(action) => void submit(action)}
+            />
+          ) : (
+            <AdminLoadingRegion
+              loadState={loading ? 'initial_loading' : 'error'}
+              loadingLabel={strings.loading}
+              errorLabel={strings.notFound}
+              minHeight={240}
+            />
+          )
         ) : (
-          <AdminLoadingRegion
-            loadState={loading ? 'initial_loading' : 'error'}
-            loadingLabel={strings.loading}
-            errorLabel={strings.notFound}
-            minHeight={240}
-          />
-        )
-      ) : (
-        <>
-          <AnnouncementUserPreview
-            item={previewItem}
-            language={language}
-            onClose={() => setPreviewItem(null)}
-          />
-          <AnnouncementsListPanel
-            items={items}
-            loading={loading}
-            error={error}
-            busyId={busyId}
-            strings={strings}
-            language={language}
-            showCreateAction={showListCreateAction}
-            onCreate={startCreate}
-            onEdit={startEdit}
-            onPreview={setPreviewItem}
-            onAct={(id, action) => void act(id, action)}
-          />
-        </>
-      )}
-    </AdminModuleSurface>
+          <>
+            <AnnouncementUserPreview
+              item={previewItem}
+              language={language}
+              onClose={() => setPreviewItem(null)}
+            />
+            <AnnouncementsListPanel
+              items={items}
+              loading={loading}
+              error={error}
+              busyId={busyId}
+              strings={strings}
+              language={language}
+              showCreateAction={showListCreateAction}
+              onCreate={startCreate}
+              onEdit={startEdit}
+              onPreview={setPreviewItem}
+              onAct={(id, action) => void act(id, action)}
+            />
+          </>
+        )}
+      </CardContent>
+    </Card>
   )
 }

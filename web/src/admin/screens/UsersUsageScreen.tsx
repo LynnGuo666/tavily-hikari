@@ -106,7 +106,7 @@ export function UsersUsageScreen({
 
       <Card className="surface panel">
         <AdminTableShell
-          className="overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex"
+          className="overflow-hidden admin-users-usage-table-wrapper hidden md:flex"
           tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table${showShadowDailyColumn ? ' admin-users-usage-table--shadow-compare' : ''}`}
           loadState={loadState}
           loadingLabel={loadingLabel}
@@ -306,7 +306,7 @@ export function UsersUsageScreen({
         </AdminTableShell>
 
         <AdminLoadingRegion
-          className="flex flex-col gap-3 md:hidden flex md:hidden"
+          className="flex flex-col divide-y md:hidden flex md:hidden"
           loadState={loadState}
           loadingLabel={loadingLabel}
           errorLabel={errorLabel}
@@ -331,7 +331,7 @@ export function UsersUsageScreen({
                 formatQuotaStackValue,
               })
               return (
-                <article key={item.userId} className="rounded-lg border p-3">
+                <article key={item.userId} className="py-3">
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{usersStrings.usage.table.user}</span>
                     <Button

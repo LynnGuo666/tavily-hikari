@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 import {
   Dialog,
   DialogContent,
@@ -1923,13 +1924,11 @@ export default function ForwardProxySettingsModule({
           )}
           <div className="forward-proxy-summary-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {summaryCards.map((card) => (
-              <Card key={card.key} className="forward-proxy-summary-card">
-                <CardContent className="forward-proxy-summary-card-content flex min-w-0 flex-col gap-2">
-                  <span className="forward-proxy-summary-label text-xs text-muted-foreground">{card.label}</span>
-                  <strong className="forward-proxy-summary-value text-xl font-semibold tabular-nums">{card.value}</strong>
-                  <span className="forward-proxy-summary-hint text-xs text-muted-foreground">{card.hint}</span>
-                </CardContent>
-              </Card>
+              <section key={card.key} className="forward-proxy-summary-card flex min-w-0 flex-col gap-2 border-t pt-3">
+                <span className="forward-proxy-summary-label text-xs text-muted-foreground">{card.label}</span>
+                <strong className="forward-proxy-summary-value text-xl font-semibold tabular-nums">{card.value}</strong>
+                <span className="forward-proxy-summary-hint text-xs text-muted-foreground">{card.hint}</span>
+              </section>
             ))}
           </div>
         </CardContent>
@@ -1978,12 +1977,12 @@ export default function ForwardProxySettingsModule({
               <Empty className="empty-state"><EmptyDescription>{strings.nodes.empty}</EmptyDescription></Empty>
             ) : (
               <>
-                <div className="forward-proxy-node-list-mobile flex flex-col gap-3 md:hidden">
+                <div className="forward-proxy-node-list-mobile flex min-w-0 flex-col divide-y divide-border md:hidden">
                   {nodeRows.map(({ node, activity, weight }) => {
                     const stateBadge = getNodeStateBadge(strings, node)
                     return (
-                      <Card className="forward-proxy-node-mobile-card" key={`mobile-${node.key}`}>
-                        <CardHeader className="forward-proxy-node-mobile-header">
+                      <section className="forward-proxy-node-mobile-card space-y-3 py-4" key={`mobile-${node.key}`}>
+                        <div className="forward-proxy-node-mobile-header space-y-2">
                           <div className="forward-proxy-node-mobile-title-row flex items-center gap-3">
                             <Checkbox
                               aria-label={`${strings.bulk.selectRow} ${node.displayName}`}
@@ -1991,7 +1990,7 @@ export default function ForwardProxySettingsModule({
                               className="forward-proxy-row-checkbox size-4"
                               onCheckedChange={() => toggleNodeSelection(node.key)}
                             />
-                            <CardTitle className="text-base">{node.displayName}</CardTitle>
+                            <h3 className="text-sm font-medium">{node.displayName}</h3>
                           </div>
                           <div className="forward-proxy-node-chip-row flex flex-wrap items-center gap-1.5">
                             <span className="forward-proxy-node-chip-text text-xs">
@@ -2012,8 +2011,8 @@ export default function ForwardProxySettingsModule({
                             </Badge>
                             <StatusToneBadge tone={stateBadge.tone}>{stateBadge.label}</StatusToneBadge>
                           </div>
-                        </CardHeader>
-                        <CardContent className="forward-proxy-node-mobile-content flex min-w-0 flex-col gap-3">
+                        </div>
+                        <div className="forward-proxy-node-mobile-content flex min-w-0 flex-col gap-3">
                           <div className="forward-proxy-node-mobile-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
                             <div className="forward-proxy-node-mobile-block flex min-w-0 flex-col gap-1 text-xs">
                               <span className="forward-proxy-node-metric-label text-xs text-muted-foreground">{strings.nodes.table.activity24h}</span>
@@ -2038,27 +2037,25 @@ export default function ForwardProxySettingsModule({
                             </div>
                           </div>
 
-                          <div className="forward-proxy-window-grid grid min-w-0 grid-cols-2 gap-2">
+                          <div className="forward-proxy-window-grid grid min-w-0 grid-cols-2 gap-2 border-t pt-3">
                             {WINDOW_KEYS.map((windowDefinition) => {
                               const statsForWindow = node.stats[windowDefinition.key]
                               return (
-                                <Card className="forward-proxy-window-card" key={`${node.key}-${windowDefinition.key}`}>
-                                  <CardContent className="forward-proxy-window-card-content flex min-w-0 flex-col gap-1">
-                                    <span className="forward-proxy-window-label text-xs text-muted-foreground">{strings.windows[windowDefinition.translationKey]}</span>
-                                    <strong>{formatPercent(computeSuccessRate(statsForWindow))}</strong>
-                                    <span>{formatLatency(statsForWindow.avgLatencyMs)}</span>
-                                  </CardContent>
-                                </Card>
+                                <div className="forward-proxy-window-card flex min-w-0 flex-col gap-1" key={`${node.key}-${windowDefinition.key}`}>
+                                  <span className="forward-proxy-window-label text-xs text-muted-foreground">{strings.windows[windowDefinition.translationKey]}</span>
+                                  <strong>{formatPercent(computeSuccessRate(statsForWindow))}</strong>
+                                  <span>{formatLatency(statsForWindow.avgLatencyMs)}</span>
+                                </div>
                               )
                             })}
                           </div>
-                        </CardContent>
-                      </Card>
+                        </div>
+                      </section>
                     )
                   })}
                 </div>
 
-                <div className="forward-proxy-table-wrapper hidden min-w-0 md:block rounded-2xl border border-border/75 bg-card/50">
+                <div className="forward-proxy-table-wrapper hidden min-w-0 md:block">
                   <Table className="forward-proxy-table min-w-[980px] table-fixed text-xs xl:min-w-0">
                     <TableHeader className="bg-muted/40 uppercase tracking-[0.08em] text-[11px] text-muted-foreground">
                       <TableRow className="hover:bg-transparent">
@@ -2171,7 +2168,7 @@ export default function ForwardProxySettingsModule({
               {errorRows.length === 0 ? (
                 <Empty className="empty-state"><EmptyDescription>{strings.nodes.errorStats.empty}</EmptyDescription></Empty>
               ) : (
-                <div className="forward-proxy-table-wrapper rounded-2xl border border-border/75 bg-card/50">
+                <div className="forward-proxy-table-wrapper min-w-0">
                   <Table className="forward-proxy-table min-w-[1080px] table-fixed text-xs xl:min-w-0">
                     <TableHeader className="bg-muted/40 uppercase tracking-[0.08em] text-[11px] text-muted-foreground">
                       <TableRow className="hover:bg-transparent">
@@ -2350,40 +2347,39 @@ export default function ForwardProxySettingsModule({
                 }}
               />
 
-              <div className="rounded-xl border border-border/70 bg-card/45 px-3.5 py-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <Button type="button" variant="secondary" size="sm" onClick={() => openDialog('subscription')} disabled={controlsDisabled}>
-                    {strings.config.addSubscription}
-                  </Button>
-                  <span className="text-xs text-muted-foreground">
-                    {strings.config.subscriptionCount.replace('{count}', formatNumber(subscriptionUrls.length))}
-                  </span>
-                  <Button type="button" variant="secondary" size="sm" onClick={() => openDialog('manual')} disabled={controlsDisabled}>
-                    {strings.config.addManual}
-                  </Button>
-                  <span className="text-xs text-muted-foreground">
-                    {strings.config.manualCount.replace('{count}', formatNumber(manualUrls.length))}
-                  </span>
-                </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button type="button" variant="secondary" size="sm" onClick={() => openDialog('subscription')} disabled={controlsDisabled}>
+                  {strings.config.addSubscription}
+                </Button>
+                <span className="text-xs text-muted-foreground">
+                  {strings.config.subscriptionCount.replace('{count}', formatNumber(subscriptionUrls.length))}
+                </span>
+                <Button type="button" variant="secondary" size="sm" onClick={() => openDialog('manual')} disabled={controlsDisabled}>
+                  {strings.config.addManual}
+                </Button>
+                <span className="text-xs text-muted-foreground">
+                  {strings.config.manualCount.replace('{count}', formatNumber(manualUrls.length))}
+                </span>
               </div>
               <div className="grid gap-3 lg:grid-cols-2">
-                <Card className="forward-proxy-editor-card">
-                  <CardHeader className="forward-proxy-editor-head">
-                    <div>
-                      <CardTitle className="text-base">{strings.config.subscriptionsTitle}</CardTitle>
-                      <CardDescription className="panel-description text-sm text-muted-foreground">{strings.config.subscriptionsDescription}</CardDescription>
+                <section className="forward-proxy-editor-card min-w-0">
+                  <div className="forward-proxy-editor-head flex items-start justify-between gap-2">
+                    <div className="space-y-1">
+                      <h3 className="text-sm font-medium">{strings.config.subscriptionsTitle}</h3>
+                      <p className="panel-description text-sm text-muted-foreground">{strings.config.subscriptionsDescription}</p>
                     </div>
                     <Badge variant="outline" className="border-primary/30 bg-primary/10 text-primary">{formatNumber(subscriptionUrls.length)}</Badge>
-                  </CardHeader>
-                  <CardContent className="forward-proxy-editor-card-content flex min-w-0 flex-col gap-3">
+                  </div>
+                  <Separator className="my-3" />
+                  <div className="forward-proxy-editor-card-content flex min-w-0 flex-col gap-3">
                     {subscriptionUrls.length === 0 ? (
                       <Empty className="empty-state"><EmptyDescription>{strings.config.subscriptionListEmpty}</EmptyDescription></Empty>
                     ) : (
-                      <ul className="flex flex-col gap-2">
+                      <ul className="flex flex-col divide-y divide-border">
                         {subscriptionUrls.map((subscriptionUrl, index) => (
                           <li
                             key={`subscription-${subscriptionUrl}`}
-                            className="flex items-center gap-3 rounded-xl border border-border/70 bg-card/65 px-3 py-2"
+                            className="flex items-center gap-3 py-2"
                           >
                             <div className="min-w-0 flex-1">
                               <div className="truncate text-sm font-semibold">
@@ -2407,26 +2403,27 @@ export default function ForwardProxySettingsModule({
                         ))}
                       </ul>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
+                </section>
 
-                <Card className="forward-proxy-editor-card">
-                  <CardHeader className="forward-proxy-editor-head">
-                    <div>
-                      <CardTitle className="text-base">{strings.config.manualTitle}</CardTitle>
-                      <CardDescription className="panel-description text-sm text-muted-foreground">{strings.config.manualDescription}</CardDescription>
+                <section className="forward-proxy-editor-card min-w-0">
+                  <div className="forward-proxy-editor-head flex items-start justify-between gap-2">
+                    <div className="space-y-1">
+                      <h3 className="text-sm font-medium">{strings.config.manualTitle}</h3>
+                      <p className="panel-description text-sm text-muted-foreground">{strings.config.manualDescription}</p>
                     </div>
                     <Badge variant="outline">{formatNumber(manualUrls.length)}</Badge>
-                  </CardHeader>
-                  <CardContent className="forward-proxy-editor-card-content flex min-w-0 flex-col gap-3">
+                  </div>
+                  <Separator className="my-3" />
+                  <div className="forward-proxy-editor-card-content flex min-w-0 flex-col gap-3">
                     {manualUrls.length === 0 ? (
                       <Empty className="empty-state"><EmptyDescription>{strings.config.manualListEmpty}</EmptyDescription></Empty>
                     ) : (
-                      <ul className="flex flex-col gap-2">
+                      <ul className="flex flex-col divide-y divide-border">
                         {manualUrls.map((proxyUrl, index) => (
                           <li
                             key={`manual-${proxyUrl}`}
-                            className="flex items-center gap-3 rounded-xl border border-border/70 bg-card/65 px-3 py-2"
+                            className="flex items-center gap-3 py-2"
                           >
                             <div className="min-w-0 flex-1">
                               <div className="truncate text-sm font-semibold">
@@ -2451,13 +2448,13 @@ export default function ForwardProxySettingsModule({
                         ))}
                       </ul>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
+                </section>
               </div>
 
               <div className="grid gap-3 lg:grid-cols-[minmax(0,280px)_1fr]">
-                <Card className="forward-proxy-field-card">
-                  <CardContent className="forward-proxy-field-card-content">
+                <section className="forward-proxy-field-card min-w-0">
+                  <div className="forward-proxy-field-card-content">
                     <label className="forward-proxy-field flex min-w-0 flex-col gap-2">
                       <span className="forward-proxy-field-label text-sm font-medium">{strings.config.subscriptionIntervalLabel}</span>
                       <Select value={selectedInterval} onValueChange={(value) => void handleIntervalChange(value)} disabled={controlsDisabled}>
@@ -2476,11 +2473,11 @@ export default function ForwardProxySettingsModule({
                       </Select>
                       <span className="panel-description text-sm text-muted-foreground">{strings.config.subscriptionIntervalHint}</span>
                     </label>
-                  </CardContent>
-                </Card>
+                  </div>
+                </section>
 
-                <Card className="forward-proxy-checkbox-card">
-                  <CardContent className="forward-proxy-checkbox-card-content">
+                <section className="forward-proxy-checkbox-card min-w-0">
+                  <div className="forward-proxy-checkbox-card-content">
                     <label className="forward-proxy-checkbox flex items-start gap-3" htmlFor="forward-proxy-insert-direct">
                       <Checkbox
                         id="forward-proxy-insert-direct"
@@ -2493,8 +2490,8 @@ export default function ForwardProxySettingsModule({
                         <p className="panel-description text-sm text-muted-foreground">{strings.config.insertDirectHint}</p>
                       </div>
                     </label>
-                  </CardContent>
-                </Card>
+                  </div>
+                </section>
               </div>
             </div>
           </AdminLoadingRegion>

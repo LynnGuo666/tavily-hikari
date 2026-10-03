@@ -353,7 +353,7 @@ export default function HaStatusBanner({
         </dl>
 
         {syncDiagnostic && (
-          <div className="ha-status-message ha-status-message-warning flex items-start gap-2 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm [&_svg]:shrink-0" role="alert">
+          <div className="ha-status-message ha-status-message-warning flex items-start gap-2 rounded-lg bg-warning/10 p-3 text-sm [&_svg]:shrink-0" role="alert">
             <CircleAlert size={16} aria-hidden="true" />
             <span>{syncDiagnostic}</span>
           </div>
@@ -364,7 +364,7 @@ export default function HaStatusBanner({
             <Server size={18} aria-hidden="true" />
             <span>{labels.nodeInventoryTitle}</span>
           </div>
-          <div className="rounded-lg border px-3 lg:px-0"><Table className="ha-node-grid block lg:table"  aria-label={labels.nodeInventoryTitle}>
+          <Table className="ha-node-grid block lg:table"  aria-label={labels.nodeInventoryTitle}>
             <TableHeader className="hidden lg:table-header-group"><TableRow className="ha-node-grid-row ha-node-grid-head hidden lg:table-row" >
               <TableHead className="ha-node-cell ha-node-cell--identity" >{labels.nodeHeader}</TableHead>
               <TableHead className="ha-node-cell ha-node-cell--role" >{labels.roleHeader}</TableHead>
@@ -473,7 +473,7 @@ export default function HaStatusBanner({
                 </TableCell>
               </TableRow>
             ))}</TableBody>
-          </Table></div>
+          </Table>
         </div>
 
         <div className="ha-node-list flex min-w-0 flex-col gap-3" aria-label={labels.plannedCutoverTitle}>
@@ -496,9 +496,9 @@ export default function HaStatusBanner({
               <span>{timelineLoading ? labels.timelineLoading : labels.timelineEmpty}</span>
             </div>
           ) : (
-            <div className="ha-timeline-list flex min-w-0 flex-col gap-2">
+            <div className="ha-timeline-list flex min-w-0 flex-col divide-y divide-border">
               {timeline.map((event) => (
-                <details key={event.id} className="ha-timeline-item rounded-lg border p-3 [&_summary]:cursor-pointer [&_summary]:space-x-2 [&_summary]:text-sm">
+                <details key={event.id} className="ha-timeline-item py-3 [&_summary]:cursor-pointer [&_summary]:space-x-2 [&_summary]:text-sm">
                   <summary>
                     <span>{formatHaTimelineSummary(event, labels)}</span>
                     <StatusBadge

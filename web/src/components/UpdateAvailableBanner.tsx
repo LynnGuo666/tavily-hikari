@@ -3,7 +3,9 @@ import type React from 'react'
 
 import type { PublicTranslations } from '../i18n'
 import type { PwaUpdateStatus } from '../pwa/runtime'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import useUpdateAvailable from '../hooks/useUpdateAvailable'
 
 interface UpdateAvailableBannerProps {
@@ -41,37 +43,33 @@ export default function UpdateAvailableBanner({
         : strings.readyFallback
 
   return (
-    <section
-      className={`surface update-banner${isFailed ? ' update-banner-failed' : ''}${className ? ` ${className}` : ''}`}
+    <Alert
+      className={cn('surface update-banner', isFailed && 'update-banner-failed', className)}
       role="status"
       aria-live="polite"
     >
-      <div className="update-banner-status" aria-hidden="true">
-        {loading
-          ? <Loader2 className="update-banner-spinner" size={19} />
-          : isFailed
-            ? <AlertTriangle size={19} />
-            : <DownloadCloud size={19} />}
-      </div>
-      <div className="update-banner-text">
-        <strong>{isFailed ? strings.failureTitle : strings.title}</strong>
-        <span>{description}</span>
-      </div>
-      <div className="update-banner-actions">
+      {loading
+        ? <Loader2 className="update-banner-status update-banner-spinner animate-spin" aria-hidden="true" />
+        : isFailed
+          ? <AlertTriangle className="update-banner-status text-destructive" aria-hidden="true" />
+          : <DownloadCloud className="update-banner-status" aria-hidden="true" />}
+      <AlertTitle className="update-banner-text">{isFailed ? strings.failureTitle : strings.title}</AlertTitle>
+      <AlertDescription>{description}</AlertDescription>
+      <div className="update-banner-actions flex flex-wrap items-center gap-2 pt-1 group-has-[>svg]/alert:col-start-2">
         <Button
           type="button"
           onClick={onUpdate}
           disabled={isActivating}
           aria-busy={loading}
         >
-          {loading ? <Loader2 className="update-banner-button-spinner" size={16} aria-hidden="true" /> : <RefreshCw size={16} aria-hidden="true" />}
+          {loading ? <Loader2 className="update-banner-button-spinner animate-spin" size={16} aria-hidden="true" /> : <RefreshCw size={16} aria-hidden="true" />}
           {loading ? strings.refreshing : isFailed ? strings.retry : strings.refresh}
         </Button>
         <Button type="button" variant="ghost" onClick={onDismiss} disabled={isActivating}>
           {strings.dismiss}
         </Button>
       </div>
-    </section>
+    </Alert>
   )
 }
 

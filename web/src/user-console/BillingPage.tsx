@@ -2,6 +2,7 @@ import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
 import { cn } from '@/lib/utils'
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -13,7 +14,6 @@ import type {
   RechargeQuote,
   UserBillingSummary,
 } from '../api'
-import AdminTablePagination from '../components/AdminTablePagination'
 import { StatusBadge, type StatusTone } from '../components/StatusBadge'
 import { useViewportMode } from '../lib/responsive'
 import RechargePanel from './RechargePanel'
@@ -870,7 +870,7 @@ export default function BillingPage({
                   ))}
                 </ul>
                 {summary.blockAll ? (
-                  <p className="user-console-billing-notice mx-4 rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm text-warning">{text.blockAllNotice}</p>
+                  <p className="user-console-billing-notice mx-4 bg-warning/10 p-3 text-sm text-warning">{text.blockAllNotice}</p>
                 ) : null}
               </>
             ) : (
@@ -947,7 +947,7 @@ export default function BillingPage({
             <Empty className="empty-state"><EmptyDescription>{rechargeText.noOrders}</EmptyDescription></Empty>
           ) : (
             <>
-              <div className="user-console-billing-orders-table mx-4 flex min-w-0 flex-col divide-y rounded-lg border text-sm" role="list">
+              <div className="user-console-billing-orders-table mx-4 flex min-w-0 flex-col divide-y text-sm" role="list">
                 {visibleOrders.map((order) => {
                   const detail = orderStatusDetail(order, rechargeText, language)
                   return (
@@ -987,17 +987,39 @@ export default function BillingPage({
                 })}
               </div>
               {ordersTotalPages > 1 ? (
-                <AdminTablePagination
-                  page={safeOrdersPage}
-                  totalPages={ordersTotalPages}
-                  pageSummary={ordersPageSummary}
-                  previousLabel={text.ordersPreviousPage}
-                  nextLabel={text.ordersNextPage}
-                  previousDisabled={safeOrdersPage <= 1}
-                  nextDisabled={safeOrdersPage >= ordersTotalPages}
-                  onPrevious={() => setOrdersPage((current) => Math.max(1, current - 1))}
-                  onNext={() => setOrdersPage((current) => Math.min(ordersTotalPages, current + 1))}
-                />
+                <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="table-pagination-meta table-pagination-meta-summary-only flex min-w-0 flex-col gap-2">
+                    <span className="table-pagination-summary text-sm text-muted-foreground">{ordersPageSummary}</span>
+                  </div>
+                  <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${text.ordersPreviousPage} / ${text.ordersNextPage}`}>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="table-pagination-button"
+                          onClick={() => setOrdersPage((current) => Math.max(1, current - 1))}
+                          disabled={safeOrdersPage <= 1}
+                        >
+                          <ChevronLeft data-icon="inline-start" />
+                          {text.ordersPreviousPage}
+                        </Button>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="table-pagination-button"
+                          onClick={() => setOrdersPage((current) => Math.min(ordersTotalPages, current + 1))}
+                          disabled={safeOrdersPage >= ordersTotalPages}
+                        >
+                          {text.ordersNextPage}
+                          <ChevronRight data-icon="inline-end" />
+                        </Button>
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
               ) : null}
             </>
           )}

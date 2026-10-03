@@ -6,8 +6,8 @@ import { Icon } from '../../lib/icons'
 import type { StoryObj } from '@storybook/react-vite'
 import { addons } from 'storybook/preview-api'
 import { SELECT_STORY } from 'storybook/internal/core-events'
-import { ArrowDown, ArrowUp, ArrowUpDown, ChartColumnIncreasing } from 'lucide-react'
-import { Fragment, type KeyboardEvent as ReactKeyboardEvent, type ReactNode, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { ArrowDown, ArrowUp, ArrowUpDown, ChartColumnIncreasing, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+import { Fragment, type KeyboardEvent as ReactKeyboardEvent, type ReactNode, useEffect, useId, useLayoutEffect, useMemo, useState } from 'react'
 import type {
   Announcement,
   ApiKeyBulkAction,
@@ -40,13 +40,10 @@ import type {
   SortDirection,
   SummaryWindowsResponse,
 } from '../../api'
-import AdminCompactIntro from '../../components/AdminCompactIntro'
 import AdminPanelHeader from '../../components/AdminPanelHeader'
 import AdminRecentRequestsPanel, { type RecentRequestsOutcomeFilter } from '../../components/AdminRecentRequestsPanel'
 import AdminReturnToConsoleLink from '../../components/AdminReturnToConsoleLink'
-import AdminTablePagination from '../../components/AdminTablePagination'
 import JobKeyLink from '../../components/JobKeyLink'
-import { AdminSidebarUtilityCard, AdminSidebarUtilityStack } from '../../components/AdminSidebarUtility'
 import LanguageSwitcher from '../../components/LanguageSwitcher'
 import { StatusBadge, type StatusTone } from '../../components/StatusBadge'
 import ThemeToggle from '../../components/ThemeToggle'
@@ -70,7 +67,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { UserTagBindingControls } from '../UserTagBindingControls'
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Field, FieldLabel } from '@/components/ui/field'
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { translations, useLanguage, type AdminTranslations } from '../../i18n'
 import { KeyDetails } from '../../AdminDashboard'
@@ -3293,31 +3293,35 @@ export function AdminPageFrame({
         {showDefaultShellChrome && (
           <>
             <AdminShellSidebarUtility>
-              <AdminSidebarUtilityStack>
-                <AdminSidebarUtilityCard>
-                  <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
-                    <ThemeToggle />
-                    <LanguageSwitcher />
-                  </div>
-                  <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
-                    <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
-                      <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
-                      <span>Ops Admin</span>
+              <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+                <Card size="sm" className="admin-sidebar-utility-card">
+                  <CardContent className="flex flex-col gap-3">
+                    <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
+                      <ThemeToggle />
+                      <LanguageSwitcher />
                     </div>
-                  </div>
-                </AdminSidebarUtilityCard>
-                <AdminSidebarUtilityCard>
-                  <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
-                    {sidebarUtilityActions ?? <>
-                      <AdminReturnToConsoleLink label={admin.header.returnToConsole} href="/console" className="admin-sidebar-utility-action" />
-                      <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
-                        <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
-                        <span>{admin.header.refreshNow}</span>
-                      </Button>
-                    </>}
-                  </div>
-                </AdminSidebarUtilityCard>
-              </AdminSidebarUtilityStack>
+                    <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+                      <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
+                        <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
+                        <span>Ops Admin</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card size="sm" className="admin-sidebar-utility-card">
+                  <CardContent className="flex flex-col gap-3">
+                    <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+                      {sidebarUtilityActions ?? <>
+                        <AdminReturnToConsoleLink label={admin.header.returnToConsole} href="/console" className="admin-sidebar-utility-action" />
+                        <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                          <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
+                          <span>{admin.header.refreshNow}</span>
+                        </Button>
+                      </>}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </AdminShellSidebarUtility>
 
             {beforeIntro}
@@ -3346,7 +3350,17 @@ export function AdminPageFrame({
                 />
               )
             ) : (
-              <AdminCompactIntro title={intro.title} description={intro.description} actions={headerActions} />
+              <section
+                className={`admin-compact-intro flex flex-wrap items-end justify-between gap-4${headerActions ? ' admin-compact-intro--with-actions' : ''}`}
+              >
+                <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+                  <h1 className="text-xl font-semibold tracking-tight">{intro.title}</h1>
+                  {intro.description ? (
+                    <p className="admin-compact-intro-description text-sm text-muted-foreground">{intro.description}</p>
+                  ) : null}
+                </div>
+                {headerActions ? <div className="admin-compact-intro-actions max-w-full">{headerActions}</div> : null}
+              </section>
             )}
           </>
         )}
@@ -3864,6 +3878,7 @@ function KeysPageCanvas({
   const [selectedKeyIds, setSelectedKeyIds] = useState<string[]>(initialSelectedIds)
   const [page, setPage] = useState(1)
   const [perPage, setPerPage] = useState(20)
+  const paginationPerPageId = useId()
   const keys = MOCK_KEYS
   const groupOptions = Array.from(
     keys.reduce((map, item) => {
@@ -4392,28 +4407,73 @@ function KeysPageCanvas({
           </Table>
         </div>
         {filteredKeys.length > perPage ? (
-          <AdminTablePagination
-            page={safePage}
-            totalPages={totalPages}
-            pageSummary={
-              <span className="panel-description text-sm text-muted-foreground">
-                {keyStrings.pagination.page.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
+          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
+              <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+                <FieldLabel htmlFor={paginationPerPageId}>{keyStrings.pagination.perPage}</FieldLabel>
+                <Select
+                  value={String(perPage)}
+                  onValueChange={(value) => {
+                    setPerPage(Number(value))
+                    setPage(1)
+                  }}
+                >
+                  <SelectTrigger
+                    id={paginationPerPageId}
+                    aria-label={keyStrings.pagination.perPage}
+                    className="table-pagination-select w-20"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent position="popper" align="start">
+                    <SelectGroup>
+                      {[10, 20, 50, 100].map((option) => (
+                        <SelectItem key={option} value={String(option)}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+              <span className="table-pagination-summary text-sm text-muted-foreground">
+                <span className="panel-description text-sm text-muted-foreground">
+                  {keyStrings.pagination.page.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
+                </span>
               </span>
-            }
-            perPage={perPage}
-            perPageLabel={keyStrings.pagination.perPage}
-            perPageAriaLabel={keyStrings.pagination.perPage}
-            previousLabel={admin.tokens.pagination.prev}
-            nextLabel={admin.tokens.pagination.next}
-            previousDisabled={safePage <= 1}
-            nextDisabled={safePage >= totalPages}
-            onPrevious={() => setPage((current) => Math.max(1, current - 1))}
-            onNext={() => setPage((current) => Math.min(totalPages, current + 1))}
-            onPerPageChange={(value) => {
-              setPerPage(value)
-              setPage(1)
-            }}
-          />
+            </div>
+            <Pagination
+              className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+              aria-label={`${admin.tokens.pagination.prev} / ${admin.tokens.pagination.next}`}
+            >
+              <PaginationContent>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => setPage((current) => Math.max(1, current - 1))}
+                    disabled={safePage <= 1}
+                  >
+                    <ChevronLeftIcon data-icon="inline-start" />
+                    {admin.tokens.pagination.prev}
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+                    disabled={safePage >= totalPages}
+                  >
+                    {admin.tokens.pagination.next}
+                    <ChevronRightIcon data-icon="inline-end" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         ) : null}
       </Card>
     </AdminPageFrame>
@@ -5221,33 +5281,37 @@ function UsersUsagePageCanvas({
       showDefaultShellChrome={false}
     >
       <AdminShellSidebarUtility>
-        <AdminSidebarUtilityStack>
-          <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
-              <ThemeToggle />
-              <LanguageSwitcher />
-            </div>
-            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
-              <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
-                <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
-                <span>Ops Admin</span>
+        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
+              <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
+                <ThemeToggle />
+                <LanguageSwitcher />
               </div>
-            </div>
-          </AdminSidebarUtilityCard>
-          <AdminSidebarUtilityCard>
-            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
-              <AdminReturnToConsoleLink
-                label={admin.header.returnToConsole}
-                href="/console"
-                className="admin-sidebar-utility-action"
-              />
-              <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
-                <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
-                <span>{admin.header.refreshNow}</span>
-              </Button>
-            </div>
-          </AdminSidebarUtilityCard>
-        </AdminSidebarUtilityStack>
+              <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+                <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
+                  <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
+                  <span>Ops Admin</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
+              <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+                <AdminReturnToConsoleLink
+                  label={admin.header.returnToConsole}
+                  href="/console"
+                  className="admin-sidebar-utility-action"
+                />
+                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                  <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
+                  <span>{admin.header.refreshNow}</span>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </AdminShellSidebarUtility>
       <UsersUsageScreen
         users={sortedUsers}
@@ -5673,22 +5737,46 @@ function UnboundTokenUsagePageCanvas({
         )}
 
         {sortedItems.length > pageSize && (
-          <AdminTablePagination
-            page={safePage}
-            totalPages={totalPages}
-            pageSummary={
-              <span className="panel-description text-sm text-muted-foreground">
-                {users.pagination.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
+          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
+              <span className="table-pagination-summary text-sm text-muted-foreground">
+                <span className="panel-description text-sm text-muted-foreground">
+                  {users.pagination.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
+                </span>
               </span>
-            }
-            previousLabel={tokenStrings.pagination.prev}
-            nextLabel={tokenStrings.pagination.next}
-            previousDisabled={safePage <= 1}
-            nextDisabled={safePage >= totalPages}
-            disabled={false}
-            onPrevious={() => setPage((current) => Math.max(1, current - 1))}
-            onNext={() => setPage((current) => Math.min(totalPages, current + 1))}
-          />
+            </div>
+            <Pagination
+              className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+              aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}
+            >
+              <PaginationContent>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => setPage((current) => Math.max(1, current - 1))}
+                    disabled={safePage <= 1}
+                  >
+                    <ChevronLeftIcon data-icon="inline-start" />
+                    {tokenStrings.pagination.prev}
+                  </Button>
+                </PaginationItem>
+                <PaginationItem>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="table-pagination-button"
+                    onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+                    disabled={safePage >= totalPages}
+                  >
+                    {tokenStrings.pagination.next}
+                    <ChevronRightIcon data-icon="inline-end" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         )}
       </Card>
     </AdminPageFrame>
@@ -5800,18 +5888,22 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
   return (
     <AdminPageFrame activeModule="users">
       <div className="hidden md:block">
-        <AdminCompactIntro
-          title={users.catalog.title}
-          description={users.catalog.description}
-          actions={
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
+          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <h1 className="text-xl font-semibold tracking-tight">{users.catalog.title}</h1>
+            {users.catalog.description ? (
+              <p className="admin-compact-intro-description text-sm text-muted-foreground">{users.catalog.description}</p>
+            ) : null}
+          </div>
+          <div className="admin-compact-intro-actions max-w-full">
             <div className="user-tag-page-actions">
               <Button type="button" variant="outline" size="sm">{users.catalog.backToUsers}</Button>
               <Button type="button" variant="default" size="sm" disabled={editorMode === 'new'}>
                 {users.catalog.actions.create}
               </Button>
             </div>
-          }
-        />
+          </div>
+        </section>
       </div>
       <Card className="surface panel block md:hidden">
         <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>

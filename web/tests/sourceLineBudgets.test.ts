@@ -18,17 +18,17 @@ const EXCEPTIONS = new Map<string, { max: number; reason: string }>([
   [
     'src/admin/AdminDashboardRuntime.tsx',
     {
-      max: 13820,
+      max: 13980,
       reason:
-        'Legacy admin dashboard runtime remains as a compatibility shell while HA source settings, upstream privacy status routing, active-user list filtering, shadow reconciliation comparison wiring, MCP session bindings route state, and the admin rankings live-status wiring finish converging before a larger extraction pass.',
+        'Legacy admin dashboard runtime remains as a compatibility shell while HA source settings, upstream privacy status routing, active-user list filtering, shadow reconciliation comparison wiring, MCP session bindings route state, and the admin rankings live-status wiring finish converging before a larger extraction pass; the shadcn-native migration additionally inlines the shared table-pagination, compact-intro, sidebar-utility, and app-footer wrapper compositions at their call sites.',
     },
   ],
   [
     'src/admin/storySupport/AdminPagesStoryRuntime.tsx',
     {
-      max: 8000,
+      max: 8120,
       reason:
-        'Storybook proof runtime remains centralized temporarily while active-user admin states, upstream privacy status proof data, rankings shell proof, system-settings proof data, MCP session bindings page proof data, shadow reconciliation comparison proof data, Users Usage 1h sorting proof, and the recharge lifecycle page evidence continue to share the same Admin/Pages proof shell.',
+        'Storybook proof runtime remains centralized temporarily while active-user admin states, upstream privacy status proof data, rankings shell proof, system-settings proof data, MCP session bindings page proof data, shadow reconciliation comparison proof data, Users Usage 1h sorting proof, and the recharge lifecycle page evidence continue to share the same Admin/Pages proof shell; the shadcn-native migration additionally inlines the shared table-pagination, compact-intro, and sidebar-utility wrapper compositions at their story call sites.',
     },
   ],
   [
@@ -77,6 +77,14 @@ const EXCEPTIONS = new Map<string, { max: number; reason: string }>([
       max: 1625,
       reason:
         'System settings currently keeps the upstream privacy controls, active-user default control, auth-token retention control, and supporting copy in the existing module pending a broader settings split.',
+    },
+  ],
+  [
+    'src/admin/AlertsCenter.tsx',
+    {
+      max: 1560,
+      reason:
+        'Alerts center now inlines the shared table pagination composition as part of the shadcn-native migration; a dedicated extraction of the events/groups tables remains a follow-up.',
     },
   ],
   [

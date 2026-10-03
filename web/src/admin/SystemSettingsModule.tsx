@@ -1257,19 +1257,19 @@ export default function SystemSettingsModule({
               </div>
 
               <div className="system-settings-retention-profiles grid min-w-0 gap-3 md:grid-cols-3">
-                <div className="system-settings-retention-card grid min-w-0 gap-3 rounded-lg border p-3">
+                <div className="system-settings-retention-card grid min-w-0 gap-3 p-3">
                   <h5 className="text-sm font-semibold">全局默认</h5>
                   {retentionDaySlider('业务 body', 'global', 'businessBodyDays')}
                   {retentionDaySlider('非业务 body', 'global', 'nonBusinessBodyDays')}
                   {retentionDaySlider('非成功 body', 'global', 'nonSuccessBodyDays')}
                 </div>
-                <div className="system-settings-retention-card grid min-w-0 gap-3 rounded-lg border p-3">
+                <div className="system-settings-retention-card grid min-w-0 gap-3 p-3">
                   <h5 className="text-sm font-semibold">高频调用用户</h5>
                   {retentionDaySlider('业务 body', 'heavyUsage', 'businessBodyDays')}
                   {retentionDaySlider('非业务 body', 'heavyUsage', 'nonBusinessBodyDays')}
                   {retentionDaySlider('非成功 body', 'heavyUsage', 'nonSuccessBodyDays')}
                 </div>
-                <div className="system-settings-retention-card grid min-w-0 gap-3 rounded-lg border p-3">
+                <div className="system-settings-retention-card grid min-w-0 gap-3 p-3">
                   <h5 className="text-sm font-semibold">共享调试用户</h5>
                   {retentionDaySlider('业务 body', 'debugShared', 'businessBodyDays')}
                   {retentionDaySlider('非业务 body', 'debugShared', 'nonBusinessBodyDays')}
@@ -1494,7 +1494,7 @@ export default function SystemSettingsModule({
                 </p>
               </div>
 
-              <div className="system-settings-field system-settings-field--notice grid min-w-0 gap-2 rounded-md border border-border/60 bg-muted/20 px-3 py-2">
+              <div className="system-settings-field system-settings-field--notice grid min-w-0 gap-2 bg-muted/20 px-3 py-2">
                 <div className="system-settings-field-copy grid min-w-0 gap-1">
                   <strong className="text-sm font-medium">{strings.form.upstreamHttpUserAgentNotice}</strong>
                 </div>
