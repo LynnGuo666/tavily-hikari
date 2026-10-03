@@ -419,7 +419,7 @@ function AnnouncementEditorPanel({
           <Button
             type="button"
             size="sm"
-            className="flex flex-wrap items-center gap-2"
+            className="inline-flex items-center gap-2"
             title={strings.publishImpact}
             onClick={() => onSubmit('publish')}
             disabled={saving}

@@ -145,3 +145,10 @@
         @apply font-sans;
     }
 }
+
+/* Align milkdown crepe editor typography with the app font stack. */
+.milkdown {
+    --crepe-font-title: var(--font-heading);
+    --crepe-font-default: var(--font-sans);
+    --crepe-font-code: var(--font-mono);
+}
