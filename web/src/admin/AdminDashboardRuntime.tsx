@@ -9428,15 +9428,15 @@ function AdminDashboard(): React.JSX.Element {
           <>
             {activeUserDetailTab === 'account' && (
             <>
-            <section className="surface panel user-detail-panel-compact border-t" id="user-detail-identity" role="tabpanel">
-              <div className="panel-header border-b">
+            <section className="surface panel user-detail-panel-compact border-t flex flex-col gap-4 px-4 py-4" id="user-detail-identity" role="tabpanel">
+              <div className="panel-header border-b pb-3">
                 <div>
                   <h2 className="text-sm font-medium">{usersStrings.detail.identityTitle}</h2>
                   <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.identityDescription}</p>
                 </div>
               </div>
-              <dl className="user-detail-definition-grid">
-                <div className="user-detail-definition-grid__item--wide">
+              <dl className="user-detail-definition-grid grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 [&>div]:flex [&>div]:min-w-0 [&>div]:flex-col [&>div]:gap-1 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:text-sm [&_dd]:font-medium">
+                <div className="user-detail-definition-grid__item--wide sm:col-span-2">
                   <dt>{usersStrings.detail.userId}</dt>
                   <dd>
                     <code>{detail.userId}</code>
@@ -9458,7 +9458,7 @@ function AdminDashboard(): React.JSX.Element {
                     </StatusBadge>
                   </dd>
                 </div>
-                <div className="user-detail-definition-grid__item--wide">
+                <div className="user-detail-definition-grid__item--wide sm:col-span-2">
                   <dt>{usersStrings.table.lastLogin}</dt>
                   <dd>{formatTimestamp(detail.lastLoginAt)}</dd>
                 </div>
@@ -9508,9 +9508,9 @@ function AdminDashboard(): React.JSX.Element {
                   </Button>
                 </CardAction>
               </CardHeader>
-              <div className="user-tag-binding-toolbar">
-                <div className="user-tag-binding-summary">
-                  <div className="user-tag-binding-summary-top">
+              <div className="user-tag-binding-toolbar flex flex-col gap-3">
+                <div className="user-tag-binding-summary flex flex-col gap-2">
+                  <div className="user-tag-binding-summary-top flex flex-col gap-1">
                     <UserTagBadgeList
                       tags={boundTags}
                       usersStrings={usersStrings}
@@ -9521,18 +9521,18 @@ function AdminDashboard(): React.JSX.Element {
                       系统标签保持只读，手动标签在右侧选择后绑定。
                     </p>
                   </div>
-                  <div className="user-tag-binding-summary-metrics user-tag-binding-summary-metrics--inline" aria-label={usersStrings.userTags.title}>
-                    <div className="user-tag-binding-summary-metric">
-                      <span className="user-tag-binding-summary-label">已绑定</span>
-                      <strong>{formatNumber(boundTags.length)}</strong>
+                  <div className="user-tag-binding-summary-metrics user-tag-binding-summary-metrics--inline flex flex-wrap gap-x-6 gap-y-1" aria-label={usersStrings.userTags.title}>
+                    <div className="user-tag-binding-summary-metric flex items-baseline gap-1.5">
+                      <span className="user-tag-binding-summary-label text-xs text-muted-foreground">已绑定</span>
+                      <strong className="tabular-nums">{formatNumber(boundTags.length)}</strong>
                     </div>
-                    <div className="user-tag-binding-summary-metric">
-                      <span className="user-tag-binding-summary-label">系统标签</span>
-                      <strong>{formatNumber(systemTagCount)}</strong>
+                    <div className="user-tag-binding-summary-metric flex items-baseline gap-1.5">
+                      <span className="user-tag-binding-summary-label text-xs text-muted-foreground">系统标签</span>
+                      <strong className="tabular-nums">{formatNumber(systemTagCount)}</strong>
                     </div>
-                    <div className="user-tag-binding-summary-metric">
-                      <span className="user-tag-binding-summary-label">手动标签</span>
-                      <strong>{formatNumber(manualTagCount)}</strong>
+                    <div className="user-tag-binding-summary-metric flex items-baseline gap-1.5">
+                      <span className="user-tag-binding-summary-label text-xs text-muted-foreground">手动标签</span>
+                      <strong className="tabular-nums">{formatNumber(manualTagCount)}</strong>
                     </div>
                   </div>
                 </div>
@@ -9554,12 +9554,12 @@ function AdminDashboard(): React.JSX.Element {
               {boundTags.length === 0 ? (
                 <Empty className="empty-state" style={{ marginTop: 12 }}><EmptyDescription>{usersStrings.userTags.empty}</EmptyDescription></Empty>
               ) : (
-                <div className="user-tag-binding-list">
+                <div className="user-tag-binding-list flex flex-col divide-y">
                   {boundTags.map((tag) => {
                     const isSystem = isSystemUserTag(tag)
                     return (
-                      <article className="user-tag-binding-card" key={`${tag.tagId}:${tag.source}`}>
-                        <div className="user-tag-binding-card-head">
+                      <article className="user-tag-binding-card flex flex-col gap-2 py-3" key={`${tag.tagId}:${tag.source}`}>
+                        <div className="user-tag-binding-card-head flex items-start justify-between gap-2">
                           <div className="user-tag-pill-list">
                             <UserTagBadge tag={tag} usersStrings={usersStrings} />
                             <StatusBadge tone={isSystem ? 'info' : 'neutral'}>
@@ -9584,18 +9584,18 @@ function AdminDashboard(): React.JSX.Element {
                               : usersStrings.userTags.unbindAction}
                           </Button>
                         </div>
-                        <div className="token-compact-pair">
-                          <div className="token-compact-field">
-                            <span className="token-compact-label">{usersStrings.quota.hourly}</span>
-                            <span className="token-compact-value">{formatSignedQuotaDelta(tag.businessCalls1hDelta)}</span>
+                        <div className="token-compact-pair flex flex-wrap gap-x-6 gap-y-1">
+                          <div className="token-compact-field flex items-baseline gap-1.5">
+                            <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.quota.hourly}</span>
+                            <span className="token-compact-value text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.businessCalls1hDelta)}</span>
                           </div>
-                          <div className="token-compact-field">
-                            <span className="token-compact-label">{usersStrings.quota.daily}</span>
-                            <span className="token-compact-value">{formatSignedQuotaDelta(tag.dailyCreditsDelta)}</span>
+                          <div className="token-compact-field flex items-baseline gap-1.5">
+                            <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.quota.daily}</span>
+                            <span className="token-compact-value text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.dailyCreditsDelta)}</span>
                           </div>
-                          <div className="token-compact-field">
-                            <span className="token-compact-label">{usersStrings.quota.monthly}</span>
-                            <span className="token-compact-value">{formatSignedQuotaDelta(tag.monthlyCreditsDelta)}</span>
+                          <div className="token-compact-field flex items-baseline gap-1.5">
+                            <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.quota.monthly}</span>
+                            <span className="token-compact-value text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.monthlyCreditsDelta)}</span>
                           </div>
                         </div>
                       </article>
@@ -9652,16 +9652,18 @@ function AdminDashboard(): React.JSX.Element {
                   <CardTitle role="heading" aria-level={2}>{usersStrings.detail.tokensTitle}</CardTitle>
                   <CardDescription className="panel-description">{usersStrings.detail.tokensDescription}</CardDescription>
                 </div>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => void handleAddUserToken(detail.userId)}
-                  disabled={addingUserToken}
-                >
-                  <Icon icon={addingUserToken ? 'mdi:progress-helper' : 'mdi:key-plus'} width={16} height={16} />
-                  <span>{addingUserToken ? usersStrings.detail.addingToken : usersStrings.detail.addToken}</span>
-                </Button>
+                <CardAction>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => void handleAddUserToken(detail.userId)}
+                    disabled={addingUserToken}
+                  >
+                    <Icon icon={addingUserToken ? 'mdi:progress-helper' : 'mdi:key-plus'} width={16} height={16} />
+                    <span>{addingUserToken ? usersStrings.detail.addingToken : usersStrings.detail.addToken}</span>
+                  </Button>
+                </CardAction>
               </CardHeader>
               <div className="table-wrapper overflow-hidden">
                 <AdminLazyBoundary loadingLabel={loadingStateStrings.switching} minHeight={220}>

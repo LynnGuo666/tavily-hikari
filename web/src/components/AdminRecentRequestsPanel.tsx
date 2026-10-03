@@ -69,7 +69,7 @@ export interface AdminRecentRequestsPanelProps {
   headerFiltersTargetId?: string
   emptyLabel: string
   loadState: QueryLoadState
-  loadingLabel: string
+  loadingLabel: React.ReactNode
   errorLabel?: string | null
   logs: RequestLog[]
   requestKindOptions: TokenLogRequestKindOption[]

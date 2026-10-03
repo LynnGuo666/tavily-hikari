@@ -3025,7 +3025,7 @@ export default function UserConsole(): JSX.Element {
                 <Empty className="empty-state"><EmptyDescription>{text.tokens.empty}</EmptyDescription></Empty>
               ) : (
                 <>
-                  <div className="hidden overflow-hidden rounded-lg border md:block">
+                  <div className="hidden md:block">
                     <Table className="user-console-tokens-table">
                       <TableHeader>
                         <TableRow>
@@ -3086,11 +3086,11 @@ export default function UserConsole(): JSX.Element {
                       </TableBody>
                     </Table>
                   </div>
-                  <div className="flex flex-col gap-3 md:hidden">
+                  <div className="flex flex-col divide-y md:hidden">
                     {tokens.map((item) => {
                       const state = copyState[item.tokenId] ?? 'idle'
                       return (
-                        <article key={item.tokenId} className="user-console-mobile-card flex flex-col gap-2 rounded-lg border p-3">
+                        <article key={item.tokenId} className="user-console-mobile-card flex flex-col gap-2 py-3">
                           <header className="user-console-mobile-card-header flex items-center justify-between gap-2">
                             <strong className="text-xs font-medium text-muted-foreground">{text.tokens.table.id}</strong> <code className="font-mono text-xs font-medium">{item.tokenId}</code>
                           </header>

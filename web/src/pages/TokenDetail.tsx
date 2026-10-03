@@ -5,11 +5,13 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Fragment, type ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '../lib/icons'
 import {
+  fetchProfile,
   fetchTokenLogDetails,
   fetchTokenLogsCatalog,
   fetchTokenLogsList,
   fetchTokenUsageSeries,
   rotateTokenSecret,
+  type Profile,
   type RequestLog,
   type RequestLogsCatalog,
   type RequestLogFacets,
@@ -27,8 +29,10 @@ import AdminLoadingRegion from '../components/AdminLoadingRegion'
 import AdminRecentRequestsPanel, { type RecentRequestsOutcomeFilter } from '../components/AdminRecentRequestsPanel'
 import AdminReturnToConsoleLink from '../components/AdminReturnToConsoleLink'
 import ThemeToggle from '../components/ThemeToggle'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 import { StatusBadge } from '../components/StatusBadge'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Dialog,
   DialogContent,
@@ -419,6 +423,13 @@ export default function TokenDetail({
   const { language } = useLanguage()
   const tokenStrings = translations.admin.tokens
   const loadingStateStrings = translations.admin.loadingStates
+  const headerStrings = translations.admin.header
+  const refreshingLabel = (
+    <span className="inline-flex items-center gap-1.5">
+      <Spinner className="size-3" aria-hidden="true" />
+      {loadingStateStrings.refreshing}
+    </span>
+  )
   const pageRef = useRef<HTMLDivElement>(null)
   const { viewportMode, contentMode, isCompactLayout } = useResponsiveModes(pageRef)
   const [info, setInfo] = useState<TokenDetailInfo | null>(null)
@@ -461,6 +472,8 @@ export default function TokenDetail({
   const [rotatedToken, setRotatedToken] = useState<string | null>(null)
   const [rotatedCopyState, setRotatedCopyState] = useState<'idle' | 'copied' | 'error'>('idle')
   const [sseConnected, setSseConnected] = useState(false)
+  const [profile, setProfile] = useState<Profile | null>(null)
+  const [reloadTick, setReloadTick] = useState(0)
   const perPageRef = useRef(20)
   const quickUsageAbortRef = useRef<AbortController | null>(null)
   const snapshotUsageAbortRef = useRef<AbortController | null>(null)
@@ -892,6 +905,23 @@ export default function TokenDetail({
     requestKindOptionsAbortRef.current?.abort()
   }, [])
 
+  useEffect(() => {
+    const controller = new AbortController()
+    fetchProfile(controller.signal)
+      .then((data) => {
+        if (!controller.signal.aborted) setProfile(data)
+      })
+      .catch(() => {})
+    return () => controller.abort()
+  }, [])
+
+  const handleManualRefresh = useCallback(() => {
+    setReloadTick((tick) => tick + 1)
+    refreshQuickUsage()
+    refreshSnapshotUsage()
+    refreshLogsCatalog({ preserveOnError: true })
+  }, [refreshQuickUsage, refreshSnapshotUsage, refreshLogsCatalog])
+
   // load detail + summary when the time window changes
   useEffect(() => {
     detailAbortRef.current?.abort()
@@ -924,7 +954,7 @@ export default function TokenDetail({
     return () => {
       detailController.abort()
     }
-  }, [id, period, sinceIso, summaryQueryBaseKey, untilIso])
+  }, [id, period, reloadTick, sinceIso, summaryQueryBaseKey, untilIso])
 
   // load logs list when the time window, cursor, or filters change
   useEffect(() => {
@@ -962,7 +992,7 @@ export default function TokenDetail({
     return () => {
       logsController.abort()
     }
-  }, [loadLogsPage, logsCursor, logsDirection, logsListQueryKey, logsQueryBaseKey])
+  }, [loadLogsPage, logsCursor, logsDirection, logsListQueryKey, logsQueryBaseKey, reloadTick])
 
   useEffect(() => {
     const controller = refreshLogsCatalog()
@@ -1152,50 +1182,75 @@ export default function TokenDetail({
       })
     }
   }, [rotatedToken])
+  const manualRefreshBusy = summaryBlocking || logsBlocking
   const tokenDetailSidebarUtility = (
     <AdminShellSidebarUtility>
       <div className="admin-sidebar-utility-stack flex flex-col gap-3">
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
-            <div className="admin-sidebar-utility-toolbar">
+            <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
               <ThemeToggle />
+              <LanguageSwitcher />
             </div>
-            <div className="admin-sidebar-utility-meta">
+            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+              {profile?.displayName && (
+                <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${profile.isAdmin ? ' user-badge-admin' : ''}`} title={profile.displayName}>
+                  {profile.isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                  <span>{profile.displayName}</span>
+                </div>
+              )}
               <span className={`sse-chip inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
                 <span className="sse-dot size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
               </span>
-            </div>
-            <div className="admin-sidebar-utility-actions flex flex-col gap-1">
-              <AdminReturnToConsoleLink
-                label={translations.admin.header.returnToConsole}
-                href={ADMIN_USER_CONSOLE_HREF}
-                className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                className="admin-sidebar-utility-action flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
-                onClick={() => (onBack ? onBack() : window.history.back())}
-              >
-                <Icon icon="mdi:arrow-left" width={18} height={18} />
-                Back
-              </Button>
             </div>
           </CardContent>
         </Card>
 
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
-            <div className="admin-sidebar-utility-actions flex flex-col gap-1">
+            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+              <AdminReturnToConsoleLink
+                label={headerStrings.returnToConsole}
+                href={ADMIN_USER_CONSOLE_HREF}
+                className="admin-sidebar-utility-action"
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="admin-sidebar-utility-action"
+                onClick={() => (onBack ? onBack() : window.history.back())}
+              >
+                <Icon icon="mdi:arrow-left" width={18} height={18} aria-hidden="true" />
+                {translations.admin.keyDetails.back}
+              </Button>
               <Button
                 type="button"
                 variant="outline"
-                className="admin-sidebar-utility-action flex items-center gap-2 rounded-md border-warning/40 bg-warning/10 px-2 py-1.5 text-sm text-warning hover:bg-warning/20"
+                size="sm"
+                className="admin-sidebar-utility-action border-warning/40 text-warning hover:bg-warning/10"
                 onClick={() => setIsRotateDialogOpen(true)}
                 aria-label="Regenerate secret"
               >
-                <Icon icon="mdi:key-change" width={18} height={18} />
+                <Icon icon="mdi:key-change" width={16} height={16} aria-hidden="true" />
                 Regenerate Secret
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="admin-panel-refresh-button admin-sidebar-utility-action"
+                onClick={handleManualRefresh}
+                disabled={manualRefreshBusy}
+              >
+                <Icon
+                  icon={manualRefreshBusy ? 'mdi:loading' : 'mdi:refresh'}
+                  width={16}
+                  height={16}
+                  className={manualRefreshBusy ? 'icon-spin' : undefined}
+                  aria-hidden="true"
+                />
+                <span>{manualRefreshBusy ? headerStrings.refreshing : headerStrings.refreshNow}</span>
               </Button>
             </div>
           </CardContent>
@@ -1231,16 +1286,17 @@ export default function TokenDetail({
             </span>
             <Button type="button" variant="outline" onClick={() => (onBack ? onBack() : window.history.back())}>
               <Icon icon="mdi:arrow-left" width={18} height={18} />
-              Back
+              {translations.admin.keyDetails.back}
             </Button>
             <Button
               type="button"
               variant="outline"
-              className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
+              size="sm"
+              className="border-warning/40 text-warning hover:bg-warning/10"
               onClick={() => setIsRotateDialogOpen(true)}
               aria-label="Regenerate secret"
             >
-              <Icon icon="mdi:key-change" width={18} height={18} />
+              <Icon icon="mdi:key-change" width={16} height={16} aria-hidden="true" />
               Regenerate Secret
             </Button>
           </div>
@@ -1261,7 +1317,7 @@ export default function TokenDetail({
       <Card className="surface panel token-info-section flex flex-col gap-1">
         <AdminLoadingRegion
           loadState={infoRegionLoadState}
-          loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
+          loadingLabel={summaryRefreshing ? refreshingLabel : loadingStateStrings.switching}
           minHeight={184}
         >
           {info ? (
@@ -1305,7 +1361,7 @@ export default function TokenDetail({
         </CardHeader>
         <AdminLoadingRegion
           loadState={infoRegionLoadState}
-          loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
+          loadingLabel={summaryRefreshing ? refreshingLabel : loadingStateStrings.switching}
           minHeight={176}
         >
           <section className="quick-stats-grid grid min-w-0 gap-3 px-4 sm:grid-cols-3">
@@ -1420,7 +1476,7 @@ export default function TokenDetail({
         )}
         <AdminLoadingRegion
           loadState={summaryLoadState}
-          loadingLabel={summaryRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
+          loadingLabel={summaryRefreshing ? refreshingLabel : loadingStateStrings.switching}
           minHeight={160}
         >
           <div className="token-stats grid min-w-0 grid-cols-2 gap-3 px-4 sm:grid-cols-4">
@@ -1448,7 +1504,7 @@ export default function TokenDetail({
         description={logsDescription}
         emptyLabel="No logs yet."
         loadState={logsLoadState}
-        loadingLabel={logsRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching}
+        loadingLabel={logsRefreshing ? refreshingLabel : loadingStateStrings.switching}
         errorLabel={error}
         logs={logs}
         requestKindOptions={requestKindOptions}

@@ -9,7 +9,6 @@ import type {
   UserDashboardProgressCard,
 } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import type { Language } from '../i18n'
 
@@ -112,22 +111,22 @@ function SummaryCard({
   formatNumber: (value: number) => string
 }): React.JSX.Element {
   return (
-    <Card
+    <div
       className={cn(
         `user-console-summary-card user-console-summary-card-${tone}`,
-        'gap-3',
+        'flex flex-col gap-3',
         tone === 'month' && 'col-span-2 @lg:col-span-1',
       )}
     >
-      <CardHeader className="user-console-summary-card-header flex flex-wrap items-center justify-between gap-1">
-        <CardDescription className="user-console-summary-card-label text-xs font-medium tracking-wide text-muted-foreground uppercase">
+      <div className="user-console-summary-card-header flex flex-wrap items-center justify-between gap-1">
+        <div className="user-console-summary-card-label text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
-        </CardDescription>
-        <CardAction className="user-console-summary-card-marker text-xs text-muted-foreground">
+        </div>
+        <div className="user-console-summary-card-marker text-xs text-muted-foreground">
           {marker}
-        </CardAction>
-      </CardHeader>
-      <CardContent className="user-console-summary-card-value">
+        </div>
+      </div>
+      <div className="user-console-summary-card-value">
         <span
           className={cn(
             'text-3xl font-semibold tabular-nums',
@@ -137,8 +136,8 @@ function SummaryCard({
         >
           {loading ? '--' : formatNumber(value)}
         </span>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -178,19 +177,19 @@ function ProgressCard({
     : null
 
   return (
-    <Card
+    <div
       className={cn(
         `user-console-progress-card user-console-progress-card-${accent}`,
+        'flex flex-col gap-3',
         loading && 'is-loading',
-        'gap-3',
       )}
     >
-      <CardHeader className="user-console-progress-card-header">
-        <CardDescription className="user-console-progress-card-label min-h-8 min-w-0 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+      <div className="user-console-progress-card-header">
+        <div className="user-console-progress-card-label min-h-8 min-w-0 text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="user-console-progress-card-value flex flex-col gap-3">
+        </div>
+      </div>
+      <div className="user-console-progress-card-value flex flex-col gap-3">
         <div>
           <strong className={cn('text-2xl font-semibold tabular-nums', loading && 'text-muted-foreground/50')}>
             {loading || !card ? '--' : formatNumber(card.used)}
@@ -200,14 +199,14 @@ function ProgressCard({
           </span>
         </div>
         <ProgressChart card={card} accentId={accent} language={language} />
-      </CardContent>
-      <CardFooter className="user-console-progress-card-foot mt-auto justify-between text-xs text-muted-foreground">
+      </div>
+      <div className="user-console-progress-card-foot mt-auto flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
         <span>{marker}</span>
         <strong className={cn('tabular-nums', CHART_ACCENT_CLASS[accent])}>
           {fillRatio == null ? '--' : `${Math.round(fillRatio * 100)}%`}
         </strong>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   )
 }
 
