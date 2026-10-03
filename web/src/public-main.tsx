@@ -7,7 +7,7 @@ import NotFoundFallbackPreview from './components/NotFoundFallbackPreview'
 import { bootstrapOfflineShellDocument, registerPwaServiceWorker } from './pwa/runtime'
 import PublicHome from './PublicHome'
 import AgentationToolbar from './components/AgentationToolbar'
-import { ThemeProvider } from './theme'
+import { ThemeProvider } from './theme-provider'
 import './index.css'
 
 installDemoRuntime()

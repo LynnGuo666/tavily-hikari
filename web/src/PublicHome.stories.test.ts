@@ -5,7 +5,7 @@ import type React from 'react'
 
 import meta, * as publicHomeStories from './PublicHome.stories'
 import { LanguageProvider } from './i18n'
-import { ThemeProvider } from './theme'
+import { ThemeProvider } from './theme-provider'
 
 describe('PublicHome Storybook proofs', () => {
   it('keeps the page stories and mobile guide menu proof export available', () => {

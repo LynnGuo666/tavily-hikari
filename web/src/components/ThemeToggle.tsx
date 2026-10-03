@@ -1,10 +1,17 @@
 import { CheckIcon, MonitorIcon, MoonIcon, SunIcon } from 'lucide-react'
 import type React from 'react'
 
+import { useTheme } from 'next-themes'
+
 import { useLanguage } from '../i18n'
-import { type ThemeMode, useTheme } from '../theme'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuGroup } from '@/components/ui/dropdown-menu'
+
+type ThemeMode = 'light' | 'dark' | 'system'
+
+function asThemeMode(theme: string | undefined): ThemeMode {
+  return theme === 'dark' || theme === 'light' || theme === 'system' ? theme : 'light'
+}
 
 const labels = {
   en: {
@@ -30,7 +37,9 @@ function ThemeIcon({ mode }: { mode: ThemeMode }): React.JSX.Element {
 export default function ThemeToggle(): React.JSX.Element {
   const { language } = useLanguage()
   const copy = labels[language]
-  const { mode, setMode } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const mode = asThemeMode(theme)
+  const setMode = (next: ThemeMode) => setTheme(next)
 
   return (
     <DropdownMenu>

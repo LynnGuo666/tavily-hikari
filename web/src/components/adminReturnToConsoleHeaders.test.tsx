@@ -4,7 +4,7 @@ import type React from 'react'
 
 import { LanguageProvider } from '../i18n'
 import { ADMIN_USER_CONSOLE_HREF } from '../lib/adminUserConsoleEntry'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import AdminPanelHeader from './AdminPanelHeader'
 
 function renderWithProviders(node: React.JSX.Element): string {

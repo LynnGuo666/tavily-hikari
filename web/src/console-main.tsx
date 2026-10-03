@@ -5,7 +5,7 @@ import { installDemoRuntime } from './api/demo'
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { LanguageProvider } from './i18n'
 import { bootstrapOfflineShellDocument, registerPwaServiceWorker } from './pwa/runtime'
-import { ThemeProvider } from './theme'
+import { ThemeProvider } from './theme-provider'
 import UserConsole from './UserConsole'
 import AgentationToolbar from './components/AgentationToolbar'
 import './index.css'

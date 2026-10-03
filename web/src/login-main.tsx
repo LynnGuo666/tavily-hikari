@@ -6,7 +6,7 @@ import { LanguageProvider } from './i18n'
 import AdminLogin from './pages/AdminLogin'
 import AgentationToolbar from './components/AgentationToolbar'
 import { bootstrapOfflineShellDocument, registerPwaServiceWorker } from './pwa/runtime'
-import { ThemeProvider } from './theme'
+import { ThemeProvider } from './theme-provider'
 import './index.css'
 
 installDemoRuntime()

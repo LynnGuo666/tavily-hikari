@@ -5,7 +5,7 @@ import type React from 'react'
 
 
 import { LanguageProvider } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import meta, * as headerStories from './UserConsoleHeader.stories'
 
 function renderStory(story: {

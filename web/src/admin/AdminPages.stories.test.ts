@@ -5,7 +5,7 @@ import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 
 import { LanguageProvider, translations } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { renderToStaticMarkup } from 'react-dom/server'
 

@@ -3,7 +3,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import type React from 'react'
 
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import * as stories from './AdminUserRankingsPage.stories'
 

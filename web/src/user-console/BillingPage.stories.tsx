@@ -9,7 +9,7 @@ import type {
   UserBillingSummary,
 } from '../api'
 import { LanguageProvider } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import BillingPage from './BillingPage'
 import { EN } from './text'
 

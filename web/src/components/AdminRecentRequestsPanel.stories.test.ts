@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import type React from 'react'
 
 import { LanguageProvider } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import meta, * as panelStories from './AdminRecentRequestsPanel.stories'
 

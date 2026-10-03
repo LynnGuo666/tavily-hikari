@@ -7,7 +7,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import meta, * as stories from './HaNodeDetailPanel.stories'
 import { LanguageProvider } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 
 describe('HaNodeDetailPanel Storybook proofs', () => {
   it('keeps the node detail story available', () => {

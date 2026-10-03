@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 import { LanguageProvider } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import UserConsoleHeader from './UserConsoleHeader'
 
 function renderWithProviders(node: ReactElement): string {

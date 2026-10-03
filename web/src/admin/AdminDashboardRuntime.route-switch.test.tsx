@@ -9,7 +9,7 @@ import { installDemoRuntime } from '../api/demo'
 import { fetchDashboardOverview, type DashboardSnapshotEvent } from '../api/runtime'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { LanguageProvider } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import AdminDashboard from './AdminDashboardRuntime'
 import {
   analysisPath,

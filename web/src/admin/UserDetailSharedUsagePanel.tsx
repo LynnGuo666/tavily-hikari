@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Empty, EmptyDescription } from '@/components/ui/empty'
 import { Button } from '@/components/ui/button'
 import SegmentedTabs from '@/components/SegmentedTabs'
-import { useTheme } from '../theme'
+import { useTheme } from 'next-themes'
 import type { AdminUserIpTimelineEntry, AdminUserUsageSeries, AdminUserUsageSeriesKey, AdminUserUsageSeriesQuotaPoint } from '../api'
 import type { AdminTranslations } from '../i18n'
 import type React from 'react'
@@ -181,7 +181,8 @@ export function UserDetailSharedUsagePanel({
   initialSeriesCache,
   onSeriesCacheChange,
 }: UserDetailSharedUsagePanelProps): React.JSX.Element {
-  const { resolvedTheme } = useTheme()
+  const { resolvedTheme: nextResolvedTheme } = useTheme()
+  const resolvedTheme = nextResolvedTheme === 'dark' ? 'dark' : 'light'
   const [activeSeries, setActiveSeries] = useState<AdminUserUsagePanelTab>(initialSeries)
   const [seriesCache, setSeriesCache] = useState<Partial<Record<AdminUserUsageSeriesKey, AdminUserUsageSeries>>>(
     () => initialSeriesCache ?? {},

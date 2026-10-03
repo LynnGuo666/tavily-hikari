@@ -6,7 +6,7 @@ import { installDemoRuntime } from './api/demo'
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { LanguageProvider } from './i18n'
 import { bootstrapOfflineShellDocument, normalizeAdminShellPath, registerPwaServiceWorker } from './pwa/runtime'
-import { ThemeProvider } from './theme'
+import { ThemeProvider } from './theme-provider'
 import './index.css'
 
 installDemoRuntime()

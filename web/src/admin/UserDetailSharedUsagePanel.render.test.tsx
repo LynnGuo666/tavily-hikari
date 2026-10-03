@@ -7,7 +7,8 @@ import { createRoot, type Root } from 'react-dom/client'
 
 import type { AdminUserUsageSeries, AdminUserUsageSeriesKey } from '../api'
 import { ZH } from '../i18n/translations/zh'
-import { ThemeProvider, useTheme } from '../theme'
+import { ThemeProvider } from '../theme-provider'
+import { useTheme } from 'next-themes'
 import { UserDetailSharedUsagePanel, isBusinessCalls1hStacked } from './UserDetailSharedUsagePanel'
 
 function deferred<T>() {
@@ -370,10 +371,10 @@ describe('UserDetailSharedUsagePanel loading behavior', () => {
 describe('UserDetailSharedUsagePanel theme behavior', () => {
   it('refreshes its theme-bound chart state when the admin theme changes', async () => {
     function ThemeHarness(): React.JSX.Element {
-      const { setMode } = useTheme()
+      const { setTheme } = useTheme()
       return (
         <>
-          <button type="button" onClick={() => setMode('dark')}>
+          <button type="button" onClick={() => setTheme('dark')}>
             toggle-dark
           </button>
           <UserDetailSharedUsagePanel

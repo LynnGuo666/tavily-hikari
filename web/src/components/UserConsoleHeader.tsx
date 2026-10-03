@@ -16,8 +16,8 @@ import type React from 'react'
 import BrandLockup from './BrandLockup'
 import { Icon } from '../lib/icons'
 
+import { useTheme } from 'next-themes'
 import { languageOptions, type Language, useLanguage, useTranslate } from '../i18n'
-import { type ThemeMode, useTheme } from '../theme'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeToggle from './ThemeToggle'
 import { Badge } from '@/components/ui/badge'
@@ -103,6 +103,12 @@ const UTILITY_COPY = {
   },
 } as const
 
+type ThemeMode = 'light' | 'dark' | 'system'
+
+function asThemeMode(theme: string | undefined): ThemeMode {
+  return theme === 'dark' || theme === 'light' || theme === 'system' ? theme : 'light'
+}
+
 function ThemeModeIcon({ mode }: { mode: ThemeMode }): React.JSX.Element {
   if (mode === 'dark') return <MoonIcon aria-hidden="true" />
   if (mode === 'light') return <SunIcon aria-hidden="true" />
@@ -143,7 +149,9 @@ const AVATAR_FALLBACK_CLASS = `${AVATAR_BASE_CLASS} user-console-account-avatar-
 
 function UserConsoleUtilityMenu(): React.JSX.Element {
   const { language, setLanguage } = useLanguage()
-  const { mode, setMode } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const mode = asThemeMode(theme)
+  const setMode = (next: ThemeMode) => setTheme(next)
   const strings = useTranslate()
   const copy = UTILITY_COPY[language]
 

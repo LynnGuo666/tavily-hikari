@@ -7,7 +7,7 @@ import { installDemoRuntime } from '../api/demo'
 import UpdateAvailableBanner from '../components/UpdateAvailableBanner'
 import { LanguageProvider } from '../i18n'
 import { ZH } from '../i18n/translations/zh'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 import AdminLogin from './AdminLogin'
 
 interface AdminLoginStoryProps {

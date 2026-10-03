@@ -7,10 +7,13 @@ import { createElement } from 'react'
 import { createRoot } from 'react-dom/client'
 import { renderToStaticMarkup } from 'react-dom/server'
 
+// next-themes emits an inline pre-hydration <script>; strip it when asserting exact output
+const stripProviderScript = (markup: string): string => markup.replace(/<script[\s\S]*?<\/script>/g, '')
+
 import meta, * as stories from './HaStatusBanner.stories'
 import HaStatusBanner from './HaStatusBanner'
 import { LanguageProvider, translations } from '../i18n'
-import { ThemeProvider } from '../theme'
+import { ThemeProvider } from '../theme-provider'
 
 async function renderIntoDom(element: React.JSX.Element): Promise<string> {
   const container = document.createElement('div')
@@ -19,7 +22,9 @@ async function renderIntoDom(element: React.JSX.Element): Promise<string> {
   await act(async () => {
     root.render(createElement(LanguageProvider, { initialLanguage: 'zh' }, createElement(ThemeProvider, null, element)))
   })
-  const text = container.textContent ?? ''
+  // next-themes renders an inline pre-hydration <script>; exclude its text from the capture
+  let text = container.textContent ?? ''
+  for (const node of container.querySelectorAll('script')) text = text.replace(node.textContent ?? '', '')
   await act(async () => {
     root.unmount()
   })
@@ -295,7 +300,7 @@ describe('HaStatusBanner Storybook proofs', () => {
       ),
     )
 
-    expect(healthyMarkup).toBe('')
+    expect(stripProviderScript(healthyMarkup)).toBe('')
     expect(unknownMarkup).toContain(translations.zh.admin.systemSettings.ha.syncDisabledUnknown)
     expect(unknownMarkup).not.toContain(unknownReason)
   })
