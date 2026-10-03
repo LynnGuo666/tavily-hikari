@@ -5,7 +5,10 @@ import { INITIAL_VIEWPORTS } from 'storybook/viewport'
 import '../src/index.css'
 import { TooltipProvider } from '../src/components/ui/tooltip'
 import { LanguageProvider, type Language, useLanguage } from '../src/i18n'
-import { ThemeProvider, type ThemeMode, useTheme } from '../src/theme'
+import { useTheme } from 'next-themes'
+import { ThemeProvider } from '../src/theme-provider'
+
+type ThemeMode = 'light' | 'dark' | 'system'
 
 const DEFAULT_LOCAL_DOCS_SITE_ORIGIN = 'http://127.0.0.1:56007'
 const DOCS_ORIGIN_STORAGE_KEY = 'tavily-hikari.docs-origin'
@@ -193,7 +196,9 @@ function SyncGlobals(props: {
   children: React.ReactNode
 }): React.JSX.Element {
   const { language, setLanguage } = useLanguage()
-  const { mode, setMode } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const mode: ThemeMode = theme === 'dark' || theme === 'light' || theme === 'system' ? theme : 'light'
+  const setMode = (next: ThemeMode) => setTheme(next)
 
   useEffect(() => {
     if (props.language !== language) setLanguage(props.language)
