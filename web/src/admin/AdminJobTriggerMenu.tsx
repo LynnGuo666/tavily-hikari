@@ -31,7 +31,7 @@ export default function AdminJobTriggerMenu({
       <DropdownMenuTrigger asChild>
         <Button type="button" variant="outline" size="sm" disabled={disabled || triggeringJobType != null}>
           <Icon icon="mdi:play-circle-outline" width={16} height={16} aria-hidden="true" />
-          <span style={{ whiteSpace: 'nowrap' }}>
+          <span className="whitespace-nowrap">
             {triggeringJobType ? labelForJobType(triggeringJobType) : strings.actions.trigger}
           </span>
         </Button>

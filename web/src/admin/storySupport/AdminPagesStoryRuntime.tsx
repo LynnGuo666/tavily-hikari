@@ -2149,7 +2149,7 @@ function StoryMonthlyBrokenDrawer({
       <DrawerContent>
         <div>
           <Card className="surface panel">
-            <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+            <CardHeader className="panel-header border-b flex-wrap gap-3">
               <div>
                 <CardTitle role="heading" aria-level={2}>{users.brokenKeys.drawerTitle}</CardTitle>
                 <CardDescription>
@@ -2273,7 +2273,7 @@ function MonthlyBrokenDrawerStoryCanvas({
       overlays={<StoryMonthlyBrokenDrawer open label={label} items={items} onOpenChange={() => undefined} />}
     >
       <Card className="surface panel">
-        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <CardHeader className="panel-header border-b flex-wrap gap-3">
           <div>
             <CardTitle role="heading" aria-level={2}>Blocked-key Drawer Sandbox</CardTitle>
             <CardDescription>Focused Storybook surface for verifying adaptive drawer height.</CardDescription>
@@ -3757,7 +3757,7 @@ function TokensPageCanvas(): React.JSX.Element {
 
         <div>
           <span className="text-sm text-muted-foreground">{tokenStrings.pagination.page.replace('{page}', '1').replace('{total}', '3')}</span>
-          <div style={{ display: 'inline-flex', gap: 8 }}>
+          <div className="inline-flex gap-2">
             <Button type="button" variant="outline" size="sm">{tokenStrings.pagination.prev}</Button>
             <Button type="button" variant="outline" size="sm">{tokenStrings.pagination.next}</Button>
           </div>
@@ -3965,12 +3965,12 @@ function KeysPageCanvas({
   return (
     <AdminPageFrame activeModule="keys">
       <Card className="surface panel">
-        <CardHeader className="panel-header border-b" style={{ flexWrap: 'wrap', gap: 12, alignItems: 'flex-start' }}>
-          <div style={{ flex: '1 1 320px', minWidth: 240 }}>
+        <CardHeader className="panel-header border-b flex-wrap gap-3 items-start">
+          <div className="flex-[1_1_320px] min-w-[240px]">
             <CardTitle role="heading" aria-level={2}>{keyStrings.title}</CardTitle>
             <CardDescription>{keyStrings.description}</CardDescription>
           </div>
-          <div style={{ ...keysQuickAddCardStyle, marginLeft: 'auto' }}>
+          <div className="ml-auto" style={keysQuickAddCardStyle}>
             <div style={keysQuickAddActionsStyle}>
               <Input
                 type="text"
@@ -3978,9 +3978,9 @@ function KeysPageCanvas({
                 readOnly
                 value="tvly-prod-******"
                 aria-label={keyStrings.placeholder}
-                style={{ flex: '1 1 260px', minWidth: 260, maxWidth: '100%' }}
+                className="max-w-full min-w-[260px] flex-[1_1_260px]"
               />
-              <Button type="button" variant="default" size="xs" style={{ whiteSpace: 'nowrap' }}>
+              <Button type="button" variant="default" size="xs" className="whitespace-nowrap">
                 {keyStrings.addButton}
               </Button>
             </div>
@@ -3989,14 +3989,14 @@ function KeysPageCanvas({
 
         <div style={keysUtilityRowStyle}>
           <div style={keysFilterClusterStyle}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div className="flex items-center gap-2">
               <Input
                 type="text"
                 value={selectedRegistrationIp}
                 onChange={(event) => setSelectedRegistrationIp(event.target.value)}
                 placeholder={keyStrings.filters.registrationIpPlaceholder}
                 aria-label={keyStrings.filters.registrationIp}
-                style={{ width: 188 }}
+                className="w-[188px]"
               />
               {selectedRegistrationIp ? (
                 <Button type="button" variant="ghost" size="sm" onClick={() => setSelectedRegistrationIp('')}>
@@ -4008,7 +4008,7 @@ function KeysPageCanvas({
               <DropdownMenuTrigger asChild>
                 <Button type="button" variant="outline" size="sm" aria-label={groupSummary}>
                   <Icon icon="mdi:filter-variant" width={16} height={16} aria-hidden="true" />
-                  <span style={{ whiteSpace: 'nowrap' }}>{groupSummary}</span>
+                  <span className="whitespace-nowrap">{groupSummary}</span>
                   {selectedGroups.length > 0 ? (
                     <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                       {selectedGroups.length}
@@ -4049,7 +4049,7 @@ function KeysPageCanvas({
               <DropdownMenuTrigger asChild>
                 <Button type="button" variant="outline" size="sm" aria-label={statusSummary}>
                   <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
-                  <span style={{ whiteSpace: 'nowrap' }}>{statusSummary}</span>
+                  <span className="whitespace-nowrap">{statusSummary}</span>
                   {selectedStatuses.length > 0 ? (
                     <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                       {selectedStatuses.length}
@@ -4090,7 +4090,7 @@ function KeysPageCanvas({
               <DropdownMenuTrigger asChild>
                 <Button type="button" variant="outline" size="sm" aria-label={regionSummary}>
                   <Icon icon="mdi:map-marker-radius-outline" width={16} height={16} aria-hidden="true" />
-                  <span style={{ whiteSpace: 'nowrap' }}>{regionSummary}</span>
+                  <span className="whitespace-nowrap">{regionSummary}</span>
                   {selectedRegions.length > 0 ? (
                     <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                       {selectedRegions.length}
@@ -4187,19 +4187,18 @@ function KeysPageCanvas({
           </div>
         </div>
         {bulkSyncProgress ? (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -8, marginBottom: 16 }}>
+          <div className="flex justify-end -mt-2 mb-4">
             <ApiKeyBulkSyncProgressBubble
               strings={keyStrings.bulkSyncProgress}
               progress={bulkSyncProgress}
-              style={{ width: 'min(26rem, 100%)' }}
+              className="w-[min(26rem,100%)]"
             />
           </div>
         ) : null}
         {bulkFeedback ? (
           <div
-            className={bulkFeedback.kind === 'error' ? 'alert border-destructive/30 bg-destructive/10 text-destructive' : 'alert border-warning/40 bg-warning/10 text-warning'}
+            className={`${bulkFeedback.kind === 'error' ? 'alert border-destructive/30 bg-destructive/10 text-destructive' : 'alert border-warning/40 bg-warning/10 text-warning'} mb-4`}
             role={bulkFeedback.kind === 'error' ? 'alert' : 'status'}
-            style={{ marginBottom: 16 }}
           >
             {bulkFeedback.message}
           </div>
@@ -4209,7 +4208,7 @@ function KeysPageCanvas({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead style={{ width: 52 }}>
+                <TableHead className="w-[52px]">
                   <label style={keySelectionCheckboxLabelStyle}>
                     <Checkbox
                       checked={selectedVisibleKeyCount > 0 && !allVisibleKeysSelected ? 'indeterminate' : allVisibleKeysSelected}
@@ -4291,16 +4290,7 @@ function KeysPageCanvas({
                           variant="ghost" size="icon-sm"
                           aria-label={keyStrings.actions.copy}
                           title={keyStrings.actions.copy}
-                          style={{
-                            position: 'absolute',
-                            right: 0,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            width: 32,
-                            height: 32,
-                            minHeight: 32,
-                            padding: 0,
-                          }}
+                          className="absolute right-0 top-1/2 -translate-y-1/2 w-[32px] h-[32px] min-h-[32px] p-0"
                         >
                           <Icon icon="mdi:content-copy" width={18} height={18} aria-hidden="true" />
                         </Button>
@@ -4730,7 +4720,7 @@ function JobsPageCanvas(): React.JSX.Element {
                   data-testid="storybook-jobs-filter-trigger"
                 >
                   <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
-                  <span style={{ whiteSpace: 'nowrap' }}>{jobFilterSummary}</span>
+                  <span className="whitespace-nowrap">{jobFilterSummary}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-80">
@@ -4752,7 +4742,7 @@ function JobsPageCanvas(): React.JSX.Element {
             </DropdownMenu>
           </div>
         </CardHeader>
-        <Empty role="status" style={{ marginBottom: 16 }}><EmptyDescription>
+        <Empty role="status" className="mb-4"><EmptyDescription>
           {jobTriggerNotice}
         </EmptyDescription></Empty>
 
@@ -4879,7 +4869,7 @@ function JobsPageCanvas(): React.JSX.Element {
 
         <div>
           <span className="text-sm text-muted-foreground">{jobsStrings.description} (1 / 2)</span>
-          <div style={{ display: 'inline-flex', gap: 8 }}>
+          <div className="inline-flex gap-2">
             <Button type="button" variant="outline" size="sm">
               {admin.tokens.pagination.prev}
             </Button>
@@ -4959,7 +4949,7 @@ function UsersPageCanvas({
   return (
     <AdminPageFrame activeModule="users">
       <Card className="surface panel">
-        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <CardHeader className="panel-header border-b flex-wrap gap-3">
           <div className="block md:hidden">
             <CardTitle role="heading" aria-level={2}>{users.title}</CardTitle>
             <CardDescription>{users.description}</CardDescription>
@@ -5130,7 +5120,7 @@ function UsersPageCanvas({
       </Card>
 
       <Card className="surface panel">
-        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <CardHeader className="panel-header border-b flex-wrap gap-3">
           <div>
             <CardTitle role="heading" aria-level={2}>{users.catalog.summaryTitle}</CardTitle>
             <CardDescription>{users.catalog.summaryDescription}</CardDescription>
@@ -5241,7 +5231,7 @@ function UsersUsagePageCanvas({
     setSortOrder(nextOrder)
   }
   const usageHeaderActions = (
-    <div style={{ display: 'grid', gap: 6 }}>
+    <div className="grid gap-1.5">
       <div className="users-search-controls">
         <Input
           type="text"
@@ -5727,7 +5717,7 @@ function UnboundTokenUsagePageCanvas({
         </div>
 
         {errorMessage && (
-          <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" style={{ marginTop: 12 }}>
+          <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive mt-3">
             {errorMessage}
           </div>
         )}
@@ -5790,7 +5780,7 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
   const monthlyFailureText = language === 'zh' ? '失败 147' : '147 failed'
 
   return (
-    <div style={{ display: 'grid', gap: 20, maxWidth: 840, margin: '0 auto' }}>
+    <div className="mx-auto grid max-w-[840px] gap-5">
       <Card className="surface panel">
         <CardHeader className="panel-header border-b">
           <div>
@@ -5802,16 +5792,13 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
           </div>
         </CardHeader>
         <div
+          className="max-h-[260px] overflow-hidden rounded-[28px] p-[18px]"
           style={{
-            overflow: 'hidden',
-            maxHeight: 260,
-            borderRadius: 28,
             border: '1px dashed hsl(var(--legacy-accent) / 0.42)',
             background: 'linear-gradient(180deg, hsl(var(--legacy-card) / 0.98), hsl(var(--legacy-muted) / 0.24))',
-            padding: 18,
           }}
         >
-          <div className="table-wrapper overflow-hidden rounded-lg border" style={{ maxHeight: 180, overflow: 'auto' }}>
+          <div className="table-wrapper overflow-hidden rounded-lg border max-h-[180px] overflow-y-auto">
             <Table className="admin-users-usage-table">
               <TableHeader>
                 <TableRow>
@@ -5865,7 +5852,7 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell colSpan={4} style={{ height: 120 }} />
+                  <TableCell colSpan={4} className="h-[120px]" />
                 </TableRow>
               </TableBody>
             </Table>
@@ -5902,7 +5889,7 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
         </section>
       </div>
       <Card className="surface panel block md:hidden">
-        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <CardHeader className="panel-header border-b flex-wrap gap-3">
           <div>
             <CardTitle role="heading" aria-level={2}>{users.catalog.title}</CardTitle>
             <CardDescription>{users.catalog.description}</CardDescription>
@@ -6060,7 +6047,7 @@ function UserDetailPageCanvas({
             <dt>{users.usage.table.businessOneHour}</dt>
             <dd>
               {formatNumber(detail.businessCalls1h.totalCount)}
-              <span style={{ display: 'block' }}>
+              <span className="block">
                 {language === 'zh'
                   ? `成 ${formatNumber(detail.businessCalls1h.successCount)} / 败 ${formatNumber(detail.businessCalls1h.failureCount)}`
                   : `S ${formatNumber(detail.businessCalls1h.successCount)} / F ${formatNumber(detail.businessCalls1h.failureCount)}`}
@@ -6080,7 +6067,7 @@ function UserDetailPageCanvas({
         </dl>
       </Card>
       <Card className="surface panel">
-        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <CardHeader className="panel-header border-b flex-wrap gap-3">
           <div>
             <CardTitle role="heading" aria-level={2}>{users.userTags.title}</CardTitle>
             <CardDescription>{users.userTags.description}</CardDescription>
@@ -6353,7 +6340,7 @@ function AnnouncementsPageCanvas(): React.JSX.Element {
           showListCreateAction={false}
         />
       ) : (
-        <div style={{ minHeight: 360 }} />
+        <div className="min-h-[360px]" />
       )}
     </AdminPageFrame>
   )

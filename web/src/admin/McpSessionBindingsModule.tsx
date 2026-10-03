@@ -336,9 +336,9 @@ export default function McpSessionBindingsModule({
   }
 
   return (
-    <Card className="surface panel min-w-0" style={{ display: 'grid', gap: 16 }}>
+    <Card className="surface panel min-w-0 grid gap-4">
       {showStatusTabs ? (
-        <CardHeader className="panel-header border-b" style={{ justifyContent: 'flex-end', gap: 12 }}>
+        <CardHeader className="panel-header border-b justify-end gap-3">
           <McpSessionBindingsStatusTabs
             language={language}
             value={query.status ?? 'active'}
@@ -410,17 +410,10 @@ export default function McpSessionBindingsModule({
       </CardContent>
 
       <CardContent
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 8,
-          flexWrap: 'wrap',
-          paddingBottom: 8,
-          borderBottom: '1px solid color-mix(in oklab, var(--border) 46%, transparent)',
-        }}
+        className="flex flex-wrap items-center justify-between gap-2 pb-2"
+        style={{ borderBottom: '1px solid color-mix(in oklab, var(--border) 46%, transparent)' }}
       >
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+        <div className="inline-flex flex-wrap items-center gap-2">
           <strong>{copy.selection.selectedCount.replace('{count}', numberFormatter.format(selectedCount))}</strong>
           <Button
             type="button"
@@ -432,7 +425,7 @@ export default function McpSessionBindingsModule({
             {copy.selection.clear}
           </Button>
         </div>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+        <div className="inline-flex flex-wrap items-center gap-2">
           <Button
             type="button"
             variant="outline"
@@ -538,7 +531,7 @@ export default function McpSessionBindingsModule({
                           {item.revokedAt == null ? (
                             <span>{copy.revokeHistoryEmpty}</span>
                           ) : (
-                            <div style={{ display: 'grid', gap: 4 }}>
+                            <div className="grid gap-1">
                               <span>{formatTimestamp(item.revokedAt, formatter, copy.notAvailable)}</span>
                               {item.revokeReason ? (
                                 <small className="text-muted-foreground">

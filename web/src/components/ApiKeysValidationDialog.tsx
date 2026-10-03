@@ -257,14 +257,13 @@ function RegistrationIpIndicator(props: {
         ? createPortal(
             <span
               ref={bubbleRef}
-              className="key-validation-bubble"
+              className="key-validation-bubble pointer-events-none"
               role="tooltip"
               data-placement={position?.placement ?? "bottom"}
               style={{
                 top: `${position?.top ?? 0}px`,
                 left: `${position?.left ?? 0}px`,
                 visibility: position ? "visible" : "hidden",
-                pointerEvents: "none",
                 ["--key-validation-bubble-arrow-left" as string]: `${position?.arrowOffset ?? 40}px`,
               }}
             >
@@ -658,10 +657,10 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
               <div>
                 <Table className="table-fixed w-full text-sm">
                   <colgroup>
-                    <col style={{ width: "52%" }} />
-                    <col style={{ width: "26%" }} />
-                    <col style={{ width: "14%" }} />
-                    <col style={{ width: "8%" }} />
+                    <col className="w-[52%]" />
+                    <col className="w-[26%]" />
+                    <col className="w-[14%]" />
+                    <col className="w-[8%]" />
                   </colgroup>
                   <TableHeader>
                     <TableRow>

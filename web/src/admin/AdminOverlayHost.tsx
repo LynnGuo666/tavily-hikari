@@ -13,7 +13,7 @@ export default function AdminOverlayHost({
   return (
     <>
       {children}
-      <div data-admin-overlay-host={ADMIN_OVERLAY_HOST_TEST_ID} style={{ display: 'contents' }}>
+      <div data-admin-overlay-host={ADMIN_OVERLAY_HOST_TEST_ID} className="contents">
         {overlays}
       </div>
     </>

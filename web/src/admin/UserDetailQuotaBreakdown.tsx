@@ -67,7 +67,7 @@ export function UserDetailQuotaBreakdown({
 
   return (
     <>
-      <div className="table-wrapper overflow-hidden hidden md:block" style={{ marginTop: 12 }}>
+      <div className="table-wrapper overflow-hidden hidden md:block mt-3">
         <Table className="user-tag-breakdown-table">
           <TableHeader>
             <TableRow>
@@ -116,7 +116,7 @@ export function UserDetailQuotaBreakdown({
         </Table>
       </div>
 
-      <div className="flex flex-col gap-3 md:hidden flex md:hidden" style={{ marginTop: 12 }}>
+      <div className="flex flex-col gap-3 md:hidden flex md:hidden mt-3">
         {entries.map((entry, index) => {
           const view = buildBreakdownViewModel(entry, usersStrings)
           return (

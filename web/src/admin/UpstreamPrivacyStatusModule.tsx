@@ -584,7 +584,7 @@ export default function UpstreamPrivacyStatusModule({
                 onClick={onOpenMcpSessionBindings}
               >
                 <span>{sessionBindingCardLabel}</span>
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, alignItems: 'center' }}>
+                <div className="flex justify-between gap-3 items-center">
                   <strong>{numberFormatter.format(status.activeUpstreamMcpSessions)}</strong>
                   <StatusBadge tone={status.activeUpstreamMcpSessions > 0 ? 'warning' : 'success'}>
                     {status.activeUpstreamMcpSessions > 0 ? strings.gateWaiting : strings.gateReady}

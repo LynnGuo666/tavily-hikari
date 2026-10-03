@@ -1387,13 +1387,13 @@ export default function TokenDetail({
                 />
               </>
             ) : (
-              <Empty style={{ gridColumn: '1 / -1' }}><EmptyDescription>
+              <Empty className="col-span-full"><EmptyDescription>
                 Token quota details are unavailable right now.
               </EmptyDescription></Empty>
             )}
           </section>
         </AdminLoadingRegion>
-        <div style={{ marginTop: 16 }}>
+        <div className="mt-4">
           <UsageChart data={quickUsage} loading={quickUsageLoading} labelFormatter={hourLabel} height={200} />
         </div>
       </Card>
@@ -1483,7 +1483,7 @@ export default function TokenDetail({
             <MetricCard label="Quota Exhausted" value={formatNumber(summary?.quota_exhausted_count ?? 0)} />
           </div>
         </AdminLoadingRegion>
-        <div style={{ marginTop: 16 }}>
+        <div className="mt-4">
           <UsageChart
             data={snapshotUsage}
             loading={snapshotUsageLoading}

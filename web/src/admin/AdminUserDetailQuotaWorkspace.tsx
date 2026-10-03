@@ -202,7 +202,7 @@ export function AdminUserDetailQuotaWorkspace({
 
   return (
     <Card className="surface panel" id="user-detail-quota">
-      <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <CardHeader className="panel-header border-b gap-3 flex-wrap">
         <div>
           <CardTitle role="heading" aria-level={2}>{usersStrings.quota.title}</CardTitle>
           <CardDescription>{usersStrings.quota.description}</CardDescription>

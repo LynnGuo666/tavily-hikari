@@ -237,7 +237,7 @@ function SystemSettingsHelpBubble({
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right" align="start" className="max-w-[min(24rem,calc(100vw-2rem))]">
-          <div style={{ display: 'grid', gap: 8 }}>
+          <div className="grid gap-2">
             <p>{strings.description}</p>
             <p>{strings.form.description}</p>
             <p>{strings.form.requestRateLimitHint}</p>

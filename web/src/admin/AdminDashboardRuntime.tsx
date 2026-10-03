@@ -7995,7 +7995,7 @@ function AdminDashboard(): React.JSX.Element {
 
   const renderUserTagSummaryPanel = (): React.JSX.Element => (
     <Card className="surface panel">
-      <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+      <CardHeader className="panel-header border-b gap-3 flex-wrap">
         <div>
           <CardTitle role="heading" aria-level={2}>{usersStrings.catalog.summaryTitle}</CardTitle>
           <CardDescription>{usersStrings.catalog.summaryDescription}</CardDescription>
@@ -8008,7 +8008,7 @@ function AdminDashboard(): React.JSX.Element {
       </CardHeader>
 
       {tagCatalogError && (
-        <Alert role="alert" style={{ marginBottom: 12 }} variant="destructive"><AlertDescription>
+        <Alert role="alert" className="mb-3" variant="destructive"><AlertDescription>
           {tagCatalogError}
         </AlertDescription></Alert>
       )}
@@ -8328,7 +8328,7 @@ function AdminDashboard(): React.JSX.Element {
       </div>
 
       <Card className="surface panel block md:hidden">
-        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <CardHeader className="panel-header border-b gap-3 flex-wrap">
           <div>
             <CardTitle role="heading" aria-level={2}>{usersStrings.catalog.title}</CardTitle>
             <CardDescription>{usersStrings.catalog.description}</CardDescription>
@@ -8453,7 +8453,7 @@ function AdminDashboard(): React.JSX.Element {
           <DrawerTitle className="sr-only">{usersStrings.brokenKeys.drawerTitle}</DrawerTitle>
           <div className="min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
             <section className="surface panel border-t" id="user-detail-tags">
-              <div className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+              <div className="panel-header border-b gap-3 flex-wrap">
                 <div>
                   <h2 className="text-sm font-medium">{usersStrings.brokenKeys.drawerTitle}</h2>
                   <p className="text-sm text-muted-foreground">
@@ -8639,7 +8639,7 @@ function AdminDashboard(): React.JSX.Element {
                 placeholder={tokenStrings.batchDialog.groupPlaceholder}
                 value={batchGroup}
                 onChange={(e) => setBatchGroup(e.target.value)}
-                style={{ flex: 1 }}
+                className="flex-1"
               />
               <Input
                 type="number"
@@ -8673,15 +8673,7 @@ function AdminDashboard(): React.JSX.Element {
                 readOnly
                 wrap="off"
                 rows={6}
-                className="min-h-[144px] resize-none"
-                style={{
-                  width: '100%',
-                  fontFamily:
-                    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                  whiteSpace: 'pre',
-                  overflowX: 'auto',
-                  overflowY: 'auto',
-                }}
+                className="min-h-[144px] resize-none w-full font-mono whitespace-pre overflow-x-auto overflow-y-auto"
                 value={batchShareText ?? ''}
                 onClick={(event) => selectAllReadonlyText(event.currentTarget)}
                 onFocus={(event) => selectAllReadonlyText(event.currentTarget)}
@@ -8729,17 +8721,17 @@ function AdminDashboard(): React.JSX.Element {
 
 {/* Batch Add API Keys Report modal */}
 <Dialog open={keysBatchReport != null} onOpenChange={(open) => { if (!open) closeKeysBatchReportDialog() }}>
-  <DialogContent className="sm:max-w-4xl sm:max-h-[min(calc(100dvh-6rem),calc(100vh-6rem))]">
+  <DialogContent className="sm:max-w-4xl sm:max-h-[min(calc(100dvh_-_6rem),calc(100vh_-_6rem))]">
     <DialogHeader>
       <DialogTitle>{keyStrings.batch.report.title}</DialogTitle>
     </DialogHeader>
-    <div style={{ overflowY: 'auto', minHeight: 0, paddingTop: 12 }}>
+    <div className="overflow-y-auto min-h-0 pt-3">
       {keysBatchReport?.kind === 'error' ? (
         <>
           <Alert variant="destructive"><AlertDescription>
             {keysBatchReport.message}
           </AlertDescription></Alert>
-          <div className="py-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+          <div className="py-2 grid grid-cols-2 gap-2">
             <div>
               <span className="opacity-70">{keyStrings.batch.report.summary.inputLines}</span> {formatNumber(keysBatchReport.input_lines)}
             </div>
@@ -8751,7 +8743,7 @@ function AdminDashboard(): React.JSX.Element {
       ) : keysBatchReport?.kind === 'success' ? (
         <div className="grid gap-4 lg:grid-cols-2">
           <div>
-            <div className="py-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+            <div className="py-2 grid grid-cols-2 gap-2">
               <div>
                 <span className="opacity-70">{keyStrings.batch.report.summary.inputLines}</span>{' '}
                 {formatNumber(keysBatchReport.response.summary.input_lines)}
@@ -8792,14 +8784,7 @@ function AdminDashboard(): React.JSX.Element {
             {keysBatchFailures.length === 0 ? (
               <div className="py-2">{keyStrings.batch.report.failures.none}</div>
             ) : (
-              <div
-                className="overflow-x-auto"
-                style={{
-                  marginTop: 8,
-                  maxHeight: 'min(calc(100dvh - 18rem), calc(100vh - 18rem))',
-                  overflowY: 'auto',
-                }}
-              >
+              <div className="overflow-x-auto mt-2 max-h-[min(calc(100dvh_-_18rem),_calc(100vh_-_18rem))] overflow-y-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -8810,10 +8795,10 @@ function AdminDashboard(): React.JSX.Element {
                   <TableBody>
                     {keysBatchFailures.map((item, index) => (
                       <TableRow key={`${item.api_key}-${index}`}>
-                        <TableCell style={{ wordBreak: 'break-all' }}>
+                        <TableCell className="break-all">
                           <code>{item.api_key}</code>
                         </TableCell>
-                        <TableCell style={{ wordBreak: 'break-word' }}>{item.error || '—'}</TableCell>
+                        <TableCell className="break-words">{item.error || '—'}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -8826,7 +8811,7 @@ function AdminDashboard(): React.JSX.Element {
         <div className="py-2">{keyStrings.batch.hint}</div>
       )}
     </div>
-    <DialogFooter style={{ marginTop: 12 }}>
+    <DialogFooter className="mt-3">
       <Button type="button" variant="outline" onClick={closeKeysBatchReportDialog}>
         {keyStrings.batch.report.close}
       </Button>
@@ -9468,7 +9453,7 @@ function AdminDashboard(): React.JSX.Element {
                   </dt>
                   <dd>
                     {formatQuotaUsagePair(detail.businessCalls1h.totalCount, detail.businessCalls1h.limit)}
-                    <span style={{ display: 'block' }}>
+                    <span className="block">
                       {language === 'zh'
                         ? `成 ${formatNumber(detail.businessCalls1h.successCount)} / 败 ${formatNumber(detail.businessCalls1h.failureCount)}`
                         : `S ${formatNumber(detail.businessCalls1h.successCount)} / F ${formatNumber(detail.businessCalls1h.failureCount)}`}
@@ -9489,7 +9474,7 @@ function AdminDashboard(): React.JSX.Element {
             </section>
 
             <Card className="surface panel">
-              <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
+              <CardHeader className="panel-header border-b gap-3 flex-wrap">
                 <div>
                   <CardTitle role="heading" aria-level={2}>{usersStrings.userTags.title}</CardTitle>
                   <CardDescription>{usersStrings.userTags.description}</CardDescription>
@@ -9544,7 +9529,7 @@ function AdminDashboard(): React.JSX.Element {
               </div>
 
               {boundTags.length === 0 ? (
-                <Empty style={{ marginTop: 12 }}><EmptyDescription>{usersStrings.userTags.empty}</EmptyDescription></Empty>
+                <Empty className="mt-3"><EmptyDescription>{usersStrings.userTags.empty}</EmptyDescription></Empty>
               ) : (
                 <div className="flex flex-col divide-y">
                   {boundTags.map((tag) => {
@@ -9809,7 +9794,7 @@ function AdminDashboard(): React.JSX.Element {
           usersStrings={usersStrings}
           showShadowDailyColumn={showShadowDailyUsageColumn}
           searchControls={
-            <div style={{ display: 'grid', gap: 6 }}>
+            <div className="grid gap-1.5">
               <div className="users-search-controls flex min-w-0 flex-wrap items-center gap-2">
                 <Input
                   type="text"
@@ -10284,7 +10269,7 @@ function AdminDashboard(): React.JSX.Element {
     />
   )
   const renderUsersSearchControls = (className?: string) => (
-    <div style={{ display: 'grid', gap: 6 }}>
+    <div className="grid gap-1.5">
       <div className={['users-search-controls flex min-w-0 flex-wrap items-center gap-2', className].filter(Boolean).join(' ')}>
         <Input
           type="text"
@@ -10337,7 +10322,7 @@ function AdminDashboard(): React.JSX.Element {
               disabled={jobsBlocking}
             >
               <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
-              <span style={{ whiteSpace: 'nowrap' }}>{jobFilterSummary}</span>
+              <span className="whitespace-nowrap">{jobFilterSummary}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">
@@ -10515,6 +10500,7 @@ function AdminDashboard(): React.JSX.Element {
     <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
       <div
         ref={attachVisibleKeysBatchAnchor}
+        className="relative"
         onMouseEnter={(event) => {
           keysBatchAnchorRef.current = event.currentTarget
           clearKeysBatchAutoCollapseTimer()
@@ -10539,7 +10525,7 @@ function AdminDashboard(): React.JSX.Element {
           keysBatchOpenReasonRef.current = 'focus'
           setKeysBatchExpanded(true)
         }}
-        style={{ ...keysQuickAddCardStyle, position: 'relative' }}
+        style={keysQuickAddCardStyle}
       >
         <div
           className={`flex items-center gap-2${keysBatchVisible ? ' invisible' : ''}`}
@@ -10581,7 +10567,7 @@ function AdminDashboard(): React.JSX.Element {
         createPortal(
           <div
             ref={keysBatchOverlayRef}
-            className={`rounded-xl border bg-popover text-popover-foreground shadow-lg${keysBatchClosing ? ' opacity-0' : ''}`}
+            className={`rounded-xl border bg-popover text-popover-foreground shadow-lg fixed top-0 left-4 z-[1000] w-[min(720px,_calc(100vw_-_32px))]${keysBatchClosing ? ' opacity-0' : ''}`}
             onMouseEnter={() => {
               clearKeysBatchAutoCollapseTimer()
               if (keysBatchClosing) {
@@ -10615,18 +10601,11 @@ function AdminDashboard(): React.JSX.Element {
 
               window.requestAnimationFrame(() => keysBatchTextareaRef.current?.focus())
             }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 16,
-              zIndex: 1000,
-              width: 'min(720px, calc(100vw - 32px))',
-            }}
           >
             <div className="flex flex-col gap-3 p-4">
               <Textarea
                 ref={keysBatchTextareaRef}
-                className="min-h-[112px] w-full text-sm"
+                className="min-h-[112px] w-full text-sm font-mono leading-[1.4] rounded-[14px] whitespace-pre overflow-y-hidden"
                 rows={4}
                 placeholder={keyStrings.batch.placeholder}
                 aria-label={keyStrings.batch.placeholder}
@@ -10639,14 +10618,6 @@ function AdminDashboard(): React.JSX.Element {
                   const next = event.relatedTarget
                   if (overlay && next instanceof Node && overlay.contains(next)) return
                   scheduleKeysBatchAutoCollapse('blur')
-                }}
-                style={{
-                  fontFamily:
-                    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                  lineHeight: 1.4,
-                  borderRadius: 14,
-                  whiteSpace: 'pre',
-                  overflowY: 'hidden',
                 }}
               />
 	              <div ref={keysBatchFooterRef} className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -10663,7 +10634,7 @@ function AdminDashboard(): React.JSX.Element {
   value={newKeysGroup}
   onChange={(e) => setNewKeysGroup(e.target.value)}
   list="api-key-group-datalist"
-  style={{ flex: '1 1 220px', minWidth: 160, maxWidth: '100%' }}
+  className="flex-[1_1_220px] min-w-[160px] max-w-full"
 />
 <Button
   type="button"
@@ -11300,14 +11271,14 @@ function AdminDashboard(): React.JSX.Element {
             )}
           <div style={keysUtilityRowStyle}>
             <div style={keysFilterClusterStyle}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div className="flex items-center gap-2">
                 <Input
                   type="text"
                   value={keyRegistrationIpInput}
                   onChange={(event) => setKeyRegistrationIpInput(event.target.value)}
                   placeholder={keyStrings.filters.registrationIpPlaceholder}
                   aria-label={keyStrings.filters.registrationIp}
-                  style={{ width: 188 }}
+                  className="w-[188px]"
                 />
                 {selectedKeyRegistrationIp ? (
                   <Button
@@ -11325,7 +11296,7 @@ function AdminDashboard(): React.JSX.Element {
                   <DropdownMenuTrigger asChild>
                     <Button type="button" variant="outline" size="sm" aria-label={keyGroupFilterSummary}>
                       <Icon icon="mdi:filter-variant" width={16} height={16} aria-hidden="true" />
-                      <span style={{ whiteSpace: 'nowrap' }}>{keyGroupFilterSummary}</span>
+                      <span className="whitespace-nowrap">{keyGroupFilterSummary}</span>
                       {selectedKeyGroups.length > 0 ? (
                         <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                           {selectedKeyGroups.length}
@@ -11367,7 +11338,7 @@ function AdminDashboard(): React.JSX.Element {
                 <DropdownMenuTrigger asChild>
                   <Button type="button" variant="outline" size="sm" aria-label={keyStatusFilterSummary}>
                     <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
-                    <span style={{ whiteSpace: 'nowrap' }}>{keyStatusFilterSummary}</span>
+                    <span className="whitespace-nowrap">{keyStatusFilterSummary}</span>
                     {selectedKeyStatuses.length > 0 ? (
                       <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                         {selectedKeyStatuses.length}
@@ -11408,7 +11379,7 @@ function AdminDashboard(): React.JSX.Element {
                 <DropdownMenuTrigger asChild>
                   <Button type="button" variant="outline" size="sm" aria-label={keyRegionFilterSummary}>
                     <Icon icon="mdi:map-marker-radius-outline" width={16} height={16} aria-hidden="true" />
-                    <span style={{ whiteSpace: 'nowrap' }}>{keyRegionFilterSummary}</span>
+                    <span className="whitespace-nowrap">{keyRegionFilterSummary}</span>
                     {selectedKeyRegions.length > 0 ? (
                       <Badge variant="outline" className="ml-1 bg-muted px-1.5 py-0 text-[10px] text-muted-foreground">
                         {selectedKeyRegions.length}
@@ -11543,9 +11514,8 @@ function AdminDashboard(): React.JSX.Element {
           ) : null}
           {keysBulkFeedback ? (
             <div
-              className={keysBulkFeedback.kind === 'error' ? 'alert border-destructive/30 bg-destructive/10 text-destructive' : 'alert border-warning/40 bg-warning/10 text-warning'}
+              className={`${keysBulkFeedback.kind === 'error' ? 'alert border-destructive/30 bg-destructive/10 text-destructive' : 'alert border-warning/40 bg-warning/10 text-warning'} mb-4`}
               role={keysBulkFeedback.kind === 'error' ? 'alert' : 'status'}
-              style={{ marginBottom: 16 }}
             >
               {keysBulkFeedback.message}
             </div>
@@ -11573,7 +11543,7 @@ function AdminDashboard(): React.JSX.Element {
               <TableHeader>
                 <TableRow>
                   {isAdmin && (
-                    <TableHead style={{ width: 52 }}>
+                    <TableHead className="w-[52px]">
                       <label style={keySelectionCheckboxLabelStyle}>
                         <Checkbox
                           checked={someVisibleKeysSelected ? 'indeterminate' : allVisibleKeysSelected}
@@ -11654,11 +11624,10 @@ function AdminDashboard(): React.JSX.Element {
                           <div style={adminTableInlineFieldStyle}>
                             <Button
                               type="button"
-                              variant="link" size="sm" className="h-auto p-0"
+                              variant="link" size="sm" className="h-auto p-0 whitespace-nowrap"
                               onClick={() => navigateKey(item.id, { preserveKeysContext: true })}
                               title={keyStrings.actions.details}
                               aria-label={keyStrings.actions.details}
-                              style={{ whiteSpace: 'nowrap' }}
                             >
                               <code>{item.id}</code>
                             </Button>
@@ -11667,8 +11636,7 @@ function AdminDashboard(): React.JSX.Element {
   type="button"
   variant="ghost"
   size="icon"
-  className={`h-8 w-8 rounded-full p-0 shadow-none${state === 'copied' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
-  style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
+  className={`h-8 w-8 rounded-full p-0 shadow-none absolute right-0 top-1/2 -translate-y-1/2${state === 'copied' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
   title={keyStrings.actions.copy}
   aria-label={keyStrings.actions.copy}
   onPointerEnter={() => scheduleSecretWarm(`key:${item.id}`, () => warmApiKeySecret(item.id))}
@@ -11826,7 +11794,7 @@ function AdminDashboard(): React.JSX.Element {
               return (
                 <article key={item.id} className="py-3">
                   {isAdmin && (
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+                    <div className="flex justify-end mb-3">
                       <label style={keySelectionCheckboxLabelStyle}>
                         <Checkbox
                           checked={selectedKeyIds.has(item.id)}
@@ -11859,7 +11827,7 @@ function AdminDashboard(): React.JSX.Element {
                         {statusLabel(keyBadgeStatus(item), adminStrings)}
                       </StatusBadge>
                       {item.quarantine && (
-                        <div className="text-sm text-muted-foreground" style={{ marginTop: 4 }}>
+                        <div className="text-sm text-muted-foreground mt-1">
                           {keyStrings.quarantine.badge}: {item.quarantine.reasonSummary || keyStrings.quarantine.noReason}
                         </div>
                       )}
@@ -12082,9 +12050,8 @@ function AdminDashboard(): React.JSX.Element {
         </div>
         {jobTriggerNotice && (
           <div
-            className={jobTriggerNotice.kind === 'info' ? 'alert border-warning/40 bg-warning/10 text-warning' : 'alert'}
+            className={`${jobTriggerNotice.kind === 'info' ? 'alert border-warning/40 bg-warning/10 text-warning' : 'alert'} mb-3`}
             role="status"
-            style={{ marginBottom: 12 }}
           >
             {jobTriggerNotice.message}
           </div>
@@ -12419,12 +12386,12 @@ function AdminDashboard(): React.JSX.Element {
         <>
           <Card className="surface panel">
             <div className="block md:hidden">
-              <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
-                <div style={{ flex: '1 1 340px', minWidth: 260 }}>
+              <CardHeader className="panel-header border-b gap-3 flex-wrap">
+                <div className="flex-[1_1_340px] min-w-[260px]">
                   <CardTitle role="heading" aria-level={2}>{usersStrings.title}</CardTitle>
                   <CardDescription>{usersStrings.description}</CardDescription>
                 </div>
-                <div style={{ flex: '1 1 520px', minWidth: 0 }}>
+                <div className="flex-[1_1_520px] min-w-0">
                   {renderUsersSearchControls()}
                 </div>
               </CardHeader>
@@ -13781,7 +13748,7 @@ export function KeyDetails({
         </section>
       </div>
 
-      {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" style={{ marginTop: 8, marginBottom: 0 }}>{error}</div>}
+      {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive mt-2 mb-0">{error}</div>}
 
       {detail && (
         <Card className="surface panel min-w-0">
@@ -13896,7 +13863,7 @@ export function KeyDetails({
         >
           <CardContent className="grid min-w-0 gap-3 sm:grid-cols-3">
             {!detail ? (
-              <Empty style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
+              <Empty className="col-span-full"><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
             ) : (
               (() => {
                 const limit = detail?.quota_limit ?? null
@@ -13926,7 +13893,7 @@ export function KeyDetails({
             <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.usageTitle}</CardTitle>
             <CardDescription>{keyDetailsStrings.usageDescription}</CardDescription>
           </div>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="flex gap-2 items-center flex-wrap">
             <Select value={period} onValueChange={handleKeyLogPeriodChange} disabled={detailBlocking}>
               <SelectTrigger className="w-[132px]" aria-label={keyDetailsStrings.usageTitle} disabled={detailBlocking}>
                 <SelectValue />
@@ -13959,7 +13926,7 @@ export function KeyDetails({
         >
           <CardContent className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {!summary ? (
-              <Empty style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
+              <Empty className="col-span-full"><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
             ) : (
               metricCards.map((m) => (
                 <div key={m.id} className="flex flex-col gap-1.5 p-4">

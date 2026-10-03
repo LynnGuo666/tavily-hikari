@@ -321,7 +321,7 @@ export default function KeyStickyPanels({
                         />
                       </TableCell>
                       <TableCell>{formatTimestamp(item.lastSuccessAt)}</TableCell>
-                      <TableCell style={{ minWidth: 180 }}>
+                      <TableCell className="min-w-[180px]">
                         <StickyCreditsTrendCell buckets={item.dailyBuckets} scaleMax={stickyUserScaleMax} />
                       </TableCell>
                     </TableRow>
@@ -393,7 +393,7 @@ export default function KeyStickyPanels({
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.trend}</span>
-                    <div style={{ width: '100%' }}>
+                    <div className="w-full">
                       <StickyCreditsTrendCell buckets={item.dailyBuckets} scaleMax={stickyUserScaleMax} />
                     </div>
                   </div>
@@ -496,10 +496,10 @@ export default function KeyStickyPanels({
                         </div>
                       </TableCell>
                       <TableCell>{stickyNodeWindowSummary(node)}</TableCell>
-                      <TableCell style={{ minWidth: 180 }}>
+                      <TableCell className="min-w-[180px]">
                         <ProxyActivityTrendCell buckets={node.last24h} scaleMax={stickyNodeScaleMax} />
                       </TableCell>
-                      <TableCell style={{ minWidth: 180 }}>
+                      <TableCell className="min-w-[180px]">
                         <ProxyWeightTrendCell buckets={resolveStickyNodeWeightBuckets(node)} scale={stickyNodeWeightScale} />
                       </TableCell>
                     </TableRow>
@@ -542,13 +542,13 @@ export default function KeyStickyPanels({
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.activity}</span>
-                    <div style={{ width: '100%' }}>
+                    <div className="w-full">
                       <ProxyActivityTrendCell buckets={node.last24h} scaleMax={stickyNodeScaleMax} />
                     </div>
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.weight}</span>
-                    <div style={{ width: '100%' }}>
+                    <div className="w-full">
                       <ProxyWeightTrendCell buckets={resolveStickyNodeWeightBuckets(node)} scale={stickyNodeWeightScale} />
                     </div>
                   </div>

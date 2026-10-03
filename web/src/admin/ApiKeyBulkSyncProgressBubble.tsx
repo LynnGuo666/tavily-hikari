@@ -220,16 +220,14 @@ export function AnchoredApiKeyBulkSyncProgressBubble({
   return createPortal(
     <div
       ref={layerRef}
-      className={`${className ?? ''}`}
+      className={`${className ?? ''} fixed w-[min(26rem,calc(100vw-1.5rem))]`}
       data-placement={position?.placement ?? 'bottom'}
       style={{
-        position: 'fixed',
         top: `${resolvedPosition?.top ?? 0}px`,
         left: `${resolvedPosition?.left ?? 0}px`,
         transform: resolvedPosition?.useTransform ? 'translateX(-50%)' : undefined,
         visibility: resolvedPosition ? 'visible' : 'hidden',
         pointerEvents: resolvedPosition ? 'auto' : 'none',
-        width: 'min(26rem, calc(100vw - 1.5rem))',
       }}
     >
       <ApiKeyBulkSyncProgressBubble strings={strings} progress={progress} />

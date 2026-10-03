@@ -43,23 +43,10 @@ export function UsageMetricLabel({
 
   return (
     <AnchoredInfoDisclosure
-      className={cn(className)}
+      className={cn(className, 'inline-flex items-center gap-1.5 p-0 border-0 [background:none] text-inherit [font:inherit] cursor-help underline decoration-dotted underline-offset-3')}
       bubbleClassName="max-w-[min(18rem,calc(100vw-2rem))]"
-      bubbleContent={<p style={{ margin: 0 }}>{usageMetricHelpText(kind, language)}</p>}
+      bubbleContent={<p className="m-0">{usageMetricHelpText(kind, language)}</p>}
       aria-label={label}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 6,
-        padding: 0,
-        border: 0,
-        background: 'none',
-        color: 'inherit',
-        font: 'inherit',
-        cursor: 'help',
-        textDecoration: 'underline dotted',
-        textUnderlineOffset: 3,
-      }}
     >
       <span>{label}</span>
     </AnchoredInfoDisclosure>

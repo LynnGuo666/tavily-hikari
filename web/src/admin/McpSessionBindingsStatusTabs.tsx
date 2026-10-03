@@ -42,7 +42,7 @@ export default function McpSessionBindingsStatusTabs({
     <div
       role="group"
       aria-labelledby={labelId}
-      style={{ display: 'grid', gap: 10, marginLeft: 'auto' }}
+      className="grid gap-2.5 ml-auto"
     >
       <span id={labelId} className="sr-only">
         status
