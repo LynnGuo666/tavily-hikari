@@ -506,7 +506,7 @@ export default function AdminUserRankingsPage({
       {!error && showStaleHint ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
 
       {showLoadingSkeleton ? (
-        <section className="admin-ranking-window flex min-w-0 flex-col gap-2 rounded-lg border p-3">
+        <section className="admin-ranking-window flex min-w-0 flex-col gap-2">
           <div className="admin-ranking-window-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {loadingCards.map((card) => (
               <RankingsLoadingCard
@@ -519,7 +519,7 @@ export default function AdminUserRankingsPage({
           </div>
         </section>
       ) : snapshot && renderedCards.length > 0 ? (
-        <section className="admin-ranking-window flex min-w-0 flex-col gap-2 rounded-lg border p-3">
+        <section className="admin-ranking-window flex min-w-0 flex-col gap-2">
           <div className="admin-ranking-window-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {renderedCards.map((card) => (
               <RankingsChartCard

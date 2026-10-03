@@ -61,7 +61,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup } from '@/components/ui/dropdown-menu'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardAction, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
@@ -1464,9 +1464,9 @@ function AdminTableValueStack({
   className?: string
 }): React.JSX.Element {
   return (
-    <div className={`admin-table-value-stack${className ? ` ${className}` : ''}`}>
-      <span className={`admin-table-value-primary${primaryClassName ? ` ${primaryClassName}` : ''}`}>{primary}</span>
-      {secondary ? <span className="admin-table-value-secondary">{secondary}</span> : null}
+    <div className={`admin-table-value-stack flex flex-col${className ? ` ${className}` : ''}`}>
+      <span className={`admin-table-value-primary font-medium tabular-nums${primaryClassName ? ` ${primaryClassName}` : ''}`}>{primary}</span>
+      {secondary ? <span className="admin-table-value-secondary text-xs text-muted-foreground tabular-nums">{secondary}</span> : null}
     </div>
   )
 }
@@ -7998,9 +7998,11 @@ function AdminDashboard(): React.JSX.Element {
           <CardTitle role="heading" aria-level={2}>{usersStrings.catalog.summaryTitle}</CardTitle>
           <CardDescription className="panel-description">{usersStrings.catalog.summaryDescription}</CardDescription>
         </div>
-        <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
-          {usersStrings.userTags.manageCatalog}
-        </Button>
+        <CardAction>
+          <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
+            {usersStrings.userTags.manageCatalog}
+          </Button>
+        </CardAction>
       </CardHeader>
 
       {tagCatalogError && (
@@ -8104,7 +8106,7 @@ function AdminDashboard(): React.JSX.Element {
       .join(' ')
 
     return (
-      <Card className={cardClasses} key={tag?.id ?? NEW_USER_TAG_CARD_ID}>
+      <section className={cardClasses} key={tag?.id ?? NEW_USER_TAG_CARD_ID}>
         <div className="user-tag-catalog-card-head">
           <div className="user-tag-catalog-name">
             {isEditing ? (
@@ -8282,7 +8284,7 @@ function AdminDashboard(): React.JSX.Element {
             </dl>
           )}
         </div>
-      </Card>
+      </section>
     )
   }
 
@@ -8466,7 +8468,7 @@ function AdminDashboard(): React.JSX.Element {
                 </div>
               </div>
               <AdminLoadingRegion
-                className="table-wrapper overflow-hidden hidden md:flex"
+                className="table-wrapper overflow-hidden hidden md:block"
                 loadState={monthlyBrokenDrawerLoadState}
                 loadingLabel={usersStrings.brokenKeys.loading}
                 errorLabel={monthlyBrokenDrawerError ?? loadingStateStrings.error}
@@ -9218,6 +9220,8 @@ function AdminDashboard(): React.JSX.Element {
           key={route.id}
           id={route.id}
           onOpenUser={(userId) => navigateUser(userId, { preserveUsersContext: true })}
+          sidebarDisplayName={displayName}
+          sidebarIsAdmin={isAdmin}
           onBack={() =>
             navigateToPath(
               buildAdminKeysPath({
@@ -9322,6 +9326,22 @@ function AdminDashboard(): React.JSX.Element {
         <div className="admin-sidebar-utility-stack flex flex-col gap-3">
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
+            <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
+            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+              {displayName && (
+                <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
+                  {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                  <span>{displayName}</span>
+                </div>
+              )}
+            </div>
+            </CardContent>
+          </Card>
+          <Card size="sm" className="admin-sidebar-utility-card">
+            <CardContent className="flex flex-col gap-3">
             <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
@@ -9331,6 +9351,23 @@ function AdminDashboard(): React.JSX.Element {
               <Button type="button" variant="ghost" size="sm" className="admin-sidebar-utility-action" onClick={navigateBackToUsers}>
                 <Icon icon="mdi:arrow-left" width={18} height={18} aria-hidden="true" />
                 {usersStrings.detail.back}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="admin-panel-refresh-button admin-sidebar-utility-action"
+                onClick={handleManualRefresh}
+                disabled={loading || activeModuleBlocking}
+              >
+                <Icon
+                  icon={loading ? 'mdi:loading' : 'mdi:refresh'}
+                  width={16}
+                  height={16}
+                  className={loading ? 'icon-spin' : undefined}
+                  aria-hidden="true"
+                />
+                <span>{loading ? headerStrings.refreshing : headerStrings.refreshNow}</span>
               </Button>
             </div>
             </CardContent>
@@ -9465,9 +9502,11 @@ function AdminDashboard(): React.JSX.Element {
                   <CardTitle role="heading" aria-level={2}>{usersStrings.userTags.title}</CardTitle>
                   <CardDescription className="panel-description">{usersStrings.userTags.description}</CardDescription>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
-                  {usersStrings.userTags.manageCatalog}
-                </Button>
+                <CardAction>
+                  <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
+                    {usersStrings.userTags.manageCatalog}
+                  </Button>
+                </CardAction>
               </CardHeader>
               <div className="user-tag-binding-toolbar">
                 <div className="user-tag-binding-summary">
@@ -9888,13 +9927,43 @@ function AdminDashboard(): React.JSX.Element {
               <CardContent className="flex flex-col gap-3">
               <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
                 <ThemeToggle />
+                <LanguageSwitcher />
               </div>
+              <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+                {displayName && (
+                  <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
+                    {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                    <span>{displayName}</span>
+                  </div>
+                )}
+              </div>
+              </CardContent>
+            </Card>
+            <Card size="sm" className="admin-sidebar-utility-card">
+              <CardContent className="flex flex-col gap-3">
               <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
                 <AdminReturnToConsoleLink
                   label={headerStrings.returnToConsole}
                   href={userConsoleHref}
                   className="admin-sidebar-utility-action"
                 />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="admin-panel-refresh-button admin-sidebar-utility-action"
+                  onClick={handleManualRefresh}
+                  disabled={loading || activeModuleBlocking}
+                >
+                  <Icon
+                    icon={loading ? 'mdi:loading' : 'mdi:refresh'}
+                    width={16}
+                    height={16}
+                    className={loading ? 'icon-spin' : undefined}
+                    aria-hidden="true"
+                  />
+                  <span>{loading ? headerStrings.refreshing : headerStrings.refreshNow}</span>
+                </Button>
               </div>
               </CardContent>
             </Card>
@@ -10766,13 +10835,13 @@ function AdminDashboard(): React.JSX.Element {
       )}
 
       {showTokens && (
-      <Card ref={tokenPanelRef} className="surface panel">
+      <div ref={tokenPanelRef} className="surface panel token-panel flex min-w-0 flex-col gap-3">
         <div className="block md:hidden">
           {renderTokenToolbar()}
         </div>
         {renderTokenFilters()}
         <AdminTableShell
-          className="overflow-hidden hidden md:flex"
+          className="overflow-hidden hidden md:block"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b tokens-table"
           loadState={tokensLoadState}
           loadingLabel={tokensRefreshing ? loadingStateStrings.refreshing : tokenStrings.empty.loading}
@@ -11231,7 +11300,7 @@ function AdminDashboard(): React.JSX.Element {
             </Pagination>
           </div>
         )}
-      </Card>
+      </div>
       )}
       {offline.isOffline ? (
         <OfflineStatusBanner
@@ -11501,7 +11570,7 @@ function AdminDashboard(): React.JSX.Element {
             </div>
           ) : null}
         <AdminTableShell
-          className="overflow-hidden hidden md:flex"
+          className="overflow-hidden hidden md:block"
           tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b api-keys-table${isAdmin ? ' api-keys-table--admin' : ''}`}
           loadState={keysLoadState}
           loadingLabel={keysRefreshing ? loadingStateStrings.refreshing : keyStrings.empty.loading}
@@ -12040,7 +12109,7 @@ function AdminDashboard(): React.JSX.Element {
           </div>
         )}
         <AdminTableShell
-          className="overflow-hidden hidden md:flex"
+          className="overflow-hidden hidden md:block"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b jobs-module-table"
           loadState={jobsLoadState}
           loadingLabel={jobsRefreshing ? loadingStateStrings.refreshing : jobsStrings.empty.loading}
@@ -13083,11 +13152,15 @@ export function KeyDetails({
   onBack,
   onOpenUser,
   onOpenToken,
+  sidebarDisplayName,
+  sidebarIsAdmin,
 }: {
   id: string
   onBack: () => void
   onOpenUser: (userId: string) => void
   onOpenToken?: (tokenId: string) => void
+  sidebarDisplayName?: string | null
+  sidebarIsAdmin?: boolean
 }): React.JSX.Element {
   const { language } = useLanguage()
   const translations = useTranslate()
@@ -13604,17 +13677,15 @@ export function KeyDetails({
           <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
             <ThemeToggle />
+            <LanguageSwitcher />
           </div>
-          <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
-            <AdminReturnToConsoleLink
-              label={adminStrings.header.returnToConsole}
-              href={ADMIN_USER_CONSOLE_HREF}
-              className="admin-sidebar-utility-action"
-            />
-            <Button type="button" variant="ghost" className="token-usage-back-button admin-sidebar-utility-action" onClick={onBack}>
-              <Icon icon="mdi:arrow-left" width={18} height={18} />
-              {keyDetailsStrings.back}
-            </Button>
+          <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+            {sidebarDisplayName && (
+              <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${sidebarIsAdmin ? ' user-badge-admin' : ''}`} title={sidebarDisplayName}>
+                {sidebarIsAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                <span>{sidebarDisplayName}</span>
+              </div>
+            )}
           </div>
           </CardContent>
         </Card>
@@ -13622,9 +13693,36 @@ export function KeyDetails({
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+            <AdminReturnToConsoleLink
+              label={adminStrings.header.returnToConsole}
+              href={ADMIN_USER_CONSOLE_HREF}
+              className="admin-sidebar-utility-action"
+            />
+            <Button type="button" variant="ghost" size="sm" className="token-usage-back-button admin-sidebar-utility-action" onClick={onBack}>
+              <Icon icon="mdi:arrow-left" width={18} height={18} aria-hidden="true" />
+              {keyDetailsStrings.back}
+            </Button>
             <Button
               type="button"
-              variant="default"
+              variant="outline"
+              size="sm"
+              className="admin-panel-refresh-button admin-sidebar-utility-action"
+              onClick={() => void load('refresh')}
+              disabled={detailBlocking}
+            >
+              <Icon
+                icon={detailBlocking ? 'mdi:loading' : 'mdi:refresh'}
+                width={16}
+                height={16}
+                className={detailBlocking ? 'icon-spin' : undefined}
+                aria-hidden="true"
+              />
+              <span>{detailBlocking ? adminStrings.header.refreshing : adminStrings.header.refreshNow}</span>
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
               className={`admin-sidebar-utility-action${syncState === 'success' ? ` ${SUCCESS_BUTTON_CLASS}` : ''}`}
               onClick={() => void syncUsage()}
               disabled={syncState === 'syncing'}

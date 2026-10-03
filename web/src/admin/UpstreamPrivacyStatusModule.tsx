@@ -576,10 +576,10 @@ export default function UpstreamPrivacyStatusModule({
               </div>
             </section>
 
-            <section className="upstream-privacy-section flex flex-col gap-3 px-4">
-              <Button variant="outline"
+            <section className="upstream-privacy-section flex flex-col gap-3">
+              <Button variant="ghost"
                 type="button"
-                className="upstream-privacy-stat h-auto w-full items-stretch whitespace-normal text-left flex min-w-0 flex-col gap-1 rounded-lg border p-3 [&_span]:text-xs [&_span]:text-muted-foreground [&_strong]:break-all [&_strong]:tabular-nums [&_small]:break-all [&_small]:text-xs [&_small]:text-muted-foreground"
+                className="upstream-privacy-stat h-auto w-full items-stretch justify-start whitespace-normal text-left flex min-w-0 flex-col gap-1 px-0 py-1 [&_span]:text-xs [&_span]:text-muted-foreground [&_strong]:break-all [&_strong]:text-lg [&_strong]:font-semibold [&_strong]:tabular-nums [&_small]:break-all [&_small]:text-xs [&_small]:text-muted-foreground"
 
                 onClick={onOpenMcpSessionBindings}
               >
@@ -616,7 +616,7 @@ export default function UpstreamPrivacyStatusModule({
                         <strong>{issue.title}</strong>
                         <p>{issue.detail}</p>
                       </div>
-                      <StatusBadge tone={issue.tone}>
+                      <StatusBadge tone={issue.tone === 'error' ? 'error' : 'warning'}>
                         {issue.tone === 'error' ? strings.phaseDegraded : strings.gateWaiting}
                       </StatusBadge>
                     </article>
@@ -902,8 +902,8 @@ export default function UpstreamPrivacyStatusModule({
             </div>
             </section>
 
-            <details className="upstream-privacy-details min-w-0 rounded-xl border" data-testid="system-status-technical-details">
-              <summary className="upstream-privacy-details__summary cursor-pointer space-y-2 p-4 [&_p]:text-sm [&_p]:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <details className="upstream-privacy-details min-w-0" data-testid="system-status-technical-details">
+              <summary className="upstream-privacy-details__summary cursor-pointer space-y-2 py-3 [&_p]:text-sm [&_p]:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                 <div>
                   <strong>{strings.detailsTitle}</strong>
                   <p>{strings.detailsDescription}</p>
@@ -917,7 +917,7 @@ export default function UpstreamPrivacyStatusModule({
                   </span>
                 </div>
               </summary>
-              <div className="upstream-privacy-details__body flex min-w-0 flex-col gap-4 border-t p-4">
+              <div className="upstream-privacy-details__body flex min-w-0 flex-col gap-4 border-t pt-4">
                 <section className="upstream-privacy-detail-section min-w-0">
                   <div className="panel-header space-y-1">
                     <h3 className="text-sm font-medium">{strings.configurationTitle}</h3>
@@ -1067,7 +1067,7 @@ function KeyActivityChart({
   const maxCount = points.reduce((max, point) => Math.max(max, point.count), 0)
 
   return (
-    <article className="upstream-privacy-activity-card min-w-0 space-y-3 rounded-lg border p-3">
+    <article className="upstream-privacy-activity-card min-w-0 space-y-3">
       <div className="upstream-privacy-activity-card__head flex items-center justify-between gap-2">
         <strong>{title}</strong>
         <span>{numberFormatter.format(points.length)}</span>
@@ -1110,7 +1110,7 @@ function ReconciliationProgressMeter({
   const boundedCompleted = Math.max(0, Math.min(completed, total))
   const percentage = total <= 0 ? 0 : Math.round((boundedCompleted / total) * 100)
   return (
-    <article className="upstream-privacy-progress-meter flex min-w-0 flex-col gap-2 rounded-lg border p-3 [&>div:first-child]:flex [&>div:first-child]:flex-wrap [&>div:first-child]:justify-between [&>div:first-child]:gap-2 [&_small]:text-xs [&_small]:text-muted-foreground">
+    <article className="upstream-privacy-progress-meter flex min-w-0 flex-col gap-2 [&>div:first-child]:flex [&>div:first-child]:flex-wrap [&>div:first-child]:justify-between [&>div:first-child]:gap-2 [&_small]:text-xs [&_small]:text-muted-foreground">
       <div>
         <span>{label}</span>
         <strong>{numberFormatter.format(boundedCompleted)}/{numberFormatter.format(total)}</strong>
@@ -1133,7 +1133,7 @@ function PrivacyStat({
   monospace?: boolean
 }): React.JSX.Element {
   return (
-    <article className="upstream-privacy-stat flex min-w-0 flex-col gap-1 rounded-lg border p-3 [&_span]:text-xs [&_span]:text-muted-foreground [&_strong]:break-all [&_strong]:tabular-nums [&_small]:break-all [&_small]:text-xs [&_small]:text-muted-foreground">
+    <article className="upstream-privacy-stat flex min-w-0 flex-col gap-1 [&_span]:text-xs [&_span]:text-muted-foreground [&_strong]:break-all [&_strong]:text-lg [&_strong]:font-semibold [&_strong]:tabular-nums [&_small]:break-all [&_small]:text-xs [&_small]:text-muted-foreground">
       <span>{label}</span>
       <strong className={monospace ? 'font-mono' : undefined}>{value}</strong>
       {supportingText ? <small>{supportingText}</small> : null}

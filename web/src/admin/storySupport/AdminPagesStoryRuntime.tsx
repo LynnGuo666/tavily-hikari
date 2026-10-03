@@ -2161,7 +2161,7 @@ function StoryMonthlyBrokenDrawer({
               <Empty className="empty-state"><EmptyDescription>{users.brokenKeys.empty}</EmptyDescription></Empty>
             ) : (
               <>
-                <div className="table-wrapper overflow-hidden rounded-lg border hidden md:flex">
+                <div className="table-wrapper overflow-hidden hidden md:block">
                   <Table >
                     <TableHeader>
                       <TableRow>
@@ -5472,7 +5472,7 @@ function UnboundTokenUsagePageCanvas({
           <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-selected-token>{selectedTokenId ? `Opened ${selectedTokenId}` : 'No token opened yet'}</p>
         </div>
 
-        <div className="table-wrapper overflow-hidden rounded-lg border admin-users-usage-table-wrapper hidden md:flex">
+        <div className="table-wrapper overflow-hidden admin-users-usage-table-wrapper hidden md:block">
           {pagedItems.length === 0 ? (
             <Empty className="empty-state"><EmptyDescription>{errorMessage ?? strings.empty.none}</EmptyDescription></Empty>
           ) : (
@@ -7473,8 +7473,8 @@ export const UserDetail: Story = {
       throw new Error('Expected deleting a token to refresh the story table.')
     }
 
-    const tokenTableWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.hidden md:flex')
-    const breakdownTableWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.hidden md:flex')
+    const tokenTableWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.hidden md:block')
+    const breakdownTableWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.hidden md:block')
     for (const [label, wrapper] of [
       ['token table', tokenTableWrapper],
       ['quota breakdown table', breakdownTableWrapper],
@@ -7696,8 +7696,8 @@ export const UserDetailCompact: Story = {
       throw new Error('Expected compact user detail cards to render the denser metric-grid layout.')
     }
 
-    const desktopTokenWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.hidden md:flex')
-    const desktopBreakdownWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.hidden md:flex')
+    const desktopTokenWrapper = canvasElement.querySelector('.admin-user-tokens-table')?.closest<HTMLElement>('.hidden md:block')
+    const desktopBreakdownWrapper = canvasElement.querySelector('.user-tag-breakdown-table')?.closest<HTMLElement>('.hidden md:block')
     if (
       (desktopTokenWrapper && getComputedStyle(desktopTokenWrapper).display !== 'none') ||
       (desktopBreakdownWrapper && getComputedStyle(desktopBreakdownWrapper).display !== 'none')

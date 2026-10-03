@@ -621,7 +621,7 @@ function AnnouncementsListPanel({
           </div>
         ) : (
           <>
-            <div className="table-wrapper overflow-hidden rounded-lg border announcements-table-wrapper overflow-hidden rounded-lg border hidden md:flex">
+            <div className="table-wrapper overflow-hidden announcements-table-wrapper hidden md:block">
               <Table className="announcements-table">
                 <colgroup>
                   <col className="announcements-col-title" />

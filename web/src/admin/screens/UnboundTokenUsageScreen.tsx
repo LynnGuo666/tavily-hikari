@@ -91,7 +91,7 @@ export function UnboundTokenUsageScreen({
 
       <Card className="surface panel">
         <AdminTableShell
-          className="overflow-hidden admin-users-usage-table-wrapper hidden md:flex"
+          className="overflow-hidden admin-users-usage-table-wrapper hidden md:block"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table"
           loadState={loadState}
           loadingLabel={loadingLabel}

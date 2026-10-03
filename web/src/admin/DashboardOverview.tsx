@@ -243,8 +243,8 @@ function SummaryMetricCard({
   )
 
   return (
-    <Card size="sm" className={cn(
-      'metric-card dashboard-summary-card relative min-w-0',
+    <div className={cn(
+      'metric-card dashboard-summary-card relative min-w-0 flex flex-col gap-1',
       backdrop && 'dashboard-summary-card-with-backdrop',
       compact && 'dashboard-summary-card-compact',
       metric.fullWidth && 'dashboard-summary-card-full-width sm:col-span-2 xl:col-span-1',
@@ -259,13 +259,13 @@ function SummaryMetricCard({
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <CardHeader className="dashboard-summary-card-heading relative z-10">
-          <CardTitle role="heading" aria-level={3}>{metric.label}</CardTitle>
+      <div className="dashboard-summary-card-heading relative z-10 flex items-start justify-between gap-2">
+          <div role="heading" aria-level={3} className="text-xs text-muted-foreground">{metric.label}</div>
           {metric.marker ? (
-            <CardAction><Badge variant={metric.markerTone === 'primary' ? 'default' : 'secondary'}>{metric.marker}</Badge></CardAction>
+            <Badge variant={metric.markerTone === 'primary' ? 'default' : 'secondary'}>{metric.marker}</Badge>
           ) : null}
-      </CardHeader>
-      <CardContent className="dashboard-summary-card-content relative z-10 flex flex-col gap-1.5">
+      </div>
+      <div className="dashboard-summary-card-content relative z-10 flex flex-col gap-1.5">
         <div className="dashboard-summary-card-value-row flex items-baseline gap-2">
           <MetricValue value={metric.value} valueNumber={metric.valueNumber} compact={compact} />
         </div>
@@ -282,8 +282,8 @@ function SummaryMetricCard({
         ) : null}
         {metric.comparison && metric.subtitle ? <div className="metric-subtitle text-xs text-muted-foreground">{metric.subtitle}</div> : null}
         {!metric.comparison && backdropNotice ? <div className="metric-subtitle text-xs text-muted-foreground">{backdropNotice}</div> : null}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -295,7 +295,7 @@ function QuotaChargeCard({
   backdrop?: DashboardCardBackdropSeries
 }): React.JSX.Element {
   return (
-    <Card size="sm" className="metric-card dashboard-summary-card relative min-w-0 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
+    <div className="metric-card dashboard-summary-card relative min-w-0 flex flex-col gap-1 dashboard-summary-card-with-backdrop dashboard-quota-charge-card">
       {backdrop ? (
         <DashboardUsageBackdropChart
           ariaLabel={card.title}
@@ -306,10 +306,10 @@ function QuotaChargeCard({
           comparisonInitialValue={backdrop.baseline ?? 0}
         />
       ) : null}
-      <CardHeader className="dashboard-summary-card-heading relative z-10">
-        <CardTitle role="heading" aria-level={3}>{card.title}</CardTitle>
-      </CardHeader>
-      <CardContent className="dashboard-summary-card-content relative z-10 flex flex-col gap-3">
+      <div className="dashboard-summary-card-heading relative z-10">
+        <div role="heading" aria-level={3} className="text-xs text-muted-foreground">{card.title}</div>
+      </div>
+      <div className="dashboard-summary-card-content relative z-10 flex flex-col gap-3">
         <div className="dashboard-quota-charge-grid grid grid-cols-2 gap-3">
           <div className="dashboard-quota-charge-value font-mono text-sm font-semibold tabular-nums">
             <span className="dashboard-quota-charge-label text-xs text-muted-foreground">{card.localLabel}</span>
@@ -330,8 +330,8 @@ function QuotaChargeCard({
             <span>{card.freshness}</span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -896,7 +896,7 @@ export default function DashboardOverview({
               </CardHeader>
 <CardContent>
               {hasStatusSummary ? (
-                <div className="dashboard-summary-metrics grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6 dashboard-summary-metrics-compact dashboard-summary-metrics-status">
+                <div className="dashboard-summary-metrics grid min-w-0 grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-3 dashboard-summary-metrics-compact dashboard-summary-metrics-status">
                   {statusMetrics.map((metric) => (
                     <SummaryMetricCard key={metric.id} metric={metric} compact />
                   ))}
@@ -949,7 +949,7 @@ export default function DashboardOverview({
               <div className="dashboard-alerts-summary__metrics grid grid-cols-3 gap-3">
                 {recentAlerts.groupedCountWindows.map((item) => (
                   <article
-                    className="dashboard-alerts-summary__metric-chip flex flex-col gap-1 rounded-lg border p-3 [&>strong]:text-lg [&>strong]:tabular-nums [&>small]:text-muted-foreground"
+                    className="dashboard-alerts-summary__metric-chip flex flex-col gap-1 p-3 [&>strong]:text-lg [&>strong]:tabular-nums [&>small]:text-muted-foreground"
                     data-current-window={item.windowHours === recentAlerts.windowHours ? 'true' : undefined}
                     key={item.windowHours}
                   >

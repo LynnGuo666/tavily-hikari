@@ -1538,7 +1538,7 @@ export default function TokenDetail({
 
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="token-stat flex min-w-0 flex-col gap-1 rounded-lg border p-3">
+    <div className="token-stat flex min-w-0 flex-col gap-1">
       <div className="stat-title text-xs font-medium text-muted-foreground">{label}</div>
       <div className="stat-value font-mono text-lg font-semibold tabular-nums">{value}</div>
     </div>
@@ -1547,7 +1547,7 @@ function MetricCard({ label, value }: { label: string; value: string }) {
 
 function InfoCard({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="token-info-card flex min-w-0 flex-col gap-2 rounded-lg border p-4">
+    <div className="token-info-card flex min-w-0 flex-col gap-2">
       <span className="token-info-label text-xs font-medium text-muted-foreground">{label}</span>
       <div className="token-info-value text-sm font-medium">{value}</div>
     </div>

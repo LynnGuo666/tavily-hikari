@@ -652,10 +652,10 @@ export default function McpSessionBindingsModule({
 
 function SummaryCard({ label, value }: { label: string; value: string }): React.JSX.Element {
   return (
-    <Card size="sm"><CardContent className="flex flex-col gap-1">
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </CardContent></Card>
+    <div className="mcp-session-bindings-summary-stat flex min-w-0 flex-col gap-1">
+      <span className="text-xs text-muted-foreground">{label}</span>
+      <strong className="text-2xl font-semibold tabular-nums">{value}</strong>
+    </div>
   )
 }
 

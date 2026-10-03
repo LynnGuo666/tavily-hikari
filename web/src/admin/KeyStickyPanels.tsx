@@ -264,7 +264,7 @@ export default function KeyStickyPanels({
           </div>
         </CardHeader>
         <AdminLoadingRegion
-          className="table-wrapper overflow-hidden hidden md:flex"
+          className="table-wrapper overflow-hidden hidden md:block"
           loadState={stickyUsersLoadState}
           loadingLabel={stickyUsersLoadingLabel}
           errorLabel={stickyUsersError ?? adminStrings.errors.loadKeyDetails}
@@ -458,7 +458,7 @@ export default function KeyStickyPanels({
           </div>
         </CardHeader>
         <AdminLoadingRegion
-          className="table-wrapper overflow-hidden hidden md:flex"
+          className="table-wrapper overflow-hidden hidden md:block"
           loadState={stickyNodesLoadState}
           loadingLabel={stickyNodesLoadingLabel}
           errorLabel={stickyNodesError ?? adminStrings.errors.loadKeyDetails}

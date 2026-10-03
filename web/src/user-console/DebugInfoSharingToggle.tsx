@@ -22,7 +22,7 @@ export default function DebugInfoSharingToggle({
   onChange: (shared: boolean) => void
 }): React.JSX.Element {
   return (
-    <div className="access-stat user-console-debug-sharing rounded-lg border border-border bg-card p-4">
+    <div className="access-stat user-console-debug-sharing bg-card p-4">
       <div className="flex items-start gap-3 text-sm">
         <Switch
           id="user-console-debug-info-sharing"

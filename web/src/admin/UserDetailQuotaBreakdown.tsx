@@ -67,7 +67,7 @@ export function UserDetailQuotaBreakdown({
 
   return (
     <>
-      <div className="table-wrapper overflow-hidden rounded-lg border hidden md:flex" style={{ marginTop: 12 }}>
+      <div className="table-wrapper overflow-hidden hidden md:block" style={{ marginTop: 12 }}>
         <Table className="user-tag-breakdown-table">
           <TableHeader>
             <TableRow>

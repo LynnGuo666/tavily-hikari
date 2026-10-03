@@ -3,7 +3,6 @@ import type React from 'react'
 
 import type { RequestRate } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
 
@@ -52,13 +51,13 @@ function QuotaStatCard({
   const ratio = quotaRatio(used, limit)
 
   return (
-    <Card className="access-stat quota-stat-card gap-2 py-4">
-      <CardHeader className="quota-stat-label gap-1">
-        <CardDescription className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+    <div className="access-stat quota-stat-card flex min-w-0 flex-col gap-2">
+      <div className="quota-stat-label">
+        <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="quota-stat-value flex flex-col gap-2">
+        </span>
+      </div>
+      <div className="quota-stat-value flex flex-col gap-2">
         <div className="text-2xl font-semibold tabular-nums">
           {formatNumber(used)}
           <span className="ml-1 text-sm font-normal text-muted-foreground">/ {formatNumber(limit)}</span>
@@ -68,8 +67,8 @@ function QuotaStatCard({
           aria-label={`${formatNumber(used)} / ${formatNumber(limit)}`}
           className={cn('h-1.5', progressToneClass(ratio))}
         />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 

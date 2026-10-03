@@ -18,7 +18,7 @@ const EXCEPTIONS = new Map<string, { max: number; reason: string }>([
   [
     'src/admin/AdminDashboardRuntime.tsx',
     {
-      max: 13980,
+      max: 14080,
       reason:
         'Legacy admin dashboard runtime remains as a compatibility shell while HA source settings, upstream privacy status routing, active-user list filtering, shadow reconciliation comparison wiring, MCP session bindings route state, and the admin rankings live-status wiring finish converging before a larger extraction pass; the shadcn-native migration additionally inlines the shared table-pagination, compact-intro, sidebar-utility, and app-footer wrapper compositions at their call sites.',
     },

@@ -32,7 +32,7 @@ export function UserDetailTokenTable({
 
   return (
     <>
-      <div className="hidden md:flex">
+      <div className="hidden md:block">
         <Table className="admin-user-tokens-table">
           <TableHeader>
             <TableRow>
