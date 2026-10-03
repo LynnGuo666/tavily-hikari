@@ -204,21 +204,21 @@ function TokenOwnerValue({
   onOpenUser?: (userId: string) => void
 }): React.JSX.Element {
   if (!owner) {
-    return <span className="token-owner-empty text-xs text-muted-foreground">{emptyLabel}</span>
+    return <span className="text-xs text-muted-foreground">{emptyLabel}</span>
   }
 
   const secondary = tokenOwnerSecondary(owner)
   return (
-    <div className="token-owner-block flex items-center gap-2">
+    <div className="flex items-center gap-2">
       {onOpenUser ? (
-        <Button type="button" variant="link" size="sm" className="h-auto p-0 token-owner-trigger inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-sm hover:bg-muted" onClick={() => onOpenUser(owner.userId)}>
-          <span className="token-owner-link text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
-          {secondary ? <span className="token-owner-secondary text-xs text-muted-foreground">{secondary}</span> : null}
+        <Button type="button" variant="link" size="sm" className="h-auto p-0 inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 text-sm hover:bg-muted" onClick={() => onOpenUser(owner.userId)}>
+          <span className="text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
+          {secondary ? <span className="text-xs text-muted-foreground">{secondary}</span> : null}
         </Button>
       ) : (
         <>
-          <span className="token-owner-link text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
-          {secondary ? <span className="token-owner-secondary text-xs text-muted-foreground">{secondary}</span> : null}
+          <span className="text-primary underline-offset-4 hover:underline">{tokenOwnerPrimary(owner)}</span>
+          {secondary ? <span className="text-xs text-muted-foreground">{secondary}</span> : null}
         </>
       )}
     </div>
@@ -251,14 +251,14 @@ function QuotaStatCard({ label, used, limit, resetAt, description }: QuotaStatCa
     }
   }
   return (
-    <div className="quota-stat-card">
-      <div className="quota-stat-label">{label}</div>
-      <div className="quota-stat-value">
+    <div>
+      <div>{label}</div>
+      <div>
         {formatNumber(used)}
         <span>/ {formatNumber(limit)}</span>
       </div>
-      <div className="quota-stat-description">{description}</div>
-      <div className="quota-stat-reset">
+      <div>{description}</div>
+      <div>
         {shouldShowReset ? `Next reset: ${resetLabel}` : resetLabel}
       </div>
     </div>
@@ -1185,22 +1185,22 @@ export default function TokenDetail({
   const manualRefreshBusy = summaryBlocking || logsBlocking
   const tokenDetailSidebarUtility = (
     <AdminShellSidebarUtility>
-      <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
             <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
               <ThemeToggle />
               <LanguageSwitcher />
             </div>
-            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+            <div className="flex min-w-0 flex-col gap-1">
               {profile?.displayName && (
-                <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${profile.isAdmin ? ' user-badge-admin' : ''}`} title={profile.displayName}>
-                  {profile.isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title={profile.displayName}>
+                  {profile.isAdmin && <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />}
                   <span>{profile.displayName}</span>
                 </div>
               )}
-              <span className={`sse-chip inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
-                <span className="sse-dot size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
+              <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
+                <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
               </span>
             </div>
           </CardContent>
@@ -1208,17 +1208,15 @@ export default function TokenDetail({
 
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
-            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+            <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
                 href={ADMIN_USER_CONSOLE_HREF}
-                className="admin-sidebar-utility-action"
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="admin-sidebar-utility-action"
                 onClick={() => (onBack ? onBack() : window.history.back())}
               >
                 <Icon icon="mdi:arrow-left" width={18} height={18} aria-hidden="true" />
@@ -1228,7 +1226,7 @@ export default function TokenDetail({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="admin-sidebar-utility-action border-warning/40 text-warning hover:bg-warning/10"
+                className="border-warning/40 text-warning hover:bg-warning/10"
                 onClick={() => setIsRotateDialogOpen(true)}
                 aria-label="Regenerate secret"
               >
@@ -1239,7 +1237,7 @@ export default function TokenDetail({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="admin-panel-refresh-button admin-sidebar-utility-action"
+                className="admin-panel-refresh-button"
                 onClick={handleManualRefresh}
                 disabled={manualRefreshBusy}
               >
@@ -1262,27 +1260,26 @@ export default function TokenDetail({
   return (
     <div
       ref={pageRef}
-      className={`admin-detail-stack flex min-w-0 flex-col gap-6 viewport-${viewportMode} content-${contentMode}${
+      className={`flex min-w-0 flex-col gap-6 viewport-${viewportMode} content-${contentMode}${
         isCompactLayout ? ' is-compact-layout' : ''
       }`}
     >
       {tokenDetailSidebarUtility}
 
       <div className="block md:hidden">
-        <section className="surface app-header">
-          <div className="title-group flex flex-col gap-1">
+        <section className="surface">
+          <div className="flex flex-col gap-1">
             <h1>Access Token Detail</h1>
-            <div className="subtitle text-sm text-muted-foreground">Token <code>{id}</code></div>
+            <div className="text-sm text-muted-foreground">Token <code>{id}</code></div>
           </div>
-          <div className="controls token-detail-controls flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <AdminReturnToConsoleLink
               label={translations.admin.header.returnToConsole}
               href={ADMIN_USER_CONSOLE_HREF}
-              className="admin-return-link--detail"
             />
-            <span className={`sse-chip inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
-              <span className="sse-dot size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
+            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
+              <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
             </span>
             <Button type="button" variant="outline" onClick={() => (onBack ? onBack() : window.history.back())}>
               <Icon icon="mdi:arrow-left" width={18} height={18} />
@@ -1305,26 +1302,26 @@ export default function TokenDetail({
 
       <div className="hidden md:block">
         <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">Access Token Detail</h1>
-            <p className="admin-compact-intro-description text-sm text-muted-foreground">Token <code>{id}</code></p>
+            <p className="text-sm text-muted-foreground">Token <code>{id}</code></p>
           </div>
         </section>
       </div>
 
       {error && <div className="surface rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">{error}</div>}
 
-      <Card className="surface panel token-info-section flex flex-col gap-1">
+      <Card className="surface panel flex flex-col gap-1">
         <AdminLoadingRegion
           loadState={infoRegionLoadState}
           loadingLabel={summaryRefreshing ? refreshingLabel : loadingStateStrings.switching}
           minHeight={184}
         >
           {info ? (
-            <div className="token-info-grid grid min-w-0 gap-3 px-4 sm:grid-cols-2" aria-label="Token metadata">
+            <div className="grid min-w-0 gap-3 px-4 sm:grid-cols-2" aria-label="Token metadata">
               <InfoCard
                 label="Token ID"
-                value={<code className="code-chip" title={info.id}>{info.id}</code>}
+                value={<code title={info.id}>{info.id}</code>}
               />
               <InfoCard
                 label="Status"
@@ -1343,11 +1340,11 @@ export default function TokenDetail({
               />
               <InfoCard
                 label="Note"
-                value={info.note ? <span className="token-info-note text-xs text-muted-foreground" title={info.note}>{info.note}</span> : '—'}
+                value={info.note ? <span className="text-xs text-muted-foreground" title={info.note}>{info.note}</span> : '—'}
               />
             </div>
           ) : (
-            <Empty className="empty-state"><EmptyDescription>Token details are unavailable right now.</EmptyDescription></Empty>
+            <Empty><EmptyDescription>Token details are unavailable right now.</EmptyDescription></Empty>
           )}
         </AdminLoadingRegion>
       </Card>
@@ -1356,7 +1353,7 @@ export default function TokenDetail({
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>Quick Stats</CardTitle>
-            <CardDescription className="panel-description">Rolling usage windows (1 hour / 24 hours / calendar month).</CardDescription>
+            <CardDescription>Rolling usage windows (1 hour / 24 hours / calendar month).</CardDescription>
           </div>
         </CardHeader>
         <AdminLoadingRegion
@@ -1364,7 +1361,7 @@ export default function TokenDetail({
           loadingLabel={summaryRefreshing ? refreshingLabel : loadingStateStrings.switching}
           minHeight={176}
         >
-          <section className="quick-stats-grid grid min-w-0 gap-3 px-4 sm:grid-cols-3">
+          <section className="grid min-w-0 gap-3 px-4 sm:grid-cols-3">
             {info ? (
               <>
                 <QuotaStatCard
@@ -1390,7 +1387,7 @@ export default function TokenDetail({
                 />
               </>
             ) : (
-              <Empty className="empty-state" style={{ gridColumn: '1 / -1' }}><EmptyDescription>
+              <Empty style={{ gridColumn: '1 / -1' }}><EmptyDescription>
                 Token quota details are unavailable right now.
               </EmptyDescription></Empty>
             )}
@@ -1402,13 +1399,13 @@ export default function TokenDetail({
       </Card>
 
       <Card className="surface panel">
-        <CardHeader className="panel-header border-b token-panel-header flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
+        <CardHeader className="panel-header border-b flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
           <div>
             <CardTitle role="heading" aria-level={2}>Usage Snapshot</CardTitle>
-            <CardDescription className="panel-description">Aggregated metrics for the selected window.</CardDescription>
+            <CardDescription>Aggregated metrics for the selected window.</CardDescription>
           </div>
-          <div className="token-period-controls flex flex-wrap items-center gap-2 px-4" role="group" aria-label="Period filter">
-            <div className="token-period-control inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
+          <div className="flex flex-wrap items-center gap-2 px-4" role="group" aria-label="Period filter">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
               <label htmlFor={periodSelectId}>Period</label>
               <Select
                 value={period}
@@ -1433,7 +1430,7 @@ export default function TokenDetail({
                 </SelectContent>
               </Select>
             </div>
-            <div className="token-period-control inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
               <label htmlFor={sinceInputId}>Start</label>
               {period === 'day' && (
                 <Input
@@ -1469,8 +1466,8 @@ export default function TokenDetail({
           </div>
         </CardHeader>
         {warning && (
-          <div className="token-period-warning px-4 text-xs text-warning alert border-warning/40 bg-warning/10 text-warning" role="status">
-            <Icon icon="mdi:alert-circle-outline" width={18} height={18} aria-hidden="true" className="token-warning-icon" />
+          <div className="px-4 text-xs text-warning alert border-warning/40 bg-warning/10 text-warning" role="status">
+            <Icon icon="mdi:alert-circle-outline" width={18} height={18} aria-hidden="true" />
             <span>{warning}</span>
           </div>
         )}
@@ -1479,7 +1476,7 @@ export default function TokenDetail({
           loadingLabel={summaryRefreshing ? refreshingLabel : loadingStateStrings.switching}
           minHeight={160}
         >
-          <div className="token-stats grid min-w-0 grid-cols-2 gap-3 px-4 sm:grid-cols-4">
+          <div className="grid min-w-0 grid-cols-2 gap-3 px-4 sm:grid-cols-4">
             <MetricCard label="Requests" value={formatNumber(summary?.total_requests ?? 0)} />
             <MetricCard label="Success" value={formatNumber(summary?.success_count ?? 0)} />
             <MetricCard label="Errors" value={formatNumber(summary?.error_count ?? 0)} />
@@ -1573,7 +1570,7 @@ export default function TokenDetail({
           ref={rotatedTokenFieldRef}
           readOnly
           rows={3}
-          className="manual-copy-bubble-field min-h-[96px] resize-none font-mono text-xs"
+          className="min-h-[96px] resize-none font-mono text-xs"
           value={rotatedToken ?? '—'}
           onClick={(event) => selectAllReadonlyText(event.currentTarget)}
           onFocus={(event) => selectAllReadonlyText(event.currentTarget)}
@@ -1594,18 +1591,18 @@ export default function TokenDetail({
 
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="token-stat flex min-w-0 flex-col gap-1">
-      <div className="stat-title text-xs font-medium text-muted-foreground">{label}</div>
-      <div className="stat-value font-mono text-lg font-semibold tabular-nums">{value}</div>
+    <div className="flex min-w-0 flex-col gap-1">
+      <div className="text-xs font-medium text-muted-foreground">{label}</div>
+      <div className="font-mono text-lg font-semibold tabular-nums">{value}</div>
     </div>
   )
 }
 
 function InfoCard({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="token-info-card flex min-w-0 flex-col gap-2">
-      <span className="token-info-label text-xs font-medium text-muted-foreground">{label}</span>
-      <div className="token-info-value text-sm font-medium">{value}</div>
+    <div className="flex min-w-0 flex-col gap-2">
+      <span className="text-xs font-medium text-muted-foreground">{label}</span>
+      <div className="text-sm font-medium">{value}</div>
     </div>
   )
 }
@@ -1627,7 +1624,7 @@ function UsageChart({
     external: { label: 'Other failures', color: 'var(--chart-3)' },
   } satisfies ChartConfig
   return (
-    <div className="hourly-chart min-w-0 px-4">
+    <div className="min-w-0 px-4">
       {loading ? (
         <Empty><EmptyDescription>Loading…</EmptyDescription></Empty>
       ) : (

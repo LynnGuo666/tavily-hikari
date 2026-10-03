@@ -324,7 +324,7 @@ function ConnectivityChecksBubbleProof(): React.JSX.Element {
         <div className="panel-header">
           <div>
             <h2>Clipped container bubble proof</h2>
-            <p className="panel-description">
+            <p>
               The parent shell is intentionally clipped. The probe result bubble must still render above it through the
               shared portal layer.
             </p>

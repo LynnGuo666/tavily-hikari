@@ -770,7 +770,7 @@ function MonthlyBrokenKeyValue({
 }): React.JSX.Element {
   const copyText = copyState === 'copied' ? copiedLabel : copyLabel
   return (
-    <div className="monthly-broken-key-value">
+    <div>
       <JobKeyLink
         keyId={keyId}
         keyGroup={null}
@@ -1174,10 +1174,10 @@ function UserTagBadge({
 
   return (
     <Badge variant="outline" className={classes} title={tag.displayName}>
-      {iconSrc && <img src={iconSrc} alt="" className="user-tag-pill-icon" aria-hidden="true" />}
+      {iconSrc && <img src={iconSrc} alt="" aria-hidden="true" />}
       <span>{tag.displayName}</span>
-      {isSystem && <span className="user-tag-pill-meta">{usersStrings.catalog.scopeSystemShort}</span>}
-      {isBlockAll && <span className="user-tag-pill-meta">{usersStrings.catalog.blockShort}</span>}
+      {isSystem && <span>{usersStrings.catalog.scopeSystemShort}</span>}
+      {isBlockAll && <span>{usersStrings.catalog.blockShort}</span>}
     </Badge>
   )
 }
@@ -1194,18 +1194,18 @@ function UserTagBadgeList({
   limit?: number
 }): React.JSX.Element {
   if (tags.length === 0) {
-    return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
+    return <span className="text-sm text-muted-foreground">{emptyLabel}</span>
   }
 
   const visibleTags = tags.slice(0, limit)
   const overflow = Math.max(0, tags.length - visibleTags.length)
 
   return (
-    <div className="user-tag-pill-list">
+    <div>
       {visibleTags.map((tag) => (
         <UserTagBadge key={`${tag.tagId}:${tag.source}`} tag={tag} usersStrings={usersStrings} />
       ))}
-      {overflow > 0 && <Badge variant="outline" className="user-tag-pill-overflow">+{overflow}</Badge>}
+      {overflow > 0 && <Badge variant="outline">+{overflow}</Badge>}
     </div>
   )
 }
@@ -1411,7 +1411,7 @@ function rebalanceMarkerLabel(log: RequestLog, strings: AdminTranslations): stri
 
 function RebalanceGatewayMarker(): React.JSX.Element {
   return (
-    <span className="log-key-pill__marker" aria-hidden="true">
+    <span aria-hidden="true">
       <svg viewBox="0 0 16 16" focusable="false">
         <path
           d="M5 2.75a1.75 1.75 0 1 1-1 3.18V11a1 1 0 0 0 1 1h4.18a1.75 1.75 0 1 1 0 1.5H5A2.5 2.5 0 0 1 2.5 11V5.93A1.75 1.75 0 0 1 5 2.75m6 0a1.75 1.75 0 1 1-1 3.18V8a1 1 0 0 1-1 1H6.5v-1.5H8.5V5.93A1.75 1.75 0 0 1 11 2.75"
@@ -1434,19 +1434,19 @@ function TokenOwnerValue({
   compact?: boolean
 }): React.JSX.Element {
   if (!owner) {
-    return <span className="token-owner-empty">{emptyLabel}</span>
+    return <span>{emptyLabel}</span>
   }
 
   const secondary = tokenOwnerSecondary(owner)
   return (
-    <div className={`token-owner-block${compact ? ' token-owner-block-compact' : ''}`}>
+    <div className={compact ? 'token-owner-block-compact' : undefined}>
       <button
         type="button"
-        className={`link-button token-owner-trigger${compact ? ' token-owner-trigger-compact' : ''}`}
+        className={compact ? 'token-owner-trigger-compact' : undefined}
         onClick={() => onOpenUser(owner.userId)}
       >
-        <span className="token-owner-link">{tokenOwnerPrimary(owner)}</span>
-        {secondary ? <span className="token-owner-secondary">{secondary}</span> : null}
+        <span>{tokenOwnerPrimary(owner)}</span>
+        {secondary ? <span>{secondary}</span> : null}
       </button>
     </div>
   )
@@ -1466,7 +1466,7 @@ function AdminTableValueStack({
   return (
     <div className={`admin-table-value-stack flex flex-col${className ? ` ${className}` : ''}`}>
       <span className={`admin-table-value-primary font-medium tabular-nums${primaryClassName ? ` ${primaryClassName}` : ''}`}>{primary}</span>
-      {secondary ? <span className="admin-table-value-secondary text-xs text-muted-foreground tabular-nums">{secondary}</span> : null}
+      {secondary ? <span className="text-xs text-muted-foreground tabular-nums">{secondary}</span> : null}
     </div>
   )
 }
@@ -1499,12 +1499,14 @@ function AdminUsersSortableHeader<Field extends string>({
       type="button"
       variant="ghost"
       size="sm"
-      className={`admin-table-sort-button${isActive ? ' is-active' : ''}`}
+      className="text-muted-foreground data-[active=true]:text-foreground"
+      data-active={isActive || undefined}
+      aria-pressed={isActive}
       onClick={() => onToggle(field)}
       aria-label={hasTooltip ? bubbleLabel : undefined}
     >
-      <span className="admin-table-sort-label">{visibleLabel}</span>
-      <SortIndicatorIcon className="admin-table-sort-indicator" aria-hidden="true" />
+      <span>{visibleLabel}</span>
+      <SortIndicatorIcon aria-hidden="true" />
     </Button>
   )
   return (
@@ -7996,7 +7998,7 @@ function AdminDashboard(): React.JSX.Element {
       <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
         <div>
           <CardTitle role="heading" aria-level={2}>{usersStrings.catalog.summaryTitle}</CardTitle>
-          <CardDescription className="panel-description">{usersStrings.catalog.summaryDescription}</CardDescription>
+          <CardDescription>{usersStrings.catalog.summaryDescription}</CardDescription>
         </div>
         <CardAction>
           <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
@@ -8006,17 +8008,17 @@ function AdminDashboard(): React.JSX.Element {
       </CardHeader>
 
       {tagCatalogError && (
-        <Alert className="" role="alert" style={{ marginBottom: 12 }} variant="destructive"><AlertDescription>
+        <Alert role="alert" style={{ marginBottom: 12 }} variant="destructive"><AlertDescription>
           {tagCatalogError}
         </AlertDescription></Alert>
       )}
 
       {tagCatalogLoading ? (
-        <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.loading}</EmptyDescription></Empty>
+        <Empty><EmptyDescription>{usersStrings.catalog.loading}</EmptyDescription></Empty>
       ) : sortedTagCatalog.length === 0 ? (
-        <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.summaryEmpty}</EmptyDescription></Empty>
+        <Empty><EmptyDescription>{usersStrings.catalog.summaryEmpty}</EmptyDescription></Empty>
       ) : (
-        <div className="user-tag-summary-grid">
+        <div>
           {sortedTagCatalog.map((tag) => {
             const isSystem = tag.systemKey != null
             const isBlockAll = tag.effectKind === 'block_all'
@@ -8026,7 +8028,7 @@ function AdminDashboard(): React.JSX.Element {
 
             return (
               <article className={cardClasses} key={tag.id}>
-                <div className="user-tag-summary-card-head">
+                <div>
                   <UserTagBadge
                     tag={{
                       displayName: tag.displayName,
@@ -8040,9 +8042,9 @@ function AdminDashboard(): React.JSX.Element {
                     {isSystem ? usersStrings.catalog.scopeSystem : usersStrings.catalog.scopeCustom}
                   </StatusBadge>
                 </div>
-                <div className="user-tag-summary-count">
+                <div>
                   <strong>{formatNumber(tag.userCount)}</strong>
-                  <span className="panel-description text-sm text-muted-foreground">{usersStrings.catalog.summaryAccounts}</span>
+                  <span className="text-sm text-muted-foreground">{usersStrings.catalog.summaryAccounts}</span>
                 </div>
               </article>
             )
@@ -8053,7 +8055,7 @@ function AdminDashboard(): React.JSX.Element {
   )
 
   const renderUserTagEffectToggle = (): React.JSX.Element => (
-    <div className="user-tag-effect-toggle" role="group" aria-label={usersStrings.catalog.fields.effect}>
+    <div role="group" aria-label={usersStrings.catalog.fields.effect}>
       {([
         ['quota_delta', usersStrings.catalog.effectKinds.quotaDelta],
         ['block_all', usersStrings.catalog.effectKinds.blockAll],
@@ -8065,7 +8067,9 @@ function AdminDashboard(): React.JSX.Element {
             type="button"
             variant={isActive ? 'secondary' : 'outline'}
             size="xs"
-            className={`user-tag-effect-chip${isActive ? ' is-active' : ''}`}
+            className="data-[active=true]:border-foreground data-[active=true]:bg-accent"
+            data-active={isActive || undefined}
+            aria-pressed={isActive}
             onClick={() => updateUserTagCatalogField('effectKind', effectKind)}
             disabled={savingUserTagCatalog}
           >
@@ -8107,22 +8111,20 @@ function AdminDashboard(): React.JSX.Element {
 
     return (
       <section className={cardClasses} key={tag?.id ?? NEW_USER_TAG_CARD_ID}>
-        <div className="user-tag-catalog-card-head">
-          <div className="user-tag-catalog-name">
+        <div>
+          <div>
             {isEditing ? (
-              <div className="user-tag-inline-fields">
+              <div>
                 <Input
                   type="text"
-                  className="user-tag-inline-input user-tag-inline-input-display"
                   value={userTagCatalogDraft.displayName}
                   onChange={(event) => updateUserTagCatalogField('displayName', event.target.value)}
                   disabled={editingSystemTag || savingUserTagCatalog}
                   placeholder={usersStrings.catalog.fields.displayName}
                 />
-                <div className="user-tag-inline-fields-row">
+                <div>
                   <Input
                     type="text"
-                    className="user-tag-inline-input"
                     value={userTagCatalogDraft.name}
                     onChange={(event) => updateUserTagCatalogField('name', event.target.value)}
                     disabled={editingSystemTag || savingUserTagCatalog}
@@ -8130,7 +8132,6 @@ function AdminDashboard(): React.JSX.Element {
                   />
                   <Input
                     type="text"
-                    className="user-tag-inline-input"
                     value={userTagCatalogDraft.icon}
                     onChange={(event) => updateUserTagCatalogField('icon', event.target.value)}
                     disabled={editingSystemTag || savingUserTagCatalog}
@@ -8140,24 +8141,23 @@ function AdminDashboard(): React.JSX.Element {
               </div>
             ) : (
               <>
-                <div className="user-tag-pill-list">
+                <div>
                   <UserTagBadge tag={viewTag} usersStrings={usersStrings} />
                 </div>
-                <div className="panel-description text-sm text-muted-foreground user-tag-catalog-subtitle">
+                <div className="text-sm text-muted-foreground">
                   <code>{tag?.name}</code>
                   {iconSrc ? ` · ${viewTag.icon}` : ''}
                 </div>
               </>
             )}
           </div>
-          <div className="user-tag-catalog-actions">
+          <div>
             {isEditing ? (
               <>
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="user-tag-catalog-icon-button"
                   title={usersStrings.catalog.actions.save}
                   aria-label={usersStrings.catalog.actions.save}
                   onClick={() => void saveUserTagCatalog()}
@@ -8169,7 +8169,6 @@ function AdminDashboard(): React.JSX.Element {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="user-tag-catalog-icon-button"
                   title={usersStrings.catalog.actions.cancelEdit}
                   aria-label={usersStrings.catalog.actions.cancelEdit}
                   onClick={cancelUserTagCatalogEdit}
@@ -8182,7 +8181,6 @@ function AdminDashboard(): React.JSX.Element {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="user-tag-catalog-icon-button"
                     title={usersStrings.catalog.actions.delete}
                     aria-label={usersStrings.catalog.actions.delete}
                     onClick={() => requestUserTagCatalogDelete(tag)}
@@ -8198,7 +8196,6 @@ function AdminDashboard(): React.JSX.Element {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="user-tag-catalog-icon-button"
                   title={usersStrings.catalog.actions.edit}
                   aria-label={usersStrings.catalog.actions.edit}
                   onClick={() => tag && beginEditUserTag(tag)}
@@ -8210,7 +8207,6 @@ function AdminDashboard(): React.JSX.Element {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="user-tag-catalog-icon-button"
                     title={usersStrings.catalog.actions.delete}
                     aria-label={usersStrings.catalog.actions.delete}
                     onClick={() => requestUserTagCatalogDelete(tag)}
@@ -8224,14 +8220,14 @@ function AdminDashboard(): React.JSX.Element {
           </div>
         </div>
 
-        <div className="user-tag-catalog-card-meta">
-          <Badge variant="outline" className={`user-tag-meta-badge ${isSystem ? 'border-primary/30 bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+        <div>
+          <Badge variant="outline" className={`${isSystem ? 'border-primary/30 bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
             {isSystem ? usersStrings.catalog.scopeSystem : usersStrings.catalog.scopeCustom}
           </Badge>
           {isEditing ? (
             renderUserTagEffectToggle()
           ) : (
-            <Badge variant={isBlockAll ? 'destructive' : 'outline'} className={`user-tag-meta-badge${isBlockAll ? '' : ` ${SUCCESS_BADGE_CLASS}`}`}>
+            <Badge variant={isBlockAll ? 'destructive' : 'outline'} className={isBlockAll ? undefined : SUCCESS_BADGE_CLASS}>
               {isBlockAll
                 ? usersStrings.catalog.effectKinds.blockAll
                 : usersStrings.catalog.effectKinds.quotaDelta}
@@ -8241,36 +8237,34 @@ function AdminDashboard(): React.JSX.Element {
             type="button"
             variant="secondary"
             size="xs"
-            className="user-tag-catalog-users user-tag-catalog-users-button"
             onClick={() =>
               tag && navigateUsersSearch(tag.displayName, { tagId: tag.id, sort: usersSort, order: usersSortOrder })
             }
             disabled={isNewCard}
           >
-            <span className="user-tag-catalog-users-label">{usersStrings.catalog.columns.users}</span>
+            <span>{usersStrings.catalog.columns.users}</span>
             <strong>{formatNumber(tag?.userCount ?? 0)}</strong>
           </Button>
         </div>
 
-        <div className="user-tag-catalog-body">
+        <div>
           {isBlockAll ? (
-            <Alert className="border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note"><AlertDescription>
+            <Alert className="border-warning/40 bg-warning/10 text-warning" role="note"><AlertDescription>
               {usersStrings.catalog.blockDescription}
             </AlertDescription></Alert>
           ) : (
-            <dl className="user-tag-catalog-delta-grid">
+            <dl>
               {([
                 ['businessCalls1hDelta', tag?.businessCalls1hDelta ?? 0, usersStrings.quota.hourly],
                 ['dailyCreditsDelta', tag?.dailyCreditsDelta ?? 0, usersStrings.quota.daily],
                 ['monthlyCreditsDelta', tag?.monthlyCreditsDelta ?? 0, usersStrings.quota.monthly],
               ] as const).map(([field, value, label]) => (
-                <div className="user-tag-catalog-delta-item" key={field}>
+                <div key={field}>
                   <dt>{label}</dt>
                   <dd>
                     {isEditing ? (
                       <Input
                         type="number"
-                        className="user-tag-delta-input"
                         value={userTagCatalogDraft[field]}
                         onChange={(event) => updateUserTagCatalogField(field, event.target.value)}
                         disabled={savingUserTagCatalog || tagCatalogEffectIsBlockAll}
@@ -8296,13 +8290,13 @@ function AdminDashboard(): React.JSX.Element {
       onSelectItem={navigateModule}
     >
       <div className="hidden md:block">
-        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">{usersStrings.catalog.title}</h1>
-            {usersStrings.catalog.description ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{usersStrings.catalog.description}</p> : null}
+            {usersStrings.catalog.description ? <p className="text-sm text-muted-foreground">{usersStrings.catalog.description}</p> : null}
           </div>
           <div className="admin-compact-intro-actions max-w-full">
-            <div className="user-tag-page-actions">
+            <div>
               <Button
                 type="button"
                 variant="outline" size="sm"
@@ -8337,9 +8331,9 @@ function AdminDashboard(): React.JSX.Element {
         <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <CardTitle role="heading" aria-level={2}>{usersStrings.catalog.title}</CardTitle>
-            <CardDescription className="panel-description">{usersStrings.catalog.description}</CardDescription>
+            <CardDescription>{usersStrings.catalog.description}</CardDescription>
           </div>
-          <div className="user-tag-page-actions">
+          <div>
             <Button
               type="button"
               variant="outline" size="sm"
@@ -8377,9 +8371,9 @@ function AdminDashboard(): React.JSX.Element {
 
       <Card className="surface panel">
         {tagCatalogLoading ? (
-          <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.loading}</EmptyDescription></Empty>
+          <Empty><EmptyDescription>{usersStrings.catalog.loading}</EmptyDescription></Empty>
         ) : visibleTagCards.length === 0 ? (
-          <Empty className="empty-state"><EmptyDescription>{usersStrings.catalog.empty}</EmptyDescription></Empty>
+          <Empty><EmptyDescription>{usersStrings.catalog.empty}</EmptyDescription></Empty>
         ) : (
           <div className="user-tag-catalog-grid">
             {visibleTagCards.map((tag) => renderUserTagCatalogCard(tag))}
@@ -8422,23 +8416,23 @@ function AdminDashboard(): React.JSX.Element {
   )
 
   const appFooter = (
-    <footer className="app-footer mt-6 flex flex-col gap-3 text-sm text-muted-foreground mt-auto">
+    <footer className="mt-6 flex flex-col gap-3 text-sm text-muted-foreground mt-auto">
       <Separator />
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         {footerStrings.title ? <span>{footerStrings.title}</span> : null}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Button asChild variant="link" size="sm">
-            <a href="https://github.com/IvanLi-CN/tavily-hikari" className="footer-link" target="_blank" rel="noreferrer" aria-label={footerStrings.githubAria}>
+            <a href="https://github.com/IvanLi-CN/tavily-hikari" target="_blank" rel="noreferrer" aria-label={footerStrings.githubAria}>
               <GithubIcon data-icon="inline-start" />
               {footerStrings.githubLabel}
             </a>
           </Button>
-          <span className="footer-meta inline-flex flex-wrap items-center gap-1">{version ? (() => {
+          <span className="inline-flex flex-wrap items-center gap-1">{version ? (() => {
             const raw = version.backend || ''
             const release = buildOctoRillReleaseLink(raw)
             const displayVersion = formatVersionDisplay(raw)
             return <>{footerStrings.tagPrefix}{release ? (
-              <a href={release.href} className="footer-link underline-offset-4 hover:underline" target="_blank" rel="noreferrer">{release.label}</a>
+              <a href={release.href} className="underline-offset-4 hover:underline" target="_blank" rel="noreferrer">{release.label}</a>
             ) : <span>{displayVersion ?? raw}</span>}</>
           })() : footerStrings.loadingVersion}</span>
         </div>
@@ -8455,14 +8449,14 @@ function AdminDashboard(): React.JSX.Element {
         }}
         shouldScaleBackground={false}
       >
-        <DrawerContent className="request-entity-drawer-content-fit overflow-hidden" aria-describedby={undefined}>
+        <DrawerContent className="overflow-hidden" aria-describedby={undefined}>
           <DrawerTitle className="sr-only">{usersStrings.brokenKeys.drawerTitle}</DrawerTitle>
-          <div className="request-entity-drawer-body-fit min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
-            <section className="surface panel user-detail-panel-compact border-t" id="user-detail-tags">
+          <div className="min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
+            <section className="surface panel border-t" id="user-detail-tags">
               <div className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div>
                   <h2 className="text-sm font-medium">{usersStrings.brokenKeys.drawerTitle}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     {usersStrings.brokenKeys.drawerDescription.replace('{label}', monthlyBrokenDrawer?.label ?? '—')}
                   </p>
                 </div>
@@ -8475,7 +8469,7 @@ function AdminDashboard(): React.JSX.Element {
                 minHeight={240}
               >
                 {monthlyBrokenDrawerItems.length === 0 ? (
-                  <Empty className="empty-state"><EmptyDescription>{usersStrings.brokenKeys.empty}</EmptyDescription></Empty>
+                  <Empty><EmptyDescription>{usersStrings.brokenKeys.empty}</EmptyDescription></Empty>
                 ) : (
                   <Table className="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b">
                     <TableHeader>
@@ -8537,7 +8531,7 @@ function AdminDashboard(): React.JSX.Element {
                 minHeight={240}
               >
                 {monthlyBrokenDrawerItems.length === 0 ? (
-                  <Empty className="empty-state"><EmptyDescription>{usersStrings.brokenKeys.empty}</EmptyDescription></Empty>
+                  <Empty><EmptyDescription>{usersStrings.brokenKeys.empty}</EmptyDescription></Empty>
                 ) : (
                   monthlyBrokenDrawerItems.map((item) => {
                     const stateKey = copyStateKey('brokenKeys', item.keyId)
@@ -8603,7 +8597,7 @@ function AdminDashboard(): React.JSX.Element {
         }}
         shouldScaleBackground={false}
       >
-        <DrawerContent className="request-entity-drawer-content overflow-hidden" aria-describedby={undefined}>
+        <DrawerContent className="overflow-hidden" aria-describedby={undefined}>
           <DrawerTitle className="sr-only">{requestEntityDrawer?.id}</DrawerTitle>
           <div className="request-entity-drawer-body min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
             {requestEntityDrawer?.kind === 'key' ? (
@@ -8657,7 +8651,7 @@ function AdminDashboard(): React.JSX.Element {
                 className="w-full sm:w-[120px]"
               />
             </div>
-            <DialogFooter className="modal-action">
+            <DialogFooter>
               <Button type="button" variant="outline" onClick={closeBatchDialog}>
                 {tokenStrings.batchDialog.cancel}
               </Button>
@@ -8668,7 +8662,7 @@ function AdminDashboard(): React.JSX.Element {
           </>
         ) : (
           <>
-            <div className="batch-dialog-body">
+            <div>
               <p className="py-2">
                 {tokenStrings.batchDialog.createdN.replace(
                   '{n}',
@@ -8693,7 +8687,7 @@ function AdminDashboard(): React.JSX.Element {
                 onFocus={(event) => selectAllReadonlyText(event.currentTarget)}
               />
             </div>
-            <DialogFooter className="modal-action">
+            <DialogFooter>
               <Button
                 type="button"
                 variant="outline"
@@ -8742,7 +8736,7 @@ function AdminDashboard(): React.JSX.Element {
     <div style={{ overflowY: 'auto', minHeight: 0, paddingTop: 12 }}>
       {keysBatchReport?.kind === 'error' ? (
         <>
-          <Alert className="" variant="destructive"><AlertDescription>
+          <Alert variant="destructive"><AlertDescription>
             {keysBatchReport.message}
           </AlertDescription></Alert>
           <div className="py-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
@@ -8806,7 +8800,7 @@ function AdminDashboard(): React.JSX.Element {
                   overflowY: 'auto',
                 }}
               >
-                <Table className="table-zebra">
+                <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>{keyStrings.batch.report.failures.table.apiKey}</TableHead>
@@ -8832,7 +8826,7 @@ function AdminDashboard(): React.JSX.Element {
         <div className="py-2">{keyStrings.batch.hint}</div>
       )}
     </div>
-    <DialogFooter className="modal-action" style={{ marginTop: 12 }}>
+    <DialogFooter style={{ marginTop: 12 }}>
       <Button type="button" variant="outline" onClick={closeKeysBatchReportDialog}>
         {keyStrings.batch.report.close}
       </Button>
@@ -8847,7 +8841,7 @@ function AdminDashboard(): React.JSX.Element {
       <DialogTitle>{keyStrings.dialogs.disable.title}</DialogTitle>
       <DialogDescription>{keyStrings.dialogs.disable.description}</DialogDescription>
     </DialogHeader>
-    <DialogFooter className="modal-action">
+    <DialogFooter>
       <Button type="button" variant="outline" onClick={cancelDisable}>
         {keyStrings.dialogs.disable.cancel}
       </Button>
@@ -8865,7 +8859,7 @@ function AdminDashboard(): React.JSX.Element {
       <DialogTitle>{keyStrings.dialogs.delete.title}</DialogTitle>
       <DialogDescription>{keyStrings.dialogs.delete.description}</DialogDescription>
     </DialogHeader>
-    <DialogFooter className="modal-action">
+    <DialogFooter>
       <Button type="button" variant="outline" onClick={cancelDelete}>
         {keyStrings.dialogs.delete.cancel}
       </Button>
@@ -8882,7 +8876,7 @@ function AdminDashboard(): React.JSX.Element {
       <DialogTitle>{keyStrings.dialogs.bulkDelete.title}</DialogTitle>
       <DialogDescription>{keyStrings.dialogs.bulkDelete.description}</DialogDescription>
     </DialogHeader>
-    <DialogFooter className="modal-action">
+    <DialogFooter>
       <Button type="button" variant="outline" onClick={cancelBulkDelete}>
         {keyStrings.dialogs.bulkDelete.cancel}
       </Button>
@@ -8905,7 +8899,7 @@ function AdminDashboard(): React.JSX.Element {
       <DialogTitle>{tokenStrings.dialogs.delete.title}</DialogTitle>
       <DialogDescription>{tokenStrings.dialogs.delete.description}</DialogDescription>
     </DialogHeader>
-    <DialogFooter className="modal-action">
+    <DialogFooter>
       <Button type="button" variant="outline" onClick={cancelTokenDelete}>
         {tokenStrings.dialogs.delete.cancel}
       </Button>
@@ -8925,7 +8919,7 @@ function AdminDashboard(): React.JSX.Element {
         {tokenStrings.bulk.confirmDescription.replace('{count}', String(selectedTokenCount))}
       </DialogDescription>
     </DialogHeader>
-    <DialogFooter className="modal-action">
+    <DialogFooter>
       <Button type="button" variant="outline" onClick={() => setPendingTokenBulkDelete(false)}>
         {tokenStrings.bulk.cancel}
       </Button>
@@ -8954,7 +8948,7 @@ function AdminDashboard(): React.JSX.Element {
       value={editingTokenNote}
       onChange={(e) => setEditingTokenNote(e.target.value)}
     />
-    <DialogFooter className="modal-action">
+    <DialogFooter>
       <Button type="button" variant="outline" onClick={cancelTokenNote}>
         {tokenStrings.dialogs.note.cancel}
       </Button>
@@ -8975,20 +8969,19 @@ function AdminDashboard(): React.JSX.Element {
       <DialogDescription>{manualCopyDialog?.description ?? manualCopyText.createToken.description}</DialogDescription>
     </DialogHeader>
     <div className="grid gap-2">
-      <label className="manual-copy-bubble-label" htmlFor="admin-manual-copy-dialog-field">
+      <label htmlFor="admin-manual-copy-dialog-field">
         {manualCopyDialog?.fieldLabel ?? manualCopyText.fields.token}
       </label>
       <Input
         id="admin-manual-copy-dialog-field"
         ref={manualCopyDialogFieldRef}
-        className="manual-copy-bubble-field"
         readOnly
         value={manualCopyDialog?.value ?? ''}
         onFocus={(event) => selectAllReadonlyText(event.currentTarget)}
         onClick={(event) => selectAllReadonlyText(event.currentTarget)}
       />
     </div>
-    <DialogFooter className="modal-action">
+    <DialogFooter>
       <Button type="button" onClick={() => setManualCopyDialog(null)}>
         {manualCopyText.close}
       </Button>
@@ -9323,17 +9316,17 @@ function AdminDashboard(): React.JSX.Element {
     }
     const userDetailSidebarUtility = (
       <AdminShellSidebarUtility>
-        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
             <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
               <ThemeToggle />
               <LanguageSwitcher />
             </div>
-            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+            <div className="flex min-w-0 flex-col gap-1">
               {displayName && (
-                <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
-                  {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title={displayName}>
+                  {isAdmin && <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />}
                   <span>{displayName}</span>
                 </div>
               )}
@@ -9342,13 +9335,12 @@ function AdminDashboard(): React.JSX.Element {
           </Card>
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
-            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+            <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
                 href={userConsoleHref}
-                className="admin-sidebar-utility-action"
               />
-              <Button type="button" variant="ghost" size="sm" className="admin-sidebar-utility-action" onClick={navigateBackToUsers}>
+              <Button type="button" variant="ghost" size="sm" onClick={navigateBackToUsers}>
                 <Icon icon="mdi:arrow-left" width={18} height={18} aria-hidden="true" />
                 {usersStrings.detail.back}
               </Button>
@@ -9356,7 +9348,7 @@ function AdminDashboard(): React.JSX.Element {
                 type="button"
                 variant="outline"
                 size="sm"
-                className="admin-panel-refresh-button admin-sidebar-utility-action"
+                className="admin-panel-refresh-button"
                 onClick={handleManualRefresh}
                 disabled={loading || activeModuleBlocking}
               >
@@ -9386,10 +9378,10 @@ function AdminDashboard(): React.JSX.Element {
         {userDetailSidebarUtility}
         {adminHaCompactAlert}
         <div className="hidden md:block">
-          <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
-            <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+          <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+            <div className="flex min-w-0 flex-col gap-1">
               <h1 className="text-xl font-semibold tracking-tight">{userDetailTitle}</h1>
-              {userDetailDescription ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{userDetailDescription}</p> : null}
+              {userDetailDescription ? <p className="text-sm text-muted-foreground">{userDetailDescription}</p> : null}
             </div>
             <div className="admin-compact-intro-actions max-w-full">{renderUserDetailTabs()}</div>
           </section>
@@ -9398,7 +9390,7 @@ function AdminDashboard(): React.JSX.Element {
           <CardHeader className="panel-header border-b">
             <div>
               <CardTitle role="heading" aria-level={2}>{userDetailTitle}</CardTitle>
-              <CardDescription className="panel-description">{userDetailDescription}</CardDescription>
+              <CardDescription>{userDetailDescription}</CardDescription>
             </div>
             {renderUserDetailTabs()}
           </CardHeader>
@@ -9418,25 +9410,25 @@ function AdminDashboard(): React.JSX.Element {
 
         {userDetailLoading ? (
           <Card className="surface panel">
-            <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.loading}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{usersStrings.empty.loading}</EmptyDescription></Empty>
           </Card>
         ) : !detail ? (
           <Card className="surface panel">
-            <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.notFound}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{usersStrings.empty.notFound}</EmptyDescription></Empty>
           </Card>
         ) : (
           <>
             {activeUserDetailTab === 'account' && (
             <>
-            <section className="surface panel user-detail-panel-compact border-t flex flex-col gap-4 px-4 py-4" id="user-detail-identity" role="tabpanel">
+            <section className="surface panel border-t flex flex-col gap-4 px-4 py-4" id="user-detail-identity" role="tabpanel">
               <div className="panel-header border-b pb-3">
                 <div>
                   <h2 className="text-sm font-medium">{usersStrings.detail.identityTitle}</h2>
-                  <p className="panel-description text-sm text-muted-foreground">{usersStrings.detail.identityDescription}</p>
+                  <p className="text-sm text-muted-foreground">{usersStrings.detail.identityDescription}</p>
                 </div>
               </div>
-              <dl className="user-detail-definition-grid grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 [&>div]:flex [&>div]:min-w-0 [&>div]:flex-col [&>div]:gap-1 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:text-sm [&_dd]:font-medium">
-                <div className="user-detail-definition-grid__item--wide sm:col-span-2">
+              <dl className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 [&>div]:flex [&>div]:min-w-0 [&>div]:flex-col [&>div]:gap-1 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:text-sm [&_dd]:font-medium">
+                <div className="sm:col-span-2">
                   <dt>{usersStrings.detail.userId}</dt>
                   <dd>
                     <code>{detail.userId}</code>
@@ -9458,7 +9450,7 @@ function AdminDashboard(): React.JSX.Element {
                     </StatusBadge>
                   </dd>
                 </div>
-                <div className="user-detail-definition-grid__item--wide sm:col-span-2">
+                <div className="sm:col-span-2">
                   <dt>{usersStrings.table.lastLogin}</dt>
                   <dd>{formatTimestamp(detail.lastLoginAt)}</dd>
                 </div>
@@ -9476,7 +9468,7 @@ function AdminDashboard(): React.JSX.Element {
                   </dt>
                   <dd>
                     {formatQuotaUsagePair(detail.businessCalls1h.totalCount, detail.businessCalls1h.limit)}
-                    <span className="admin-table-value-secondary" style={{ display: 'block' }}>
+                    <span style={{ display: 'block' }}>
                       {language === 'zh'
                         ? `成 ${formatNumber(detail.businessCalls1h.successCount)} / 败 ${formatNumber(detail.businessCalls1h.failureCount)}`
                         : `S ${formatNumber(detail.businessCalls1h.successCount)} / F ${formatNumber(detail.businessCalls1h.failureCount)}`}
@@ -9500,7 +9492,7 @@ function AdminDashboard(): React.JSX.Element {
               <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div>
                   <CardTitle role="heading" aria-level={2}>{usersStrings.userTags.title}</CardTitle>
-                  <CardDescription className="panel-description">{usersStrings.userTags.description}</CardDescription>
+                  <CardDescription>{usersStrings.userTags.description}</CardDescription>
                 </div>
                 <CardAction>
                   <Button type="button" variant="outline" size="sm" onClick={navigateUserTags}>
@@ -9509,34 +9501,34 @@ function AdminDashboard(): React.JSX.Element {
                 </CardAction>
               </CardHeader>
               <div className="user-tag-binding-toolbar flex flex-col gap-3">
-                <div className="user-tag-binding-summary flex flex-col gap-2">
-                  <div className="user-tag-binding-summary-top flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1">
                     <UserTagBadgeList
                       tags={boundTags}
                       usersStrings={usersStrings}
                       emptyLabel={usersStrings.userTags.empty}
                       limit={Math.max(USER_TAG_DISPLAY_LIMIT, boundTags.length)}
                     />
-                    <p className="panel-description text-sm text-muted-foreground user-tag-binding-summary-note">
+                    <p className="text-sm text-muted-foreground">
                       系统标签保持只读，手动标签在右侧选择后绑定。
                     </p>
                   </div>
-                  <div className="user-tag-binding-summary-metrics user-tag-binding-summary-metrics--inline flex flex-wrap gap-x-6 gap-y-1" aria-label={usersStrings.userTags.title}>
+                  <div className="flex flex-wrap gap-x-6 gap-y-1" aria-label={usersStrings.userTags.title}>
                     <div className="user-tag-binding-summary-metric flex items-baseline gap-1.5">
-                      <span className="user-tag-binding-summary-label text-xs text-muted-foreground">已绑定</span>
+                      <span className="text-xs text-muted-foreground">已绑定</span>
                       <strong className="tabular-nums">{formatNumber(boundTags.length)}</strong>
                     </div>
                     <div className="user-tag-binding-summary-metric flex items-baseline gap-1.5">
-                      <span className="user-tag-binding-summary-label text-xs text-muted-foreground">系统标签</span>
+                      <span className="text-xs text-muted-foreground">系统标签</span>
                       <strong className="tabular-nums">{formatNumber(systemTagCount)}</strong>
                     </div>
                     <div className="user-tag-binding-summary-metric flex items-baseline gap-1.5">
-                      <span className="user-tag-binding-summary-label text-xs text-muted-foreground">手动标签</span>
+                      <span className="text-xs text-muted-foreground">手动标签</span>
                       <strong className="tabular-nums">{formatNumber(manualTagCount)}</strong>
                     </div>
                   </div>
                 </div>
-                <div className="user-tag-binding-actions">
+                <div>
                   <UserTagBindingControls
                     bindableTags={bindableCustomTags}
                     buttonLabel={usersStrings.userTags.bindAction}
@@ -9552,15 +9544,15 @@ function AdminDashboard(): React.JSX.Element {
               </div>
 
               {boundTags.length === 0 ? (
-                <Empty className="empty-state" style={{ marginTop: 12 }}><EmptyDescription>{usersStrings.userTags.empty}</EmptyDescription></Empty>
+                <Empty style={{ marginTop: 12 }}><EmptyDescription>{usersStrings.userTags.empty}</EmptyDescription></Empty>
               ) : (
-                <div className="user-tag-binding-list flex flex-col divide-y">
+                <div className="flex flex-col divide-y">
                   {boundTags.map((tag) => {
                     const isSystem = isSystemUserTag(tag)
                     return (
-                      <article className="user-tag-binding-card flex flex-col gap-2 py-3" key={`${tag.tagId}:${tag.source}`}>
-                        <div className="user-tag-binding-card-head flex items-start justify-between gap-2">
-                          <div className="user-tag-pill-list">
+                      <article className="flex flex-col gap-2 py-3" key={`${tag.tagId}:${tag.source}`}>
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
                             <UserTagBadge tag={tag} usersStrings={usersStrings} />
                             <StatusBadge tone={isSystem ? 'info' : 'neutral'}>
                               {tag.source === 'system_linuxdo'
@@ -9584,18 +9576,18 @@ function AdminDashboard(): React.JSX.Element {
                               : usersStrings.userTags.unbindAction}
                           </Button>
                         </div>
-                        <div className="token-compact-pair flex flex-wrap gap-x-6 gap-y-1">
-                          <div className="token-compact-field flex items-baseline gap-1.5">
-                            <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.quota.hourly}</span>
-                            <span className="token-compact-value text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.businessCalls1hDelta)}</span>
+                        <div className="flex flex-wrap gap-x-6 gap-y-1">
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-xs text-muted-foreground">{usersStrings.quota.hourly}</span>
+                            <span className="text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.businessCalls1hDelta)}</span>
                           </div>
-                          <div className="token-compact-field flex items-baseline gap-1.5">
-                            <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.quota.daily}</span>
-                            <span className="token-compact-value text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.dailyCreditsDelta)}</span>
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-xs text-muted-foreground">{usersStrings.quota.daily}</span>
+                            <span className="text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.dailyCreditsDelta)}</span>
                           </div>
-                          <div className="token-compact-field flex items-baseline gap-1.5">
-                            <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.quota.monthly}</span>
-                            <span className="token-compact-value text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.monthlyCreditsDelta)}</span>
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-xs text-muted-foreground">{usersStrings.quota.monthly}</span>
+                            <span className="text-sm font-medium tabular-nums">{formatSignedQuotaDelta(tag.monthlyCreditsDelta)}</span>
                           </div>
                         </div>
                       </article>
@@ -9650,7 +9642,7 @@ function AdminDashboard(): React.JSX.Element {
               <CardHeader className="panel-header border-b">
                 <div>
                   <CardTitle role="heading" aria-level={2}>{usersStrings.detail.tokensTitle}</CardTitle>
-                  <CardDescription className="panel-description">{usersStrings.detail.tokensDescription}</CardDescription>
+                  <CardDescription>{usersStrings.detail.tokensDescription}</CardDescription>
                 </div>
                 <CardAction>
                   <Button
@@ -9691,7 +9683,7 @@ function AdminDashboard(): React.JSX.Element {
                   <DialogTitle>{usersStrings.detail.tokenDelete.title}</DialogTitle>
                   <DialogDescription>{usersStrings.detail.tokenDelete.description}</DialogDescription>
                 </DialogHeader>
-                <DialogFooter className="modal-action">
+                <DialogFooter>
                   <Button type="button" variant="outline" onClick={cancelUserTokenDelete}>
                     {usersStrings.detail.tokenDelete.cancel}
                   </Button>
@@ -9728,25 +9720,25 @@ function AdminDashboard(): React.JSX.Element {
   }) => (
     <>
       <div className="hidden md:block">
-        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
-            {description ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{description}</p> : null}
+            {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
           </div>
           <div className="admin-compact-intro-actions max-w-full">{searchControls}</div>
         </section>
       </div>
       <div className="block md:hidden">
-        <section className="surface app-header admin-usage-stacked-intro">
-          <div className="admin-usage-stacked-intro-main">
+        <section className="surface">
+          <div>
             <h1>{title}</h1>
-            <p className="admin-compact-intro-description">{description}</p>
+            <p>{description}</p>
           </div>
-          <div className="admin-usage-stacked-intro-actions">{searchControls}</div>
+          <div>{searchControls}</div>
         </section>
       </div>
       {filterStatusText ? (
-        <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-testid={filterStatusTestId}>
+        <p className="text-sm text-muted-foreground" data-testid={filterStatusTestId}>
           {filterStatusText}
         </p>
       ) : null}
@@ -9756,17 +9748,17 @@ function AdminDashboard(): React.JSX.Element {
   if (route.name === 'module' && route.module === 'analysis' && route.analysisView === 'usage') {
     const userUsageSidebarUtility = (
       <AdminShellSidebarUtility>
-        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
             <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
               <ThemeToggle />
               <LanguageSwitcher />
             </div>
-            <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+            <div className="flex min-w-0 flex-col gap-1">
               {displayName && (
-                <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
-                  {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title={displayName}>
+                  {isAdmin && <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />}
                   <span>{displayName}</span>
                 </div>
               )}
@@ -9775,17 +9767,16 @@ function AdminDashboard(): React.JSX.Element {
           </Card>
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
-            <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+            <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
               <AdminReturnToConsoleLink
                 label={headerStrings.returnToConsole}
                 href={userConsoleHref}
-                className="admin-sidebar-utility-action"
               />
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="admin-panel-refresh-button admin-sidebar-utility-action"
+                className="admin-panel-refresh-button"
                 onClick={handleManualRefresh}
                 disabled={loading || activeModuleBlocking}
               >
@@ -9819,11 +9810,11 @@ function AdminDashboard(): React.JSX.Element {
           showShadowDailyColumn={showShadowDailyUsageColumn}
           searchControls={
             <div style={{ display: 'grid', gap: 6 }}>
-              <div className="users-search-controls users-search-controls--header flex min-w-0 flex-wrap items-center gap-2">
+              <div className="users-search-controls flex min-w-0 flex-wrap items-center gap-2">
                 <Input
                   type="text"
                   name="user-usage-search"
-                  className="users-search-input min-w-0 flex-1"
+                  className="min-w-0 flex-1"
                   placeholder={usersStrings.searchPlaceholder}
                   value={usersQueryInput}
                   disabled={usersBlocking}
@@ -9868,17 +9859,17 @@ function AdminDashboard(): React.JSX.Element {
           formatMonthlyBrokenStackValue={formatMonthlyBrokenStackValue}
           pagination={
             usersTotal > USERS_PER_PAGE ? (
-              <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
-                  <span className="table-pagination-summary text-sm text-muted-foreground">
-                    <span className="panel-description text-sm text-muted-foreground">
+              <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 flex-col gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">
                       {usersStrings.pagination
                         .replace('{page}', String(usersPage))
                         .replace('{total}', String(usersTotalPages))}
                     </span>
                   </span>
                 </div>
-                <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+                <Pagination className="mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
                   <PaginationContent>
                     <PaginationItem>
                       <Button
@@ -9924,17 +9915,17 @@ function AdminDashboard(): React.JSX.Element {
         onSelectItem={navigateModule}
       >
         <AdminShellSidebarUtility>
-          <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+          <div className="flex flex-col gap-3">
             <Card size="sm" className="admin-sidebar-utility-card">
               <CardContent className="flex flex-col gap-3">
               <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
                 <ThemeToggle />
                 <LanguageSwitcher />
               </div>
-              <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+              <div className="flex min-w-0 flex-col gap-1">
                 {displayName && (
-                  <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
-                    {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+                  <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title={displayName}>
+                    {isAdmin && <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />}
                     <span>{displayName}</span>
                   </div>
                 )}
@@ -9943,17 +9934,16 @@ function AdminDashboard(): React.JSX.Element {
             </Card>
             <Card size="sm" className="admin-sidebar-utility-card">
               <CardContent className="flex flex-col gap-3">
-              <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+              <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
                 <AdminReturnToConsoleLink
                   label={headerStrings.returnToConsole}
                   href={userConsoleHref}
-                  className="admin-sidebar-utility-action"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="admin-panel-refresh-button admin-sidebar-utility-action"
+                  className="admin-panel-refresh-button"
                   onClick={handleManualRefresh}
                   disabled={loading || activeModuleBlocking}
                 >
@@ -9979,11 +9969,11 @@ function AdminDashboard(): React.JSX.Element {
           unboundTokenUsageStrings={unboundTokenUsageStrings}
           tokenStrings={tokenStrings}
           searchControls={
-            <div className="users-search-controls users-search-controls--header flex min-w-0 flex-wrap items-center gap-2">
+            <div className="users-search-controls flex min-w-0 flex-wrap items-center gap-2">
               <Input
                 type="text"
                 name="unbound-token-usage-search"
-                className="users-search-input min-w-0 flex-1"
+                className="min-w-0 flex-1"
                 placeholder={unboundTokenUsageStrings.searchPlaceholder}
                 value={unboundTokenUsageQueryInput}
                 disabled={unboundTokenUsageBlocking}
@@ -10034,17 +10024,17 @@ function AdminDashboard(): React.JSX.Element {
           formatMonthlyBrokenStackValue={formatMonthlyBrokenStackValue}
           pagination={
             unboundTokenUsageTotal > USERS_PER_PAGE ? (
-              <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
-                  <span className="table-pagination-summary text-sm text-muted-foreground">
-                    <span className="panel-description text-sm text-muted-foreground">
+              <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 flex-col gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">
                       {usersStrings.pagination
                         .replace('{page}', String(unboundTokenUsagePage))
                         .replace('{total}', String(unboundTokenUsageTotalPages))}
                     </span>
                   </span>
                 </div>
-                <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+                <Pagination className="mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
                   <PaginationContent>
                     <PaginationItem>
                       <Button
@@ -10103,17 +10093,17 @@ function AdminDashboard(): React.JSX.Element {
   const showProxySettings = activeModule === 'proxy-settings'
   const moduleDesktopUtility = (
     <AdminShellSidebarUtility>
-      <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
-          <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-col gap-1">
             {displayName && (
-              <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${isAdmin ? ' user-badge-admin' : ''}`} title={displayName}>
-                {isAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+              <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title={displayName}>
+                {isAdmin && <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />}
                 <span>{displayName}</span>
               </div>
             )}
@@ -10123,17 +10113,16 @@ function AdminDashboard(): React.JSX.Element {
 
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
-          <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+          <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <AdminReturnToConsoleLink
               label={headerStrings.returnToConsole}
               href={userConsoleHref}
-              className="admin-sidebar-utility-action"
             />
             <Button
               type="button"
               variant="outline"
               size="sm"
-              className="admin-panel-refresh-button admin-sidebar-utility-action"
+              className="admin-panel-refresh-button"
               onClick={handleManualRefresh}
               disabled={loading || activeModuleBlocking}
             >
@@ -10273,7 +10262,6 @@ function AdminDashboard(): React.JSX.Element {
     : { events: 'Events', groups: 'Groups' }
   const renderAlertsViewTabs = () => (
     <SegmentedTabs<AlertsCenterView>
-      className="alerts-center-tabs alerts-center-tabs--header"
       value={alertsView}
       onChange={(nextView) => {
         const params = new URLSearchParams(locationSearch)
@@ -10301,7 +10289,7 @@ function AdminDashboard(): React.JSX.Element {
         <Input
           type="text"
           name="users-search"
-          className="users-search-input min-w-0 flex-1"
+          className="min-w-0 flex-1"
           placeholder={usersStrings.searchPlaceholder}
           value={usersQueryInput}
           disabled={usersBlocking}
@@ -10323,7 +10311,7 @@ function AdminDashboard(): React.JSX.Element {
         )}
       </div>
       {usersFilterStatusText && (
-        <p className="panel-description text-sm text-muted-foreground" data-testid="users-filter-status">
+        <p className="text-sm text-muted-foreground" data-testid="users-filter-status">
           {usersFilterStatusText}
         </p>
       )}
@@ -10373,13 +10361,12 @@ function AdminDashboard(): React.JSX.Element {
     </div>
   )
   const renderTokenToolbar = () => (
-    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--tokens">
+    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
             type="button"
             variant="outline"
-            className="admin-token-toolbar-secondary-action"
             aria-label={tokenStrings.actions.viewLeaderboard}
             onClick={navigateUnboundTokenUsage}
           >
@@ -10390,7 +10377,7 @@ function AdminDashboard(): React.JSX.Element {
         <TooltipContent side="top">{tokenStrings.actions.viewLeaderboard}</TooltipContent>
       </Tooltip>
       {isAdmin && (
-        <div className="flex flex-wrap items-center gap-2 admin-module-toolbar-actions--tokens">
+        <div className="flex flex-wrap items-center gap-2">
           <Input
             type="text"
             name="new-token-note"
@@ -10439,8 +10426,8 @@ function AdminDashboard(): React.JSX.Element {
     { value: 'month', label: quotaLabels.month },
   ]
   const renderTokenFilters = () => (
-    <div className="token-filters-bar flex flex-wrap items-center gap-2 px-4">
-      <div className="token-filter-search flex w-full min-w-0 items-center gap-2 sm:max-w-sm">
+    <div className="flex flex-wrap items-center gap-2 px-4">
+      <div className="flex w-full min-w-0 items-center gap-2 sm:max-w-sm">
         <Input
           type="text"
           name="token-search"
@@ -10466,7 +10453,7 @@ function AdminDashboard(): React.JSX.Element {
         </Button>
       </div>
       <Select value={currentTokenGroupValue} onValueChange={handleTokenGroupFilterChange} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.groups.label}>
+        <SelectTrigger className="w-full sm:w-auto" aria-label={tokenStrings.groups.label}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -10482,7 +10469,7 @@ function AdminDashboard(): React.JSX.Element {
         </SelectContent>
       </Select>
       <Select value={selectedTokenOwnerFilter} onValueChange={(value) => handleTokenOwnerFilterChange(value as AdminTokenOwnerFilter)} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.filters.owner}>
+        <SelectTrigger className="w-full sm:w-auto" aria-label={tokenStrings.filters.owner}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -10494,7 +10481,7 @@ function AdminDashboard(): React.JSX.Element {
         </SelectContent>
       </Select>
       <Select value={selectedTokenQuotaFilter} onValueChange={(value) => handleTokenQuotaFilterChange(value as AdminTokenQuotaStateFilter)} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.filters.quota}>
+        <SelectTrigger className="w-full sm:w-auto" aria-label={tokenStrings.filters.quota}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -10506,7 +10493,7 @@ function AdminDashboard(): React.JSX.Element {
         </SelectContent>
       </Select>
       <Select value={selectedTokenEnabledFilter} onValueChange={(value) => handleTokenEnabledFilterChange(value as AdminTokenEnabledFilter)} disabled={tokensBlocking}>
-        <SelectTrigger className="token-filter-select w-full sm:w-auto" aria-label={tokenStrings.filters.status}>
+        <SelectTrigger className="w-full sm:w-auto" aria-label={tokenStrings.filters.status}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -10525,7 +10512,7 @@ function AdminDashboard(): React.JSX.Element {
     </div>
   )
   const renderKeyQuickAddToolbar = () => (
-    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--keys">
+    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
       <div
         ref={attachVisibleKeysBatchAnchor}
         onMouseEnter={(event) => {
@@ -10555,7 +10542,7 @@ function AdminDashboard(): React.JSX.Element {
         style={{ ...keysQuickAddCardStyle, position: 'relative' }}
       >
         <div
-          className={`keys-batch-collapsed flex items-center gap-2${keysBatchVisible ? ' invisible' : ''}`}
+          className={`flex items-center gap-2${keysBatchVisible ? ' invisible' : ''}`}
           aria-hidden={keysBatchVisible}
           style={keysQuickAddActionsStyle}
         >
@@ -10594,7 +10581,7 @@ function AdminDashboard(): React.JSX.Element {
         createPortal(
           <div
             ref={keysBatchOverlayRef}
-            className={`keys-batch-overlay rounded-xl border bg-popover text-popover-foreground shadow-lg${keysBatchClosing ? ' opacity-0' : ''}`}
+            className={`rounded-xl border bg-popover text-popover-foreground shadow-lg${keysBatchClosing ? ' opacity-0' : ''}`}
             onMouseEnter={() => {
               clearKeysBatchAutoCollapseTimer()
               if (keysBatchClosing) {
@@ -10704,11 +10691,11 @@ function AdminDashboard(): React.JSX.Element {
 
       {!showNotFound && isStackedAdminLayout && route.name !== 'ha-node' && (
         showRankings ? (
-          <section className="surface app-header admin-usage-stacked-intro">
-            <div className="admin-usage-stacked-intro-main">
+          <section className="surface">
+            <div>
               <h1>{moduleDesktopIntro.title}</h1>
             </div>
-            <div className="admin-usage-stacked-intro-actions">
+            <div>
               <RankingsMeta
                 strings={adminStrings.rankings}
                 snapshot={rankingsSnapshot}
@@ -10752,7 +10739,7 @@ function AdminDashboard(): React.JSX.Element {
               : showUsers
                   ? renderUsersSearchControls('users-search-controls--header')
                   : showRequests
-                    ? <div id={REQUESTS_HEADER_FILTERS_ID} className="admin-header-filter-slot" />
+                    ? <div id={REQUESTS_HEADER_FILTERS_ID} />
                     : showJobs
                       ? renderJobFilterToolbar('admin-module-toolbar--header-filter')
                       : showAlerts
@@ -10764,9 +10751,9 @@ function AdminDashboard(): React.JSX.Element {
                           : undefined
         return (
           <section className={`admin-compact-intro flex flex-wrap items-end justify-between gap-4${moduleDesktopIntroActions ? ' admin-compact-intro--with-actions' : ''}`}>
-            <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+            <div className="flex min-w-0 flex-col gap-1">
               <h1 className="text-xl font-semibold tracking-tight">{moduleDesktopIntro.title}</h1>
-              {moduleDesktopIntro.description ? <p className="admin-compact-intro-description text-sm text-muted-foreground">{moduleDesktopIntro.description}</p> : null}
+              {moduleDesktopIntro.description ? <p className="text-sm text-muted-foreground">{moduleDesktopIntro.description}</p> : null}
             </div>
             {moduleDesktopIntroActions ? <div className="admin-compact-intro-actions max-w-full">{moduleDesktopIntroActions}</div> : null}
           </section>
@@ -10837,7 +10824,7 @@ function AdminDashboard(): React.JSX.Element {
       )}
 
       {showTokens && (
-      <div ref={tokenPanelRef} className="surface panel token-panel flex min-w-0 flex-col gap-3">
+      <div ref={tokenPanelRef} className="surface panel flex min-w-0 flex-col gap-3">
         <div className="block md:hidden">
           {renderTokenToolbar()}
         </div>
@@ -10853,7 +10840,7 @@ function AdminDashboard(): React.JSX.Element {
             <TableBody>
               <TableRow>
                 <TableCell colSpan={isAdmin ? 8 : 6}>
-                  <Empty className="empty-state"><EmptyDescription>{tokenStrings.empty.none}</EmptyDescription></Empty>
+                  <Empty><EmptyDescription>{tokenStrings.empty.none}</EmptyDescription></Empty>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -10862,10 +10849,9 @@ function AdminDashboard(): React.JSX.Element {
               <TableHeader>
                 <TableRow>
                   {isAdmin && (
-                    <TableHead className="token-select-col">
+                    <TableHead>
                       <label style={keySelectionCheckboxLabelStyle}>
                         <Checkbox
-                          className="token-selection-checkbox"
                           checked={someVisibleTokensSelected ? 'indeterminate' : allVisibleTokensSelected}
                           onCheckedChange={toggleVisibleTokenSelection}
                           disabled={tokensBlocking || tokenList.length === 0}
@@ -10876,7 +10862,7 @@ function AdminDashboard(): React.JSX.Element {
                       </label>
                     </TableHead>
                   )}
-                  <TableHead className="token-id-col">{tokenStrings.table.id}</TableHead>
+                  <TableHead>{tokenStrings.table.id}</TableHead>
                   <TableHead>{tokenStrings.table.owner}</TableHead>
                   <TableHead>{tokenStrings.table.note}</TableHead>
                   <TableHead>{tokenStrings.table.usage}</TableHead>
@@ -10897,10 +10883,9 @@ function AdminDashboard(): React.JSX.Element {
                   return (
                     <TableRow key={t.id}>
                       {isAdmin && (
-                        <TableCell className="token-select-col">
+                        <TableCell>
                           <label style={keySelectionCheckboxLabelStyle}>
                             <Checkbox
-                              className="token-selection-checkbox"
                               checked={selectedTokenIds.has(t.id)}
                               onCheckedChange={() => toggleTokenSelection(t.id)}
                               disabled={tokenBulkActionInFlight != null}
@@ -10909,24 +10894,22 @@ function AdminDashboard(): React.JSX.Element {
                           </label>
                         </TableCell>
                       )}
-                      <TableCell className="token-id-col">
-                        <div className="token-id-cell flex items-center gap-2">
+                      <TableCell>
+                        <div className="flex items-center gap-2">
                           <Button
                             type="button"
                             title={tokenStrings.table.id}
-                            variant="link" size="sm" className="h-auto p-0 token-id-link"
+                            variant="link" size="sm" className="h-auto p-0"
                             onClick={() => navigateToken(t.id)}
                           >
-                            <code className="token-id-code">{t.id}</code>
+                            <code>{t.id}</code>
                           </Button>
                           <span
-                            className="token-status-slot"
                             aria-hidden={t.enabled ? true : undefined}
                             title={t.enabled ? undefined : tokenStrings.statusBadges.disabled}
                           >
                             {!t.enabled && (
                               <Icon
-                                className="token-status-icon"
                                 icon="mdi:pause-circle-outline"
                                 width={14}
                                 height={14}
@@ -10944,15 +10927,15 @@ function AdminDashboard(): React.JSX.Element {
                       <TableCell>
                         <StatusBadge
                           tone={quotaTone(quotaStateKey)}
-                          className={`token-quota-pill token-quota-pill-${quotaStateKey}`}
+                          className={`token-quota-pill-${quotaStateKey}`}
                         >
                           {quotaLabel}
                         </StatusBadge>
                       </TableCell>
                       <TableCell>{formatTimestamp(t.last_used_at)}</TableCell>
                       {isAdmin && (
-                        <TableCell className="jobs-message-cell">
-                          <div className="table-actions flex flex-wrap items-center gap-1">
+                        <TableCell>
+                          <div className="flex flex-wrap items-center gap-1">
 <Button
   type="button"
   variant="ghost"
@@ -10991,7 +10974,7 @@ function AdminDashboard(): React.JSX.Element {
   type="button"
   variant="ghost"
   size="icon"
-  className="token-action-button shadow-none"
+  className="shadow-none"
   title={keyStrings.actions.details}
   aria-label={keyStrings.actions.details}
   onClick={() => navigateToken(t.id)}
@@ -11002,7 +10985,7 @@ function AdminDashboard(): React.JSX.Element {
   type="button"
   variant="ghost"
   size="icon"
-  className="token-action-button shadow-none"
+  className="shadow-none"
   title={t.enabled ? tokenStrings.actions.disable : tokenStrings.actions.enable}
   aria-label={t.enabled ? tokenStrings.actions.disable : tokenStrings.actions.enable}
   onClick={() => void toggleToken(t.id, t.enabled)}
@@ -11014,7 +10997,7 @@ function AdminDashboard(): React.JSX.Element {
   type="button"
   variant="ghost"
   size="icon"
-  className="token-action-button shadow-none"
+  className="shadow-none"
   title={tokenStrings.actions.edit}
   aria-label={tokenStrings.actions.edit}
   onClick={() => openTokenNoteEdit(t.id, t.note)}
@@ -11025,7 +11008,7 @@ function AdminDashboard(): React.JSX.Element {
   type="button"
   variant="ghost"
   size="icon"
-  className="token-action-button shadow-none"
+  className="shadow-none"
   title={tokenStrings.actions.delete}
   aria-label={tokenStrings.actions.delete}
   onClick={() => openTokenDeleteConfirm(t.id)}
@@ -11055,7 +11038,7 @@ function AdminDashboard(): React.JSX.Element {
           minHeight={260}
         >
           {tokenList.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{tokenStrings.empty.none}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{tokenStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             tokenList.map((t) => {
               const stateKey = copyStateKey('tokens', t.id)
@@ -11067,11 +11050,10 @@ function AdminDashboard(): React.JSX.Element {
               return (
                 <article key={t.id} className="py-3">
                   {isAdmin && (
-                    <div className="flex items-center justify-between gap-2 text-sm token-mobile-select-row">
+                    <div className="flex items-center justify-between gap-2 text-sm">
                       <span>{tokenStrings.bulk.selected.replace('{count}', '1')}</span>
                       <label style={keySelectionCheckboxLabelStyle}>
                         <Checkbox
-                          className="token-selection-checkbox"
                           checked={selectedTokenIds.has(t.id)}
                           onCheckedChange={() => toggleTokenSelection(t.id)}
                           disabled={tokenBulkActionInFlight != null}
@@ -11100,7 +11082,7 @@ function AdminDashboard(): React.JSX.Element {
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{tokenStrings.table.quota}</span>
-                    <StatusBadge tone={quotaTone(quotaStateKey)} className={`token-quota-pill token-quota-pill-${quotaStateKey}`}>
+                    <StatusBadge tone={quotaTone(quotaStateKey)} className={`token-quota-pill-${quotaStateKey}`}>
                       {quotaLabel}
                     </StatusBadge>
                   </div>
@@ -11109,7 +11091,7 @@ function AdminDashboard(): React.JSX.Element {
                     <strong>{formatTimestamp(t.last_used_at)}</strong>
                   </div>
                   {isAdmin && (
-                    <div className="admin-mobile-actions">
+                    <div>
 <Button
   type="button"
   variant="outline"
@@ -11172,22 +11154,21 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminLoadingRegion>
         {isAdmin && selectedTokenCount > 0 && typeof document !== 'undefined' && createPortal(
-          <div className="token-bulk-action-panel" role="region" aria-live="polite" style={{ left: tokenBulkPanelLeft }}>
-            <div className="token-bulk-action-summary">
+          <div role="region" aria-live="polite" style={{ left: tokenBulkPanelLeft }}>
+            <div>
               <strong>{tokenStrings.bulk.selected.replace('{count}', String(selectedTokenCount))}</strong>
               <span>
                 {tokenStrings.bulk.pageSelected
                   .replace('{count}', String(selectedVisibleTokenCount))
                   .replace('{total}', String(tokenList.length))}
               </span>
-              {tokenBulkFeedback && <span className="token-bulk-feedback">{tokenBulkFeedback}</span>}
+              {tokenBulkFeedback && <span>{tokenBulkFeedback}</span>}
             </div>
-            <div className="token-bulk-action-buttons">
+            <div>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="token-bulk-secondary-action"
                 onClick={() => void handleTokenBatchStatus(true)}
                 disabled={tokenBulkActionInFlight != null}
               >
@@ -11204,7 +11185,6 @@ function AdminDashboard(): React.JSX.Element {
                 type="button"
                 variant="outline"
                 size="sm"
-                className="token-bulk-secondary-action"
                 onClick={() => void handleTokenBatchStatus(false)}
                 disabled={tokenBulkActionInFlight != null}
               >
@@ -11221,7 +11201,6 @@ function AdminDashboard(): React.JSX.Element {
                 type="button"
                 variant="destructive"
                 size="sm"
-                className="token-bulk-delete-action"
                 onClick={() => setPendingTokenBulkDelete(true)}
                 disabled={tokenBulkActionInFlight != null}
               >
@@ -11234,7 +11213,7 @@ function AdminDashboard(): React.JSX.Element {
                 />
                 <span>{tokenBulkActionInFlight === 'delete' ? tokenStrings.bulk.running : tokenStrings.bulk.delete}</span>
               </Button>
-              <Button type="button" variant="ghost" size="sm" className="token-bulk-clear-action" onClick={clearSelectedTokens} disabled={tokenBulkActionInFlight != null}>
+              <Button type="button" variant="ghost" size="sm" onClick={clearSelectedTokens} disabled={tokenBulkActionInFlight != null}>
                 {tokenStrings.bulk.clear}
               </Button>
             </div>
@@ -11242,12 +11221,12 @@ function AdminDashboard(): React.JSX.Element {
           document.body,
         )}
         {tokensTotal > tokensPerPage && (
-          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
-              <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-2">
+              <Field orientation="horizontal" className="w-fit">
                 <FieldLabel htmlFor={tokensPerPageSelectId}>{tokenStrings.pagination.perPage}</FieldLabel>
                 <Select value={String(tokensPerPage)} onValueChange={(value) => void changeTokensPerPage(Number(value))} disabled={tokensBlocking}>
-                  <SelectTrigger id={tokensPerPageSelectId} aria-label={tokenStrings.pagination.perPage} className="table-pagination-select w-20" disabled={tokensBlocking}>
+                  <SelectTrigger id={tokensPerPageSelectId} aria-label={tokenStrings.pagination.perPage} className="w-20" disabled={tokensBlocking}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent position="popper" align="start">
@@ -11264,15 +11243,15 @@ function AdminDashboard(): React.JSX.Element {
                   </SelectContent>
                 </Select>
               </Field>
-              <span className="table-pagination-summary text-sm text-muted-foreground">
-                <span className="panel-description text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {tokenStrings.pagination.page
                     .replace('{page}', String(tokensPage))
                     .replace('{total}', String(totalPages))}
                 </span>
               </span>
             </div>
-            <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+            <Pagination className="mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
               <PaginationContent>
                 <PaginationItem>
                   <Button
@@ -11471,7 +11450,7 @@ function AdminDashboard(): React.JSX.Element {
           {isAdmin && visibleKeys.length > 0 ? (
             <div style={keysBulkToolbarStyle}>
               <div style={keysBulkSelectionStyle}>
-                <span className="panel-description text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {keyStrings.selection.selectedCount.replace('{count}', String(selectedVisibleKeyCount))}
                 </span>
                 <Button
@@ -11583,7 +11562,7 @@ function AdminDashboard(): React.JSX.Element {
             <TableBody>
               <TableRow>
                 <TableCell colSpan={isAdmin ? 8 : 6}>
-                  <Empty className="empty-state"><EmptyDescription>
+                  <Empty><EmptyDescription>
                     {keysHasFilters ? keyStrings.empty.filtered : keyStrings.empty.none}
                   </EmptyDescription></Empty>
                 </TableCell>
@@ -11704,13 +11683,13 @@ function AdminDashboard(): React.JSX.Element {
 </Button>
                             )}
                           </div>
-                          <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>{keyGroupName}</span>
+                          <span style={adminTableEllipsisSecondaryFieldStyle}>{keyGroupName}</span>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div style={adminTableStackStyle}>
-                          <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>{formatRegistrationValue(item.registration_ip)}</span>
-                          <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>
+                          <span style={adminTableEllipsisFieldStyle}>{formatRegistrationValue(item.registration_ip)}</span>
+                          <span style={adminTableEllipsisSecondaryFieldStyle}>
                             {formatRegistrationValue(item.registration_region)}
                           </span>
                         </div>
@@ -11726,12 +11705,12 @@ function AdminDashboard(): React.JSX.Element {
                       </TableCell>
                       <TableCell>
                         <div style={adminTableStackStyle}>
-                          <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>{formatNumber(item.success_count)}</span>
-                          <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>{formatNumber(item.error_count)}</span>
+                          <span style={adminTableEllipsisFieldStyle}>{formatNumber(item.success_count)}</span>
+                          <span style={adminTableEllipsisSecondaryFieldStyle}>{formatNumber(item.error_count)}</span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>
+                        <span style={adminTableEllipsisFieldStyle}>
                           {item.quota_remaining != null && item.quota_limit != null
                             ? `${formatNumber(item.quota_remaining)} / ${formatNumber(item.quota_limit)}`
                             : '—'}
@@ -11739,19 +11718,19 @@ function AdminDashboard(): React.JSX.Element {
                       </TableCell>
                       <TableCell>
                         <div style={adminTableStackStyle}>
-                          <span className="api-keys-cell-text" style={adminTableEllipsisFieldStyle}>{formatTimestampNoYear(item.last_used_at)}</span>
-                          <span className="api-keys-cell-text-secondary" style={adminTableEllipsisSecondaryFieldStyle}>{formatTimestampNoYear(item.status_changed_at)}</span>
+                          <span style={adminTableEllipsisFieldStyle}>{formatTimestampNoYear(item.last_used_at)}</span>
+                          <span style={adminTableEllipsisSecondaryFieldStyle}>{formatTimestampNoYear(item.status_changed_at)}</span>
                         </div>
                       </TableCell>
                       {isAdmin && (
                         <TableCell>
-                          <div className="table-actions api-keys-actions flex flex-wrap items-center gap-1">
+                          <div className="flex flex-wrap items-center gap-1">
                             {item.quarantine ? (
   <Button
     type="button"
     variant="ghost"
     size="icon"
-    className="api-keys-action-button rounded-full shadow-none"
+    className="rounded-full shadow-none"
     title={keyStrings.actions.clearQuarantine}
     aria-label={keyStrings.actions.clearQuarantine}
     onClick={() => void handleClearQuarantine(item.id)}
@@ -11768,7 +11747,7 @@ function AdminDashboard(): React.JSX.Element {
     type="button"
     variant="ghost"
     size="icon"
-    className="api-keys-action-button rounded-full shadow-none"
+    className="rounded-full shadow-none"
     title={keyStrings.actions.enable}
     aria-label={keyStrings.actions.enable}
     onClick={() => void handleToggleDisable(item.id, false)}
@@ -11781,7 +11760,7 @@ function AdminDashboard(): React.JSX.Element {
     type="button"
     variant="ghost"
     size="icon"
-    className="api-keys-action-button rounded-full shadow-none"
+    className="rounded-full shadow-none"
     title={keyStrings.actions.disable}
     aria-label={keyStrings.actions.disable}
     onClick={() => openDisableConfirm(item.id)}
@@ -11794,7 +11773,7 @@ function AdminDashboard(): React.JSX.Element {
   type="button"
   variant="ghost"
   size="icon"
-  className="api-keys-action-button rounded-full shadow-none"
+  className="rounded-full shadow-none"
   title={keyStrings.actions.delete}
   aria-label={keyStrings.actions.delete}
   onClick={() => openDeleteConfirm(item.id)}
@@ -11811,7 +11790,7 @@ function AdminDashboard(): React.JSX.Element {
   type="button"
   variant="ghost"
   size="icon"
-  className="api-keys-action-button rounded-full shadow-none"
+  className="rounded-full shadow-none"
   title={keyStrings.actions.details}
   aria-label={keyStrings.actions.details}
   onClick={() => navigateKey(item.id, { preserveKeysContext: true })}
@@ -11836,7 +11815,7 @@ function AdminDashboard(): React.JSX.Element {
           minHeight={240}
         >
           {visibleKeys.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>
+            <Empty><EmptyDescription>
               {keysHasFilters ? keyStrings.empty.filtered : keyStrings.empty.none}
             </EmptyDescription></Empty>
           ) : (
@@ -11855,7 +11834,7 @@ function AdminDashboard(): React.JSX.Element {
                           onCheckedChange={() => toggleSelectedKey(item.id)}
                           disabled={bulkKeyActionInFlight != null}
                         />
-                        <span className="panel-description text-sm text-muted-foreground">{keyStrings.selection.selectRow}</span>
+                        <span className="text-sm text-muted-foreground">{keyStrings.selection.selectRow}</span>
                       </label>
                     </div>
                   )}
@@ -11880,7 +11859,7 @@ function AdminDashboard(): React.JSX.Element {
                         {statusLabel(keyBadgeStatus(item), adminStrings)}
                       </StatusBadge>
                       {item.quarantine && (
-                        <div className="panel-description text-sm text-muted-foreground" style={{ marginTop: 4 }}>
+                        <div className="text-sm text-muted-foreground" style={{ marginTop: 4 }}>
                           {keyStrings.quarantine.badge}: {item.quarantine.reasonSummary || keyStrings.quarantine.noReason}
                         </div>
                       )}
@@ -11915,7 +11894,7 @@ function AdminDashboard(): React.JSX.Element {
                     <strong>{formatTimestamp(item.status_changed_at)}</strong>
                   </div>
                   {isAdmin && (
-                    <div className="admin-mobile-actions">
+                    <div>
 <Button
   type="button"
   variant="outline"
@@ -11983,12 +11962,12 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminLoadingRegion>
         {keysTotal > keysPerPage && (
-          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
-              <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-2">
+              <Field orientation="horizontal" className="w-fit">
                 <FieldLabel htmlFor={keysPerPageSelectId}>{keyStrings.pagination.perPage}</FieldLabel>
                 <Select value={String(keysPerPage)} onValueChange={(value) => void changeKeysPerPage(Number(value))} disabled={keysBlocking}>
-                  <SelectTrigger id={keysPerPageSelectId} aria-label={keyStrings.pagination.perPage} className="table-pagination-select w-20" disabled={keysBlocking}>
+                  <SelectTrigger id={keysPerPageSelectId} aria-label={keyStrings.pagination.perPage} className="w-20" disabled={keysBlocking}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent position="popper" align="start">
@@ -12005,15 +11984,15 @@ function AdminDashboard(): React.JSX.Element {
                   </SelectContent>
                 </Select>
               </Field>
-              <span className="table-pagination-summary text-sm text-muted-foreground">
-                <span className="panel-description text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {keyStrings.pagination.page
                     .replace('{page}', String(keysPage))
                     .replace('{total}', String(keysTotalPages))}
                 </span>
               </span>
             </div>
-            <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+            <Pagination className="mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
               <PaginationContent>
                 <PaginationItem>
                   <Button
@@ -12122,7 +12101,7 @@ function AdminDashboard(): React.JSX.Element {
             <TableBody>
               <TableRow>
                 <TableCell colSpan={8}>
-                  <Empty className="empty-state"><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
+                  <Empty><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -12199,23 +12178,22 @@ function AdminDashboard(): React.JSX.Element {
                       <TableCell>{jobSourceText}</TableCell>
                       <TableCell>{j.attempt}</TableCell>
                       <TableCell>{startedTimeLabel}</TableCell>
-                      <TableCell className="jobs-message-cell">
+                      <TableCell>
                         {jobMessage ? (
                           <button
                             type="button"
-                            className={`jobs-message-button${isExpanded ? ' jobs-message-button-active' : ''}`}
+                            className={isExpanded ? 'jobs-message-button-active' : undefined}
                             onClick={() => toggleJobExpansion(j.id)}
                             aria-expanded={isExpanded}
                             aria-controls={`job-details-${j.id}`}
                             aria-label={messageLabel}
                             title={jobMessage}
                           >
-                            <span className="jobs-message-text">{jobMessage}</span>
+                            <span>{jobMessage}</span>
                             <Icon
                               icon={isExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'}
                               width={16}
                               height={16}
-                              className="jobs-message-icon"
                               aria-hidden="true"
                             />
                           </button>
@@ -12228,10 +12206,10 @@ function AdminDashboard(): React.JSX.Element {
 
                   if (isExpanded) {
                     rows.push(
-                      <TableRow key={`${j.id}-details`} className="log-details-row">
+                      <TableRow key={`${j.id}-details`}>
                         <TableCell colSpan={8} id={`job-details-${j.id}`}>
-                          <div className="log-details-panel flex min-w-0 flex-col gap-4 whitespace-normal rounded-lg bg-muted/30 p-4">
-                            <div className="log-details-summary grid min-w-0 gap-x-6 gap-y-3 lg:grid-cols-2 [&>div]:grid [&>div]:min-w-0 [&>div]:grid-cols-[6rem_minmax(0,1fr)] [&>div]:items-start [&>div]:gap-3 [&>div>:last-child]:min-w-0 [&>div>:last-child]:[overflow-wrap:anywhere]">
+                          <div className="flex min-w-0 flex-col gap-4 whitespace-normal rounded-lg bg-muted/30 p-4">
+                            <div className="grid min-w-0 gap-x-6 gap-y-3 lg:grid-cols-2 [&>div]:grid [&>div]:min-w-0 [&>div]:grid-cols-[6rem_minmax(0,1fr)] [&>div]:items-start [&>div]:gap-3 [&>div>:last-child]:min-w-0 [&>div>:last-child]:[overflow-wrap:anywhere]">
                               <div>
                                 <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.id}</div>
                                 <div className="text-xs leading-5">{j.id}</div>
@@ -12242,17 +12220,16 @@ function AdminDashboard(): React.JSX.Element {
                                   {jt ? (
                                     <Tooltip>
                                       <TooltipTrigger asChild>
-                                        <span className="job-type-pill">
+                                        <span>
                                           <button
                                             type="button"
-                                            className="job-type-trigger"
                                             aria-label={jt}
                                           >
-                                            <span className="job-type-main">{jobTypeLabelText}</span>
+                                            <span>{jobTypeLabelText}</span>
                                           </button>
                                         </span>
                                       </TooltipTrigger>
-                                      <TooltipContent className="job-type-tooltip max-w-[min(20rem,calc(100vw-2rem))]" side="top">
+                                      <TooltipContent className="max-w-[min(20rem,calc(100vw-2rem))]" side="top">
                                         <code>{jt}</code>
                                       </TooltipContent>
                                     </Tooltip>
@@ -12313,7 +12290,7 @@ function AdminDashboard(): React.JSX.Element {
                               )}
                             </div>
                             {jobMessage && (
-                              <div className="log-details-body grid min-w-0 gap-3 lg:grid-cols-2">
+                              <div className="grid min-w-0 gap-3 lg:grid-cols-2">
                                 <RequestLogDetailSection title={jobsStrings.table.message}>
                                   <pre>{jobMessage}</pre>
                                 </RequestLogDetailSection>
@@ -12339,7 +12316,7 @@ function AdminDashboard(): React.JSX.Element {
           minHeight={240}
         >
           {jobs.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             jobs.map((j) => {
               const jt = j.job_type
@@ -12397,15 +12374,15 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminLoadingRegion>
         {jobsTotal > jobsPerPage && (
-          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
-              <span className="table-pagination-summary text-sm text-muted-foreground">
-                <span className="panel-description text-sm text-muted-foreground">
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-2">
+              <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {jobsStrings.description} ({jobsPage} / {Math.max(1, Math.ceil(jobsTotal / jobsPerPage))})
                 </span>
               </span>
             </div>
-            <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+            <Pagination className="mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
               <PaginationContent>
                 <PaginationItem>
                   <Button
@@ -12442,10 +12419,10 @@ function AdminDashboard(): React.JSX.Element {
         <>
           <Card className="surface panel">
             <div className="block md:hidden">
-              <CardHeader className="panel-header border-b admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
+              <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
                 <div style={{ flex: '1 1 340px', minWidth: 260 }}>
                   <CardTitle role="heading" aria-level={2}>{usersStrings.title}</CardTitle>
-                  <CardDescription className="panel-description">{usersStrings.description}</CardDescription>
+                  <CardDescription>{usersStrings.description}</CardDescription>
                 </div>
                 <div style={{ flex: '1 1 520px', minWidth: 0 }}>
                   {renderUsersSearchControls()}
@@ -12464,7 +12441,7 @@ function AdminDashboard(): React.JSX.Element {
                 <TableBody>
                   <TableRow>
                     <TableCell colSpan={showShadowDailyUsageColumn ? 9 : 8}>
-                      <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
+                      <Empty><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -12530,17 +12507,17 @@ function AdminDashboard(): React.JSX.Element {
                       })
                       return (
                       <TableRow key={item.userId}>
-                        <TableCell className="admin-users-identity-cell">
+                        <TableCell>
                           <Button
                             type="button"
-                            variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
+                            variant="link" size="sm" className="h-auto p-0"
                             aria-label={usersStrings.actions.view}
                             onClick={() => navigateUser(item.userId, { preserveUsersContext: true })}
                           >
                             <strong>{formatAdminUserListPrimary(item)}</strong>
                           </Button>
                           {formatAdminUserListMeta(item) && (
-                            <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
+                            <div className="text-sm text-muted-foreground">
                               {formatAdminUserListMeta(item)}
                             </div>
                           )}
@@ -12550,31 +12527,31 @@ function AdminDashboard(): React.JSX.Element {
                             {item.active ? usersStrings.status.active : usersStrings.status.inactive}
                           </StatusBadge>
                         </TableCell>
-                        <TableCell className="admin-users-tags-cell">
+                        <TableCell>
                           <UserTagBadgeList
                             tags={item.tags}
                             usersStrings={usersStrings}
                             emptyLabel={usersStrings.userTags.empty}
                           />
                         </TableCell>
-                        <TableCell className="admin-users-compact-cell">
+                        <TableCell>
                           <AdminTableValueStack {...formatQuotaStackValue(item.dailyCreditsUsed, item.dailyCreditsLimit)} />
                         </TableCell>
                         {showShadowDailyUsageColumn ? (
-                          <TableCell className="admin-users-compact-cell">
+                          <TableCell>
                             <AdminTableValueStack {...shadowDailyUsage} />
                           </TableCell>
                         ) : null}
-                        <TableCell className="admin-users-compact-cell">
+                        <TableCell>
                           <AdminTableValueStack {...formatQuotaStackValue(item.monthlyCreditsUsed, item.monthlyCreditsLimit)} />
                         </TableCell>
-                        <TableCell className="admin-users-compact-cell">
+                        <TableCell>
                           <strong>{formatNumber(item.recentIpCount7d)}</strong>
                         </TableCell>
-                        <TableCell className="admin-users-compact-cell">
+                        <TableCell>
                           <AdminTableValueStack {...formatStackedTimestamp(item.lastActivity, language)} />
                         </TableCell>
-                        <TableCell className="admin-users-compact-cell">
+                        <TableCell>
                           <AdminTableValueStack {...formatStackedTimestamp(item.lastLoginAt, language)} />
                         </TableCell>
                       </TableRow>
@@ -12592,7 +12569,7 @@ function AdminDashboard(): React.JSX.Element {
               minHeight={260}
             >
               {users.length === 0 ? (
-                <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
+                <Empty><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
               ) : (
                 users.map((item) => {
                   const shadowDailyUsage = buildShadowDailyUsageStack({
@@ -12614,7 +12591,7 @@ function AdminDashboard(): React.JSX.Element {
                       <span>{usersStrings.table.user}</span>
                       <Button
                         type="button"
-                        variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
+                        variant="link" size="sm" className="h-auto p-0"
                         aria-label={usersStrings.actions.view}
                         onClick={() => navigateUser(item.userId, { preserveUsersContext: true })}
                       >
@@ -12668,17 +12645,17 @@ function AdminDashboard(): React.JSX.Element {
             </AdminLoadingRegion>
 
             {usersTotal > USERS_PER_PAGE && (
-              <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
-                  <span className="table-pagination-summary text-sm text-muted-foreground">
-                    <span className="panel-description text-sm text-muted-foreground">
+              <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 flex-col gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-muted-foreground">
                       {usersStrings.pagination
                         .replace('{page}', String(usersPage))
                         .replace('{total}', String(usersTotalPages))}
                     </span>
                   </span>
                 </div>
-                <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
+                <Pagination className="mx-0 w-auto justify-start sm:justify-end" aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}>
                   <PaginationContent>
                     <PaginationItem>
                       <Button
@@ -12819,7 +12796,7 @@ function AdminDashboard(): React.JSX.Element {
       )}
 
       {showSystemSettingsHa && (
-        <section className="admin-settings-ha-page flex min-w-0 flex-col gap-6">
+        <section className="flex min-w-0 flex-col gap-6">
           {route.name === 'ha-node' ? (
             <HaNodeDetailPanel
               detail={haNodeDetail}
@@ -12869,7 +12846,7 @@ function AdminDashboard(): React.JSX.Element {
                   {formatHaEffectiveSourceConfig(haStatus, systemSettingsStrings.ha)}
                 </div>
               </dl>
-              <DialogFooter className="modal-action">
+              <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setHaCutoverDialogOpen(false)}>
                   {systemSettingsStrings.ha.dialogPlannedCutoverCancel}
                 </Button>
@@ -12960,13 +12937,12 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
             <TooltipTrigger asChild>
               <button
                 type="button"
-                className="log-time-trigger"
                 aria-label={timeDetail}
               >
-                <span className="log-time-main">{timeLabel}</span>
+                <span>{timeLabel}</span>
               </button>
             </TooltipTrigger>
-            <TooltipContent className="log-time-tooltip max-w-[min(20rem,calc(100vw-2rem))]" side="right">
+            <TooltipContent className="max-w-[min(20rem,calc(100vw-2rem))]" side="right">
               {timeDetail}
             </TooltipContent>
           </Tooltip>
@@ -12974,7 +12950,7 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
         <TableCell>
           <button
             type="button"
-            className={`log-key-pill request-entity-button${isRebalanceGateway ? ' log-key-pill--rebalance' : ''}`}
+            className={isRebalanceGateway ? 'log-key-pill--rebalance' : undefined}
             title={strings.keys.actions.details}
             aria-label={strings.keys.actions.details}
             onClick={() => {
@@ -12995,7 +12971,7 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
           {tokenId ? (
             <Button
               type="button"
-              variant="link" size="sm" className="h-auto p-0 log-token-link request-entity-button"
+              variant="link" size="sm" className="h-auto p-0"
               title={strings.tokens.table.id}
               aria-label={strings.tokens.table.id}
               onClick={() => onOpenToken?.(tokenId)}
@@ -13011,7 +12987,6 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
             <TooltipTrigger asChild>
               <button
                 type="button"
-                className="status-pair-trigger"
                 aria-label={formatRequestStatusTooltip(log, strings)}
               >
                 {formatRequestStatusPair(log.http_status, log.mcp_status)}
@@ -13025,7 +13000,7 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
         <TableCell>
           <button
             type="button"
-            className={`log-result-button${expanded ? ' log-result-button-active' : ''}`}
+            className={expanded ? 'log-result-button-active' : undefined}
             onClick={() => onToggle(log.id)}
             aria-expanded={expanded}
             aria-controls={`log-details-${log.id}`}
@@ -13035,7 +13010,7 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
             <StatusBadge tone={requestLogTone(log)}>
               {requestLogLabel(log, language)}
             </StatusBadge>
-            <Icon icon={expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'} width={18} height={18} className="log-result-icon" />
+            <Icon icon={expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'} width={18} height={18} />
           </button>
         </TableCell>
         <TableCell>
@@ -13049,7 +13024,7 @@ function LogRow({ log, expanded, onToggle, strings, language, onOpenKey, onOpenT
         <TableCell>{formatErrorMessage(log, strings.logs.errors, language)}</TableCell>
       </TableRow>
       {expanded && (
-        <TableRow className="log-details-row">
+        <TableRow>
           <TableCell colSpan={7} id={`log-details-${log.id}`}>
             <LogDetails log={log} strings={strings} language={language} />
           </TableCell>
@@ -13088,8 +13063,8 @@ function LogDetails({
   const guidance = operationalClassGuidance(log.operationalClass, log.failure_kind, language)
 
   return (
-    <div className="log-details-panel flex min-w-0 flex-col gap-4 whitespace-normal rounded-lg bg-muted/30 p-4">
-      <div className="log-details-summary grid min-w-0 gap-x-6 gap-y-3 lg:grid-cols-2 [&>div]:grid [&>div]:min-w-0 [&>div]:grid-cols-[6rem_minmax(0,1fr)] [&>div]:items-start [&>div]:gap-3 [&>div>:last-child]:min-w-0 [&>div>:last-child]:[overflow-wrap:anywhere]">
+    <div className="flex min-w-0 flex-col gap-4 whitespace-normal rounded-lg bg-muted/30 p-4">
+      <div className="grid min-w-0 gap-x-6 gap-y-3 lg:grid-cols-2 [&>div]:grid [&>div]:min-w-0 [&>div]:grid-cols-[6rem_minmax(0,1fr)] [&>div]:items-start [&>div]:gap-3 [&>div>:last-child]:min-w-0 [&>div>:last-child]:[overflow-wrap:anywhere]">
         <div>
           <span className="min-w-24 text-xs font-medium text-muted-foreground">{strings.logDetails.request}</span>
           <span className="text-xs leading-5">{requestLine}</span>
@@ -13110,7 +13085,7 @@ function LogDetails({
           <span className="text-xs leading-5">{keyEffect}</span>
         </div>
       </div>
-      <div className="log-details-body grid min-w-0 gap-3 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-3 lg:grid-cols-2">
         <RequestLogDetailSection title={strings.logDetails.requestBody}>
           <pre>{requestBody}</pre>
         </RequestLogDetailSection>
@@ -13124,7 +13099,7 @@ function LogDetails({
         ) : null}
       </div>
       {(forwarded.length > 0 || dropped.length > 0) && (
-        <div className="log-details-headers grid min-w-0 gap-3 lg:grid-cols-2">
+        <div className="grid min-w-0 gap-3 lg:grid-cols-2">
           {forwarded.length > 0 && (
             <RequestLogDetailSection title={strings.logDetails.forwardedHeaders}>
               <ul>
@@ -13674,17 +13649,17 @@ export function KeyDetails({
   const hasQuarantineRawDetail = quarantineRawDetail.length > 0
   const keyDetailSidebarUtility = (
     <AdminShellSidebarUtility>
-      <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
           <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
-          <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-col gap-1">
             {sidebarDisplayName && (
-              <div className={`user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate${sidebarIsAdmin ? ' user-badge-admin' : ''}`} title={sidebarDisplayName}>
-                {sidebarIsAdmin && <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />}
+              <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title={sidebarDisplayName}>
+                {sidebarIsAdmin && <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />}
                 <span>{sidebarDisplayName}</span>
               </div>
             )}
@@ -13694,13 +13669,12 @@ export function KeyDetails({
 
         <Card size="sm" className="admin-sidebar-utility-card">
           <CardContent className="flex flex-col gap-3">
-          <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+          <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
             <AdminReturnToConsoleLink
               label={adminStrings.header.returnToConsole}
               href={ADMIN_USER_CONSOLE_HREF}
-              className="admin-sidebar-utility-action"
             />
-            <Button type="button" variant="ghost" size="sm" className="token-usage-back-button admin-sidebar-utility-action" onClick={onBack}>
+            <Button type="button" variant="ghost" size="sm" onClick={onBack}>
               <Icon icon="mdi:arrow-left" width={18} height={18} aria-hidden="true" />
               {keyDetailsStrings.back}
             </Button>
@@ -13708,7 +13682,7 @@ export function KeyDetails({
               type="button"
               variant="outline"
               size="sm"
-              className="admin-panel-refresh-button admin-sidebar-utility-action"
+              className="admin-panel-refresh-button"
               onClick={() => void load('refresh')}
               disabled={detailBlocking}
             >
@@ -13750,24 +13724,23 @@ export function KeyDetails({
   )
 
   return (
-    <div className="admin-detail-stack flex min-w-0 flex-col gap-6">
+    <div className="flex min-w-0 flex-col gap-6">
       {keyDetailSidebarUtility}
 
       <div className="block md:hidden">
-        <section className="surface app-header flex flex-col gap-3">
-          <div className="title-group flex flex-col gap-1">
+        <section className="surface flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
             <h1>{keyDetailsStrings.title}</h1>
             <p>
               {keyDetailsStrings.descriptionPrefix}{' '}
               <code>{id}</code>
             </p>
           </div>
-          <div className="controls flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <ThemeToggle />
             <AdminReturnToConsoleLink
               label={adminStrings.header.returnToConsole}
               href={ADMIN_USER_CONSOLE_HREF}
-              className="admin-return-link--detail"
             />
             <Button
               type="button"
@@ -13799,9 +13772,9 @@ export function KeyDetails({
 
       <div className="hidden md:block">
         <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">{keyDetailsStrings.title}</h1>
-            <p className="admin-compact-intro-description text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               {keyDetailsStrings.descriptionPrefix} <code>{id}</code>
             </p>
           </div>
@@ -13815,7 +13788,7 @@ export function KeyDetails({
           <CardHeader className="panel-header border-b">
             <div>
               <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.metadata.title}</CardTitle>
-              <CardDescription className="panel-description">{keyDetailsStrings.metadata.description}</CardDescription>
+              <CardDescription>{keyDetailsStrings.metadata.description}</CardDescription>
             </div>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-3">
@@ -13840,7 +13813,7 @@ export function KeyDetails({
           <CardHeader className="panel-header border-b">
             <div>
               <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.quarantine.title}</CardTitle>
-              <CardDescription className="panel-description">{keyDetailsStrings.quarantine.description}</CardDescription>
+              <CardDescription>{keyDetailsStrings.quarantine.description}</CardDescription>
             </div>
             <Button
               type="button"
@@ -13874,14 +13847,13 @@ export function KeyDetails({
             <strong>{formatTimestamp(detail.quarantine.createdAt)}</strong>
           </div>
           {hasQuarantineRawDetail && (
-            <div className="quarantine-detail-block flex flex-col gap-3 px-4">
-              <div className="quarantine-detail-header flex flex-wrap items-center justify-between gap-2">
-                <div className="panel-description text-sm text-muted-foreground">{keyDetailsStrings.quarantine.detail}</div>
+            <div className="flex flex-col gap-3 px-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="text-sm text-muted-foreground">{keyDetailsStrings.quarantine.detail}</div>
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="quarantine-detail-toggle"
                   aria-expanded={quarantineDetailExpanded}
                   aria-controls={quarantineDetailId}
                   onClick={() => setQuarantineDetailExpanded((current) => !current)}
@@ -13899,7 +13871,7 @@ export function KeyDetails({
               </div>
               <pre
                 id={quarantineDetailId}
-                className="log-details-pre max-h-80 overflow-auto whitespace-pre-wrap break-all rounded-lg bg-muted p-3 font-mono text-xs"
+                className="max-h-80 overflow-auto whitespace-pre-wrap break-all rounded-lg bg-muted p-3 font-mono text-xs"
                 hidden={!quarantineDetailExpanded}
                 aria-hidden={!quarantineDetailExpanded}
               >
@@ -13914,7 +13886,7 @@ export function KeyDetails({
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>Quota</CardTitle>
-            <CardDescription className="panel-description">Tavily Usage for this key</CardDescription>
+            <CardDescription>Tavily Usage for this key</CardDescription>
           </div>
         </CardHeader>
         <AdminLoadingRegion
@@ -13922,9 +13894,9 @@ export function KeyDetails({
           loadingLabel={detailLoadingLabel}
           minHeight={180}
         >
-          <CardContent className="metrics-grid grid min-w-0 gap-3 sm:grid-cols-3">
+          <CardContent className="grid min-w-0 gap-3 sm:grid-cols-3">
             {!detail ? (
-              <Empty className="empty-state" style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
+              <Empty style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
             ) : (
               (() => {
                 const limit = detail?.quota_limit ?? null
@@ -13936,10 +13908,10 @@ export function KeyDetails({
                   { id: 'remaining', label: 'Remaining', value: remaining != null ? formatNumber(remaining) : '—', subtitle: percent },
                   { id: 'synced', label: 'Synced', value: detail?.quota_synced_at ? formatTimestamp(detail.quota_synced_at) : '—', subtitle: '' },
                 ].map((m) => (
-                  <div key={m.id} className="metric-card flex flex-col gap-1.5 p-4">
+                  <div key={m.id} className="flex flex-col gap-1.5 p-4">
                     <h3 className="text-xs text-muted-foreground">{m.label}</h3>
-                    <div className={`metric-value min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
-                    <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
+                    <div className={`min-w-0 break-words font-mono font-semibold tabular-nums${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
+                    <div className="text-xs text-muted-foreground">{m.subtitle}</div>
                   </div>
                 ))
               })()
@@ -13952,7 +13924,7 @@ export function KeyDetails({
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.usageTitle}</CardTitle>
-            <CardDescription className="panel-description">{keyDetailsStrings.usageDescription}</CardDescription>
+            <CardDescription>{keyDetailsStrings.usageDescription}</CardDescription>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
             <Select value={period} onValueChange={handleKeyLogPeriodChange} disabled={detailBlocking}>
@@ -13985,15 +13957,15 @@ export function KeyDetails({
           loadingLabel={detailLoadingLabel}
           minHeight={180}
         >
-          <CardContent className="metrics-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <CardContent className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {!summary ? (
-              <Empty className="empty-state" style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
+              <Empty style={{ gridColumn: '1 / -1' }}><EmptyDescription>{keyDetailsStrings.loading}</EmptyDescription></Empty>
             ) : (
               metricCards.map((m) => (
-                <div key={m.id} className="metric-card flex flex-col gap-1.5 p-4">
+                <div key={m.id} className="flex flex-col gap-1.5 p-4">
                   <h3 className="text-xs text-muted-foreground">{m.label}</h3>
-                  <div className={`metric-value min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
-                  <div className="metric-subtitle text-xs text-muted-foreground">{m.subtitle}</div>
+                  <div className={`min-w-0 break-words font-mono font-semibold tabular-nums${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
+                  <div className="text-xs text-muted-foreground">{m.subtitle}</div>
                 </div>
               ))
             )}

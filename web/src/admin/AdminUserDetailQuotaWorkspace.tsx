@@ -201,11 +201,11 @@ export function AdminUserDetailQuotaWorkspace({
   }
 
   return (
-    <Card className="surface panel user-detail-quota-workspace" id="user-detail-quota">
+    <Card className="surface panel" id="user-detail-quota">
       <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
         <div>
           <CardTitle role="heading" aria-level={2}>{usersStrings.quota.title}</CardTitle>
-          <CardDescription className="panel-description">{usersStrings.quota.description}</CardDescription>
+          <CardDescription>{usersStrings.quota.description}</CardDescription>
         </div>
       </CardHeader>
 
@@ -215,10 +215,10 @@ export function AdminUserDetailQuotaWorkspace({
         </AlertDescription></Alert>
       )}
 
-      <div className="user-detail-quota-breakdown">
-        <div className="user-detail-subsection-heading">
+      <div>
+        <div>
           <h3>{usersStrings.effectiveQuota.title}</h3>
-          <p className="panel-description text-sm text-muted-foreground">{usersStrings.effectiveQuota.description}</p>
+          <p className="text-sm text-muted-foreground">{usersStrings.effectiveQuota.description}</p>
         </div>
         <UserDetailQuotaBreakdown
           entries={breakdownEntries}
@@ -237,11 +237,11 @@ export function AdminUserDetailQuotaWorkspace({
         embedded
       />
 
-      <div className="user-detail-entitlements">
-        <div className="user-detail-entitlement-heading-row">
-          <div className="user-detail-subsection-heading">
+      <div>
+        <div>
+          <div>
             <h3>{rechargeStrings.entitlementTitle}</h3>
-            <p className="panel-description text-sm text-muted-foreground">{rechargeStrings.entitlementDescription}</p>
+            <p className="text-sm text-muted-foreground">{rechargeStrings.entitlementDescription}</p>
           </div>
           <Dialog
             open={entitlementDialogOpen}
@@ -254,12 +254,12 @@ export function AdminUserDetailQuotaWorkspace({
             <DialogTrigger asChild>
               <Button type="button">{rechargeStrings.entitlementCreate}</Button>
             </DialogTrigger>
-            <DialogContent className="user-detail-entitlement-dialog sm:max-w-[64rem]">
+            <DialogContent className="sm:max-w-[64rem]">
               <DialogHeader>
                 <DialogTitle>{rechargeStrings.entitlementCreate}</DialogTitle>
                 <DialogDescription>{rechargeStrings.entitlementDescription}</DialogDescription>
               </DialogHeader>
-              <FieldGroup className="user-detail-entitlement-form user-detail-entitlement-form--dialog grid gap-4 sm:grid-cols-2">
+              <FieldGroup className="grid gap-4 sm:grid-cols-2">
                 <Field data-disabled={entitlementBusy}>
                   <FieldLabel htmlFor="user-entitlement-scope">{rechargeStrings.entitlementScope}</FieldLabel>
                   <Select
@@ -311,32 +311,32 @@ export function AdminUserDetailQuotaWorkspace({
                   disabled={entitlementBusy}
                   onChange={(value) => setEntitlementForm((current) => ({ ...current, monthlyCreditsDelta: value }))}
                 />
-                <Field className="user-detail-entitlement-note" data-disabled={entitlementBusy}>
+                <Field data-disabled={entitlementBusy}>
                   <FieldLabel htmlFor="user-entitlement-backend-note">{rechargeStrings.entitlementBackendNote}</FieldLabel>
                   <Textarea id="user-entitlement-backend-note" value={entitlementForm.backendNote} onChange={(event) => setEntitlementForm((current) => ({ ...current, backendNote: event.target.value }))} disabled={entitlementBusy} />
                 </Field>
-                <Field className="user-detail-entitlement-note" data-disabled={entitlementBusy}>
+                <Field data-disabled={entitlementBusy}>
                   <FieldLabel htmlFor="user-entitlement-frontend-note">{rechargeStrings.entitlementFrontendNote}</FieldLabel>
                   <Textarea id="user-entitlement-frontend-note" value={entitlementForm.frontendNote} onChange={(event) => setEntitlementForm((current) => ({ ...current, frontendNote: event.target.value }))} disabled={entitlementBusy} />
                 </Field>
-                <div className="user-detail-entitlement-dialog-actions">
+                <div>
                   <Button type="button" onClick={() => void submitEntitlement()} disabled={entitlementBusy}>
                     {entitlementBusy ? rechargeStrings.entitlementSaving : rechargeStrings.entitlementCreate}
                   </Button>
                 </div>
               </FieldGroup>
-              {entitlementError && <p className="admin-recharge-dialog-error" role="status">{entitlementError}</p>}
+              {entitlementError && <p role="status">{entitlementError}</p>}
             </DialogContent>
           </Dialog>
         </div>
-        <div className="user-detail-entitlement-summary">
+        <div>
           <span>{rechargeStrings.entitlementBase.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentBaseDelta.monthlyCreditsDelta))}</span>
           <span>{rechargeStrings.entitlementCurrentMonth.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentMonthDelta.monthlyCreditsDelta))}</span>
           <span>{rechargeStrings.entitlementPermanent.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentPermanentDelta.monthlyCreditsDelta))}</span>
         </div>
         <div className="user-detail-entitlement-filters">
           <Select value={entitlementScopeFilter} onValueChange={(value) => setEntitlementScopeFilter(value as EntitlementScopeFilter)} disabled={entitlementBusy}>
-            <SelectTrigger className="user-detail-entitlement-scope-select" aria-label={rechargeStrings.entitlementScope}>
+            <SelectTrigger aria-label={rechargeStrings.entitlementScope}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="start">
@@ -349,7 +349,6 @@ export function AdminUserDetailQuotaWorkspace({
             </SelectContent>
           </Select>
           <DateTimeRangeField
-            className="user-detail-entitlement-month-range"
             label={rechargeStrings.entitlementFilterRange}
             hideLabel
             inputType="month"
@@ -397,15 +396,14 @@ function EntitlementDeltaField({
   const parsedValue = parseSignedDeltaInput(value)
   const inputId = `${name}-entitlement-delta`
   return (
-    <Field className="user-detail-entitlement-delta-control" data-disabled={disabled}>
-      <div className="user-detail-entitlement-delta-head">
+    <Field data-disabled={disabled}>
+      <div>
         <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
         <Input
           id={inputId}
           type="text"
           inputMode="numeric"
           autoComplete="off"
-          className="user-detail-entitlement-delta-input"
           value={formatSignedDeltaInput(value)}
           onChange={(event) => {
             const normalized = normalizeSignedDeltaInput(event.target.value)
@@ -422,7 +420,7 @@ function EntitlementDeltaField({
         min={0}
         max={ENTITLEMENT_DELTA_STAGES.length - 1}
         step="any"
-        className="range quota-slider user-detail-entitlement-delta-slider"
+        className="w-full cursor-pointer accent-foreground"
         value={getSignedDeltaSliderPosition(parsedValue)}
         onChange={(event) => {
           const nextIndex = clampSignedDeltaSliderIndex(Number.parseFloat(event.target.value))
@@ -448,10 +446,10 @@ function EntitlementTable({
   locale: string
   formatSignedQuotaDelta: (value: number) => string
 }) {
-  if (items.length === 0) return <Empty className="empty-state"><EmptyDescription>{strings.entitlementEmpty}</EmptyDescription></Empty>
+  if (items.length === 0) return <Empty><EmptyDescription>{strings.entitlementEmpty}</EmptyDescription></Empty>
   return (
-    <div className="table-scroll-shell admin-recharge-quota-table-scroll">
-      <Table className="admin-recharge-quota-table user-detail-entitlement-table">
+    <div>
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>{strings.entitlementScope}</TableHead>
@@ -468,7 +466,7 @@ function EntitlementTable({
               <TableCell>{formatEntitlementScope(item.scopeKind, strings)}</TableCell>
               <TableCell>{item.scopeKind === 'month' ? formatMonth(item.monthStart, locale) : '—'}</TableCell>
               <TableCell>
-                <div className="token-compact-pair">
+                <div>
                   <span>{formatSignedQuotaDelta(item.businessCalls1hDelta)}</span>
                   <span>{formatSignedQuotaDelta(item.dailyCreditsDelta)}</span>
                   <span>{formatSignedQuotaDelta(item.monthlyCreditsDelta)}</span>
@@ -476,7 +474,7 @@ function EntitlementTable({
               </TableCell>
               <TableCell>{item.sourceKind}</TableCell>
               <TableCell>
-                <div className="token-compact-pair">
+                <div>
                   <span>{item.backendNote}</span>
                   <span>{item.frontendNote}</span>
                 </div>

@@ -608,7 +608,7 @@ function GalleryStory(): React.JSX.Element {
 function DocsPage(): React.JSX.Element {
   return (
     <ChineseStoryFrame>
-      <div className="sb-unstyled">
+      <div>
         <Title />
         <Subtitle>聚合展示全局 SOCKS5 出口代理控件的字段状态、流程状态与交互验收面板。</Subtitle>
         <Description />

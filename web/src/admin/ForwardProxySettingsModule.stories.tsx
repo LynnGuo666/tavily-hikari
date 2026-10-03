@@ -466,7 +466,7 @@ function RevalidateProgressBubbleProof(): React.JSX.Element {
           <div className="panel-header">
             <div>
               <h2>Revalidate progress bubble proof</h2>
-              <p className="panel-description">
+              <p>
                 This state uses an inline progress card rather than a floating overlay. The progress details must stay obvious above
                 the stats grid during a subscription revalidate run.
               </p>
@@ -499,10 +499,10 @@ function RevalidateProgressBubbleProof(): React.JSX.Element {
                 </span>
               </div>
               <div style={{ display: 'flex', gap: 10 }}>
-                <button type="button" className="btn btn-outline btn-sm" disabled>
+                <button type="button" disabled>
                   Refresh
                 </button>
-                <button type="button" className="btn btn-outline btn-sm" disabled>
+                <button type="button" disabled>
                   Revalidating subscriptions
                 </button>
               </div>
@@ -608,7 +608,7 @@ function StatusDetailBubbleProof(): React.JSX.Element {
           <div className="panel-header">
             <div>
               <h2>Status detail bubble proof</h2>
-              <p className="panel-description">
+              <p>
                 This proof auto-opens the failed-row detail bubble. The floating panel must stay visible above the clipped shell
                 instead of being cut off by the validation dialog container.
               </p>

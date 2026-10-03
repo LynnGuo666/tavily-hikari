@@ -283,17 +283,17 @@ export default function HaStatusBanner({
   if (admin && adminVariant === 'compact') {
     if (!adminNeedsAttention(status)) return null
     return (
-      <section className="ha-status-banner ha-status-banner-compact rounded-xl border border-warning/30 bg-warning/10 p-4" role="status" aria-live="polite">
-        <div className="ha-status-banner-head flex flex-wrap items-start gap-3">
-          <div className="ha-status-banner-icon shrink-0 text-warning" aria-hidden="true">
+      <section className="rounded-xl border border-warning/30 bg-warning/10 p-4" role="status" aria-live="polite">
+        <div className="flex flex-wrap items-start gap-3">
+          <div className="shrink-0 text-warning" aria-hidden="true">
             <CircleAlert size={20} strokeWidth={2.4} />
           </div>
-          <div className="ha-status-banner-copy min-w-0 flex-1 space-y-1 text-sm">
-            <div className="ha-status-banner-title font-medium">{compactTitle ?? labels.compactTitle}</div>
+          <div className="min-w-0 flex-1 space-y-1 text-sm">
+            <div className="font-medium">{compactTitle ?? labels.compactTitle}</div>
             <p>{syncDiagnostic ?? compactDescription ?? labels.compactDescription}</p>
           </div>
           {compactHref && compactActionLabel && (
-            <Button asChild size="sm" variant="outline" className="ha-status-banner-action">
+            <Button asChild size="sm" variant="outline">
               <a
                 href={compactHref}
                 onClick={(event) => {
@@ -314,20 +314,19 @@ export default function HaStatusBanner({
 
   if (admin) {
     return (
-      <Card className="ha-node-panel min-w-0" aria-labelledby="ha-node-panel-title">
-        <CardHeader className="ha-node-panel-head flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="ha-node-panel-title-group min-w-0 space-y-1">
-            <div className="ha-node-panel-kicker text-xs font-medium text-muted-foreground">{labels.panelKicker}</div>
+      <Card className="min-w-0" aria-labelledby="ha-node-panel-title">
+        <CardHeader className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0 space-y-1">
+            <div className="text-xs font-medium text-muted-foreground">{labels.panelKicker}</div>
             <CardTitle><h2 id="ha-node-panel-title">{title}</h2></CardTitle>
             <CardDescription>{detail}</CardDescription>
           </div>
-          <div className="ha-node-panel-head-actions flex shrink-0 flex-wrap items-center gap-2">
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
             {onConfigureSource ? (
               <Button
                 type="button"
                 size="sm"
                 variant="outline"
-                className="ha-node-configure-button"
                 onClick={onConfigureSource}
               >
                 {labels.configureSource}
@@ -338,7 +337,7 @@ export default function HaStatusBanner({
         </CardHeader>
 
         <CardContent className="flex min-w-0 flex-col gap-6">
-        <dl className="ha-status-summary grid grid-cols-2 gap-4 sm:grid-cols-2 xl:grid-cols-3 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:break-all [&_dd]:font-medium [&_dd]:tabular-nums" aria-label={labels.title}>
+        <dl className="grid grid-cols-2 gap-4 sm:grid-cols-2 xl:grid-cols-3 [&_dt]:text-xs [&_dt]:text-muted-foreground [&_dd]:mt-1 [&_dd]:break-all [&_dd]:font-medium [&_dd]:tabular-nums" aria-label={labels.title}>
           <div><dt>{labels.summaryCoreMode}</dt><dd>{status.dualActiveEnabled ? labels.coreModeDualActive : labels.coreModeActiveStandby}</dd></div>
           <div><dt>{labels.summaryControlLeader}</dt><dd>{status.fullMasterNodeId ?? '—'}</dd></div>
           <div><dt>{labels.summaryConfiguredPeers}</dt><dd>{status.peerCount}</dd></div>
@@ -353,32 +352,32 @@ export default function HaStatusBanner({
         </dl>
 
         {syncDiagnostic && (
-          <div className="ha-status-message ha-status-message-warning flex items-start gap-2 rounded-lg bg-warning/10 p-3 text-sm [&_svg]:shrink-0" role="alert">
+          <div className="flex items-start gap-2 rounded-lg bg-warning/10 p-3 text-sm [&_svg]:shrink-0" role="alert">
             <CircleAlert size={16} aria-hidden="true" />
             <span>{syncDiagnostic}</span>
           </div>
         )}
 
-        <div className="ha-node-list flex min-w-0 flex-col gap-3" aria-label={labels.nodeInventoryTitle}>
-          <div className="ha-node-list-title flex items-center gap-2 font-medium">
+        <div className="flex min-w-0 flex-col gap-3" aria-label={labels.nodeInventoryTitle}>
+          <div className="flex items-center gap-2 font-medium">
             <Server size={18} aria-hidden="true" />
             <span>{labels.nodeInventoryTitle}</span>
           </div>
-          <Table className="ha-node-grid block lg:table"  aria-label={labels.nodeInventoryTitle}>
-            <TableHeader className="hidden lg:table-header-group"><TableRow className="ha-node-grid-row ha-node-grid-head hidden lg:table-row" >
-              <TableHead className="ha-node-cell ha-node-cell--identity" >{labels.nodeHeader}</TableHead>
-              <TableHead className="ha-node-cell ha-node-cell--role" >{labels.roleHeader}</TableHead>
-              <TableHead className="ha-node-cell ha-node-cell--origin" >{labels.originHeader}</TableHead>
-              <TableHead className="ha-node-cell ha-node-cell--health" >{labels.healthHeader}</TableHead>
-              <TableHead className="ha-node-cell ha-node-cell--time" >{labels.lastSyncHeader}</TableHead>
-              <TableHead className="ha-node-cell ha-node-cell--time" >{labels.promotedAtHeader}</TableHead>
-              <TableHead className="ha-node-cell ha-node-cell--action" >{labels.actionHeader}</TableHead>
+          <Table className="block lg:table"  aria-label={labels.nodeInventoryTitle}>
+            <TableHeader className="hidden lg:table-header-group"><TableRow className="hidden lg:table-row" >
+              <TableHead >{labels.nodeHeader}</TableHead>
+              <TableHead >{labels.roleHeader}</TableHead>
+              <TableHead className="ha-node-cell--origin" >{labels.originHeader}</TableHead>
+              <TableHead >{labels.healthHeader}</TableHead>
+              <TableHead >{labels.lastSyncHeader}</TableHead>
+              <TableHead >{labels.promotedAtHeader}</TableHead>
+              <TableHead >{labels.actionHeader}</TableHead>
             </TableRow></TableHeader>
             <TableBody className="block lg:table-row-group">{rows.map((row) => (
-              <TableRow className="ha-node-grid-row flex flex-col gap-3 py-4 lg:table-row lg:py-0"  key={row.key}>
+              <TableRow className="flex flex-col gap-3 py-4 lg:table-row lg:py-0"  key={row.key}>
                 <TableCell
 
-                  className="ha-node-cell ha-node-cell--identity ha-node-identity flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden"
+                  className="ha-node-identity flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden"
                   data-label={labels.nodeHeader}
                 >
                   <div className="flex min-w-0 flex-col gap-1 text-right lg:text-left">{onOpenNodeDetails && !row.isLocalNode ? (
@@ -394,28 +393,28 @@ export default function HaStatusBanner({
                   )}
                   <span className="text-xs text-muted-foreground">{row.relation}</span></div>
                 </TableCell>
-                <TableCell  className="ha-node-cell ha-node-cell--role lg:whitespace-nowrap flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.roleHeader}>
+                <TableCell  className="lg:whitespace-nowrap flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.roleHeader}>
                   {row.role}
                 </TableCell>
-                <TableCell  className="ha-node-cell ha-node-cell--origin flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.originHeader}>
+                <TableCell  className="ha-node-cell--origin flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.originHeader}>
                   <code className="max-w-[16rem] break-all text-right text-xs lg:text-left">{row.origin}</code>
                 </TableCell>
-                <TableCell  className="ha-node-cell ha-node-cell--health flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.healthHeader}>
+                <TableCell  className="flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.healthHeader}>
                   <StatusBadge className="h-auto max-w-[15rem] justify-start whitespace-normal text-left" tone={row.healthTone}>{row.health}</StatusBadge>
                 </TableCell>
-                <TableCell  className="ha-node-cell ha-node-cell--time lg:whitespace-nowrap flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.lastSyncHeader}>
+                <TableCell  className="lg:whitespace-nowrap flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.lastSyncHeader}>
                   <time dateTime={row.lastSyncDateTime} title={row.lastSyncTitle}>
                     {row.lastSync}
                   </time>
                 </TableCell>
-                <TableCell  className="ha-node-cell ha-node-cell--time lg:whitespace-nowrap flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.promotedAtHeader}>
+                <TableCell  className="lg:whitespace-nowrap flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden" data-label={labels.promotedAtHeader}>
                   <time dateTime={row.promotedAtDateTime} title={row.promotedAtTitle}>
                     {row.promotedAt}
                   </time>
                 </TableCell>
                 <TableCell
 
-                  className="ha-node-cell ha-node-cell--action ha-node-action flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden"
+                  className="flex min-w-0 items-start justify-between gap-4 whitespace-normal p-0 before:shrink-0 before:text-xs before:text-muted-foreground before:content-[attr(data-label)] lg:table-cell lg:p-2 lg:before:hidden"
                   data-label={labels.actionHeader}
                 >
                   {row.actionKind === 'promote' && onPromote && (
@@ -423,7 +422,7 @@ export default function HaStatusBanner({
                       type="button"
                       size="sm"
                       variant="outline"
-                      className="ha-node-action-button border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
+                      className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
                       onClick={onPromote}
                       disabled={busy}
                     >
@@ -436,7 +435,7 @@ export default function HaStatusBanner({
                       type="button"
                       size="sm"
                       variant="outline"
-                      className="ha-node-action-button border-success/40 bg-success/10 text-success hover:bg-success/20"
+                      className="border-success/40 bg-success/10 text-success hover:bg-success/20"
                       onClick={onFinalize}
                       disabled={busy}
                     >
@@ -445,17 +444,17 @@ export default function HaStatusBanner({
                     </Button>
                   )}
                   {row.actionKind === 'serving' && (
-                    <span className="ha-node-action-note">{labels.actionServing}</span>
+                    <span>{labels.actionServing}</span>
                   )}
                   {row.actionKind === 'blocked' && (
-                    <span className="ha-node-action-note">{labels.actionRecoverFirst}</span>
+                    <span>{labels.actionRecoverFirst}</span>
                   )}
                   {row.actionKind === 'planned_cutover' && row.targetNodeId && onPlannedCutover && (
                     <Button
                       type="button"
                       size="sm"
                       variant="outline"
-                      className="ha-node-action-button border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
+                      className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20"
                       onClick={() => onPlannedCutover(row.targetNodeId!)}
                       disabled={busy}
                     >
@@ -464,7 +463,7 @@ export default function HaStatusBanner({
                     </Button>
                   )}
                   {row.actionKind === 'observe' && (
-                    <span className="ha-node-action-note">
+                    <span>
                       {row.relation === labels.relationStandbyCandidate
                         ? labels.actionNotEligibleNow
                         : labels.actionObserveOnly}
@@ -476,29 +475,29 @@ export default function HaStatusBanner({
           </Table>
         </div>
 
-        <div className="ha-node-list flex min-w-0 flex-col gap-3" aria-label={labels.plannedCutoverTitle}>
-          <div className="ha-node-list-title flex items-center gap-2 font-medium">
+        <div className="flex min-w-0 flex-col gap-3" aria-label={labels.plannedCutoverTitle}>
+          <div className="flex items-center gap-2 font-medium">
             <Crown size={18} aria-hidden="true" />
             <span>{labels.plannedCutoverTitle}</span>
           </div>
-          <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground [&_svg]:shrink-0">
+          <div className="flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground [&_svg]:shrink-0">
             <span>{labels.plannedCutoverDescription}</span>
           </div>
         </div>
 
-        <div className="ha-node-list flex min-w-0 flex-col gap-3" aria-label={labels.timelineTitle}>
-          <div className="ha-node-list-title flex items-center gap-2 font-medium">
+        <div className="flex min-w-0 flex-col gap-3" aria-label={labels.timelineTitle}>
+          <div className="flex items-center gap-2 font-medium">
             <RotateCcw size={18} aria-hidden="true" />
             <span>{labels.timelineTitle}</span>
           </div>
           {timeline.length === 0 ? (
-            <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground [&_svg]:shrink-0">
+            <div className="flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground [&_svg]:shrink-0">
               <span>{timelineLoading ? labels.timelineLoading : labels.timelineEmpty}</span>
             </div>
           ) : (
-            <div className="ha-timeline-list flex min-w-0 flex-col divide-y divide-border">
+            <div className="flex min-w-0 flex-col divide-y divide-border">
               {timeline.map((event) => (
-                <details key={event.id} className="ha-timeline-item py-3 [&_summary]:cursor-pointer [&_summary]:space-x-2 [&_summary]:text-sm">
+                <details key={event.id} className="py-3 [&_summary]:cursor-pointer [&_summary]:space-x-2 [&_summary]:text-sm">
                   <summary>
                     <span>{formatHaTimelineSummary(event, labels)}</span>
                     <StatusBadge
@@ -515,7 +514,7 @@ export default function HaStatusBanner({
                       {formatHaTimelineStatusLabel(event.status, labels)}
                     </StatusBadge>
                   </summary>
-                  <div className="ha-timeline-meta mt-3 flex flex-col gap-2 text-xs text-muted-foreground [&_pre]:max-w-full [&_pre]:overflow-auto [&_pre]:rounded-md [&_pre]:bg-muted [&_pre]:p-3 [&_pre]:whitespace-pre-wrap [&_pre]:break-all">
+                  <div className="mt-3 flex flex-col gap-2 text-xs text-muted-foreground [&_pre]:max-w-full [&_pre]:overflow-auto [&_pre]:rounded-md [&_pre]:bg-muted [&_pre]:p-3 [&_pre]:whitespace-pre-wrap [&_pre]:break-all">
                     <div>{formatTimestamp(event.createdAt, lang)}</div>
                     {formatHaTimelineDetail(event, labels) ? <p>{formatHaTimelineDetail(event, labels)}</p> : null}
                     {event.technicalDetails ? (
@@ -534,7 +533,7 @@ export default function HaStatusBanner({
         </div>
 
         {formatHaStatusMessage(status, labels) && (
-          <div className="ha-status-message flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground [&_svg]:shrink-0">
+          <div className="flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm text-muted-foreground [&_svg]:shrink-0">
             <RotateCcw size={16} aria-hidden="true" />
             <span>{formatHaStatusMessage(status, labels)}</span>
           </div>
@@ -545,13 +544,13 @@ export default function HaStatusBanner({
   }
 
   return (
-    <section className={`ha-status-banner ${toneClass} rounded-xl border border-warning/30 bg-warning/10 p-4`} role="status" aria-live="polite">
-      <div className="ha-status-banner-head flex flex-wrap items-start gap-3">
-        <div className="ha-status-banner-icon shrink-0 text-warning" aria-hidden="true">
+    <section className={`${toneClass} rounded-xl border border-warning/30 bg-warning/10 p-4`} role="status" aria-live="polite">
+      <div className="flex flex-wrap items-start gap-3">
+        <div className="shrink-0 text-warning" aria-hidden="true">
           <CircleAlert size={22} strokeWidth={2.4} />
         </div>
-        <div className="ha-status-banner-copy min-w-0 flex-1 space-y-1 text-sm">
-          <div className="ha-status-banner-title font-medium">{title}</div>
+        <div className="min-w-0 flex-1 space-y-1 text-sm">
+          <div className="font-medium">{title}</div>
           <p>{detail}</p>
         </div>
       </div>

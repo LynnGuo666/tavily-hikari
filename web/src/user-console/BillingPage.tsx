@@ -280,7 +280,7 @@ function QuotaStrip({
       `is-${tone}`,
       tone === 'micro' ? 'w-36 text-xs' : 'w-56 max-w-full text-sm',
       tone === 'hero' && 'w-full text-2xl',
-      muted && 'is-muted text-muted-foreground',
+      muted && 'text-muted-foreground',
     )}>
       <div>
         <span>1H</span>
@@ -310,12 +310,12 @@ function SummaryRow({
   badge?: string | null
 }): React.JSX.Element {
   return (
-    <li className="user-console-billing-summary-row flex flex-wrap items-center justify-between gap-3 px-4 py-4">
-      <div className="user-console-billing-summary-row-copy min-w-0">
-        <div className="user-console-billing-summary-row-title flex flex-col items-start gap-1 text-sm">
+    <li className="flex flex-wrap items-center justify-between gap-3 px-4 py-4">
+      <div className="min-w-0">
+        <div className="flex flex-col items-start gap-1 text-sm">
           <h3 className="font-medium">{title}</h3>
-          {description ? <span className="user-console-billing-summary-row-note text-xs text-muted-foreground">{description}</span> : null}
-          {badge ? <Badge variant="secondary" className="user-console-billing-inline-badge">{badge}</Badge> : null}
+          {description ? <span className="text-xs text-muted-foreground">{description}</span> : null}
+          {badge ? <Badge variant="secondary">{badge}</Badge> : null}
         </div>
       </div>
       <QuotaStrip quota={quota} muted={isZeroQuota(quota)} />
@@ -331,8 +331,8 @@ function TimelineQuotaRow({
   quota: BillingQuota
 }): React.JSX.Element {
   return (
-    <div className="user-console-billing-timeline-row flex items-center justify-between gap-2 text-xs">
-      <span className="user-console-billing-timeline-row-label text-muted-foreground">{label}</span>
+    <div className="flex items-center justify-between gap-2 text-xs">
+      <span className="text-muted-foreground">{label}</span>
       <QuotaStrip quota={quota} tone="micro" muted={isZeroQuota(quota)} />
     </div>
   )
@@ -354,7 +354,7 @@ function TimelineNavButton({
       type="button"
       variant="outline"
       size="icon-sm"
-      className={`user-console-billing-timeline-nav-button shrink-0 is-${direction}`}
+      className={`shrink-0 is-${direction}`}
       aria-label={label}
       title={label}
       disabled={disabled}
@@ -410,7 +410,7 @@ function TimelineCard({
 
   return (
     <article
-      className={cn('user-console-billing-timeline-card relative flex min-w-0 shrink-0 basis-(--billing-timeline-card-width) snap-start cursor-pointer flex-col gap-4 rounded-lg border bg-card p-4 transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', selected && 'border-primary/50 bg-muted/30')}
+      className={cn('relative flex min-w-0 shrink-0 basis-(--billing-timeline-card-width) snap-start cursor-pointer flex-col gap-4 rounded-lg border bg-card p-4 transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', selected && 'border-primary/50 bg-muted/30')}
       data-timeline-index={index}
       role="button"
       tabIndex={0}
@@ -419,18 +419,18 @@ function TimelineCard({
       onClick={() => onSelect(index)}
       onKeyDown={handleKeyDown}
     >
-      <div className="user-console-billing-timeline-card-head flex items-start justify-between gap-2">
-        <div className="user-console-billing-timeline-card-aside flex flex-col [&_p]:text-xs [&_p]:uppercase [&_p]:tracking-wide [&_p]:text-muted-foreground [&_h3]:text-base [&_h3]:font-semibold">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex flex-col [&_p]:text-xs [&_p]:uppercase [&_p]:tracking-wide [&_p]:text-muted-foreground [&_h3]:text-base [&_h3]:font-semibold">
           <p>{phaseLabel}</p>
           <h3>{monthLabel}</h3>
         </div>
-        {rechargeBadge ? <Badge variant="secondary" className="user-console-billing-inline-badge">{rechargeBadge}</Badge> : null}
+        {rechargeBadge ? <Badge variant="secondary">{rechargeBadge}</Badge> : null}
       </div>
-      <div className="user-console-billing-timeline-total flex items-center justify-between gap-2 rounded-md bg-muted/50 px-2.5 py-1.5 text-xs">
+      <div className="flex items-center justify-between gap-2 rounded-md bg-muted/50 px-2.5 py-1.5 text-xs">
         <span>{text.timelineEffective}</span>
         <QuotaStrip quota={month.effectiveTotal} tone="micro" />
       </div>
-      <div className="user-console-billing-timeline-card-body flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         <TimelineQuotaRow label={text.timelinePersistent} quota={month.persistentTotal} />
         <TimelineQuotaRow label={text.timelineAdjustments} quota={month.monthlyAdjustments} />
         <TimelineQuotaRow label={text.timelineRecharge} quota={month.recharge.quota} />
@@ -730,32 +730,32 @@ export default function BillingPage({
   }
 
   return (
-    <div className="user-console-billing-stack flex min-w-0 flex-col gap-6">
-      <Card className="surface panel user-console-section user-console-billing-section">
-        <header className="user-console-billing-stage-head flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
-          <div className="user-console-billing-stage-intro flex flex-col gap-1.5 [&_h2]:text-lg [&_h2]:font-semibold [&_p]:text-sm [&_p]:text-muted-foreground">
+    <div className="flex min-w-0 flex-col gap-6">
+      <Card className="surface panel">
+        <header className="flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
+          <div className="flex flex-col gap-1.5 [&_h2]:text-lg [&_h2]:font-semibold [&_p]:text-sm [&_p]:text-muted-foreground">
             <h2>{text.timelineTitle}</h2>
             <p>{text.timelineDescription}</p>
           </div>
           {summary ? (
-            <div className="user-console-billing-stage-meta flex flex-wrap items-center gap-1.5">
-              <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">
                 {formatMonthLabel(summary.currentMonthStart, language)}
               </span>
               {effectiveUntilLabel ? (
-                <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{effectiveUntilLabel}</span>
+                <span className="inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{effectiveUntilLabel}</span>
               ) : null}
               {summary.blockAll ? (
-                <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground border-warning/40 bg-warning/10 text-warning">block_all</span>
+                <span className="inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground border-warning/40 bg-warning/10 text-warning">block_all</span>
               ) : null}
             </div>
           ) : null}
         </header>
         {loading && timeline.length === 0 ? (
-          <Empty className="empty-state"><EmptyDescription>Loading timeline...</EmptyDescription></Empty>
+          <Empty><EmptyDescription>Loading timeline...</EmptyDescription></Empty>
         ) : timeline.length > 0 ? (
           <>
-            <div className="user-console-billing-timeline-stage flex items-center gap-2 px-4">
+            <div className="flex items-center gap-2 px-4">
               {viewportMode === 'small' ? null : (
                 <TimelineNavButton
                   direction="prev"
@@ -766,10 +766,10 @@ export default function BillingPage({
               )}
               <div
                 ref={timelineViewportRef}
-                className="user-console-billing-timeline-viewport relative min-w-0 flex-1 snap-x snap-mandatory overflow-x-auto pb-2"
+                className="relative min-w-0 flex-1 snap-x snap-mandatory overflow-x-auto pb-2"
                 style={timelineViewportStyle}
               >
-                <div className="user-console-billing-timeline-track flex gap-3">
+                <div className="flex gap-3">
                   {timeline.map((month, index) => (
                     <TimelineCard
                       key={month.monthStart}
@@ -795,14 +795,14 @@ export default function BillingPage({
             </div>
 
             {viewportMode === 'small' ? (
-              <div className="user-console-billing-timeline-mobile-controls flex items-center justify-between gap-2 px-4">
+              <div className="flex items-center justify-between gap-2 px-4">
                 <TimelineNavButton
                   direction="prev"
                   label={text.timelineBack}
                   disabled={safeTimelineWindowIndex <= 0}
                   onClick={() => moveTimeline(-1)}
                 />
-                <div className="user-console-billing-timeline-status flex items-center gap-2 text-xs text-muted-foreground [&_strong]:text-foreground">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground [&_strong]:text-foreground">
                   {visibleTimelineRangeLabel ? <strong>{visibleTimelineRangeLabel}</strong> : null}
                   {visibleTimelineProgress ? <span>{visibleTimelineProgress}</span> : null}
                 </div>
@@ -814,51 +814,51 @@ export default function BillingPage({
                 />
               </div>
             ) : (
-              <div className="user-console-billing-timeline-status-bar flex items-center justify-end gap-2 px-4 text-xs text-muted-foreground [&_strong]:text-foreground">
+              <div className="flex items-center justify-end gap-2 px-4 text-xs text-muted-foreground [&_strong]:text-foreground">
                 {visibleTimelineRangeLabel ? <strong>{visibleTimelineRangeLabel}</strong> : null}
                 {visibleTimelineProgress ? <span>{visibleTimelineProgress}</span> : null}
               </div>
             )}
           </>
         ) : (
-          <Empty className="empty-state"><EmptyDescription>{text.timelineNoFuture}</EmptyDescription></Empty>
+          <Empty><EmptyDescription>{text.timelineNoFuture}</EmptyDescription></Empty>
         )}
         {timeline.length > 0 && !hasFutureScheduledEntitlement ? (
-          <p className="user-console-billing-inline-note px-4 text-xs text-muted-foreground">{text.timelineNoScheduledChanges}</p>
+          <p className="px-4 text-xs text-muted-foreground">{text.timelineNoScheduledChanges}</p>
         ) : null}
       </Card>
 
       <div className="user-console-billing-workbench grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-        <div className="user-console-billing-main-column flex min-w-0 flex-col gap-4">
-          <Card className="surface panel user-console-section user-console-billing-section user-console-billing-summary-section gap-0 py-0">
-            <CardHeader className="panel-header border-b user-console-section-header user-console-billing-summary-head gap-3 py-4">
+        <div className="flex min-w-0 flex-col gap-4">
+          <Card className="surface panel user-console-billing-summary-section gap-0 py-0">
+            <CardHeader className="panel-header border-b gap-3 py-4">
               <div>
                 <CardTitle role="heading" aria-level={2}>{text.summaryTitle}</CardTitle>
-                <CardDescription className="panel-description">{text.summaryDescription}</CardDescription>
+                <CardDescription>{text.summaryDescription}</CardDescription>
               </div>
               {selectedTimelineMonth ? (
-                <div className="user-console-billing-summary-meta flex flex-wrap items-center gap-1.5">
-                  <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">
                     {formatMonthLabel(selectedTimelineMonth.monthStart, language)}
                   </span>
                   {selectedTimelinePhaseLabel ? (
-                    <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{selectedTimelinePhaseLabel}</span>
+                    <span className="inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{selectedTimelinePhaseLabel}</span>
                   ) : null}
                   {selectedTimelineRechargeBadge ? (
-                    <span className="user-console-billing-meta-pill inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{selectedTimelineRechargeBadge}</span>
+                    <span className="inline-flex items-center rounded-full border bg-muted px-2.5 py-1 text-xs text-muted-foreground">{selectedTimelineRechargeBadge}</span>
                   ) : null}
                 </div>
               ) : null}
             </CardHeader>
             {loading && !summary ? (
-              <Empty className="empty-state"><EmptyDescription>Loading billing summary...</EmptyDescription></Empty>
+              <Empty><EmptyDescription>Loading billing summary...</EmptyDescription></Empty>
             ) : summary && selectedTimelineMonth ? (
               <>
-                <div className="user-console-billing-current-total-row flex flex-wrap items-center justify-between gap-3 border-b bg-muted/50 px-4 py-4 text-sm font-medium">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b bg-muted/50 px-4 py-4 text-sm font-medium">
                   <span>{text.timelineEffective}</span>
                   <QuotaStrip quota={selectedTimelineMonth.effectiveTotal} tone="table" />
                 </div>
-                <ul className="user-console-billing-summary-list flex flex-col divide-y">
+                <ul className="flex flex-col divide-y">
                   {summaryRows.map((row) => (
                     <SummaryRow
                       key={row.title}
@@ -870,18 +870,18 @@ export default function BillingPage({
                   ))}
                 </ul>
                 {summary.blockAll ? (
-                  <p className="user-console-billing-notice mx-4 bg-warning/10 p-3 text-sm text-warning">{text.blockAllNotice}</p>
+                  <p className="mx-4 bg-warning/10 p-3 text-sm text-warning">{text.blockAllNotice}</p>
                 ) : null}
               </>
             ) : (
-              <Empty className="empty-state"><EmptyDescription>{text.emptyDelta}</EmptyDescription></Empty>
+              <Empty><EmptyDescription>{text.emptyDelta}</EmptyDescription></Empty>
             )}
           </Card>
         </div>
 
-        <aside className="user-console-landing-rail user-console-billing-side-column flex min-w-0 flex-col gap-4">
-          <Card className="user-console-billing-pricing-inline" aria-label={text.pricingTitle}>
-            <CardHeader className="user-console-billing-pricing-inline-head flex flex-row items-start justify-between gap-2">
+        <aside className="flex min-w-0 flex-col gap-4">
+          <Card aria-label={text.pricingTitle}>
+            <CardHeader className="flex flex-row items-start justify-between gap-2">
               <div>
                 <CardTitle>{text.pricingTitle}</CardTitle>
                 {text.pricingDescription ? <CardDescription>{text.pricingDescription}</CardDescription> : null}
@@ -895,7 +895,7 @@ export default function BillingPage({
               )}
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
-              <div className="user-console-billing-pricing-inline-metrics flex flex-col gap-3 text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&_span]:text-xs [&_span]:text-muted-foreground [&_strong]:font-medium">
+              <div className="flex flex-col gap-3 text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&_span]:text-xs [&_span]:text-muted-foreground [&_strong]:font-medium">
                 <div>
                   <span>{text.unitPrice}</span>
                   <strong>{unitPriceText}</strong>
@@ -910,10 +910,10 @@ export default function BillingPage({
                 </div>
               </div>
               {config?.testPriceEnabled && text.testPriceEnabled ? (
-                <p className="user-console-billing-inline-note text-xs text-muted-foreground">{text.testPriceEnabled}</p>
+                <p className="text-xs text-muted-foreground">{text.testPriceEnabled}</p>
               ) : null}
               {!config?.enabled || !rechargeVisible ? (
-                <p className="user-console-billing-inline-note text-xs text-muted-foreground">{text.unavailableNotice}</p>
+                <p className="text-xs text-muted-foreground">{text.unavailableNotice}</p>
               ) : null}
             </CardContent>
           </Card>
@@ -936,48 +936,48 @@ export default function BillingPage({
           />
         </aside>
 
-        <Card className="surface panel user-console-section user-console-billing-section user-console-billing-orders-section min-w-0 lg:col-span-full">
-          <CardHeader className="panel-header border-b user-console-section-header">
+        <Card className="surface panel user-console-billing-orders-section min-w-0 lg:col-span-full">
+          <CardHeader className="panel-header border-b">
             <div>
               <CardTitle role="heading" aria-level={2}>{text.ordersTitle}</CardTitle>
-              <CardDescription className="panel-description">{text.ordersDescription}</CardDescription>
+              <CardDescription>{text.ordersDescription}</CardDescription>
             </div>
           </CardHeader>
           {orders.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{rechargeText.noOrders}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{rechargeText.noOrders}</EmptyDescription></Empty>
           ) : (
             <>
-              <div className="user-console-billing-orders-table mx-4 flex min-w-0 flex-col divide-y text-sm" role="list">
+              <div className="mx-4 flex min-w-0 flex-col divide-y text-sm" role="list">
                 {visibleOrders.map((order) => {
                   const detail = orderStatusDetail(order, rechargeText, language)
                   return (
-                    <article key={order.outTradeNo} className="user-console-billing-order-row grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-3 p-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1.5fr)_auto] lg:items-center" role="listitem">
-                      <div className="user-console-billing-order-primary flex min-w-0 flex-col gap-1">
-                        <div className="user-console-billing-order-title-row flex flex-wrap items-center gap-2">
+                    <article key={order.outTradeNo} className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-3 p-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1.5fr)_auto] lg:items-center" role="listitem">
+                      <div className="flex min-w-0 flex-col gap-1">
+                        <div className="flex flex-wrap items-center gap-2">
                           <h3 className="font-medium tabular-nums">{formatNumber(order.credits)} × {order.months}</h3>
                           {order.monthEndClampApplied ? (
-                            <span className="user-console-billing-inline-badge inline-flex items-center rounded-full border bg-primary/10 px-2 py-0.5 text-xs text-primary border-warning/40 bg-warning/10 text-warning">{text.orderClampApplied}</span>
+                            <span className="inline-flex items-center rounded-full border bg-primary/10 px-2 py-0.5 text-xs text-primary border-warning/40 bg-warning/10 text-warning">{text.orderClampApplied}</span>
                           ) : null}
                         </div>
                         <p className="text-xs text-muted-foreground">{formatTemplate(text.orderCreatedAt, {
                           time: formatDateTime(order.createdAt, language),
                         })}</p>
                       </div>
-                      <div className="user-console-billing-order-facts col-span-full flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground lg:col-span-1 [&_strong]:font-medium">
+                      <div className="col-span-full flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground lg:col-span-1 [&_strong]:font-medium">
                         <strong>{formatNumber(order.credits)} / {order.months}</strong>
                         <strong>{order.money} LDC</strong>
                         <strong>{formatMonthLabel(order.quoteMonthStart, language)}</strong>
                       </div>
-                      <div className="user-console-billing-order-impact col-span-full flex min-w-0 flex-col gap-1 text-xs tabular-nums lg:col-span-1 [&_strong]:font-medium">
+                      <div className="col-span-full flex min-w-0 flex-col gap-1 text-xs tabular-nums lg:col-span-1 [&_strong]:font-medium">
                         <span className="text-muted-foreground">{text.timelineEffective}</span>
                         <strong>{formatTemplate(text.orderImpact, {
                           hourly: formatNumber(order.finalHourlyDelta),
                           daily: formatNumber(order.finalDailyDelta),
                           monthly: formatNumber(order.finalMonthlyDelta),
                         })}</strong>
-                        {detail ? <p className="user-console-billing-order-detail text-xs text-muted-foreground">{detail}</p> : null}
+                        {detail ? <p className="text-xs text-muted-foreground">{detail}</p> : null}
                       </div>
-                      <div className="user-console-billing-order-status col-start-2 row-start-1 inline-flex items-center self-start lg:col-start-4 lg:self-center">
+                      <div className="col-start-2 row-start-1 inline-flex items-center self-start lg:col-start-4 lg:self-center">
                         <StatusBadge tone={orderStatusTone(order.status)}>
                           {rechargeText.status[order.status] ?? order.status}
                         </StatusBadge>
@@ -987,11 +987,11 @@ export default function BillingPage({
                 })}
               </div>
               {ordersTotalPages > 1 ? (
-                <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="table-pagination-meta table-pagination-meta-summary-only flex min-w-0 flex-col gap-2">
-                    <span className="table-pagination-summary text-sm text-muted-foreground">{ordersPageSummary}</span>
+                <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex min-w-0 flex-col gap-2">
+                    <span className="text-sm text-muted-foreground">{ordersPageSummary}</span>
                   </div>
-                  <Pagination className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end" aria-label={`${text.ordersPreviousPage} / ${text.ordersNextPage}`}>
+                  <Pagination className="mx-0 w-auto justify-start sm:justify-end" aria-label={`${text.ordersPreviousPage} / ${text.ordersNextPage}`}>
                     <PaginationContent>
                       <PaginationItem>
                         <Button

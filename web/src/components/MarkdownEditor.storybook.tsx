@@ -53,7 +53,6 @@ export default function MarkdownEditorStorybook({
       <textarea
         id={id}
         name={name}
-        className="textarea markdown-editor-storybook-input"
         value={value}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}

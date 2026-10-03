@@ -342,7 +342,6 @@ function AlertsPageCanvas({
     : 'groups'
   const headerTabs = inlineTabsVariant === 'all' ? (
     <SegmentedTabs<'events' | 'groups'>
-      className="alerts-center-tabs alerts-center-tabs--header"
       value={currentView}
       onChange={(nextView) => setSearch(alertsPath({ view: nextView }).replace('/admin/alerts', ''))}
       options={[

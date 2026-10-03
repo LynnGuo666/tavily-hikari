@@ -51,11 +51,11 @@ function LayoutBody(props: { title: string; description: string }): React.JSX.El
         <div className="panel-header">
           <div>
             <h2>{props.title}</h2>
-            <p className="panel-description">{props.description}</p>
+            <p>{props.description}</p>
           </div>
         </div>
-        <div className="table-wrapper admin-responsive-up">
-          <table className="jobs-table">
+        <div className="table-wrapper">
+          <table>
             <thead>
               <tr>
                 <th>ID</th>
@@ -80,31 +80,31 @@ function LayoutBody(props: { title: string; description: string }): React.JSX.El
             </tbody>
           </table>
         </div>
-        <div className="admin-mobile-list admin-responsive-down">
-          <article className="admin-mobile-card">
-            <div className="admin-mobile-kv">
+        <div>
+          <article>
+            <div>
               <span>ID</span>
               <strong>610</strong>
             </div>
-            <div className="admin-mobile-kv">
+            <div>
               <span>Type</span>
               <strong>Sync quota</strong>
             </div>
-            <div className="admin-mobile-kv">
+            <div>
               <span>Status</span>
               <strong>Success</strong>
             </div>
           </article>
-          <article className="admin-mobile-card">
-            <div className="admin-mobile-kv">
+          <article>
+            <div>
               <span>ID</span>
               <strong>609</strong>
             </div>
-            <div className="admin-mobile-kv">
+            <div>
               <span>Type</span>
               <strong>Usage rollups</strong>
             </div>
-            <div className="admin-mobile-kv">
+            <div>
               <span>Status</span>
               <strong>Running</strong>
             </div>
@@ -133,16 +133,16 @@ function PanelHeaderLayoutStory(): React.JSX.Element {
       onSelectItem={setActiveModule}
     >
       <AdminShellSidebarUtility>
-        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
               <div className="admin-sidebar-utility-toolbar">
                 <ThemeToggle />
                 <LanguageSwitcher />
               </div>
-              <div className="admin-sidebar-utility-meta">
-                <div className="user-badge user-badge-admin" title={displayName}>
-                  <Icon icon="mdi:crown-outline" className="user-badge-icon" aria-hidden="true" />
+              <div>
+                <div className="user-badge" title={displayName}>
+                  <Icon icon="mdi:crown-outline" aria-hidden="true" />
                   <span>{displayName}</span>
                 </div>
               </div>
@@ -150,13 +150,12 @@ function PanelHeaderLayoutStory(): React.JSX.Element {
           </Card>
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
-              <div className="admin-sidebar-utility-actions">
+              <div>
                 <AdminReturnToConsoleLink
                   label={admin.header.returnToConsole}
                   href="/console"
-                  className="admin-sidebar-utility-action"
                 />
-                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button">
                   <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
                   <span>{admin.header.refreshNow}</span>
                 </Button>
@@ -166,7 +165,7 @@ function PanelHeaderLayoutStory(): React.JSX.Element {
         </div>
       </AdminShellSidebarUtility>
 
-      <div className="admin-stacked-only">
+      <div>
         <AdminPanelHeader
           title={admin.header.title}
           subtitle={admin.header.subtitle}
@@ -180,12 +179,12 @@ function PanelHeaderLayoutStory(): React.JSX.Element {
           onRefresh={() => undefined}
         />
       </div>
-      <div className="admin-desktop-only">
+      <div>
         <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">{admin.header.title}</h1>
             {admin.header.subtitle ? (
-              <p className="admin-compact-intro-description text-sm text-muted-foreground">{admin.header.subtitle}</p>
+              <p className="text-sm text-muted-foreground">{admin.header.subtitle}</p>
             ) : null}
           </div>
         </section>
@@ -230,23 +229,22 @@ function TokenUsageLayoutStory(): React.JSX.Element {
       onSelectItem={setActiveModule}
     >
       <AdminShellSidebarUtility>
-        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
               <div className="admin-sidebar-utility-toolbar">
                 <ThemeToggle />
               </div>
-              <div className="admin-sidebar-utility-actions">
+              <div>
                 <AdminReturnToConsoleLink
                   label={admin.header.returnToConsole}
                   href="/console"
-                  className="admin-sidebar-utility-action"
                 />
-                <Button type="button" variant="ghost" size="sm" className="token-usage-back-button admin-sidebar-utility-action" onClick={() => setActiveModule('tokens')}>
+                <Button type="button" variant="ghost" size="sm" onClick={() => setActiveModule('tokens')}>
                   <Icon icon="mdi:arrow-left" width={16} height={16} aria-hidden="true" />
                   <span>{copy.back}</span>
                 </Button>
-                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button">
                   <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
                   <span>{admin.header.refreshNow}</span>
                 </Button>
@@ -256,19 +254,18 @@ function TokenUsageLayoutStory(): React.JSX.Element {
         </div>
       </AdminShellSidebarUtility>
 
-      <div className="admin-desktop-only" style={{ display: 'grid', gap: 14 }}>
+      <div style={{ display: 'grid', gap: 14 }}>
         <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">{copy.title}</h1>
             {copy.subtitle ? (
-              <p className="admin-compact-intro-description text-sm text-muted-foreground">{copy.subtitle}</p>
+              <p className="text-sm text-muted-foreground">{copy.subtitle}</p>
             ) : null}
           </div>
         </section>
         <div className="surface panel" style={{ padding: 14 }}>
-          <div className="token-usage-header-filters">
+          <div>
             <SegmentedTabs<'day' | 'month' | 'all'>
-              className="token-usage-segmented"
               value={period}
               onChange={setPeriod}
               options={[
@@ -279,7 +276,6 @@ function TokenUsageLayoutStory(): React.JSX.Element {
               ariaLabel="Token leaderboard period"
             />
             <SegmentedTabs<'usage' | 'errors' | 'other'>
-              className="token-usage-segmented"
               value={focus}
               onChange={setFocus}
               options={[

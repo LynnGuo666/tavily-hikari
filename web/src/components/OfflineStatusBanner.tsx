@@ -13,8 +13,8 @@ export default function OfflineStatusBanner({
   description,
 }: OfflineStatusBannerProps): React.JSX.Element {
   return (
-    <Alert variant="destructive" className="surface offline-status-banner" role="status" aria-live="polite">
-      <Icon icon="mdi:web-off" width={20} height={20} className="offline-status-banner-icon" aria-hidden="true" />
+    <Alert variant="destructive" className="surface" role="status" aria-live="polite">
+      <Icon icon="mdi:web-off" width={20} height={20} aria-hidden="true" />
       <AlertTitle>{title}</AlertTitle>
       <AlertDescription>{description}</AlertDescription>
     </Alert>

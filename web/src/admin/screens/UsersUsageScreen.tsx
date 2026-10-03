@@ -106,7 +106,7 @@ export function UsersUsageScreen({
 
       <Card className="surface panel">
         <AdminTableShell
-          className="overflow-hidden admin-users-usage-table-wrapper hidden md:block"
+          className="overflow-hidden hidden md:block"
           tableClassName={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table${showShadowDailyColumn ? ' admin-users-usage-table--shadow-compare' : ''}`}
           loadState={loadState}
           loadingLabel={loadingLabel}
@@ -117,7 +117,7 @@ export function UsersUsageScreen({
             <TableBody>
               <TableRow>
                 <TableCell colSpan={showShadowDailyColumn ? 12 : 11}>
-                  <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
+                  <Empty><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -215,17 +215,17 @@ export function UsersUsageScreen({
                   })
                   return (
                     <TableRow key={item.userId}>
-                      <TableCell className="admin-users-identity-cell">
+                      <TableCell>
                         <Button
                           type="button"
-                          variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
+                          variant="link" size="sm" className="h-auto p-0"
                           aria-label={usersStrings.actions.view}
                           onClick={() => onOpenUser(item.userId)}
                         >
                           <strong>{formatAdminUserListPrimary(item)}</strong>
                         </Button>
                         {userMeta ? (
-                          <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">{userMeta}</div>
+                          <div className="text-sm text-muted-foreground">{userMeta}</div>
                         ) : null}
                       </TableCell>
                       <TableCell>
@@ -233,10 +233,10 @@ export function UsersUsageScreen({
                           {item.active ? usersStrings.status.active : usersStrings.status.inactive}
                         </StatusBadge>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...formatQuotaStackValue(requestRate.used, requestRate.limit)} />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack
                           primary={formatQuotaUsagePair(
                             item.businessCalls1h.totalCount,
@@ -249,52 +249,52 @@ export function UsersUsageScreen({
                           }
                         />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...formatQuotaStackValue(item.dailyCreditsUsed, item.dailyCreditsLimit)} />
                       </TableCell>
                       {showShadowDailyColumn ? (
-                        <TableCell className="admin-users-compact-cell">
+                        <TableCell>
                           <AdminTableValueStack {...shadowDailyUsage} />
                         </TableCell>
                       ) : null}
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack
                           {...formatQuotaStackValue(item.monthlyCreditsUsed, item.monthlyCreditsLimit)}
                         />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         {(() => {
                           const metric = formatMonthlyBrokenStackValue(
                             item.monthlyBrokenCount,
                             item.monthlyBrokenLimit,
                           )
                           return (
-                            <div className="admin-table-value-stack flex flex-col gap-1">
+                            <div className="flex flex-col gap-1">
                               <MonthlyBrokenCountTrigger
                                 count={item.monthlyBrokenCount}
                                 onOpen={() => onOpenMonthlyBrokenDrawer(item.userId, userLabel)}
                                 ariaLabel={usersStrings.brokenKeys.openDetails.replace('{label}', userLabel)}
                                 className={metric.primaryClassName}
                               />
-                              <span className="admin-table-value-secondary">{metric.secondary}</span>
+                              <span>{metric.secondary}</span>
                             </div>
                           )
                         })()}
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <strong>{formatNumber(item.recentIpCount7d)}</strong>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack
                           {...formatSuccessRateStackValue(item.dailySuccess, item.dailyFailure, language)}
                         />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack
                           {...formatSuccessRateStackValue(item.monthlySuccess, item.monthlyFailure, language)}
                         />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...formatStackedTimestamp(item.lastActivity, language)} />
                       </TableCell>
                     </TableRow>
@@ -313,7 +313,7 @@ export function UsersUsageScreen({
           minHeight={260}
         >
           {users.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{usersStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             users.map((item) => {
               const requestRate = resolveRequestRate(item, 'user')
@@ -336,7 +336,7 @@ export function UsersUsageScreen({
                     <span>{usersStrings.usage.table.user}</span>
                     <Button
                       type="button"
-                      variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
+                      variant="link" size="sm" className="h-auto p-0"
                       aria-label={usersStrings.actions.view}
                       onClick={() => onOpenUser(item.userId)}
                     >

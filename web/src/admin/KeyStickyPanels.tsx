@@ -188,16 +188,14 @@ function StickyWindowValue({
   failureLabel: string
 }): React.JSX.Element {
   return (
-    <span className="sticky-window-values inline-flex items-center gap-1 tabular-nums">
+    <span className="inline-flex items-center gap-1 tabular-nums">
       <span
-        className="sticky-window-value sticky-window-value-success"
         aria-label={`${successLabel} ${formatNumber(successValue)}`}
       >
         {formatNumber(successValue)}
       </span>
-      <span className="sticky-window-value-divider" aria-hidden="true">|</span>
+      <span aria-hidden="true">|</span>
       <span
-        className="sticky-window-value sticky-window-value-failure"
         aria-label={`${failureLabel} ${formatNumber(failureValue)}`}
       >
         {formatNumber(failureValue)}
@@ -255,12 +253,12 @@ export default function KeyStickyPanels({
   const stickyNodesLoadingLabel = stickyNodesRefreshing ? loadingStateStrings.refreshing : loadingStateStrings.switching
 
   return (
-    <div className="key-sticky-panels-stack flex min-w-0 flex-col gap-6">
+    <div className="flex min-w-0 flex-col gap-6">
       <Card className="surface panel min-w-0">
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.stickyUsers.title}</CardTitle>
-            <CardDescription className="panel-description">{keyDetailsStrings.stickyUsers.description}</CardDescription>
+            <CardDescription>{keyDetailsStrings.stickyUsers.description}</CardDescription>
           </div>
         </CardHeader>
         <AdminLoadingRegion
@@ -271,7 +269,7 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyUsers.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyUsers.empty}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{keyDetailsStrings.stickyUsers.empty}</EmptyDescription></Empty>
           ) : (
             <Table>
               <TableHeader>
@@ -290,12 +288,12 @@ export default function KeyStickyPanels({
                   return (
                     <TableRow key={item.user.userId}>
                       <TableCell>
-                        <div className="token-owner-block flex flex-col gap-1">
-                          <Button type="button" variant="link" size="sm" className="h-auto p-0 token-owner-trigger" onClick={() => onOpenUser(item.user.userId)}>
-                            <span className="token-owner-link">{stickyUserPrimary(item.user)}</span>
-                            {secondary ? <span className="token-owner-secondary">{secondary}</span> : null}
+                        <div className="flex flex-col gap-1">
+                          <Button type="button" variant="link" size="sm" className="h-auto p-0" onClick={() => onOpenUser(item.user.userId)}>
+                            <span>{stickyUserPrimary(item.user)}</span>
+                            {secondary ? <span>{secondary}</span> : null}
                           </Button>
-                          {!item.user.active ? <span className="token-owner-empty">{keyDetailsStrings.stickyUsers.inactive}</span> : null}
+                          {!item.user.active ? <span>{keyDetailsStrings.stickyUsers.inactive}</span> : null}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -341,7 +339,7 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyUsers.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyUsers.empty}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{keyDetailsStrings.stickyUsers.empty}</EmptyDescription></Empty>
           ) : (
             stickyUsers.map((item) => {
               const secondary = stickyUserSecondary(item.user)
@@ -350,9 +348,9 @@ export default function KeyStickyPanels({
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyUsers.user}</span>
                     <strong>
-                      <Button type="button" variant="link" size="sm" className="h-auto p-0 token-owner-trigger" onClick={() => onOpenUser(item.user.userId)}>
-                        <span className="token-owner-link">{stickyUserPrimary(item.user)}</span>
-                        {secondary ? <span className="token-owner-secondary">{secondary}</span> : null}
+                      <Button type="button" variant="link" size="sm" className="h-auto p-0" onClick={() => onOpenUser(item.user.userId)}>
+                        <span>{stickyUserPrimary(item.user)}</span>
+                        {secondary ? <span>{secondary}</span> : null}
                       </Button>
                     </strong>
                   </div>
@@ -405,10 +403,10 @@ export default function KeyStickyPanels({
           )}
         </AdminLoadingRegion>
         {stickyUsersTotal > stickyUsersPerPage ? (
-          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
-              <span className="table-pagination-summary text-sm text-muted-foreground">
-                <span className="panel-description text-sm text-muted-foreground">
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-2">
+              <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {keyStrings.pagination.page
                     .replace('{page}', String(stickyUsersPage))
                     .replace('{total}', String(stickyUsersTotalPages))}
@@ -416,7 +414,7 @@ export default function KeyStickyPanels({
               </span>
             </div>
             <Pagination
-              className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+              className="mx-0 w-auto justify-start sm:justify-end"
               aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}
             >
               <PaginationContent>
@@ -454,7 +452,7 @@ export default function KeyStickyPanels({
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.stickyNodes.title}</CardTitle>
-            <CardDescription className="panel-description">{keyDetailsStrings.stickyNodes.description}</CardDescription>
+            <CardDescription>{keyDetailsStrings.stickyNodes.description}</CardDescription>
           </div>
         </CardHeader>
         <AdminLoadingRegion
@@ -465,9 +463,9 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyNodes.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyNodes.empty}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{keyDetailsStrings.stickyNodes.empty}</EmptyDescription></Empty>
           ) : (
-            <Table className="key-sticky-nodes-table">
+            <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{keyDetailsStrings.stickyNodes.role}</TableHead>
@@ -482,16 +480,16 @@ export default function KeyStickyPanels({
                   const assignmentSummary = stickyNodeAssignmentSummary(node, keyDetailsStrings.stickyNodes)
                   return (
                     <TableRow key={`${node.role}:${node.key}`}>
-                      <TableCell className="key-sticky-nodes-role-cell">
+                      <TableCell>
                         <StatusBadge tone={node.role === 'primary' ? 'success' : 'info'}>
                           {node.role === 'primary' ? keyDetailsStrings.stickyNodes.primary : keyDetailsStrings.stickyNodes.secondary}
                         </StatusBadge>
                       </TableCell>
-                      <TableCell className="key-sticky-nodes-node-cell">
-                        <div className="sticky-node-summary flex flex-col gap-1" title={`${node.displayName} · ${assignmentSummary.detail}`}>
-                          <strong className="sticky-node-summary-title">{node.displayName}</strong>
-                          <div className="sticky-node-summary-meta flex flex-wrap gap-1 text-xs text-muted-foreground">
-                            <span className="sticky-node-summary-chip rounded border bg-muted px-1.5 py-0.5" aria-label={assignmentSummary.detail}>
+                      <TableCell>
+                        <div className="flex flex-col gap-1" title={`${node.displayName} · ${assignmentSummary.detail}`}>
+                          <strong>{node.displayName}</strong>
+                          <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+                            <span className="rounded border bg-muted px-1.5 py-0.5" aria-label={assignmentSummary.detail}>
                               {assignmentSummary.compact}
                             </span>
                           </div>
@@ -519,7 +517,7 @@ export default function KeyStickyPanels({
           minHeight={220}
         >
           {stickyNodes.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{keyDetailsStrings.stickyNodes.empty}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{keyDetailsStrings.stickyNodes.empty}</EmptyDescription></Empty>
           ) : (
             stickyNodes.map((node) => {
               const assignmentSummary = stickyNodeAssignmentSummary(node, keyDetailsStrings.stickyNodes)
@@ -533,10 +531,10 @@ export default function KeyStickyPanels({
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{keyDetailsStrings.stickyNodes.node}</span>
-                    <div className="sticky-node-summary flex flex-col gap-1" title={`${node.displayName} · ${assignmentSummary.detail}`}>
-                      <strong className="sticky-node-summary-title">{node.displayName}</strong>
-                      <div className="sticky-node-summary-meta flex flex-wrap gap-1 text-xs text-muted-foreground">
-                        <span className="sticky-node-summary-chip rounded border bg-muted px-1.5 py-0.5" aria-label={assignmentSummary.detail}>
+                    <div className="flex flex-col gap-1" title={`${node.displayName} · ${assignmentSummary.detail}`}>
+                      <strong>{node.displayName}</strong>
+                      <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+                        <span className="rounded border bg-muted px-1.5 py-0.5" aria-label={assignmentSummary.detail}>
                           {assignmentSummary.compact}
                         </span>
                       </div>

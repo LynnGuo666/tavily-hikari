@@ -198,7 +198,7 @@ function UserConsoleUtilityMenu(): React.JSX.Element {
             const isActive = option.value === language
             return (
               <DropdownMenuItem key={option.value} onClick={() => handleLanguageSelect(option.value)}>
-                <span className="language-flag" aria-hidden="true">
+                <span aria-hidden="true">
                   <Icon icon={meta.icon} width={18} height={18} />
                 </span>
                 {strings.common[option.labelKey]}

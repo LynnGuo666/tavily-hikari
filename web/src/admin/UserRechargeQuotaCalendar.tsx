@@ -56,19 +56,19 @@ export function UserRechargeQuotaCalendar({
       <div className="panel-header flex flex-col gap-1.5 border-b px-4 pb-4">
         <div>
           <Heading>{strings.title}</Heading>
-          <p className="panel-description text-sm text-muted-foreground">{strings.description}</p>
+          <p className="text-sm text-muted-foreground">{strings.description}</p>
         </div>
       </div>
 
       {rows.length === 0 ? (
-        <Empty className="empty-state"><EmptyDescription>{strings.empty}</EmptyDescription></Empty>
+        <Empty><EmptyDescription>{strings.empty}</EmptyDescription></Empty>
       ) : (
         <>
-          <div className="admin-recharge-quota-table-facts" aria-label={strings.title}>
+          <div aria-label={strings.title}>
             {tableFacts.map((fact) => <span key={fact}>{fact}</span>)}
           </div>
-          <div className="table-scroll-shell admin-recharge-quota-table-scroll">
-            <Table className="admin-recharge-quota-table">
+          <div>
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead scope="col">{strings.monthColumn}</TableHead>

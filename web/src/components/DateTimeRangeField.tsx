@@ -44,11 +44,11 @@ export default function DateTimeRangeField({
   onEndChange,
 }: DateTimeRangeFieldProps): React.JSX.Element {
   return (
-    <FieldSet className={cn('date-time-range-field min-w-0 gap-2', className)}>
-      <FieldLegend variant="label" className={cn('date-time-range-field__label mb-0', hideLabel && 'sr-only')}>{label}</FieldLegend>
+    <FieldSet className={cn('min-w-0 gap-2', className)}>
+      <FieldLegend variant="label" className={cn('mb-0', hideLabel && 'sr-only')}>{label}</FieldLegend>
 
-      <div className="date-time-range-field__control grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
-        <div className="min-w-0 date-time-range-field__segment date-time-range-field__segment--start">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+        <div className="min-w-0">
           <label className="sr-only" htmlFor={startId}>
             {startLabel}
           </label>
@@ -59,15 +59,15 @@ export default function DateTimeRangeField({
             onChange={(event) => onStartChange(event.target.value)}
             max={startMax || undefined}
             disabled={disabled}
-            className="date-time-range-field__input min-w-0"
+            className="min-w-0"
           />
         </div>
 
-        <div className="date-time-range-field__separator text-muted-foreground" aria-hidden="true">
+        <div className="text-muted-foreground" aria-hidden="true">
           {startSeparator}
         </div>
 
-        <div className="min-w-0 date-time-range-field__segment date-time-range-field__segment--end">
+        <div className="min-w-0">
           <label className="sr-only" htmlFor={endId}>
             {endLabel}
           </label>
@@ -78,7 +78,7 @@ export default function DateTimeRangeField({
             onChange={(event) => onEndChange(event.target.value)}
             min={endMin || undefined}
             disabled={disabled}
-            className="date-time-range-field__input min-w-0"
+            className="min-w-0"
           />
         </div>
       </div>

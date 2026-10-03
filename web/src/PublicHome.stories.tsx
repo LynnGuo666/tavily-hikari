@@ -64,7 +64,7 @@ function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): React.JSX.Element
   }
 
   return (
-    <main className="app-shell public-home">
+    <main className="public-home">
       <PublicHomeHeroCard
         publicStrings={strings}
         metricsLoading={false}
@@ -85,7 +85,7 @@ function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): React.JSX.Element
         )}
       />
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="token-access-modal sm:max-w-xl">
+        <DialogContent className="sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>{strings.tokenAccess.dialog.title}</DialogTitle>
             <DialogDescription>{strings.tokenAccess.dialog.description}</DialogDescription>
@@ -121,11 +121,11 @@ function PublicHomeTokenModalStory(args: PublicHomeStoryArgs): React.JSX.Element
           />
           <p className="opacity-80" style={{ marginTop: 14, marginBottom: 0 }}>
             {strings.tokenAccess.dialog.loginHint}{' '}
-            <a href="/auth/linuxdo" className="link">
+            <a href="/auth/linuxdo" className="underline underline-offset-4 hover:text-foreground">
               {strings.linuxDoLogin.button}
             </a>
           </p>
-          <div className="modal-action">
+          <div>
             <Button type='button' variant="outline" onClick={() => setOpen(false)}>
               {strings.tokenAccess.dialog.actions.cancel}
             </Button>
@@ -155,7 +155,7 @@ function PublicHomeMobileGuideMenuProof(): React.JSX.Element {
         <div className="panel-header">
           <div>
             <h2>Mobile guide menu proof</h2>
-            <p className="panel-description">
+            <p>
               The menu stays visible even when the guide card lives inside a clipped mobile shell.
             </p>
           </div>
@@ -192,7 +192,7 @@ function PublicHomeMobileGuideMenuProof(): React.JSX.Element {
                   />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="guide-select-menu p-1">
+              <DropdownMenuContent align="start" className="p-1">
                 {guideProofLabels.map((tab) => (
                   <DropdownMenuItem
                     key={tab.id}
@@ -225,10 +225,10 @@ function PublicHomeGuideTokenRevealedProof(): React.JSX.Element {
   const samples = publicHomeTestables.resolveGuideSamples(guideDescription)
 
   return (
-    <main className="app-shell public-home">
-      <section className="surface panel public-home-guide">
+    <main className="public-home">
+      <section className="surface panel">
         <h2>{strings.guide.title}</h2>
-        <div className="guide-tabs" role="tablist" aria-label={strings.guide.title}>
+        <div role="tablist" aria-label={strings.guide.title}>
           {publicGuideTabs.map((tab) => (
             <button
               key={tab.id}
@@ -242,7 +242,7 @@ function PublicHomeGuideTokenRevealedProof(): React.JSX.Element {
         </div>
 
         <section className="guide-panel" aria-labelledby="public-home-guide-other">
-          <div className="guide-panel-header">
+          <div>
             <h3 id="public-home-guide-other">{guideDescription.title}</h3>
             <Button
               type='button'
@@ -266,18 +266,18 @@ function PublicHomeGuideTokenRevealedProof(): React.JSX.Element {
             ))}
           </ol>
           {samples.map((sample) => (
-            <div key={sample.title} className="guide-sample">
-              <p className="guide-sample-title">{sample.title}</p>
-              <div className="mockup-code relative guide-code-shell">
-                <span className="guide-lang-badge badge badge-outline badge-sm">
+            <div key={sample.title}>
+              <p>{sample.title}</p>
+              <div className="relative overflow-hidden rounded-lg border border-border bg-muted/40">
+                <span className="absolute top-2 left-2 z-10 rounded-md border border-border bg-background/80 px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
                   {(sample.language ?? 'code').toUpperCase()}
                 </span>
-                <pre>
+                <pre className="overflow-x-auto p-4 pt-10 text-xs leading-relaxed [&_.hl-boolean]:text-chart-5 [&_.hl-comment]:text-muted-foreground [&_.hl-key]:text-chart-2 [&_.hl-section]:text-chart-3 [&_.hl-string]:text-chart-4">
                   <code dangerouslySetInnerHTML={{ __html: sample.snippet }} />
                 </pre>
               </div>
               {sample.reference ? (
-                <p className="guide-reference">
+                <p>
                   {strings.guide.dataSourceLabel}
                   <a href={sample.reference.url} target="_blank" rel="noreferrer">
                     {sample.reference.label}

@@ -60,8 +60,8 @@ export function GuideCodeSample({
   sampleKey: string
 }): React.JSX.Element {
   return (
-    <div className="mockup-code guide-code-shell relative overflow-hidden rounded-lg border border-border bg-muted/40">
-      <span className="guide-lang-badge badge badge-outline badge-sm absolute top-2 left-2 z-10 rounded-md border border-border bg-background/80 px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
+    <div className="relative overflow-hidden rounded-lg border border-border bg-muted/40">
+      <span className="absolute top-2 left-2 z-10 rounded-md border border-border bg-background/80 px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
         {(sample.language ?? 'code').toUpperCase()}
       </span>
       <Button
@@ -69,8 +69,8 @@ export function GuideCodeSample({
         variant="outline"
         size="sm"
         className={cn(
-          'guide-copy-button absolute top-1.5 right-1.5 z-10',
-          copyState === 'copied' && 'copied border-success/40 bg-success/10 text-success hover:bg-success/20',
+          'absolute top-1.5 right-1.5 z-10',
+          copyState === 'copied' && 'border-success/40 bg-success/10 text-success hover:bg-success/20',
           copyState === 'error' && 'error border-warning/40 bg-warning/10 text-warning hover:bg-warning/20',
         )}
         aria-label={copyLabel}
@@ -127,7 +127,7 @@ export function MobileGuideDropdown({
           <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" className="text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="guide-select-menu w-56 p-1">
+      <DropdownMenuContent align="start" className="w-56 p-1">
         <DropdownMenuGroup>
           {labels.map((tab) => (
             <DropdownMenuItem

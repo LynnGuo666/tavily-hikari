@@ -211,27 +211,27 @@ export default function AdminRecentRequestsRequestKindFilter({
       groupLabel: string,
       container: RequestKindContainer,
     ) => (
-      <FieldSet className="token-request-kind-group gap-3">
+      <FieldSet className="gap-3">
         <FieldLegend variant="label">{groupLabel}</FieldLegend>
         {options.length === 0 ? (
-          <div className="token-request-kind-empty">{strings.logs.filters.requestTypeEmpty}</div>
+          <div>{strings.logs.filters.requestTypeEmpty}</div>
         ) : (
-          <FieldGroup className="token-request-kind-group-options gap-2">
+          <FieldGroup className="gap-2">
             {options.map((option) => {
               const checked = effectiveSelectedRequestKinds.includes(option.key)
               const content = (
-                <span className="recent-requests-request-kind-option flex flex-1 items-center justify-between gap-3">
+                <span className="flex flex-1 items-center justify-between gap-3">
                   <RequestKindBadge
                     requestKindKey={option.key}
                     requestKindLabel={option.label}
                     size="sm"
                   />
-                  <span className="recent-requests-request-kind-count text-xs text-muted-foreground">{`x${option.count ?? 0}`}</span>
+                  <span className="text-xs text-muted-foreground">{`x${option.count ?? 0}`}</span>
                 </span>
               )
 
               return (
-                <Field key={option.key} orientation="horizontal" className="recent-requests-request-kind-item gap-2">
+                <Field key={option.key} orientation="horizontal" className="gap-2">
                   <Checkbox id={`${triggerId}-${container}-${option.key}`} aria-label={option.label} checked={checked} onCheckedChange={() => onToggleRequestKind(option.key)} />
                   <FieldLabel htmlFor={`${triggerId}-${container}-${option.key}`} className="min-w-0 flex-1">{content}</FieldLabel>
                 </Field>
@@ -252,22 +252,21 @@ export default function AdminRecentRequestsRequestKindFilter({
           `token-request-kind-panel--${container}`,
         ].join(' ')}
       >
-        <div className="token-request-kind-panel-header flex items-center justify-between gap-2">
-          <div className="token-request-kind-panel-title">{strings.logs.filters.requestType}</div>
+        <div className="flex items-center justify-between gap-2">
+          <div>{strings.logs.filters.requestType}</div>
           <Button
             type="button"
             variant="ghost"
             size="xs"
-            className="token-request-kind-clear"
             disabled={requestKindClearDisabled}
             onClick={handleClearRequestKinds}
           >
             {strings.users.clear}
           </Button>
         </div>
-        <div className="token-request-kind-layout flex flex-col gap-4">
-          <FieldGroup className="token-request-kind-quick-filters grid gap-3 sm:grid-cols-2">
-            <FieldSet className="token-request-kind-quick-cell gap-2">
+        <div className="flex flex-col gap-4">
+          <FieldGroup className="grid gap-3 sm:grid-cols-2">
+            <FieldSet className="gap-2">
               <FieldLegend variant="label">
                 {strings.logs.filters.billingGroup}
               </FieldLegend>
@@ -278,11 +277,10 @@ export default function AdminRecentRequestsRequestKindFilter({
                 }
                 options={requestKindBillingQuickFilterOptions}
                 ariaLabel={strings.logs.filters.billingGroup}
-                className="token-request-quick-segmented"
                 smallViewportBehavior="buttons"
               />
             </FieldSet>
-            <FieldSet className="token-request-kind-quick-cell gap-2">
+            <FieldSet className="gap-2">
               <FieldLegend variant="label">
                 {strings.logs.filters.protocolGroup}
               </FieldLegend>
@@ -293,12 +291,11 @@ export default function AdminRecentRequestsRequestKindFilter({
                 }
                 options={requestKindProtocolQuickFilterOptions}
                 ariaLabel={strings.logs.filters.protocolGroup}
-                className="token-request-quick-segmented"
                 smallViewportBehavior="buttons"
               />
             </FieldSet>
           </FieldGroup>
-          <div className="token-request-kind-columns grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             {renderRequestKindOptionsList(requestKindColumnGroups.api, 'API', container)}
             {renderRequestKindOptionsList(requestKindColumnGroups.mcp, 'MCP', container)}
           </div>
@@ -322,7 +319,7 @@ export default function AdminRecentRequestsRequestKindFilter({
   )
 
   return (
-    <Field className="recent-requests-filter-field recent-requests-filter-field--request-kind min-w-0">
+    <Field className="min-w-0">
       <FieldLabel htmlFor={triggerId}>{strings.logs.filters.requestType}</FieldLabel>
       {isSmallViewport ? (
         <Drawer
@@ -333,13 +330,13 @@ export default function AdminRecentRequestsRequestKindFilter({
           <DrawerTrigger asChild><Button
             type="button"
             id={triggerId}
-            variant="outline" className="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu w-full justify-between"
+            variant="outline" className="w-full justify-between"
             aria-label={`${strings.logs.filters.requestType}: ${requestKindTriggerSummary}`}
           >
-            <span className="recent-requests-filter-select-text truncate">{requestKindTriggerSummary}</span>
+            <span className="truncate">{requestKindTriggerSummary}</span>
             <Icon icon="mdi:chevron-down" data-icon="inline-end" aria-hidden="true" />
           </Button></DrawerTrigger>
-          <DrawerContent className="token-request-kind-drawer max-h-[85dvh]">
+          <DrawerContent className="max-h-[85dvh]">
             <DrawerHeader className="sr-only">
               <DrawerTitle>{strings.logs.filters.requestType}</DrawerTitle>
               <DrawerDescription>{strings.logs.descriptionFallback}</DrawerDescription>
@@ -358,17 +355,17 @@ export default function AdminRecentRequestsRequestKindFilter({
             <Button
               type="button"
               id={triggerId}
-              variant="outline" className="recent-requests-filter-select-trigger recent-requests-filter-select-trigger--menu w-full justify-between"
+              variant="outline" className="w-full justify-between"
               aria-label={`${strings.logs.filters.requestType}: ${requestKindTriggerSummary}`}
             >
-              <span className="recent-requests-filter-select-text truncate">{requestKindTriggerSummary}</span>
+              <span className="truncate">{requestKindTriggerSummary}</span>
               <Icon icon="mdi:chevron-down" data-icon="inline-end" aria-hidden="true" />
             </Button>
           </PopoverTrigger>
           <PopoverContent
             align="start"
             aria-label={strings.logs.filters.requestType}
-            className="token-request-kind-menu recent-requests-filter-menu recent-requests-filter-menu--request-kind w-[min(36rem,calc(100vw-2rem))] max-h-[70dvh] overflow-y-auto p-4"
+            className="w-[min(36rem,calc(100vw-2rem))] max-h-[70dvh] overflow-y-auto p-4"
           >
             {renderRequestKindFiltersContent('dropdown')}
           </PopoverContent>

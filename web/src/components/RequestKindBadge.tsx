@@ -140,14 +140,14 @@ export function RequestKindBadge({
     >
       {source && detail ? (
         <>
-          <span className="request-kind-badge__source">{source}</span>
-          <span className="request-kind-badge__separator" aria-hidden="true">
+          <span>{source}</span>
+          <span aria-hidden="true">
             |
           </span>
-          <span className="request-kind-badge__detail truncate">{detail}</span>
+          <span className="truncate">{detail}</span>
         </>
       ) : (
-        <span className="request-kind-badge__detail">{safeLabel}</span>
+        <span>{safeLabel}</span>
       )}
     </Badge>
   )

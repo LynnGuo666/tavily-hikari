@@ -166,10 +166,10 @@ function RankingsLoadingCard({
       <CardHeader className="panel-header border-b">
         <div>
           <CardTitle role="heading" aria-level={3}>{title}</CardTitle>
-          <CardDescription className="panel-description">{description}</CardDescription>
+          <CardDescription>{description}</CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="admin-ranking-card-body flex min-w-0 flex-col gap-3">
+      <CardContent className="flex min-w-0 flex-col gap-3">
         <div
           className="admin-ranking-skeleton-stage"
           role="status"
@@ -177,14 +177,14 @@ function RankingsLoadingCard({
           style={{ minHeight: chartHeight, height: chartHeight }}
         >
           <span className="sr-only">{strings.loading}</span>
-          <div className="admin-ranking-skeleton-list flex flex-col gap-3" aria-hidden="true">
+          <div className="flex flex-col gap-3" aria-hidden="true">
             {skeletonRows.map((row) => (
-              <div key={`${title}-${row.rank}`} className="admin-ranking-skeleton-item flex items-center gap-2">
-                <span className="admin-ranking-skeleton-rank">{row.rank}.</span>
-                <span className="admin-ranking-skeleton-avatar size-6 shrink-0 rounded-full bg-muted" />
-                <span className="admin-ranking-skeleton-name h-3 rounded bg-muted" style={{ width: row.nameWidth }} />
-                <span className="admin-ranking-skeleton-track h-6 flex-1 rounded bg-muted/50">
-                  <span className="admin-ranking-skeleton-bar block h-full rounded bg-muted" style={{ width: row.barWidth }} />
+              <div key={`${title}-${row.rank}`} className="flex items-center gap-2">
+                <span>{row.rank}.</span>
+                <span className="size-6 shrink-0 rounded-full bg-muted" />
+                <span className="h-3 rounded bg-muted" style={{ width: row.nameWidth }} />
+                <span className="h-6 flex-1 rounded bg-muted/50">
+                  <span className="block h-full rounded bg-muted" style={{ width: row.barWidth }} />
                 </span>
               </div>
             ))}
@@ -363,24 +363,23 @@ export function RankingsMeta({
   const pendingCopy = !snapshot ? strings.awaitingFirstSnapshot : null
 
   return (
-    <div className="admin-rankings-meta flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-xs" aria-live="polite">
-      <span className="admin-rankings-meta-item flex items-center gap-2 text-xs text-muted-foreground">
-        <Icon icon="mdi:refresh" width={16} height={16} className="admin-rankings-meta-icon" aria-hidden="true" />
-        <span className="admin-rankings-meta-copy flex flex-col">{refreshCopy}</span>
+    <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-xs" aria-live="polite">
+      <span className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
+        <span className="flex flex-col">{refreshCopy}</span>
       </span>
       {updatedCopy || pendingCopy ? (
-        <span className="admin-rankings-meta-item flex items-center gap-2 text-xs text-muted-foreground">
+        <span className="flex items-center gap-2 text-xs text-muted-foreground">
           <Icon
             icon="mdi:clock-time-four-outline"
             width={16}
             height={16}
-            className="admin-rankings-meta-icon"
             aria-hidden="true"
           />
-          <span className="admin-rankings-meta-copy flex flex-col">{updatedCopy ?? pendingCopy}</span>
+          <span className="flex flex-col">{updatedCopy ?? pendingCopy}</span>
         </span>
       ) : null}
-      <span className={`admin-ranking-connection inline-flex items-center gap-2 ${connectionToneClass(connectionState)}`}>
+      <span className={`inline-flex items-center gap-2 ${connectionToneClass(connectionState)}`}>
         <Icon
           icon={connectionIcon(connectionState)}
           width={16}
@@ -446,11 +445,11 @@ export default function AdminUserRankingsPage({
   const showStaleHint = snapshot?.stale ?? false
 
   return (
-    <section className="admin-rankings-page flex min-w-0 flex-col gap-4">
+    <section className="flex min-w-0 flex-col gap-4">
       {showHeader ? (
         <Card className="surface panel">
-          <CardHeader className="panel-header border-b admin-rankings-header">
-            <div className="admin-rankings-header-row">
+          <CardHeader className="panel-header border-b">
+            <div>
               <CardTitle role="heading" aria-level={2}>{strings.title}</CardTitle>
               <RankingsMeta
                 strings={strings}
@@ -461,11 +460,11 @@ export default function AdminUserRankingsPage({
             </div>
           </CardHeader>
           {error ? (
-            <div className={`alert ${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
+            <div className={`${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
               <div>{error}</div>
-              {snapshot ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
+              {snapshot ? <div className="text-xs text-warning">{strings.staleHint}</div> : null}
               {!snapshot ? (
-                <div className="admin-ranking-inline-actions flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <Button type="button" variant="outline" size="xs" onClick={onRetry}>
                     {strings.retry}
                   </Button>
@@ -477,7 +476,7 @@ export default function AdminUserRankingsPage({
       ) : null}
 
       {snapshot || showLoadingSkeleton ? (
-        <section className="admin-rankings-toolbar-band" aria-label={strings.tabsLabel}>
+        <section aria-label={strings.tabsLabel}>
           <SegmentedTabs<RankingTabKey>
             className="admin-rankings-tab-strip"
             value={activeTab}
@@ -490,11 +489,11 @@ export default function AdminUserRankingsPage({
       ) : null}
 
       {!showHeader && error ? (
-        <div className={`alert ${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
+        <div className={`${snapshot ? '' : 'border-destructive/30 bg-destructive/10 text-destructive'}`}>
           <div>{error}</div>
-          {snapshot ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
+          {snapshot ? <div className="text-xs text-warning">{strings.staleHint}</div> : null}
           {!snapshot ? (
-            <div className="admin-ranking-inline-actions flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Button type="button" variant="outline" size="xs" onClick={onRetry}>
                 {strings.retry}
               </Button>
@@ -503,11 +502,11 @@ export default function AdminUserRankingsPage({
         </div>
       ) : null}
 
-      {!error && showStaleHint ? <div className="admin-ranking-stale-hint text-xs text-warning">{strings.staleHint}</div> : null}
+      {!error && showStaleHint ? <div className="text-xs text-warning">{strings.staleHint}</div> : null}
 
       {showLoadingSkeleton ? (
-        <section className="admin-ranking-window flex min-w-0 flex-col gap-2">
-          <div className="admin-ranking-window-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
+        <section className="flex min-w-0 flex-col gap-2">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {loadingCards.map((card) => (
               <RankingsLoadingCard
                 key={card.key}
@@ -519,8 +518,8 @@ export default function AdminUserRankingsPage({
           </div>
         </section>
       ) : snapshot && renderedCards.length > 0 ? (
-        <section className="admin-ranking-window flex min-w-0 flex-col gap-2">
-          <div className="admin-ranking-window-grid grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
+        <section className="flex min-w-0 flex-col gap-2">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {renderedCards.map((card) => (
               <RankingsChartCard
                 key={card.key}

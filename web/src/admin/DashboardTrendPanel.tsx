@@ -74,7 +74,7 @@ function DashboardChartSeriesButton({
       onPressedChange={onClick}
       pressed={active}
     >
-      <span className="dashboard-chart-series-chip-swatch size-2.5 rounded-full" style={{ backgroundColor: color }} aria-hidden="true" />
+      <span className="size-2.5 rounded-full" style={{ backgroundColor: color }} aria-hidden="true" />
       <span>{label}</span>
     </Toggle>
   )
@@ -223,15 +223,15 @@ export default function DashboardTrendPanel({
     : new Date(rollupIntegrity.lastVerifiedAt * 1000).toLocaleString()
 
   return (
-    <Card className="surface panel dashboard-trend-panel">
-      <CardHeader className="panel-header border-b dashboard-trend-header">
+    <Card className="surface panel">
+      <CardHeader className="panel-header border-b">
         <div>
           <CardTitle role="heading" aria-level={2}>{strings.trendsTitle}</CardTitle>
-          <CardDescription className="panel-description">{strings.trendsDescription}</CardDescription>
+          <CardDescription>{strings.trendsDescription}</CardDescription>
         </div>
-        <div className="dashboard-trend-meta flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
           <span>{chartMeta}</span>
-          <span className={`dashboard-rollup-integrity is-${rollupIntegrity.state}`}>
+          <span className={`is-${rollupIntegrity.state}`}>
             {integrityLabel}
             {integrityTimestamp && ` · ${strings.chartIntegrityLastVerified.replace('{time}', integrityTimestamp)}`}
           </span>
@@ -239,16 +239,16 @@ export default function DashboardTrendPanel({
       </CardHeader>
 
       <SegmentedTabs<DashboardHourlyChartMode>
-        className="dashboard-trend-segmented px-4"
+        className="px-4"
         value={chartMode}
         onChange={setChartMode}
         options={modeOptions}
         ariaLabel={strings.trendsTitle}
       />
 
-      <div className="dashboard-chart-toolbar flex flex-wrap items-center justify-between gap-2 px-4">
-        <span className="dashboard-chart-toolbar-label text-sm font-medium">{chartSeriesLabel}</span>
-        <div className="dashboard-chart-series-list flex flex-wrap items-center gap-x-4 gap-y-1" role="group" aria-label={chartSeriesLabel}>
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4">
+        <span className="text-sm font-medium">{chartSeriesLabel}</span>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1" role="group" aria-label={chartSeriesLabel}>
           {(chartMode === 'results' || chartMode === 'resultsArea'
             ? DASHBOARD_RESULT_SERIES_ORDER.map((seriesId) => (
                 <DashboardChartSeriesButton
@@ -283,9 +283,9 @@ export default function DashboardTrendPanel({
 
       <CardContent className="dashboard-chart-shell min-w-0">
         {!overviewReady ? (
-          <Empty className="empty-state"><EmptyDescription>{strings.loading}</EmptyDescription></Empty>
+          <Empty><EmptyDescription>{strings.loading}</EmptyDescription></Empty>
         ) : showEmpty ? (
-          <Empty className="empty-state"><EmptyDescription>{strings.chartEmpty}</EmptyDescription></Empty>
+          <Empty><EmptyDescription>{strings.chartEmpty}</EmptyDescription></Empty>
         ) : (
           <ChartContainer config={chartConfig} className="h-80 w-full aspect-auto">
             {isAreaMode ? (

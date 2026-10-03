@@ -162,7 +162,7 @@ function SystemSettingsHaPageCanvas(): React.JSX.Element {
   const admin = useTranslate().admin
   return (
     <AdminPageFrame activeModule="system-settings-ha">
-      <section className="admin-settings-ha-page">
+      <section>
         <HaStatusBanner
           status={systemSettingsHaStatus}
           audience="admin"

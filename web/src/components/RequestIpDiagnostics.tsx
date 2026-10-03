@@ -18,7 +18,7 @@ export default function RequestIpDiagnostics({
     return null
   }
   return (
-    <div className="log-details-headers grid min-w-0 gap-3 lg:grid-cols-2">
+    <div className="grid min-w-0 gap-3 lg:grid-cols-2">
       <RequestLogDetailSection title={language === 'zh' ? 'IP 诊断' : 'IP diagnostics'}>
         <ul>
           <li>

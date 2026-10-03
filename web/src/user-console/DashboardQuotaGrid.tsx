@@ -51,13 +51,13 @@ function QuotaStatCard({
   const ratio = quotaRatio(used, limit)
 
   return (
-    <div className="access-stat quota-stat-card flex min-w-0 flex-col gap-2">
-      <div className="quota-stat-label">
+    <div className="flex min-w-0 flex-col gap-2">
+      <div>
         <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
         </span>
       </div>
-      <div className="quota-stat-value flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         <div className="text-2xl font-semibold tabular-nums">
           {formatNumber(used)}
           <span className="ml-1 text-sm font-normal text-muted-foreground">/ {formatNumber(limit)}</span>
@@ -87,18 +87,18 @@ export default function DashboardQuotaGrid({
 }: DashboardQuotaGridProps): React.JSX.Element {
   const helpLabels: Record<'hourly' | 'daily' | 'monthly', ReactNode> = {
     hourly: (
-      <UsageMetricLabel label={text.hourly} kind="businessCalls1h" language={language} className="quota-stat-label" />
+      <UsageMetricLabel label={text.hourly} kind="businessCalls1h" language={language} />
     ),
     daily: (
-      <UsageMetricLabel label={text.daily} kind="dailyCredits" language={language} className="quota-stat-label" />
+      <UsageMetricLabel label={text.daily} kind="dailyCredits" language={language} />
     ),
     monthly: (
-      <UsageMetricLabel label={text.monthly} kind="monthlyCredits" language={language} className="quota-stat-label" />
+      <UsageMetricLabel label={text.monthly} kind="monthlyCredits" language={language} />
     ),
   }
 
   return (
-    <div className="access-stats grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <QuotaStatCard
         label={rateLabel}
         used={rate.used}

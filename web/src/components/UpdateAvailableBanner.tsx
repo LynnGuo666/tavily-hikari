@@ -49,11 +49,11 @@ export default function UpdateAvailableBanner({
       aria-live="polite"
     >
       {loading
-        ? <Loader2 className="update-banner-status update-banner-spinner animate-spin" aria-hidden="true" />
+        ? <Loader2 className="animate-spin" aria-hidden="true" />
         : isFailed
-          ? <AlertTriangle className="update-banner-status text-destructive" aria-hidden="true" />
-          : <DownloadCloud className="update-banner-status" aria-hidden="true" />}
-      <AlertTitle className="update-banner-text">{isFailed ? strings.failureTitle : strings.title}</AlertTitle>
+          ? <AlertTriangle className="text-destructive" aria-hidden="true" />
+          : <DownloadCloud aria-hidden="true" />}
+      <AlertTitle>{isFailed ? strings.failureTitle : strings.title}</AlertTitle>
       <AlertDescription>{description}</AlertDescription>
       <div className="update-banner-actions flex flex-wrap items-center gap-2 pt-1 group-has-[>svg]/alert:col-start-2">
         <Button
@@ -62,7 +62,7 @@ export default function UpdateAvailableBanner({
           disabled={isActivating}
           aria-busy={loading}
         >
-          {loading ? <Loader2 className="update-banner-button-spinner animate-spin" size={16} aria-hidden="true" /> : <RefreshCw size={16} aria-hidden="true" />}
+          {loading ? <Loader2 className="animate-spin" size={16} aria-hidden="true" /> : <RefreshCw size={16} aria-hidden="true" />}
           {loading ? strings.refreshing : isFailed ? strings.retry : strings.refresh}
         </Button>
         <Button type="button" variant="ghost" onClick={onDismiss} disabled={isActivating}>

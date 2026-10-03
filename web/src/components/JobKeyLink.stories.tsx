@@ -46,13 +46,13 @@ function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
         <div className="panel-header">
           <div>
             <h2>Desktop key link with group bubble</h2>
-            <p className="panel-description">
+            <p>
               This mirrors the desktop jobs table state: the key links to <code>{detailPath}</code> and shows the
               group bubble.
             </p>
           </div>
         </div>
-        <div className="storybook-jobs-key-showcase" style={{ display: 'grid', gap: 12 }}>
+        <div style={{ display: 'grid', gap: 12 }}>
           <div
             style={{
               display: 'flex',
@@ -67,7 +67,7 @@ function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
           >
             <div style={{ display: 'grid', gap: 4 }}>
               <strong>Quota sync / row key cell</strong>
-              <span className="panel-description">Bubble content should read the key group on desktop hover/focus.</span>
+              <span>Bubble content should read the key group on desktop hover/focus.</span>
             </div>
             <JobKeyLink
               keyId="7QZ5"
@@ -89,7 +89,7 @@ function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
           >
             <strong>Expanded details panel key field</strong>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <span className="panel-description">Destination:</span>
+              <span>Destination:</span>
               <code>{detailPath}</code>
               <JobKeyLink
                 keyId="7QZ5"
@@ -106,7 +106,7 @@ function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
         <div className="panel-header">
           <div>
             <h2>Mobile keeps navigation without the bubble</h2>
-            <p className="panel-description">
+            <p>
               The mobile jobs card still links to the same key details page, but does not render the group bubble.
             </p>
           </div>
@@ -123,7 +123,7 @@ function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-            <span className="panel-description">{admin.jobs.table.key}</span>
+            <span>{admin.jobs.table.key}</span>
             <JobKeyLink
               keyId="7QZ5"
               keyGroup="ops"
@@ -133,7 +133,7 @@ function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
             />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-            <span className="panel-description">Bubble</span>
+            <span>Bubble</span>
             <strong>No</strong>
           </div>
         </div>
@@ -143,11 +143,11 @@ function JobKeyLinkShowcaseCanvas(): React.JSX.Element {
         <div className="panel-header">
           <div>
             <h2>Jobs without a key stay inert</h2>
-            <p className="panel-description">Rows with no key keep the original dash placeholder and do not become links.</p>
+            <p>Rows with no key keep the original dash placeholder and do not become links.</p>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span className="panel-description">{admin.jobs.table.key}</span>
+          <span>{admin.jobs.table.key}</span>
           <JobKeyLink
             keyId={null}
             keyGroup={null}
@@ -176,7 +176,7 @@ function JobKeyLinkBubbleProofCanvas(): React.JSX.Element {
         <div className="panel-header">
           <div>
             <h2>Desktop group bubble proof</h2>
-            <p className="panel-description">
+            <p>
               Storybook-only proof view. The hover/focus state is forced visible so the implemented bubble can be seen
               in a static screenshot.
             </p>
@@ -184,7 +184,6 @@ function JobKeyLinkBubbleProofCanvas(): React.JSX.Element {
         </div>
 
         <div
-          className="storybook-jobs-key-bubble-proof"
           style={{
             display: 'grid',
             placeItems: 'center',

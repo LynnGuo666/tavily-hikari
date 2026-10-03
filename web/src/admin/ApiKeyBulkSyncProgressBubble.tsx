@@ -220,7 +220,7 @@ export function AnchoredApiKeyBulkSyncProgressBubble({
   return createPortal(
     <div
       ref={layerRef}
-      className={`layer-popover ${className ?? ''}`}
+      className={`${className ?? ''}`}
       data-placement={position?.placement ?? 'bottom'}
       style={{
         position: 'fixed',

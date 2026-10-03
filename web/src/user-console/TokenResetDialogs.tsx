@@ -60,9 +60,9 @@ export default function TokenResetDialogs({
             </DialogDescription>
           </DialogHeader>
           {resetTokenError ? (
-            <p className="user-console-token-error text-sm text-destructive" role="alert">{resetTokenError}</p>
+            <p className="text-sm text-destructive" role="alert">{resetTokenError}</p>
           ) : null}
-          <DialogFooter className="table-actions justify-end">
+          <DialogFooter className="justify-end">
             <Button type="button" variant="outline" onClick={onCloseResetTokenDialog} disabled={resettingTokenId != null}>
               {text.tokens.resetDialog.cancel}
             </Button>
@@ -97,12 +97,12 @@ export default function TokenResetDialogs({
             ref={resetResultFieldRef}
             readOnly
             rows={3}
-            className="manual-copy-bubble-field min-h-[96px] resize-none font-mono text-xs"
+            className="min-h-[96px] resize-none font-mono text-xs"
             value={resetResultToken ?? ''}
             onClick={(event) => selectAllReadonlyText(event.currentTarget)}
             onFocus={(event) => selectAllReadonlyText(event.currentTarget)}
           />
-          <DialogFooter className="table-actions justify-end">
+          <DialogFooter className="justify-end">
             <Button type="button" variant="outline" onClick={onCloseResetResult}>
               {text.tokens.resetResult.close}
             </Button>

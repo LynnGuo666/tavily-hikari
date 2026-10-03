@@ -44,7 +44,7 @@ export default function ThemeToggle(): React.JSX.Element {
           title={copy.trigger}
         >
           <ThemeIcon mode={mode} />
-          <span className="theme-toggle-label">{copy.trigger}</span>
+          <span>{copy.trigger}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">

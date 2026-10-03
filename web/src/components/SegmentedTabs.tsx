@@ -50,7 +50,7 @@ export default function SegmentedTabs<T extends string = string>({
     const selectedLabel = selectedOption ? labelToPlainText(selectedOption.label) : ''
 
     return (
-      <div className={cn('segmented-tabs segmented-tabs-mobile w-full', className)}>
+      <div className={cn('segmented-tabs w-full', className)}>
         <Select value={value} onValueChange={(next) => onChange(next as T)} disabled={disabled}>
           <SelectTrigger aria-label={ariaLabel} className="w-full" disabled={disabled}>
             <SelectValue>{selectedLabel || value}</SelectValue>

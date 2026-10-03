@@ -72,7 +72,7 @@ export default function SearchableFacetSelect({
       <span
         className={cn(
           'searchable-facet-select__label',
-          labelVariant === 'mono' && 'searchable-facet-select__label--mono font-mono',
+          labelVariant === 'mono' && 'font-mono',
         )}
       >
         {label}
@@ -101,7 +101,7 @@ export default function SearchableFacetSelect({
           aria-label={triggerAriaLabel}
           disabled={disabled}
         >
-          <span className="searchable-facet-select__summary truncate">{summary}</span>
+          <span className="truncate">{summary}</span>
           <Icon icon="mdi:chevron-down" data-icon="inline-end" aria-hidden="true" />
         </Button>
       </PopoverTrigger>
@@ -121,9 +121,9 @@ export default function SearchableFacetSelect({
               <CommandGroup>
                 {filteredOptions.map((option) => (
                   <CommandItem key={option.value} value={option.value} data-checked={value === option.value} onSelect={() => selectValue(option.value)}>
-                    <span className="searchable-facet-select__option-body flex min-w-0 flex-1 items-center justify-between gap-2">
+                    <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
                       {renderLabel(option)}
-                      {typeof option.count === 'number' ? <span className="searchable-facet-select__count text-xs text-muted-foreground">{`x${option.count}`}</span> : null}
+                      {typeof option.count === 'number' ? <span className="text-xs text-muted-foreground">{`x${option.count}`}</span> : null}
                     </span>
                   </CommandItem>
                 ))}

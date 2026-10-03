@@ -96,7 +96,7 @@ export default function PressureAnalysisScreen({ snapshot, loading, error, langu
 
   if (loading && !snapshot) return <AdminLoadingRegion loadState="initial_loading" loadingLabel={strings.loading} minHeight={420} />
   if (!snapshot) return (
-    <Card className="pressure-analysis-empty-state" role={error ? 'alert' : undefined}>
+    <Card role={error ? 'alert' : undefined}>
       <CardHeader><CardTitle>{error ? strings.errorTitle : strings.emptyTitle}</CardTitle>
         <CardDescription>{error ?? strings.emptyDescription}</CardDescription></CardHeader>
       {error ? <CardContent><Button variant="outline" size="sm" onClick={onRetry}>{strings.retry}</Button></CardContent> : null}

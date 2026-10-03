@@ -32,14 +32,14 @@ function LanguageSwitcher(): React.JSX.Element {
           title={strings.common.languageLabel}
         >
           <span className="sr-only">{strings.common.languageLabel}</span>
-          <span className="language-flag" aria-hidden="true">
+          <span aria-hidden="true">
             <Icon icon={activeMeta.icon} width={18} height={18} />
           </span>
-          <span className="language-short">{activeMeta.short}</span>
+          <span>{activeMeta.short}</span>
           <Icon icon="mdi:chevron-down" width={16} height={16} aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="language-switcher-menu w-44 p-1">
+      <DropdownMenuContent align="end" className="w-44 p-1">
         <DropdownMenuGroup>
           {languageOptions.map((option) => {
             const meta = LANGUAGE_META[option.value]
@@ -47,13 +47,13 @@ function LanguageSwitcher(): React.JSX.Element {
             return (
               <DropdownMenuItem
                 key={option.value}
-                className={`language-option cursor-pointer ${isActive ? 'active' : ''}`}
+                className={`cursor-pointer ${isActive ? 'active' : ''}`}
                 onClick={() => handleSelect(option.value as Language)}
               >
-                <span className="language-flag" aria-hidden="true">
+                <span aria-hidden="true">
                   <Icon icon={meta.icon} width={18} height={18} />
                 </span>
-                <span className="language-full">{strings.common[option.labelKey]}</span>
+                <span>{strings.common[option.labelKey]}</span>
               </DropdownMenuItem>
             )
           })}

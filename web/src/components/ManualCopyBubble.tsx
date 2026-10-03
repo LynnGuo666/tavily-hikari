@@ -121,16 +121,16 @@ export default function ManualCopyBubble({
       }}
       data-placement={position?.placement ?? 'bottom'}
     >
-      <div className="manual-copy-bubble-header flex items-start justify-between gap-3">
-        <div className="manual-copy-bubble-copy min-w-0 space-y-1">
-          <strong id={titleId} className="manual-copy-bubble-title font-medium">{title}</strong>
-          <p className="manual-copy-bubble-description text-xs text-muted-foreground">{description}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 space-y-1">
+          <strong id={titleId} className="font-medium">{title}</strong>
+          <p className="text-xs text-muted-foreground">{description}</p>
         </div>
-        <Button type="button" variant="ghost" size="icon-sm" className="manual-copy-bubble-close" onClick={onClose} aria-label={closeLabel}>
+        <Button type="button" variant="ghost" size="icon-sm" onClick={onClose} aria-label={closeLabel}>
           <X className="h-4 w-4" />
         </Button>
       </div>
-      <label htmlFor={fieldId} className="manual-copy-bubble-label text-sm font-medium">{fieldLabel}</label>
+      <label htmlFor={fieldId} className="text-sm font-medium">{fieldLabel}</label>
       {multiline ? (
         <Textarea
           {...fieldProps}
@@ -148,7 +148,7 @@ export default function ManualCopyBubble({
           type="text"
         />
       )}
-      <div className="manual-copy-bubble-actions flex justify-end">
+      <div className="flex justify-end">
         <Button type="button" variant="outline" size="sm" onClick={onClose}>
           {closeLabel}
         </Button>

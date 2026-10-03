@@ -233,10 +233,10 @@ function RegistrationIpIndicator(props: {
   });
 
   return (
-    <span className="key-validation-detail">
+    <span>
       <span
         ref={triggerRef}
-        className="key-validation-detail-trigger inline-flex"
+        className="inline-flex"
         tabIndex={0}
         aria-label={accessibleLabel}
         data-registration-ip-trigger="true"
@@ -257,7 +257,7 @@ function RegistrationIpIndicator(props: {
         ? createPortal(
             <span
               ref={bubbleRef}
-              className="key-validation-bubble layer-popover"
+              className="key-validation-bubble"
               role="tooltip"
               data-placement={position?.placement ?? "bottom"}
               style={{
@@ -268,19 +268,19 @@ function RegistrationIpIndicator(props: {
                 ["--key-validation-bubble-arrow-left" as string]: `${position?.arrowOffset ?? 40}px`,
               }}
             >
-              <span className="key-validation-bubble-line">
-                <span className="key-validation-bubble-label">{props.ipLabel}</span>
-                <span className="key-validation-bubble-value">{props.ip}</span>
+              <span>
+                <span>{props.ipLabel}</span>
+                <span>{props.ip}</span>
               </span>
               {region ? (
-                <span className="key-validation-bubble-line">
-                  <span className="key-validation-bubble-label">{props.regionLabel}</span>
-                  <span className="key-validation-bubble-value">{region}</span>
+                <span>
+                  <span>{props.regionLabel}</span>
+                  <span>{region}</span>
                 </span>
               ) : null}
               {proxyValue ? (
-                <span className="key-validation-bubble-line">
-                  <span className="key-validation-bubble-label">{props.proxyLabelText}</span>
+                <span>
+                  <span>{props.proxyLabelText}</span>
                   <span
                     className={`key-validation-bubble-value${proxyValueToneClass ? ` ${proxyValueToneClass}` : ""}`}
                   >
@@ -414,7 +414,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
   const content = (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="key-validation-header px-4 md:px-5 pt-4 pb-3 border-b border-base-200/70">
+      <div className="px-4 md:px-5 pt-4 pb-3 border-b">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h3 className="m-0 font-extrabold text-lg md:text-xl tracking-tight">
@@ -435,7 +435,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
               type="button"
               variant="ghost"
               size="icon"
-              className="key-validation-close-button h-9 w-9 rounded-full"
+              className="h-9 w-9 rounded-full"
               onClick={props.onClose}
               title={actions.close}
             >
@@ -448,7 +448,6 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
           <div className="mt-3">
             <div className="flex items-start justify-between gap-3">
               <div
-                className="key-validation-segmented-bar"
                 role="progressbar"
                 aria-label={checkedText}
                 aria-valuemin={0}
@@ -461,7 +460,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                   return (
                     <span
                       key={segment.key}
-                      className={`key-validation-segment ${segment.toneClass}`}
+                      className={`${segment.toneClass}`}
                       style={{ width: `${width}%` }}
                       title={`${segment.label}: ${segment.count}`}
                     />
@@ -469,7 +468,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                 })}
               </div>
             </div>
-            <div className="mt-2 key-validation-segment-stats">
+            <div className="mt-2">
               {statusSegments.map((segment) => {
                 const hasRate = segmentTotal > 0;
                 const rate = hasRate ? Math.round((segment.count / segmentTotal) * 100) : 0;
@@ -481,13 +480,14 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                     variant="ghost"
                     size="sm"
                     key={segment.key}
-                    className={`key-validation-segment-stat ${segment.toneClass}${hasRate ? " has-rate" : ""}${
-                      isActive ? " is-active" : ""
+                    className={`${segment.toneClass}text-muted-foreground data-[active=true]:text-foreground data-[active=true]:bg-accent${
+                      hasRate ? " has-rate" : ""
                     }${isDimmed ? " is-dimmed" : ""}`}
+                    data-active={isActive || undefined}
                     onClick={() => setActiveFilter((prev) => (prev === segment.key ? null : segment.key))}
                     aria-pressed={isActive}
                   >
-                    <span className="key-validation-segment-dot" />
+                    <span />
                     {segment.label}:{" "}
                     <span className="font-mono tabular-nums">{formatNumber(segment.count)}</span>
                   </Button>
@@ -510,13 +510,12 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                 type="button"
                 variant="ghost"
                 size="sm"
-                className={`key-validation-segment-stat is-duplicate${
-                  activeFilter === "duplicate" ? " is-active" : ""
-                }${activeFilter && activeFilter !== "duplicate" ? " is-dimmed" : ""}`}
+                className="text-muted-foreground data-[active=true]:text-foreground data-[active=true]:bg-accent"
+                data-active={activeFilter === "duplicate" || undefined}
                 onClick={() => setActiveFilter((prev) => (prev === "duplicate" ? null : "duplicate"))}
                 aria-pressed={activeFilter === "duplicate"}
               >
-                <span className="key-validation-segment-dot" />
+                <span />
                 {statuses.duplicate_in_input ?? "Duplicate"}:{" "}
                 <span className="font-mono tabular-nums">{formatNumber(props.counts.duplicate)}</span>
               </Button>
@@ -524,13 +523,12 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                 type="button"
                 variant="ghost"
                 size="sm"
-                className={`key-validation-segment-stat is-duplicate${
-                  activeFilter === "existing" ? " is-active" : ""
-                }${activeFilter && activeFilter !== "existing" ? " is-dimmed" : ""}`}
+                className="text-muted-foreground data-[active=true]:text-foreground data-[active=true]:bg-accent"
+                data-active={activeFilter === "existing" || undefined}
                 onClick={() => setActiveFilter((prev) => (prev === "existing" ? null : "existing"))}
                 aria-pressed={activeFilter === "existing"}
               >
-                <span className="key-validation-segment-dot" />
+                <span />
                 {statuses.already_exists ?? "Already exists"}:{" "}
                 <span className="font-mono tabular-nums">{formatNumber(props.counts.existing)}</span>
               </Button>
@@ -540,7 +538,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
       </div>
 
       {/* Body */}
-      <div className="key-validation-modal-body flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 md:px-5 py-3">
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 md:px-5 py-3">
         {props.state ? (
           <>
             {props.state.importError && (
@@ -550,10 +548,10 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
             )}
 
             {props.state.importReport && (
-              <div className="mb-3 rounded-xl border border-base-200 bg-base-100 p-3">
+              <div className="mb-3 rounded-xl border p-3">
                 <div className="flex items-center gap-2">
                   <h4 className="font-bold m-0">{importStrings.title}</h4>
-                  <span className="badge badge-success badge-outline">{actions.imported}</span>
+                  <Badge variant="outline" className="border-success/40 text-success">{actions.imported}</Badge>
                 </div>
                 <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
                   <div>
@@ -577,13 +575,13 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
             )}
 
             {/* < md: stacked cards */}
-            <div className="key-validation-mobile-list md:hidden rounded-xl border border-base-200 bg-base-100 overflow-hidden">
+            <div className="md:hidden rounded-xl border overflow-hidden">
               {filteredRows.length === 0 ? (
                 <div className="p-4 text-sm opacity-70">
                   {validationStrings.emptyFiltered}
                 </div>
               ) : (
-                <div className="divide-y divide-base-200/70">
+                <div className="divide-y">
                   {filteredRows.map((row, index) => {
                     const canRetry =
                       !isBusy &&
@@ -604,14 +602,14 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                     return (
                       <div key={`${row.api_key}-${index}`} className="p-3">
                         <div className="flex items-start justify-between gap-3">
-                          <code className="block font-mono text-xs break-all whitespace-normal bg-base-200/50 px-2 py-1 rounded-lg max-w-full">
+                          <code className="block font-mono text-xs break-all whitespace-normal px-2 py-1 rounded-lg max-w-full">
                             {row.api_key}
                           </code>
                           <Button
                             type="button"
                             variant="ghost"
                             size="xs"
-                            className="key-validation-row-retry-button h-7 w-7 px-0"
+                            className="h-7 w-7 px-0"
                             onClick={() => props.onRetryOne(row.api_key)}
                             disabled={!canRetry}
                             aria-label={actions.retry ?? "Retry"}
@@ -656,9 +654,9 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
             </div>
 
             {/* >= md: table layout (fixed columns) */}
-            <div className="key-validation-table-shell hidden md:block rounded-xl border border-base-200 bg-base-100 overflow-hidden">
-              <div className="key-validation-table-scroll">
-                <Table className="table-fixed w-full key-validation-table text-sm">
+            <div className="hidden md:block rounded-xl border overflow-hidden">
+              <div>
+                <Table className="table-fixed w-full text-sm">
                   <colgroup>
                     <col style={{ width: "52%" }} />
                     <col style={{ width: "26%" }} />
@@ -703,13 +701,13 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                         return (
                           <TableRow key={`${row.api_key}-${index}`}>
                             <TableCell className="max-w-0">
-                              <code className="block font-mono text-xs break-all whitespace-normal bg-base-200/50 px-2 py-1 rounded-lg max-w-full">
+                              <code className="block font-mono text-xs break-all whitespace-normal px-2 py-1 rounded-lg max-w-full">
                                 {row.api_key}
                               </code>
                             </TableCell>
                             <TableCell className="max-w-0">
                               {row.detail ? (
-                                <details className="key-validation-detail-disclosure min-w-0 max-w-full">
+                                <details className="min-w-0 max-w-full">
                                   <summary className="cursor-pointer list-none inline-flex items-center gap-2 flex-wrap">
                                     <StatusBadge
                                       tone={statusTone(row.status)}
@@ -770,7 +768,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
                                 type="button"
                                 variant="ghost"
                                 size="xs"
-                                className="key-validation-row-retry-button h-7 w-7 px-0"
+                                className="h-7 w-7 px-0"
                                 onClick={() => props.onRetryOne(row.api_key)}
                                 disabled={!canRetry}
                                 aria-label={actions.retry ?? "Retry"}
@@ -793,7 +791,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
       </div>
 
       {/* Footer */}
-      <div className="key-validation-footer px-4 md:px-5 py-3 border-t border-base-200/70 bg-base-100">
+      <div className="px-4 md:px-5 py-3 border-t">
         {props.exhaustedKeys.length > 0 && (
           <div className="mb-2 text-sm opacity-70 flex items-start gap-2 min-w-0">
             <span className="flex-shrink-0 mt-0.5">
@@ -813,7 +811,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
           </AlertDescription></Alert>
         )}
 
-        <div className="key-validation-footer-actions flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <Button
             type="button"
             variant="outline"
@@ -824,13 +822,12 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
             &nbsp;{retryFailedLabel}
           </Button>
 
-          <div className="key-validation-footer-primary flex items-center gap-2 justify-end flex-wrap md:flex-nowrap flex-shrink-0">
+          <div className="flex items-center gap-2 justify-end flex-wrap md:flex-nowrap flex-shrink-0">
             <Button type="button" variant="secondary" onClick={props.onClose}>
               {actions.close ?? keyStrings.batch.report.close}
             </Button>
             <Button
               type="button"
-              className="key-validation-import-button"
               onClick={props.onImportValid}
               disabled={!canImport}
               aria-label={importVerboseLabel}
@@ -842,7 +839,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
               />
               &nbsp;<span>{importButtonLabel}</span>
               {isSmallViewport && props.validKeys.length > 0 ? (
-                <span className="key-validation-import-count-badge" aria-hidden="true">
+                <span aria-hidden="true">
                   {props.validKeys.length}
                 </span>
               ) : null}
@@ -856,7 +853,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
   if (isSmallViewport) {
     return (
       <Drawer open={props.open} onOpenChange={handleOpenChange} shouldScaleBackground={false}>
-        <DrawerContent className="key-validation-drawer-content">
+        <DrawerContent>
           {content}
         </DrawerContent>
       </Drawer>
@@ -865,7 +862,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
 
   return (
     <Dialog open={props.open} onOpenChange={handleOpenChange}>
-      <DialogContent className="key-validation-modal key-validation-modal-box sm:max-w-5xl gap-0 p-0 sm:max-h-[min(calc(100dvh-4rem),calc(100vh-4rem))] [&>button]:hidden">
+      <DialogContent className="sm:max-w-5xl gap-0 p-0 sm:max-h-[min(calc(100dvh-4rem),calc(100vh-4rem))] [&>button]:hidden">
         {content}
       </DialogContent>
     </Dialog>

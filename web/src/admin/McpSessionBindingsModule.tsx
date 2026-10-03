@@ -354,9 +354,8 @@ export default function McpSessionBindingsModule({
       ) : null}
 
       <CardContent className="grid gap-4">
-        <div className="mcp-session-bindings-filters grid items-end gap-4 lg:grid-cols-[1fr_1fr_auto]">
+        <div className="grid items-end gap-4 lg:grid-cols-[1fr_1fr_auto]">
           <DateTimeRangeField
-            className="mcp-session-bindings-filters__field"
             label={copy.filters.createdRange}
             startId="mcp-session-bindings-created-from"
             endId="mcp-session-bindings-created-to"
@@ -372,7 +371,6 @@ export default function McpSessionBindingsModule({
             onEndChange={setDraftCreatedTo}
           />
           <DateTimeRangeField
-            className="mcp-session-bindings-filters__field"
             label={copy.filters.updatedRange}
             startId="mcp-session-bindings-updated-from"
             endId="mcp-session-bindings-updated-to"
@@ -388,7 +386,7 @@ export default function McpSessionBindingsModule({
             onEndChange={setDraftUpdatedTo}
           />
 
-          <div className="mcp-session-bindings-filters__actions flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button type="button" size="sm" onClick={applyFilters} disabled={busy}>
               {copy.filters.apply}
             </Button>
@@ -469,11 +467,11 @@ export default function McpSessionBindingsModule({
         minHeight={260}
       >
         {!data || data.items.length === 0 ? (
-          <Empty className="empty-state"><EmptyDescription>{copy.empty}</EmptyDescription></Empty>
+          <Empty><EmptyDescription>{copy.empty}</EmptyDescription></Empty>
         ) : (
           <>
             <div className="table-wrapper overflow-hidden">
-              <Table className="mcp-session-bindings-table">
+              <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>
@@ -572,10 +570,10 @@ export default function McpSessionBindingsModule({
               </Table>
             </div>
 
-            <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
-                <span className="table-pagination-summary text-sm text-muted-foreground">
-                  <span className="panel-description text-sm text-muted-foreground">
+            <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 flex-col gap-2">
+                <span className="text-sm text-muted-foreground">
+                  <span className="text-sm text-muted-foreground">
                     {copy.pagination
                       .replace('{page}', String(data.page))
                       .replace('{total}', String(totalPages))}
@@ -583,7 +581,7 @@ export default function McpSessionBindingsModule({
                 </span>
               </div>
               <Pagination
-                className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+                className="mx-0 w-auto justify-start sm:justify-end"
                 aria-label={`${language === 'zh' ? '上一页' : 'Previous'} / ${language === 'zh' ? '下一页' : 'Next'}`}
               >
                 <PaginationContent>
@@ -652,7 +650,7 @@ export default function McpSessionBindingsModule({
 
 function SummaryCard({ label, value }: { label: string; value: string }): React.JSX.Element {
   return (
-    <div className="mcp-session-bindings-summary-stat flex min-w-0 flex-col gap-1">
+    <div className="flex min-w-0 flex-col gap-1">
       <span className="text-xs text-muted-foreground">{label}</span>
       <strong className="text-2xl font-semibold tabular-nums">{value}</strong>
     </div>

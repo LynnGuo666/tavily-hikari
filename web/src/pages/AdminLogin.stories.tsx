@@ -72,7 +72,6 @@ function AdminLoginStory({
           updateBanner={showUpdateBanner
             ? (
               <UpdateAvailableBanner
-                className="auth-page-update-banner"
                 strings={ZH.public.updateBanner}
                 currentVersion="0.83.8"
                 availableVersion="0.83.9"

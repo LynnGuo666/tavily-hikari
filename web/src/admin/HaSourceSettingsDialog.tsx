@@ -272,10 +272,9 @@ export default function HaSourceSettingsDialog({
             </div>
           </dl>
 
-          <div className="grid gap-2 ha-source-kind-field">
+          <div className="grid gap-2">
             <span className="text-sm font-semibold">{strings.sourceKindLabel}</span>
             <SegmentedTabs<HaSourceKind>
-              className="ha-source-kind-tabs"
               value={sourceKind}
               disabled={saving}
               onChange={(nextSourceKind) => {
@@ -290,11 +289,11 @@ export default function HaSourceSettingsDialog({
             />
           </div>
 
-          <div className="ha-source-selection-card grid min-w-0 gap-2 rounded-lg border bg-muted/30 p-3 text-sm">
+          <div className="grid min-w-0 gap-2 rounded-lg border bg-muted/30 p-3 text-sm">
             <span className="font-semibold">
               {sourceKind === 'direct' ? strings.sourceSelectedDirectLabel : strings.sourceSelectedOriginGroupLabel}
             </span>
-            <code className="ha-source-selection-preview break-all text-xs">{formatSourceSelectionSummary(
+            <code className="break-all text-xs">{formatSourceSelectionSummary(
               sourceKind,
               directOriginScheme,
               directOriginHost,
@@ -438,21 +437,21 @@ export default function HaSourceSettingsDialog({
             >
               <div className="flex items-start gap-3">
                 <div
-                  className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-destructive/20 bg-destructive/18 text-destructive shadow-clayPressed"
+                  className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-destructive/20 bg-destructive/18 text-destructive"
                   aria-hidden="true"
                 >
                   <CircleAlert size={18} strokeWidth={2.2} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <AlertTitle className="text-[0.98rem] font-bold text-destructive">{submitFailure.title}</AlertTitle>
-                  <AlertDescription className="mt-1 text-[0.92rem] text-destructive-readable">
+                  <AlertDescription className="mt-1 text-[0.92rem]">
                     <p>{submitFailure.description}</p>
                   </AlertDescription>
                 </div>
               </div>
               {submitFailure.technicalDetail && (
                 <details
-                  className="rounded-[24px] border border-destructive/24 bg-destructive/8 px-4 py-3 shadow-clayPressed"
+                  className="rounded-[24px] border border-destructive/24 bg-destructive/8 px-4 py-3"
                   open={technicalDetailsOpen}
                   onToggle={(event) => setTechnicalDetailsOpen((event.currentTarget as HTMLDetailsElement).open)}
                 >
@@ -460,7 +459,7 @@ export default function HaSourceSettingsDialog({
                     {strings.sourceTechnicalDetailsLabel}
                   </summary>
                   {technicalDetailsOpen && (
-                    <pre className="mt-3 overflow-x-auto whitespace-pre-wrap break-words rounded-[18px] border border-destructive/18 bg-card/86 px-3 py-3 font-mono text-xs leading-5 text-destructive-readable shadow-clayPressed">
+                    <pre className="mt-3 overflow-x-auto whitespace-pre-wrap break-words rounded-[18px] border border-destructive/18 bg-card/86 px-3 py-3 font-mono text-xs leading-5">
                       {submitFailure.technicalDetail}
                     </pre>
                   )}

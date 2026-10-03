@@ -60,7 +60,7 @@ export default function TokenLogsHeader({
   return (
     <div className="user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
       <h2 className="text-base font-semibold">{title}</h2>
-      <div className="user-console-logs-header-actions flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <SegmentedTabs<UserTokenLogFilter>
           value={filter}
           onChange={onFilterChange}
@@ -69,7 +69,7 @@ export default function TokenLogsHeader({
           disabled={filterDisabled}
         />
         {pushIssue ? (
-          <div className="user-console-push-status-slot is-active flex items-center">
+          <div className="flex items-center">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon"

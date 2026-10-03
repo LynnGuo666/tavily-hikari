@@ -33,16 +33,16 @@ export default function AdminPanelHeader(props: AdminPanelHeaderProps): React.JS
         props.stackActions && 'admin-panel-header--stacked-actions',
       )}
     >
-      <div className="admin-panel-header-main flex min-w-0 flex-col gap-1">
+      <div className="flex min-w-0 flex-col gap-1">
         <h1 className="truncate text-lg font-semibold">{props.title}</h1>
         {props.subtitle ? (
-          <p className="admin-panel-header-subtitle text-sm text-muted-foreground">{props.subtitle}</p>
+          <p className="text-sm text-muted-foreground">{props.subtitle}</p>
         ) : null}
       </div>
 
-      <div className="admin-panel-header-side flex flex-col items-end gap-2">
-        <div className="admin-panel-header-tools flex items-center gap-2">
-          <div className="admin-language-switcher flex items-center gap-1">
+      <div className="flex flex-col items-end gap-2">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <ThemeToggle />
             <LanguageSwitcher />
           </div>
@@ -51,7 +51,7 @@ export default function AdminPanelHeader(props: AdminPanelHeaderProps): React.JS
               className={cn(
                 'user-badge inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium',
                 props.isAdmin
-                  ? 'user-badge-admin border-warning/40 bg-warning/10 text-warning'
+                  ? 'border-warning/40 bg-warning/10 text-warning'
                   : 'border-border bg-muted text-muted-foreground',
               )}
               title={props.displayName}
@@ -64,8 +64,8 @@ export default function AdminPanelHeader(props: AdminPanelHeaderProps): React.JS
 
         <div
           className={cn(
-            'admin-panel-header-actions flex flex-wrap items-center gap-2',
-            props.stackActions && 'admin-panel-header-actions--stacked flex-col items-stretch',
+            'flex flex-wrap items-center gap-2',
+            props.stackActions && 'flex-col items-stretch',
           )}
         >
           {props.extraActions}
@@ -74,7 +74,6 @@ export default function AdminPanelHeader(props: AdminPanelHeaderProps): React.JS
             <AdminReturnToConsoleLink
               label={props.userConsoleLabel}
               href={props.userConsoleHref}
-              className="admin-return-link--header"
             />
           )}
 

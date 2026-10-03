@@ -27,7 +27,7 @@ export function UserDetailTokenTable({
   deletingTokenId = null,
 }: UserDetailTokenTableProps): React.JSX.Element {
   if (tokens.length === 0) {
-    return <Empty className="empty-state"><EmptyDescription>{usersStrings.empty.noTokens}</EmptyDescription></Empty>
+    return <Empty><EmptyDescription>{usersStrings.empty.noTokens}</EmptyDescription></Empty>
   }
 
   return (
@@ -52,53 +52,53 @@ export function UserDetailTokenTable({
               return (
                 <TableRow key={token.tokenId}>
                   <TableCell>
-                    <div className="token-compact-pair flex flex-col gap-1">
-                      <div className="token-compact-field flex items-baseline gap-1.5">
-                        <code className="token-compact-value tabular-nums">{token.tokenId}</code>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <code className="tabular-nums">{token.tokenId}</code>
                       </div>
-                      <div className="token-compact-field flex items-baseline gap-1.5">
-                        <span className="token-compact-value tabular-nums">{token.note || '—'}</span>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="tabular-nums">{token.note || '—'}</span>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="token-compact-pair flex flex-col gap-1">
-                      <div className="token-compact-field flex items-baseline gap-1.5">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-baseline gap-1.5">
                         <StatusBadge tone={token.enabled ? 'success' : 'neutral'}>
                           {token.enabled ? usersStrings.status.enabled : usersStrings.status.disabled}
                         </StatusBadge>
                       </div>
-                      <div className="token-compact-field flex items-baseline gap-1.5">
-                        <span className="token-compact-value tabular-nums">{formatTimestamp(token.lastUsedAt)}</span>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="tabular-nums">{formatTimestamp(token.lastUsedAt)}</span>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="token-compact-pair flex flex-col gap-1">
-                      <div className="token-compact-field flex items-baseline gap-1.5">
-                        <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.tokens.table.totalRequests}</span>
-                        <span className="token-compact-value tabular-nums">{formatNumber(token.totalRequests)}</span>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.totalRequests}</span>
+                        <span className="tabular-nums">{formatNumber(token.totalRequests)}</span>
                       </div>
-                      <div className="token-compact-field flex items-baseline gap-1.5">
-                        <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.tokens.table.createdAt}</span>
-                        <span className="token-compact-value tabular-nums">{formatTimestamp(token.createdAt)}</span>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="token-compact-pair flex flex-col gap-1">
-                      <div className="token-compact-field flex items-baseline gap-1.5">
-                        <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.tokens.table.successDaily}</span>
-                        <span className="token-compact-value tabular-nums">{successDailyText}</span>
-                      </div>
-                      <div className="token-compact-field flex items-baseline gap-1.5">
-                        <span className="token-compact-label text-xs text-muted-foreground">{usersStrings.tokens.table.successMonthly}</span>
-                        <span className="token-compact-value tabular-nums">{formatNumber(token.monthlySuccess)}</span>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.createdAt}</span>
+                        <span className="tabular-nums">{formatTimestamp(token.createdAt)}</span>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="admin-user-token-actions">
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.successDaily}</span>
+                        <span className="tabular-nums">{successDailyText}</span>
+                      </div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.successMonthly}</span>
+                        <span className="tabular-nums">{formatNumber(token.monthlySuccess)}</span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
                       <Button
                         type="button"
                         variant="ghost"
@@ -139,23 +139,22 @@ export function UserDetailTokenTable({
           const deleteLabel = canDelete ? usersStrings.tokens.actions.delete : usersStrings.tokens.actions.deleteDisabled
           return (
             <article key={token.tokenId} className="rounded-lg border p-3 admin-user-token-card">
-              <div className="admin-user-mobile-card-head">
-                <div className="admin-mobile-identity-block admin-user-mobile-identity">
-                  <span className="admin-mobile-identity-label">{usersStrings.tokens.table.id}</span>
-                  <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta admin-user-token-meta">
-                    <code className="admin-user-detail-mobile-code">{token.tokenId}</code>
-                    <div className="admin-user-token-summary-row">
-                      <span className="admin-user-mobile-note">{token.note || '—'}</span>
+              <div>
+                <div>
+                  <span>{usersStrings.tokens.table.id}</span>
+                  <div className="text-sm text-muted-foreground">
+                    <code>{token.tokenId}</code>
+                    <div>
+                      <span>{token.note || '—'}</span>
                       <StatusBadge
                         tone={token.enabled ? 'success' : 'neutral'}
-                        className="admin-user-token-status-badge"
                       >
                         {token.enabled ? usersStrings.status.enabled : usersStrings.status.disabled}
                       </StatusBadge>
                     </div>
                   </div>
                 </div>
-                <div className="admin-user-token-actions admin-user-mobile-card-action">
+                <div>
                   <Button
                     type="button"
                     variant="ghost"
@@ -182,25 +181,25 @@ export function UserDetailTokenTable({
                 </div>
               </div>
 
-              <div className="admin-user-mobile-metric-grid admin-user-token-metric-grid">
-                <div className="admin-user-mobile-metric-card admin-user-mobile-metric-card--span-2">
-                  <span className="admin-user-mobile-metric-label text-xs text-muted-foreground">{usersStrings.tokens.table.lastUsed}</span>
+              <div className="admin-user-mobile-metric-grid">
+                <div>
+                  <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.lastUsed}</span>
                   <strong>{formatTimestamp(token.lastUsedAt)}</strong>
                 </div>
-                <div className="admin-user-mobile-metric-card">
-                  <span className="admin-user-mobile-metric-label text-xs text-muted-foreground">{usersStrings.tokens.table.totalRequests}</span>
+                <div>
+                  <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.totalRequests}</span>
                   <strong>{formatNumber(token.totalRequests)}</strong>
                 </div>
-                <div className="admin-user-mobile-metric-card">
-                  <span className="admin-user-mobile-metric-label text-xs text-muted-foreground">{usersStrings.tokens.table.successMonthly}</span>
+                <div>
+                  <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.successMonthly}</span>
                   <strong>{formatNumber(token.monthlySuccess)}</strong>
                 </div>
-                <div className="admin-user-mobile-metric-card admin-user-mobile-metric-card--span-2">
-                  <span className="admin-user-mobile-metric-label text-xs text-muted-foreground">{usersStrings.tokens.table.successDaily}</span>
+                <div>
+                  <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.successDaily}</span>
                   <strong>{successDailyText}</strong>
                 </div>
-                <div className="admin-user-mobile-metric-card admin-user-mobile-metric-card--span-2">
-                  <span className="admin-user-mobile-metric-label text-xs text-muted-foreground">{usersStrings.tokens.table.createdAt}</span>
+                <div>
+                  <span className="text-xs text-muted-foreground">{usersStrings.tokens.table.createdAt}</span>
                   <strong>{formatTimestamp(token.createdAt)}</strong>
                 </div>
               </div>

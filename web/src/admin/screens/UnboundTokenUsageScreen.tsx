@@ -91,7 +91,7 @@ export function UnboundTokenUsageScreen({
 
       <Card className="surface panel">
         <AdminTableShell
-          className="overflow-hidden admin-users-usage-table-wrapper hidden md:block"
+          className="overflow-hidden hidden md:block"
           tableClassName="w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-usage-table"
           loadState={loadState}
           loadingLabel={loadingLabel}
@@ -102,7 +102,7 @@ export function UnboundTokenUsageScreen({
             <TableBody>
               <TableRow>
                 <TableCell colSpan={10}>
-                  <Empty className="empty-state"><EmptyDescription>{unboundTokenUsageStrings.empty.none}</EmptyDescription></Empty>
+                  <Empty><EmptyDescription>{unboundTokenUsageStrings.empty.none}</EmptyDescription></Empty>
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -195,16 +195,16 @@ export function UnboundTokenUsageScreen({
                   )
                   return (
                     <TableRow key={item.tokenId} data-token-row={item.tokenId}>
-                      <TableCell className="admin-users-identity-cell">
+                      <TableCell>
                         <Button
                           type="button"
-                          variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
+                          variant="link" size="sm" className="h-auto p-0"
                           data-token-identity={item.tokenId}
                           onClick={() => onOpenToken(item.tokenId)}
                         >
                           <strong>{item.tokenId}</strong>
                         </Button>
-                        <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
+                        <div className="text-sm text-muted-foreground">
                           {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                         </div>
                       </TableCell>
@@ -213,40 +213,40 @@ export function UnboundTokenUsageScreen({
                           {item.enabled ? usersStrings.status.enabled : usersStrings.status.disabled}
                         </StatusBadge>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...requestRateMetric} />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...hourlyMetric} />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...dailyQuotaMetric} />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...monthlyQuotaMetric} />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         {monthlyBrokenMetric == null ? (
                           <AdminTableValueStack primary="—" />
                         ) : (
-                          <div className="admin-table-value-stack flex flex-col gap-1">
+                          <div className="flex flex-col gap-1">
                             <MonthlyBrokenCountTrigger
                               count={item.monthlyBrokenCount ?? 0}
                               onOpen={() => onOpenMonthlyBrokenDrawer(item.tokenId, item.tokenId)}
                               ariaLabel={usersStrings.brokenKeys.openDetails.replace('{label}', item.tokenId)}
                               className={monthlyBrokenMetric.primaryClassName}
                             />
-                            <span className="admin-table-value-secondary">{monthlyBrokenMetric.secondary}</span>
+                            <span>{monthlyBrokenMetric.secondary}</span>
                           </div>
                         )}
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...dailySuccessMetric} />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...monthlySuccessMetric} />
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         <AdminTableValueStack {...formatStackedTimestamp(item.lastUsedAt, language)} />
                       </TableCell>
                     </TableRow>
@@ -265,24 +265,24 @@ export function UnboundTokenUsageScreen({
           minHeight={260}
         >
           {items.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{unboundTokenUsageStrings.empty.none}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{unboundTokenUsageStrings.empty.none}</EmptyDescription></Empty>
           ) : (
             items.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
               return (
                 <article key={item.tokenId} className="py-3">
-                  <div className="admin-mobile-identity-block">
-                    <div className="admin-mobile-identity-row">
-                      <span className="admin-mobile-identity-label">{unboundTokenUsageStrings.table.identity}</span>
+                  <div>
+                    <div>
+                      <span>{unboundTokenUsageStrings.table.identity}</span>
                       <Button
                         type="button"
-                        variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
+                        variant="link" size="sm" className="h-auto p-0"
                         onClick={() => onOpenToken(item.tokenId)}
                       >
                         <strong>{item.tokenId}</strong>
                       </Button>
                     </div>
-                    <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta">
+                    <div className="text-sm text-muted-foreground">
                       {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                     </div>
                   </div>

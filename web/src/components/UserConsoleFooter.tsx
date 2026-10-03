@@ -40,22 +40,22 @@ export default function UserConsoleFooter({
     : null
 
   return (
-    <footer className="app-footer user-console-footer mt-6 flex flex-col gap-3 text-sm text-muted-foreground">
+    <footer className="mt-6 flex flex-col gap-3 text-sm text-muted-foreground">
       <Separator />
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <span>{strings.title}</span>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Button asChild variant="link" size="sm">
-            <a href="https://github.com/IvanLi-CN/tavily-hikari" className="footer-link" target="_blank" rel="noreferrer" aria-label={strings.githubAria}>
+            <a href="https://github.com/IvanLi-CN/tavily-hikari" target="_blank" rel="noreferrer" aria-label={strings.githubAria}>
               <GithubIcon data-icon="inline-start" />
               {strings.githubLabel}
             </a>
           </Button>
-          <span className="footer-meta inline-flex flex-wrap items-center gap-1">
+          <span className="inline-flex flex-wrap items-center gap-1">
             {release ? (
               <>
                 {strings.tagPrefix}
-                <a href={release.href} className="footer-link" target="_blank" rel="noreferrer">
+                <a href={release.href} target="_blank" rel="noreferrer">
                   {release.label}
                 </a>
               </>

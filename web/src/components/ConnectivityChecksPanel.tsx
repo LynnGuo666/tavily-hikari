@@ -146,20 +146,20 @@ export default function ConnectivityChecksPanel({
     return (
       <div
         ref={probeBubbleLayerRef}
-        className="user-console-probe-bubble layer-popover fixed z-[1100] max-h-[calc(100dvh-2rem)] w-96 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-lg border bg-popover p-4 text-popover-foreground shadow-md"
+        className="fixed z-[1100] max-h-[calc(100dvh-2rem)] w-96 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-lg border bg-popover p-4 text-popover-foreground shadow-md"
         data-placement={probeBubblePosition?.placement ?? 'top'}
         role="status"
         aria-live="polite"
         style={bubbleStyle}
       >
-        <ul className="user-console-probe-bubble-list flex flex-col gap-3">
+        <ul className="flex flex-col gap-3">
           {probeBubble.items.map((item) => (
             (() => {
               const structuredLabel = resolveStructuredMcpToolCallLabel(item)
               return (
                 <li
                   key={item.id}
-                  className="user-console-probe-bubble-item flex items-start gap-2"
+                  className="flex items-start gap-2"
                   aria-label={`${stepStatusText[item.status]} · ${item.label}${item.detail ? ` · ${item.detail}` : ''}`}
                 >
                   <Icon
@@ -169,7 +169,7 @@ export default function ConnectivityChecksPanel({
                       + `${item.status === 'running' ? 'is-spinning motion-safe:animate-spin' : item.status === 'success' ? 'text-success' : item.status === 'failed' ? 'text-destructive' : item.status === 'blocked' ? 'text-warning' : 'text-muted-foreground'}`
                     }
                   />
-                  <div className="user-console-probe-bubble-item-copy flex min-w-0 flex-col gap-1 text-sm">
+                  <div className="flex min-w-0 flex-col gap-1 text-sm">
                     {structuredLabel ? (
                       <strong className="user-console-probe-bubble-item-label user-console-probe-bubble-item-label-structured flex flex-wrap gap-1">
                         {structuredLabel.prefix ? (
@@ -188,7 +188,7 @@ export default function ConnectivityChecksPanel({
                       <strong className="user-console-probe-bubble-item-label">{item.label}</strong>
                     )}
                     {item.detail ? (
-                      <span className="user-console-probe-bubble-item-detail break-words text-xs text-muted-foreground">{item.detail}</span>
+                      <span className="break-words text-xs text-muted-foreground">{item.detail}</span>
                     ) : null}
                   </div>
                 </li>
@@ -213,17 +213,17 @@ export default function ConnectivityChecksPanel({
   }
 
   return (
-    <div className="user-console-probe-box flex flex-col gap-2">
-      <div className="user-console-probe-label-row flex items-center gap-2">
-        <span className="token-label text-sm font-medium">{title}</span>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <span className="text-sm font-medium">{title}</span>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               type="button"
-              variant="ghost" size="icon-sm" className="user-console-probe-hint-trigger"
+              variant="ghost" size="icon-sm"
               aria-label={costHintAria}
             >
-              <span className="user-console-probe-hint-visual" aria-hidden="true">
+              <span aria-hidden="true">
                 <Icon icon="mdi:help-circle-outline" />
               </span>
             </Button>
@@ -233,37 +233,37 @@ export default function ConnectivityChecksPanel({
           </TooltipContent>
         </Tooltip>
       </div>
-      <div className="user-console-probe-actions flex flex-wrap gap-2">
-        <div className="user-console-probe-action">
+      <div className="flex flex-wrap gap-2">
+        <div>
           {renderProbeBubble('mcp')}
           <Button
             ref={handleMcpButtonRef}
             type="button"
             data-probe-kind="mcp" size="sm" variant={mcpProbe.state === 'failed' ? 'destructive' : 'outline'}
-            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(mcpProbe.state)} ${probeButtonToneClass(mcpProbe.state)}`}
+            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs${probeButtonTone(mcpProbe.state)}${probeButtonToneClass(mcpProbe.state)}`}
             onClick={onMcpClick}
             disabled={anyProbeRunning}
           >
             <Icon
               icon={probeButtonIcon(mcpProbe.state)}
-              className={`user-console-probe-btn-icon ${mcpProbe.state === 'running' ? 'is-spinning motion-safe:animate-spin' : ''}`}
+              className={`${mcpProbe.state === 'running' ? 'is-spinning motion-safe:animate-spin' : ''}`}
             />
             <span>{mcpButtonLabel}</span>
           </Button>
         </div>
-        <div className="user-console-probe-action">
+        <div>
           {renderProbeBubble('api')}
           <Button
             ref={handleApiButtonRef}
             type="button"
             data-probe-kind="api" size="sm" variant={apiProbe.state === 'failed' ? 'destructive' : 'outline'}
-            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs user-console-probe-btn ${probeButtonTone(apiProbe.state)} ${probeButtonToneClass(apiProbe.state)}`}
+            className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors px-2.5 py-1 text-xs${probeButtonTone(apiProbe.state)}${probeButtonToneClass(apiProbe.state)}`}
             onClick={onApiClick}
             disabled={anyProbeRunning}
           >
             <Icon
               icon={probeButtonIcon(apiProbe.state)}
-              className={`user-console-probe-btn-icon ${apiProbe.state === 'running' ? 'is-spinning motion-safe:animate-spin' : ''}`}
+              className={`${apiProbe.state === 'running' ? 'is-spinning motion-safe:animate-spin' : ''}`}
             />
             <span>{apiButtonLabel}</span>
           </Button>

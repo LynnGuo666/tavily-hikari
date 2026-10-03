@@ -291,7 +291,7 @@ export function UserDetailSharedUsagePanel({
   )
   return (
     <div className="admin-user-shared-usage-panel flex min-w-0 flex-col gap-4" data-active-series={activeSeries} data-loaded-series={loadedSeries.join(',')} data-resolved-theme={resolvedTheme}>
-      <div className="admin-user-shared-usage-panel-header flex flex-wrap items-start justify-between gap-3 px-4">
+      <div className="flex flex-wrap items-start justify-between gap-3 px-4">
         {title || description ? <div>{title ? <h2>{title}</h2> : null}{description ? <p className="text-muted-foreground">{description}</p> : null}</div> : null}
         <SegmentedTabs<AdminUserUsagePanelTab> value={activeSeries} onChange={setActiveSeries} ariaLabel={usersStrings.detail.sharedUsageTitle}
           options={[
@@ -302,9 +302,9 @@ export function UserDetailSharedUsagePanel({
             { value: 'ip', label: usersStrings.detail.sharedUsageTabs.ip },
           ]} />
       </div>
-      <div className="admin-user-shared-usage-chart min-w-0 px-4">
+      <div className="min-w-0 px-4">
         {activeSeries === 'ip' ? (
-          <div className="admin-user-ip-usage flex min-w-0 flex-col gap-4">
+          <div className="flex min-w-0 flex-col gap-4">
             <div><h3>{usersStrings.detail.ipUsageTitle}</h3><p className="text-muted-foreground">{usersStrings.detail.ipUsageDescription}</p></div>
             {ipTimeline.length === 0 ? <Empty><EmptyDescription>{usersStrings.detail.ipUsageEmpty}</EmptyDescription></Empty> : (
               <ChartContainer config={ipConfig} className="admin-user-ip-gantt-chart w-full aspect-auto" aria-label={usersStrings.detail.ipUsageTitle}
@@ -319,7 +319,7 @@ export function UserDetailSharedUsagePanel({
                 </BarChart>
               </ChartContainer>
             )}
-            <div className="admin-user-ip-lists grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2">
               {renderIpList(usersStrings.detail.ipUsage24hTitle, ipAddresses24h, ipCount24h)}
               {renderIpList(usersStrings.detail.ipUsage7dTitle, ipAddresses7d, ipCount7d)}
             </div>

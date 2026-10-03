@@ -223,7 +223,7 @@ function RollingDigitColumn({
         style={{ transform: `translateY(${-translate}px)` }}
       >
         {DIGITS.map((digit, stripIndex) => (
-          <span key={`${columnIndex}-${stripIndex}`} className="rn-digit block shrink-0" style={{ height: digitHeight || undefined }}>
+          <span key={`${columnIndex}-${stripIndex}`} className="block shrink-0" style={{ height: digitHeight || undefined }}>
             {digit}
           </span>
         ))}
@@ -273,18 +273,18 @@ export default function RollingNumber({ value, loading, className }: RollingNumb
 
   return (
     <span
-      className={cn('rolling-number relative inline-flex tabular-nums', className)}
+      className={cn('relative inline-flex tabular-nums', className)}
       aria-label={formatted}
       role="text"
     >
       <span className="rn-probe pointer-events-none invisible absolute" ref={probeRef} aria-hidden="true">
         0
       </span>
-      <span aria-hidden="true" className="rn-visual inline-flex items-baseline">
+      <span aria-hidden="true" className="inline-flex items-baseline">
         {cells.map((cell, index) => {
           if (cell.kind === 'separator') {
             return (
-              <span key={`sep-${index}`} className="rn-sep">
+              <span key={`sep-${index}`}>
                 {cell.char}
               </span>
             )

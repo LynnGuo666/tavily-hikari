@@ -61,7 +61,7 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.E
     <li className="rounded px-2 py-1">
       <span
         aria-hidden="true"
-        className="block h-4 rounded-md border border-base-300/70 bg-base-200"
+        className="block h-4 rounded-md border"
       />
     </li>
   )
@@ -70,22 +70,22 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.E
     <div className="mt-6">
       {/* Keep a semantic title for screen readers without adding a second visible header */}
       <p className="sr-only">{t.title}</p>
-      <div className="rounded-3xl border border-base-200 bg-base-200 shadow-lg">
+      <div className="rounded-3xl border shadow-lg">
         {/* Window chrome (single, custom) */}
-        <div className="flex items-center gap-2 border-b border-base-300 px-4 py-2 rounded-t-3xl">
+        <div className="flex items-center gap-2 border-b px-4 py-2 rounded-t-3xl">
           <div className="flex gap-1.5">
             <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
             <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
             <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
           </div>
-          <div className="mx-auto text-xs font-medium text-base-content/70">{t.windowTitle}</div>
+          <div className="mx-auto text-xs font-medium">{t.windowTitle}</div>
         </div>
 
         {/* Main content */}
-        <div className="bg-base-100 px-4 pb-4 pt-3 md:px-6 md:pb-6 md:pt-4">
+        <div className="px-4 pb-4 pt-3 md:px-6 md:pb-6 md:pt-4">
           <div className="flex flex-col gap-4 md:flex-row">
             {/* Left navigation */}
-            <nav className="w-full shrink-0 border border-base-200 bg-base-100/60 p-2 text-xs md:w-52 md:text-[0.78rem]">
+            <nav className="w-full shrink-0 border p-2 text-xs md:w-52 md:text-[0.78rem]">
               <ul className="space-y-1.5">
                 <NavPlaceholder />
                 <NavPlaceholder />
@@ -109,11 +109,11 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.E
             {/* Right content area */}
             <div className="flex-1 space-y-3 md:space-y-4">
               {/* Provider card */}
-              <section className="rounded-xl border border-primary/40 bg-base-100 px-4 py-3 shadow-sm">
+              <section className="rounded-xl border border-primary/40 px-4 py-3 shadow-sm">
                 <div className="flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
                   <div className="space-y-0.5">
-                    <p className="text-xs font-semibold text-base-content/80">{t.providerCard.title}</p>
-                    <p className="text-[0.72rem] text-base-content/60">{t.providerCard.subtitle}</p>
+                    <p className="text-xs font-semibold">{t.providerCard.title}</p>
+                    <p className="text-[0.72rem]">{t.providerCard.subtitle}</p>
                   </div>
                   <button
                     type="button"
@@ -123,45 +123,45 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.E
                       <TavilyLogo className="h-4 w-4" />
                       <span>{t.providerCard.providerValue}</span>
                     </span>
-                    <span className="ml-2 h-3 w-3 rounded-full border border-base-300 bg-base-200" />
+                    <span className="ml-2 h-3 w-3 rounded-full border" />
                   </button>
                 </div>
               </section>
 
               {/* Tavily config card */}
-              <section className="space-y-3 rounded-xl border border-base-200 bg-base-100 px-4 py-3 shadow-sm">
+              <section className="space-y-3 rounded-xl border px-4 py-3 shadow-sm">
                 {/* Header row */}
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <TavilyLogo className="h-5 w-5" />
-                    <span className="text-xs font-semibold text-base-content/90">{t.tavilyCard.title}</span>
+                    <span className="text-xs font-semibold">{t.tavilyCard.title}</span>
                   </div>
-                  <div className="h-5 w-5 rounded border border-base-300 bg-base-200" aria-hidden="true" />
+                  <div className="h-5 w-5 rounded border" aria-hidden="true" />
                 </div>
 
                 {/* API key block */}
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-base-content/80">
+                  <label className="block text-xs font-medium">
                     {t.tavilyCard.apiKeyLabel}
                   </label>
                   <div className="flex items-stretch gap-1.5">
                     <input
                       type="text"
-                      className="input input-xs md:input-sm input-bordered flex-1 text-xs"
+                      className="input flex-1 text-xs"
                       value={apiKeyExample}
                       readOnly
                       onClick={(e) => e.currentTarget.select()}
                       onFocus={(e) => e.currentTarget.select()}
                     />
                     <div
-                      className="flex h-8 w-8 items-center justify-center rounded-md bg-base-200 text-[0.65rem] text-base-content/40"
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-[0.65rem]"
                       aria-hidden="true"
                     >
                       ...
                     </div>
                     <button
                       type="button"
-                      className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors btn-xs h-8 min-h-0 rounded-md border-base-300 bg-base-200 px-3 text-[0.7rem] font-medium text-base-content/80 normal-case pointer-events-none"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors h-8 min-h-0 rounded-md px-3 text-[0.7rem] font-medium normal-case pointer-events-none"
                       {...disabledProps}
                     >
                       {t.tavilyCard.testButtonLabel}
@@ -174,26 +174,26 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.E
 
                 {/* API URL block */}
                 <div className="mt-3 space-y-1.5">
-                  <label className="block text-xs font-medium text-base-content/80">
+                  <label className="block text-xs font-medium">
                     {t.tavilyCard.apiUrlLabel}
                   </label>
                   <input
                     type="text"
-                    className="input input-xs md:input-sm input-bordered w-full text-xs text-base-content/80"
+                    className="input w-full text-xs"
                     value={apiUrl}
                     readOnly
                     onClick={(e) => e.currentTarget.select()}
                     onFocus={(e) => e.currentTarget.select()}
                   />
-                  <p className="text-[0.7rem] text-base-content/60">
+                  <p className="text-[0.7rem]">
                     {t.tavilyCard.apiUrlHint}
                   </p>
                 </div>
               </section>
 
               {/* General settings card */}
-              <section className="space-y-3 rounded-xl border border-dashed border-base-200 bg-base-100/90 px-4 py-3 shadow-sm text-base-content/70">
-                <h5 className="text-xs font-semibold text-base-content/70">{t.generalCard.title}</h5>
+              <section className="space-y-3 rounded-xl border border-dashed px-4 py-3 shadow-sm">
+                <h5 className="text-xs font-semibold">{t.generalCard.title}</h5>
                 <div className="space-y-2">
                   {/* Include date row */}
                   <div className="flex items-center justify-between gap-4">
@@ -201,7 +201,7 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.E
                     <label className="flex items-center">
                       <input
                         type="checkbox"
-                        className="toggle toggle-xs pointer-events-none"
+                        className="toggle pointer-events-none"
                         checked
                         {...disabledProps}
                       />
@@ -217,11 +217,11 @@ function CherryStudioMock({ apiKeyExample }: CherryStudioMockProps): React.JSX.E
                         min={1}
                         max={100}
                         defaultValue={20}
-                        className="range range-xs pointer-events-none"
+                        className="pointer-events-none"
                         {...disabledProps}
                       />
                     </div>
-                    <div className="flex items-center justify-between text-[0.65rem] text-base-content/50">
+                    <div className="flex items-center justify-between text-[0.65rem]">
                       <span>1</span>
                       <span>5</span>
                       <span>20</span>

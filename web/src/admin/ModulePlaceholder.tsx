@@ -14,18 +14,18 @@ export default function ModulePlaceholder({
   comingSoonLabel,
 }: ModulePlaceholderProps): React.JSX.Element {
   return (
-    <Card className="surface panel module-placeholder">
+    <Card className="surface panel">
       <CardHeader className="panel-header border-b">
         <div>
           <CardTitle role="heading" aria-level={2}>{title}</CardTitle>
-          <CardDescription className="panel-description">{description}</CardDescription>
+          <CardDescription>{description}</CardDescription>
         </div>
       </CardHeader>
-      <div className="module-placeholder-grid">
+      <div>
         {sections.map((section) => (
-          <article key={section} className="module-placeholder-card">
+          <article key={section}>
             <h3>{section}</h3>
-            <p className="panel-description text-sm text-muted-foreground">{comingSoonLabel}</p>
+            <p className="text-sm text-muted-foreground">{comingSoonLabel}</p>
           </article>
         ))}
       </div>

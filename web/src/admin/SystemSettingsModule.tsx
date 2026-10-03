@@ -649,7 +649,7 @@ export default function SystemSettingsModule({
         <span className="font-medium">{label}</span>
         <div className="grid grid-cols-[minmax(0,1fr),64px] items-center gap-3">
           <input
-            className="range w-full accent-foreground"
+            className="w-full cursor-pointer accent-foreground"
             type="range"
             min={0}
             max={requestLogRetentionDayStops.length - 1}
@@ -722,8 +722,8 @@ export default function SystemSettingsModule({
     </div>
   )
   const trustedClientIpPanel = (
-    <section className="system-settings-trusted-panel flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
-      <div className="system-settings-trusted-copy grid min-w-0 gap-1">
+    <section className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
+      <div className="grid min-w-0 gap-1">
         <h4 className="m-0 text-sm font-semibold">{strings.form.trustedClientIpTitle}</h4>
         <p className="m-0 break-all font-mono text-xs text-muted-foreground">
           {settings?.trustedClientIpHeaders?.join(' -> ') ||
@@ -758,7 +758,7 @@ export default function SystemSettingsModule({
                 <span className="font-medium">{strings.form.trustedProxyCidrs}</span>
                 <Textarea
                   rows={4}
-                  className="resize-y rounded-md border border- bg-background px-3 py-2 text-sm leading-6"
+                  className="resize-y rounded-md border bg-background px-3 py-2 text-sm leading-6"
                   value={draftTrustedProxyCidrs}
                   disabled={saving}
                   onChange={(event) => setDraftTrustedProxyCidrs(event.target.value)}
@@ -818,7 +818,7 @@ export default function SystemSettingsModule({
                 </div>
               </div>
               <Textarea
-                className="h-28 resize-y rounded-md border border- bg-background px-3 py-2 text-sm"
+                className="h-28 resize-y rounded-md border bg-background px-3 py-2 text-sm"
                 value={draftTrustedClientIpHeaders}
                 disabled={saving}
                 onChange={(event) => setDraftTrustedClientIpHeaders(event.target.value)}
@@ -875,21 +875,21 @@ export default function SystemSettingsModule({
   )
 
   return (
-    <Card className="surface panel system-settings-shell">
+    <Card className="surface panel">
       <AdminLoadingRegion
         loadState={loadState}
         loadingLabel={strings.description}
         errorLabel={error ?? undefined}
         minHeight={260}
       >
-        <div className="system-settings-form-layout grid min-w-0 gap-4 px-4" aria-label={strings.form.title}>
-          <section className="system-settings-config-section grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
+        <div className="grid min-w-0 gap-4 px-4" aria-label={strings.form.title}>
+          <section className="grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
             <h4 className="m-0 text-sm font-semibold">{strings.form.accessDisplayTitle}</h4>
-            <div className="system-settings-field-grid grid min-w-0 divide-y divide-border">
+            <div className="grid min-w-0 divide-y divide-border">
               {registrationPolicy && (
-                <div className="system-settings-action-row flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-registration-title">
-                  <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
-                    <span className="system-settings-setting-title text-sm font-medium text-foreground" id="system-settings-registration-title">
+                <div className="flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-registration-title">
+                  <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+                    <span className="text-sm font-medium text-foreground" id="system-settings-registration-title">
                       {registrationPolicy.strings.title}
                     </span>
                     <p
@@ -909,9 +909,9 @@ export default function SystemSettingsModule({
                 </div>
               )}
 
-              <div className="system-settings-action-row flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-recharge-feature-title">
-                <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
-                  <span className="system-settings-setting-title text-sm font-medium text-foreground" id="system-settings-recharge-feature-title">
+              <div className="flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-recharge-feature-title">
+                <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+                  <span className="text-sm font-medium text-foreground" id="system-settings-recharge-feature-title">
                     {strings.form.rechargeFeatureLabel}
                   </span>
                   <p>{strings.form.rechargeFeatureHint}</p>
@@ -931,9 +931,9 @@ export default function SystemSettingsModule({
                 />
               </div>
 
-              <div className="system-settings-action-row flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-recharge-user-title">
-                <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
-                  <span className="system-settings-setting-title text-sm font-medium text-foreground" id="system-settings-recharge-user-title">
+              <div className="flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-recharge-user-title">
+                <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+                  <span className="text-sm font-medium text-foreground" id="system-settings-recharge-user-title">
                     {strings.form.rechargeUserLabel}
                   </span>
                   <p>{strings.form.rechargeUserHint}</p>
@@ -953,10 +953,10 @@ export default function SystemSettingsModule({
                 />
               </div>
 
-              <div className="system-settings-action-row flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-active-users-default-title">
-                <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+              <div className="flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-active-users-default-title">
+                <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
                   <span
-                    className="system-settings-setting-title text-sm font-medium text-foreground"
+                    className="text-sm font-medium text-foreground"
                     id="system-settings-active-users-default-title"
                   >
                     {strings.form.activeUsersDefaultLabel}
@@ -994,14 +994,14 @@ export default function SystemSettingsModule({
                 />
               </div>
 
-              <div className="system-settings-action-row flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-density-title">
-                <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
-                  <span className="system-settings-setting-title text-sm font-medium text-foreground" id="system-settings-density-title">
+              <div className="flex min-w-0 items-center justify-between gap-4 py-3" aria-labelledby="system-settings-density-title">
+                <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+                  <span className="text-sm font-medium text-foreground" id="system-settings-density-title">
                     {strings.form.displayDensityTitle}
                   </span>
                   <p>{strings.form.displayDensityStoredHint}</p>
                 </div>
-                <div className="system-settings-density-actions inline-flex items-center gap-2" role="group" aria-label={strings.form.displayDensityTitle}>
+                <div className="inline-flex items-center gap-2" role="group" aria-label={strings.form.displayDensityTitle}>
                   <Button
                     type="button"
                     variant={displayDensity === 'comfortable' ? 'default' : 'outline'}
@@ -1025,12 +1025,12 @@ export default function SystemSettingsModule({
             </div>
           </section>
 
-          <section className="system-settings-config-section grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
+          <section className="grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
             <h4 className="m-0 text-sm font-semibold">{strings.form.limitsTitle}</h4>
             <TooltipProvider delayDuration={120} skipDelayDuration={250}>
-              <div className="system-settings-field-grid system-settings-field-grid--limits grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
-                <div className="system-settings-field grid min-w-0 gap-2">
-                  <div className="system-settings-field-label-row flex items-center gap-1.5">
+              <div className="grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
+                <div className="grid min-w-0 gap-2">
+                  <div className="flex items-center gap-1.5">
                     <label className="text-sm font-medium" htmlFor="system-settings-request-rate-limit">
                       {strings.form.requestRateLimitLabel}
                     </label>
@@ -1057,16 +1057,16 @@ export default function SystemSettingsModule({
                     aria-describedby={fieldErrors.requestRateLimit ? requestRateLimitErrorId : undefined}
                   />
                   {fieldErrors.requestRateLimit && (
-                    <p id={requestRateLimitErrorId} className="system-settings-field-error text-xs font-medium text-destructive">
+                    <p id={requestRateLimitErrorId} className="text-xs font-medium text-destructive">
                       {fieldErrors.requestRateLimit}
                     </p>
                   )}
-                  <p className="system-settings-field-hint text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {strings.form.requestRateLimitHint}
                   </p>
                 </div>
-                <div className="system-settings-field grid min-w-0 gap-2">
-                  <div className="system-settings-field-label-row flex items-center gap-1.5">
+                <div className="grid min-w-0 gap-2">
+                  <div className="flex items-center gap-1.5">
                     <label className="text-sm font-medium" htmlFor="system-settings-blocked-key-base-limit">
                       {strings.form.blockedKeyBaseLimitLabel}
                     </label>
@@ -1093,17 +1093,17 @@ export default function SystemSettingsModule({
                     aria-describedby={fieldErrors.blockedKeyBaseLimit ? blockedKeyBaseLimitErrorId : undefined}
                   />
                   {fieldErrors.blockedKeyBaseLimit && (
-                    <p id={blockedKeyBaseLimitErrorId} className="system-settings-field-error text-xs font-medium text-destructive">
+                    <p id={blockedKeyBaseLimitErrorId} className="text-xs font-medium text-destructive">
                       {fieldErrors.blockedKeyBaseLimit}
                     </p>
                   )}
-                  <p className="system-settings-field-hint text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {strings.form.blockedKeyBaseLimitHint}
                   </p>
                 </div>
 
-                <div className="system-settings-field grid min-w-0 gap-2">
-                  <div className="system-settings-field-label-row flex items-center gap-1.5">
+                <div className="grid min-w-0 gap-2">
+                  <div className="flex items-center gap-1.5">
                     <label className="text-sm font-medium" htmlFor="system-settings-auth-token-log-retention-days">
                       {strings.form.authTokenLogRetentionDaysLabel}
                     </label>
@@ -1113,10 +1113,10 @@ export default function SystemSettingsModule({
                       testId="system-settings-auth-token-log-retention-days-help"
                     />
                   </div>
-                  <div className="system-settings-range-control grid gap-3 md:grid-cols-[minmax(0,1fr),64px] md:items-center">
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr),64px] md:items-center">
                     <input
                       id="system-settings-auth-token-log-retention-days"
-                      className="range w-full accent-foreground"
+                      className="w-full cursor-pointer accent-foreground"
                       type="range"
                       min={0}
                       max={authTokenLogRetentionDayStops.length - 1}
@@ -1136,13 +1136,13 @@ export default function SystemSettingsModule({
                     />
                     <span className="text-right font-mono text-sm">{draftAuthTokenLogRetentionDays}d</span>
                   </div>
-                  <p className="system-settings-field-hint text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {strings.form.authTokenLogRetentionDaysHint}
                   </p>
                 </div>
 
-                <div className="system-settings-field grid min-w-0 gap-2">
-                  <div className="system-settings-field-label-row flex items-center gap-1.5">
+                <div className="grid min-w-0 gap-2">
+                  <div className="flex items-center gap-1.5">
                     <label className="text-sm font-medium" htmlFor="system-settings-global-ip-limit">
                       {strings.form.globalIpLimitLabel}
                     </label>
@@ -1169,11 +1169,11 @@ export default function SystemSettingsModule({
                     aria-describedby={fieldErrors.globalIpLimit ? globalIpLimitErrorId : undefined}
                   />
                   {fieldErrors.globalIpLimit && (
-                    <p id={globalIpLimitErrorId} className="system-settings-field-error text-xs font-medium text-destructive">
+                    <p id={globalIpLimitErrorId} className="text-xs font-medium text-destructive">
                       {fieldErrors.globalIpLimit}
                     </p>
                   )}
-                  <p className="system-settings-field-hint text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {strings.form.globalIpLimitHint}
                   </p>
                 </div>
@@ -1182,20 +1182,20 @@ export default function SystemSettingsModule({
           </section>
 
           <section
-            className="system-settings-config-section system-settings-retention-section grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0"
+            className="grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0"
             data-testid="request-log-retention-settings"
           >
             <h4 className="m-0 text-sm font-semibold">调用日志保留</h4>
-            <div className="system-settings-retention-content grid min-w-0 gap-4">
-              <div className="system-settings-field-grid system-settings-field-grid--limits grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
-                <div className="system-settings-field grid min-w-0 gap-2">
+            <div className="grid min-w-0 gap-4">
+              <div className="grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
+                <div className="grid min-w-0 gap-2">
                   <label className="text-sm font-medium" htmlFor="system-settings-request-log-max-days">
                     最大日志行保留
                   </label>
-                  <div className="system-settings-range-control grid gap-3 md:grid-cols-[minmax(0,1fr),64px] md:items-center">
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr),64px] md:items-center">
                     <input
                       id="system-settings-request-log-max-days"
-                      className="range w-full accent-foreground"
+                      className="w-full cursor-pointer accent-foreground"
                       type="range"
                       min={0}
                       max={requestLogRetentionDayStops.length - 1}
@@ -1219,19 +1219,19 @@ export default function SystemSettingsModule({
                     />
                     <span className="text-right font-mono text-sm">{draftRequestLogRetention.maxLogRetentionDays}d</span>
                   </div>
-                  <p className="system-settings-field-hint text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     到期日志行会由 request_logs_gc 分批删除，body 会先按下方策略清空。
                   </p>
                 </div>
 
-                <div className="system-settings-field grid min-w-0 gap-2">
+                <div className="grid min-w-0 gap-2">
                   <label className="text-sm font-medium" htmlFor="system-settings-heavy-usage-threshold">
                     高频用户阈值
                   </label>
-                  <div className="system-settings-range-control grid gap-3 md:grid-cols-[minmax(0,1fr),64px] md:items-center">
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr),64px] md:items-center">
                     <input
                       id="system-settings-heavy-usage-threshold"
-                      className="range w-full accent-foreground"
+                      className="w-full cursor-pointer accent-foreground"
                       type="range"
                       min={50}
                       max={150}
@@ -1250,26 +1250,26 @@ export default function SystemSettingsModule({
                       {draftRequestLogRetention.heavyUsageThresholdPercent}%
                     </span>
                   </div>
-                  <p className="system-settings-field-hint text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     最近 24 小时额度使用比例达到该阈值时，使用高频用户 body 保留策略。
                   </p>
                 </div>
               </div>
 
-              <div className="system-settings-retention-profiles grid min-w-0 gap-3 md:grid-cols-3">
-                <div className="system-settings-retention-card grid min-w-0 gap-3 p-3">
+              <div className="grid min-w-0 gap-3 md:grid-cols-3">
+                <div className="grid min-w-0 gap-3 p-3">
                   <h5 className="text-sm font-semibold">全局默认</h5>
                   {retentionDaySlider('业务 body', 'global', 'businessBodyDays')}
                   {retentionDaySlider('非业务 body', 'global', 'nonBusinessBodyDays')}
                   {retentionDaySlider('非成功 body', 'global', 'nonSuccessBodyDays')}
                 </div>
-                <div className="system-settings-retention-card grid min-w-0 gap-3 p-3">
+                <div className="grid min-w-0 gap-3 p-3">
                   <h5 className="text-sm font-semibold">高频调用用户</h5>
                   {retentionDaySlider('业务 body', 'heavyUsage', 'businessBodyDays')}
                   {retentionDaySlider('非业务 body', 'heavyUsage', 'nonBusinessBodyDays')}
                   {retentionDaySlider('非成功 body', 'heavyUsage', 'nonSuccessBodyDays')}
                 </div>
-                <div className="system-settings-retention-card grid min-w-0 gap-3 p-3">
+                <div className="grid min-w-0 gap-3 p-3">
                   <h5 className="text-sm font-semibold">共享调试用户</h5>
                   {retentionDaySlider('业务 body', 'debugShared', 'businessBodyDays')}
                   {retentionDaySlider('非业务 body', 'debugShared', 'nonBusinessBodyDays')}
@@ -1279,11 +1279,11 @@ export default function SystemSettingsModule({
             </div>
           </section>
 
-          <section className="system-settings-config-section grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
+          <section className="grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
             <h4 className="m-0 text-sm font-semibold">{strings.form.gatewaySectionTitle}</h4>
-            <div className="system-settings-field-grid system-settings-field-grid--gateway grid min-w-0 gap-x-6 gap-y-2 md:grid-cols-2">
-              <div className="system-settings-field grid min-w-0 gap-2">
-                <div className="system-settings-field-label-row flex items-center gap-1.5">
+            <div className="grid min-w-0 gap-x-6 gap-y-2 md:grid-cols-2">
+              <div className="grid min-w-0 gap-2">
+                <div className="flex items-center gap-1.5">
                   <label className="text-sm font-medium" htmlFor="system-settings-affinity-count">
                     {strings.form.countLabel}
                   </label>
@@ -1307,15 +1307,15 @@ export default function SystemSettingsModule({
                   aria-describedby={fieldErrors.count ? affinityCountErrorId : undefined}
                 />
                 {fieldErrors.count && (
-                  <p id={affinityCountErrorId} className="system-settings-field-error text-xs font-medium text-destructive">
+                  <p id={affinityCountErrorId} className="text-xs font-medium text-destructive">
                     {fieldErrors.count}
                   </p>
                 )}
               </div>
 
-              <div className="system-settings-toggle-row flex min-w-0 items-center justify-between gap-4 py-3">
-                <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
-                  <div className="system-settings-field-label-row flex items-center gap-1.5">
+              <div className="flex min-w-0 items-center justify-between gap-4 py-3">
+                <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+                  <div className="flex items-center gap-1.5">
                     <label className="text-sm font-medium" htmlFor="system-settings-rebalance-switch">
                       {strings.form.rebalanceLabel}
                     </label>
@@ -1359,8 +1359,8 @@ export default function SystemSettingsModule({
                 />
               </div>
 
-              <div className="system-settings-toggle-row flex min-w-0 items-center justify-between gap-4 py-3">
-                <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+              <div className="flex min-w-0 items-center justify-between gap-4 py-3">
+                <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
                   <label className="text-sm font-medium" htmlFor="system-settings-api-rebalance-switch">
                     {strings.form.apiRebalanceLabel}
                   </label>
@@ -1384,10 +1384,10 @@ export default function SystemSettingsModule({
             </div>
           </section>
 
-          <section className="system-settings-config-section grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
+          <section className="grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
             <h4 className="m-0 text-sm font-semibold">{strings.form.upstreamIdentityTitle}</h4>
-            <div className="system-settings-field-grid system-settings-field-grid--api grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
-              <div className="system-settings-field grid min-w-0 gap-2">
+            <div className="grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
+              <div className="grid min-w-0 gap-2">
                 <label className="text-sm font-medium" htmlFor="system-settings-upstream-project-id-mode">
                   {strings.form.upstreamProjectIdModeLabel}
                 </label>
@@ -1413,7 +1413,7 @@ export default function SystemSettingsModule({
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent align="end" className="system-settings-select-content">
+                  <SelectContent align="end">
                     <SelectGroup>
                       <SelectItem value="accessToken">{strings.form.upstreamProjectIdModeAccessToken}</SelectItem>
                       <SelectItem value="passthrough">{strings.form.upstreamProjectIdModePassthrough}</SelectItem>
@@ -1421,12 +1421,12 @@ export default function SystemSettingsModule({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-                <p className="system-settings-field-hint text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {strings.form.upstreamProjectIdModeHint}
                 </p>
               </div>
 
-              <div className="system-settings-field grid min-w-0 gap-2">
+              <div className="grid min-w-0 gap-2">
                 <label className="text-sm font-medium" htmlFor="system-settings-upstream-project-id-fixed-value">
                   {strings.form.upstreamProjectIdFixedValueLabel}
                 </label>
@@ -1451,17 +1451,17 @@ export default function SystemSettingsModule({
                 {fieldErrors.upstreamProjectIdFixedValue && (
                   <p
                     id={upstreamProjectIdFixedValueErrorId}
-                    className="system-settings-field-error text-xs font-medium text-destructive"
+                    className="text-xs font-medium text-destructive"
                   >
                     {fieldErrors.upstreamProjectIdFixedValue}
                   </p>
                 )}
-                <p className="system-settings-field-hint text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {strings.form.upstreamProjectIdFixedValueHint}
                 </p>
               </div>
 
-              <div className="system-settings-field grid min-w-0 gap-2">
+              <div className="grid min-w-0 gap-2">
                 <label className="text-sm font-medium" htmlFor="system-settings-upstream-mcp-user-agent">
                   {strings.form.upstreamMcpUserAgentLabel}
                 </label>
@@ -1484,29 +1484,29 @@ export default function SystemSettingsModule({
                 {fieldErrors.upstreamMcpUserAgent && (
                   <p
                     id={upstreamMcpUserAgentErrorId}
-                    className="system-settings-field-error text-xs font-medium text-destructive"
+                    className="text-xs font-medium text-destructive"
                   >
                     {fieldErrors.upstreamMcpUserAgent}
                   </p>
                 )}
-                <p className="system-settings-field-hint text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {strings.form.upstreamMcpUserAgentHint}
                 </p>
               </div>
 
-              <div className="system-settings-field system-settings-field--notice grid min-w-0 gap-2 bg-muted/20 px-3 py-2">
-                <div className="system-settings-field-copy grid min-w-0 gap-1">
+              <div className="grid min-w-0 gap-2 bg-muted/20 px-3 py-2">
+                <div className="grid min-w-0 gap-1">
                   <strong className="text-sm font-medium">{strings.form.upstreamHttpUserAgentNotice}</strong>
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="system-settings-config-section grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
+          <section className="grid min-w-0 gap-3 border-t pt-4 first:border-t-0 first:pt-0">
             <h4 className="m-0 text-sm font-semibold">{strings.form.upstreamPreciseReconciliationTitle}</h4>
-            <div className="system-settings-field-grid system-settings-field-grid--api grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
-              <div className="system-settings-toggle-row flex min-w-0 items-center justify-between gap-4 py-3">
-                <div className="system-settings-toggle-copy grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
+            <div className="grid min-w-0 gap-x-6 gap-y-4 md:grid-cols-2">
+              <div className="flex min-w-0 items-center justify-between gap-4 py-3">
+                <div className="grid min-w-0 gap-1 text-sm [&_p]:text-xs [&_p]:text-muted-foreground">
                   <label className="text-sm font-medium" htmlFor="system-settings-upstream-precise-reconciliation-switch">
                     {strings.form.upstreamPreciseReconciliationLabel}
                   </label>
@@ -1538,7 +1538,7 @@ export default function SystemSettingsModule({
 
           {(error || saving) && (
             <p
-              className="system-settings-inline-status text-sm font-medium"
+              className="text-sm font-medium"
               role="status"
               aria-live="polite"
               style={{ color: error ? 'var(--destructive)' : undefined }}
@@ -1548,7 +1548,7 @@ export default function SystemSettingsModule({
           )}
 
           {changed && !inlineError && !saving && (
-            <p className="system-settings-inline-status text-xs text-muted-foreground">{strings.form.autosaveHint}</p>
+            <p className="text-xs text-muted-foreground">{strings.form.autosaveHint}</p>
           )}
         </div>
       </AdminLoadingRegion>

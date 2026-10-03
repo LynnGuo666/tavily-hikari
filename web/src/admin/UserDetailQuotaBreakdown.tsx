@@ -91,13 +91,13 @@ export function UserDetailQuotaBreakdown({
               return (
                 <TableRow key={`${entry.kind}:${entry.tagId ?? 'row'}:${index}`}>
                   <TableCell>
-                    <div className="token-compact-pair">
-                      <div className="token-compact-field token-compact-field--wrap">
-                        <span className="token-compact-value token-compact-value--wrap">{view.breakdownLabel}</span>
+                    <div>
+                      <div>
+                        <span>{view.breakdownLabel}</span>
                       </div>
                       {entry.tagName && (
-                        <div className="token-compact-field token-compact-field--wrap">
-                          <code className="token-compact-value token-compact-value--wrap">{entry.tagName}</code>
+                        <div>
+                          <code>{entry.tagName}</code>
                         </div>
                       )}
                     </div>
@@ -121,49 +121,46 @@ export function UserDetailQuotaBreakdown({
           const view = buildBreakdownViewModel(entry, usersStrings)
           return (
             <article className="rounded-lg border p-3 admin-user-breakdown-card" key={`${entry.kind}:${entry.tagId ?? 'row'}:${index}`}>
-              <div className="admin-user-mobile-card-head">
-                <div className="admin-mobile-identity-block admin-user-mobile-identity">
-                  <span className="admin-mobile-identity-label">{usersStrings.effectiveQuota.columns.item}</span>
-                  <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta admin-user-breakdown-meta">
-                    <strong className="admin-user-breakdown-title">{view.breakdownLabel}</strong>
-                    {entry.tagName ? <code className="admin-user-detail-mobile-code">{entry.tagName}</code> : null}
+              <div>
+                <div>
+                  <span>{usersStrings.effectiveQuota.columns.item}</span>
+                  <div className="text-sm text-muted-foreground">
+                    <strong>{view.breakdownLabel}</strong>
+                    {entry.tagName ? <code>{entry.tagName}</code> : null}
                   </div>
                 </div>
                 <StatusBadge tone={view.effectTone}>{view.effectLabel}</StatusBadge>
               </div>
 
-              <div className="admin-user-mobile-chip-row">
-                <div className="admin-user-mobile-chip admin-user-mobile-chip--wide">
-                  <span className="admin-user-mobile-chip-label">{usersStrings.effectiveQuota.columns.source}</span>
+              <div>
+                <div>
+                  <span>{usersStrings.effectiveQuota.columns.source}</span>
                   <strong>{view.sourceLabel}</strong>
                 </div>
               </div>
 
-              <div className="admin-user-mobile-metric-grid admin-user-breakdown-metric-grid">
-                <div className="admin-user-mobile-metric-card">
+              <div className="admin-user-mobile-metric-grid">
+                <div>
                   <UsageMetricLabel
                     label={usersStrings.quota.hourly}
                     kind="businessCalls1h"
                     language={language}
-                    className="admin-user-mobile-metric-label"
                   />
                   <strong>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.businessCalls1hDelta)}</strong>
                 </div>
-                <div className="admin-user-mobile-metric-card">
+                <div>
                   <UsageMetricLabel
                     label={usersStrings.quota.daily}
                     kind="dailyCredits"
                     language={language}
-                    className="admin-user-mobile-metric-label"
                   />
                   <strong>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.dailyCreditsDelta)}</strong>
                 </div>
-                <div className="admin-user-mobile-metric-card admin-user-mobile-metric-card--span-2">
+                <div>
                   <UsageMetricLabel
                     label={usersStrings.quota.monthly}
                     kind="monthlyCredits"
                     language={language}
-                    className="admin-user-mobile-metric-label"
                   />
                   <strong>{formatBreakdownValue(entry, view.isAbsoluteRow, entry.monthlyCreditsDelta)}</strong>
                 </div>

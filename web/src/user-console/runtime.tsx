@@ -2745,7 +2745,7 @@ export default function UserConsole(): JSX.Element {
       )}
       <div className="px-4">
         <Tabs value={activeGuide} onValueChange={(value) => handleSetupGuideChange(value as GuideKey)}>
-          <TabsList className="user-console-guide-tabs h-auto flex-wrap">
+          <TabsList className="h-auto flex-wrap">
             {guideTabs.map((tab) => (
               <TabsTrigger key={tab.id} value={tab.id}>
                 {tab.label}
@@ -2930,7 +2930,7 @@ export default function UserConsole(): JSX.Element {
               goTokens()
             }}
           >
-            <TabsList className="user-console-billing-nav-tabs w-full sm:w-fit">
+            <TabsList className="w-full sm:w-fit">
               {consoleSectionTabs.map((option) => (
                 <TabsTrigger key={option.value} value={option.value}>
                   {option.label}
@@ -2948,7 +2948,7 @@ export default function UserConsole(): JSX.Element {
           <section
             ref={dashboardSectionRef}
             id="console-dashboard-section"
-            className="user-console-section user-console-dashboard-section flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
+            className="flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
             data-console-section="dashboard"
           >
             <CardHeader>
@@ -2964,7 +2964,7 @@ export default function UserConsole(): JSX.Element {
                 requestRateLabel={formatRequestRateSummary(resolveRequestRate(dashboard, 'user'), language)}
                 formatNumber={formatNumber}
               />
-              <div className="user-console-dashboard-footer">
+              <div>
                 <DebugInfoSharingToggle
                   shared={dashboard?.debugInfoShared ?? false}
                   disabled={loading || debugSharing.saving || dashboard == null}
@@ -2978,7 +2978,7 @@ export default function UserConsole(): JSX.Element {
           </section>
 
           {showRechargePanel ? (
-            <div className="user-console-landing-rail min-w-0">
+            <div className="min-w-0">
               <RechargePanel
                 text={text.recharge}
                 language={language}
@@ -3000,7 +3000,7 @@ export default function UserConsole(): JSX.Element {
           <section
             ref={tokensSectionRef}
             id="console-tokens-section"
-            className="user-console-section user-console-tokens-section @container min-w-0 lg:col-span-full flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
+            className="user-console-tokens-section @container min-w-0 lg:col-span-full flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)]"
             data-console-section="tokens"
           >
             <CardHeader className="flex flex-col gap-2 @3xl:grid">
@@ -3020,13 +3020,13 @@ export default function UserConsole(): JSX.Element {
             </CardHeader>
             <CardContent className="table-wrapper flex flex-col gap-4">
               {showTokenListLoading ? (
-                <Empty className="empty-state"><EmptyDescription>{text.tokens.loading}</EmptyDescription></Empty>
+                <Empty><EmptyDescription>{text.tokens.loading}</EmptyDescription></Empty>
               ) : showEmptyTokens ? (
-                <Empty className="empty-state"><EmptyDescription>{text.tokens.empty}</EmptyDescription></Empty>
+                <Empty><EmptyDescription>{text.tokens.empty}</EmptyDescription></Empty>
               ) : (
                 <>
                   <div className="hidden md:block">
-                    <Table className="user-console-tokens-table">
+                    <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead>{text.tokens.table.id}</TableHead>
@@ -3043,7 +3043,7 @@ export default function UserConsole(): JSX.Element {
                               <TableCell><code className="font-mono text-xs font-medium">{item.tokenId}</code></TableCell>
                               <TableCell>
                                 <div className="flex flex-col items-start gap-1.5">
-                                  <StatusBadge className="user-console-token-status-badge" tone={tokenListStatusTone(item.enabled)}>
+                                  <StatusBadge tone={tokenListStatusTone(item.enabled)}>
                                     {item.enabled ? text.tokens.table.enabled : text.tokens.table.disabled}
                                   </StatusBadge>
                                   <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs">
@@ -3090,26 +3090,26 @@ export default function UserConsole(): JSX.Element {
                     {tokens.map((item) => {
                       const state = copyState[item.tokenId] ?? 'idle'
                       return (
-                        <article key={item.tokenId} className="user-console-mobile-card flex flex-col gap-2 py-3">
-                          <header className="user-console-mobile-card-header flex items-center justify-between gap-2">
+                        <article key={item.tokenId} className="flex flex-col gap-2 py-3">
+                          <header className="flex items-center justify-between gap-2">
                             <strong className="text-xs font-medium text-muted-foreground">{text.tokens.table.id}</strong> <code className="font-mono text-xs font-medium">{item.tokenId}</code>
                           </header>
-                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                          <div className="flex items-center justify-between gap-2">
                             <span className="text-xs text-muted-foreground">{text.tokens.table.status}</span>
                             <StatusBadge tone={tokenListStatusTone(item.enabled)}>
                               {item.enabled ? text.tokens.table.enabled : text.tokens.table.disabled}
                             </StatusBadge>
                           </div>
-                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                          <div className="flex items-center justify-between gap-2">
                             <span className="text-xs text-muted-foreground">{text.tokens.table.lastUsed}</span> <strong className="text-sm font-medium">{formatTokenLastUsedLabel(item.lastUsedAt, text.tokens.table.neverUsed)}</strong>
                           </div>
-                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                          <div className="flex items-center justify-between gap-2">
                             <span className="text-xs text-muted-foreground">{text.tokens.table.dailySuccess}</span> <strong className="text-sm font-medium">{formatNumber(item.dailySuccess)}</strong>
                           </div>
-                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                          <div className="flex items-center justify-between gap-2">
                             <span className="text-xs text-muted-foreground">{text.tokens.table.dailyFailure}</span> <strong className="text-sm font-medium">{formatNumber(item.dailyFailure)}</strong>
                           </div>
-                          <div className="user-console-mobile-kv flex items-center justify-between gap-2">
+                          <div className="flex items-center justify-between gap-2">
                             <span className="text-xs text-muted-foreground">{text.tokens.table.monthlySuccess}</span> <strong className="text-sm font-medium">{formatNumber(item.monthlySuccess)}</strong>
                           </div>
                           <TokenListActions
@@ -3124,7 +3124,6 @@ export default function UserConsole(): JSX.Element {
                             onReset={openResetTokenDialog}
                             isCopyIntentKey={isCopyIntentKey}
                             canReset={item.enabled}
-                            className="user-console-mobile-actions"
                           />
                         </article>
                       )
@@ -3173,16 +3172,16 @@ export default function UserConsole(): JSX.Element {
       {!consoleEmptyState && route.name === 'token' && (
         <>
           <Card className="gap-6">
-            <CardHeader className="user-console-detail-header flex flex-row flex-wrap items-center justify-between gap-3">
+            <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3">
               <div className="flex flex-col gap-1.5">
                 <CardTitle className="text-lg font-semibold">
                   <h2 ref={detailHeadingRef} tabIndex={-1} className="font-heading text-lg leading-snug font-semibold">
                     {text.detail.title} <code className="font-mono text-sm font-medium">{route.id}</code>
                   </h2>
                 </CardTitle>
-                <CardDescription className="user-console-detail-description">
-                  <span className="user-console-detail-description-full hidden sm:inline">{text.detail.subtitle}</span>
-                  <span className="user-console-detail-description-short sm:hidden">{text.detail.subtitleShort}</span>
+                <CardDescription>
+                  <span className="hidden sm:inline">{text.detail.subtitle}</span>
+                  <span className="sm:hidden">{text.detail.subtitleShort}</span>
                 </CardDescription>
               </div>
               <div className="user-console-detail-actions flex flex-wrap items-center gap-2">
@@ -3190,9 +3189,9 @@ export default function UserConsole(): JSX.Element {
                   <Icon icon="mdi:book-open-page-variant-outline" width={18} height={18} aria-hidden="true" />
                   {text.setup.detailAction}
                 </Button>
-                <Button type="button" variant="outline" className="user-console-detail-back" onClick={() => goTokens()}>
-                  <span className="user-console-detail-back-full hidden sm:inline">{text.detail.back}</span>
-                  <span className="user-console-detail-back-short sm:hidden">{text.detail.backShort}</span>
+                <Button type="button" variant="outline" onClick={() => goTokens()}>
+                  <span className="hidden sm:inline">{text.detail.back}</span>
+                  <span className="sm:hidden">{text.detail.backShort}</span>
                 </Button>
               </div>
             </CardHeader>
@@ -3253,7 +3252,7 @@ export default function UserConsole(): JSX.Element {
                 </p>
               ) : null}
               {detailTokenError ? (
-                <p className="user-console-token-error text-sm text-destructive" role="status" aria-live="polite">{detailTokenError}</p>
+                <p className="text-sm text-destructive" role="status" aria-live="polite">{detailTokenError}</p>
               ) : null}
 
               <ConnectivityChecksPanel
@@ -3294,17 +3293,17 @@ export default function UserConsole(): JSX.Element {
       {!consoleEmptyState && route.name === 'tokenLogs' && (
         <>
           <Card>
-            <CardHeader className="user-console-detail-header flex flex-row flex-wrap items-center justify-between gap-3">
+            <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3">
               <div className="flex flex-col gap-1.5">
                 <CardTitle className="text-lg font-semibold">
                   <h2 ref={detailHeadingRef} tabIndex={-1} className="font-heading text-lg leading-snug font-semibold">{text.detail.logs}</h2>
                 </CardTitle>
-                <CardDescription className="user-console-detail-description">{text.detail.logsSubtitle}</CardDescription>
+                <CardDescription>{text.detail.logsSubtitle}</CardDescription>
               </div>
               <div className="user-console-detail-actions flex flex-wrap items-center gap-2">
-                <Button type="button" variant="outline" className="user-console-detail-back" onClick={() => goTokenDetail(route.id)}>
-                  <span className="user-console-detail-back-full hidden sm:inline">{text.detail.logsBack}</span>
-                  <span className="user-console-detail-back-short sm:hidden">{text.detail.backShort}</span>
+                <Button type="button" variant="outline" onClick={() => goTokenDetail(route.id)}>
+                  <span className="hidden sm:inline">{text.detail.logsBack}</span>
+                  <span className="sm:hidden">{text.detail.backShort}</span>
                 </Button>
               </div>
             </CardHeader>

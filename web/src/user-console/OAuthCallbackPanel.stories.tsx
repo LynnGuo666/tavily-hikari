@@ -105,7 +105,7 @@ function ScenarioCard({ scenario }: { scenario: OAuthCallbackScenario }): React.
 function SingleStateFrame({ model }: SingleStateFrameProps): React.JSX.Element {
   return (
     <main
-      className="app-shell public-home user-console-shell"
+      className="public-home user-console-shell"
       style={{
         width: '100%',
         maxWidth: 'none',
@@ -136,7 +136,7 @@ function SingleStateFrame({ model }: SingleStateFrameProps): React.JSX.Element {
         loggingOutLabel={ZH.header.loggingOut}
         onLogout={() => undefined}
       />
-      <div className="oauth-callback-stage">
+      <div>
         <OAuthCallbackPanel
           model={model}
           onRestart={() => undefined}

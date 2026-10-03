@@ -37,24 +37,23 @@ export default function QuotaRangeField({
   onInputChange,
 }: QuotaRangeFieldProps): React.JSX.Element {
   return (
-    <label className="form-control quota-control">
-      <span className="label-text">{label}</span>
-      <div className="quota-control-row">
-        <div className="quota-slider-wrap">
+    <label>
+      <span>{label}</span>
+      <div>
+        <div>
           <input
             type="range"
             name={sliderName}
             min={sliderMin}
             max={sliderMax}
             step="any"
-            className="range quota-slider"
             value={sliderValue}
             onChange={(event) => onSliderChange(Number.parseFloat(event.target.value))}
             style={sliderStyle}
             aria-label={sliderAriaLabel}
             disabled={disabled}
           />
-          <span className="panel-description text-sm text-muted-foreground">{helperText}</span>
+          <span className="text-sm text-muted-foreground">{helperText}</span>
         </div>
         <Input
           type="text"
@@ -62,7 +61,7 @@ export default function QuotaRangeField({
           inputMode="numeric"
           autoComplete="off"
           size={10}
-          className="quota-input shrink-0"
+          className="shrink-0"
           value={inputValue}
           onChange={(event) => onInputChange(event.target.value)}
           aria-label={inputAriaLabel}

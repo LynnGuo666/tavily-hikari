@@ -2082,7 +2082,7 @@ function StoryMonthlyBrokenKeyValue({
   onCopy: () => void | Promise<void>
 }): React.JSX.Element {
   return (
-    <div className="monthly-broken-key-value">
+    <div>
       <JobKeyLink
         keyId={keyId}
         keyGroup={null}
@@ -2095,7 +2095,7 @@ function StoryMonthlyBrokenKeyValue({
         type="button"
         variant="ghost"
         size="icon"
-        className={`monthly-broken-key-copy-button shadow-none${copied ? ' border-success/40 bg-success/10 text-success hover:bg-success/20' : ''}`}
+        className={`shadow-none${copied ? ' border-success/40 bg-success/10 text-success hover:bg-success/20' : ''}`}
         title={copied ? copiedLabel : copyLabel}
         aria-label={copied ? copiedLabel : copyLabel}
         onClick={() => void onCopy()}
@@ -2146,19 +2146,19 @@ function StoryMonthlyBrokenDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange} shouldScaleBackground={false}>
-      <DrawerContent className="request-entity-drawer-content-fit">
-        <div className="request-entity-drawer-body-fit">
+      <DrawerContent>
+        <div>
           <Card className="surface panel">
             <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
               <div>
                 <CardTitle role="heading" aria-level={2}>{users.brokenKeys.drawerTitle}</CardTitle>
-                <CardDescription className="panel-description">
+                <CardDescription>
                   {users.brokenKeys.drawerDescription.replace('{label}', label)}
                 </CardDescription>
               </div>
             </CardHeader>
             {items.length === 0 ? (
-              <Empty className="empty-state"><EmptyDescription>{users.brokenKeys.empty}</EmptyDescription></Empty>
+              <Empty><EmptyDescription>{users.brokenKeys.empty}</EmptyDescription></Empty>
             ) : (
               <>
                 <div className="table-wrapper overflow-hidden hidden md:block">
@@ -2276,10 +2276,10 @@ function MonthlyBrokenDrawerStoryCanvas({
         <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <CardTitle role="heading" aria-level={2}>Blocked-key Drawer Sandbox</CardTitle>
-            <CardDescription className="panel-description">Focused Storybook surface for verifying adaptive drawer height.</CardDescription>
+            <CardDescription>Focused Storybook surface for verifying adaptive drawer height.</CardDescription>
           </div>
         </CardHeader>
-        <Empty className="empty-state"><EmptyDescription>Background reference only. Use the open drawer to inspect sizing.</EmptyDescription></Empty>
+        <Empty><EmptyDescription>Background reference only. Use the open drawer to inspect sizing.</EmptyDescription></Empty>
       </Card>
     </AdminPageFrame>
   )
@@ -2612,12 +2612,14 @@ function StoryAdminUsersSortableHeader<Field extends string>({
       variant="ghost"
       size="sm"
       data-sort-field={field}
-      className={`admin-table-sort-button${isActive ? ' is-active' : ''}`}
+      className="text-muted-foreground data-[active=true]:text-foreground"
+      data-active={isActive || undefined}
+      aria-pressed={isActive}
       onClick={() => onToggle(field)}
       aria-label={hasTooltip ? bubbleLabel : undefined}
     >
-      <span className="admin-table-sort-label">{visibleLabel}</span>
-      <SortIndicatorIcon className="admin-table-sort-indicator" aria-hidden="true" />
+      <span>{visibleLabel}</span>
+      <SortIndicatorIcon aria-hidden="true" />
     </Button>
   )
   return (
@@ -2667,10 +2669,10 @@ function StoryUserTagBadge({
 
   return (
     <Badge variant="outline" className={classes} title={tag.displayName}>
-      {iconSrc && <img src={iconSrc} alt="" className="user-tag-pill-icon" aria-hidden="true" />}
+      {iconSrc && <img src={iconSrc} alt="" aria-hidden="true" />}
       <span>{tag.displayName}</span>
-      {isSystem && <span className="user-tag-pill-meta">{users.catalog.scopeSystemShort}</span>}
-      {isBlockAll && <span className="user-tag-pill-meta">{users.catalog.blockShort}</span>}
+      {isSystem && <span>{users.catalog.scopeSystemShort}</span>}
+      {isBlockAll && <span>{users.catalog.blockShort}</span>}
     </Badge>
   )
 }
@@ -2687,16 +2689,16 @@ function StoryUserTagBadgeList({
   limit?: number
 }): React.JSX.Element {
   if (tags.length === 0) {
-    return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
+    return <span className="text-sm text-muted-foreground">{emptyLabel}</span>
   }
   const visibleTags = limit == null ? tags : tags.slice(0, limit)
   const overflow = limit == null ? 0 : Math.max(0, tags.length - visibleTags.length)
   return (
-    <div className="user-tag-pill-list">
+    <div>
       {visibleTags.map((tag) => (
         <StoryUserTagBadge key={`${tag.tagId}:${tag.source}`} tag={tag} users={users} />
       ))}
-      {overflow > 0 && <Badge variant="outline" className="user-tag-pill-overflow">+{overflow}</Badge>}
+      {overflow > 0 && <Badge variant="outline">+{overflow}</Badge>}
     </div>
   )
 }
@@ -2705,7 +2707,7 @@ type StoryTagCardMode = 'view' | 'edit' | 'new'
 
 function StoryUserTagEffectToggle({ users, active }: { users: AdminTranslations['users']; active: 'quota_delta' | 'block_all' }): React.JSX.Element {
   return (
-    <div className="user-tag-effect-toggle" role="group" aria-label={users.catalog.fields.effect}>
+    <div role="group" aria-label={users.catalog.fields.effect}>
       {([
         ['quota_delta', users.catalog.effectKinds.quotaDelta],
         ['block_all', users.catalog.effectKinds.blockAll],
@@ -2715,7 +2717,9 @@ function StoryUserTagEffectToggle({ users, active }: { users: AdminTranslations[
           type="button"
           variant={active === effectKind ? 'secondary' : 'outline'}
           size="xs"
-          className={`user-tag-effect-chip${active === effectKind ? ' is-active' : ''}`}
+          className="data-[active=true]:border-foreground data-[active=true]:bg-accent"
+          data-active={active === effectKind || undefined}
+          aria-pressed={active === effectKind}
         >
           {label}
         </Button>
@@ -2758,28 +2762,25 @@ function StoryUserTagCatalogCard({
 
   return (
     <Card className={classes}>
-      <div className="user-tag-catalog-card-head">
-        <div className="user-tag-catalog-name">
+      <div>
+        <div>
           {isEditing ? (
-            <div className="user-tag-inline-fields">
+            <div>
               <Input
                 type="text"
-                className="user-tag-inline-input user-tag-inline-input-display"
                 defaultValue={draft.displayName}
                 disabled={isSystem}
                 placeholder={users.catalog.fields.displayName}
               />
-              <div className="user-tag-inline-fields-row">
+              <div>
                 <Input
                   type="text"
-                  className="user-tag-inline-input"
                   defaultValue={draft.name}
                   disabled={isSystem}
                   placeholder={users.catalog.fields.name}
                 />
                 <Input
                   type="text"
-                  className="user-tag-inline-input"
                   defaultValue={draft.icon ?? ''}
                   disabled={isSystem}
                   placeholder={users.catalog.iconPlaceholder}
@@ -2788,38 +2789,38 @@ function StoryUserTagCatalogCard({
             </div>
           ) : (
             <>
-              <div className="user-tag-pill-list">
+              <div>
                 <StoryUserTagBadge tag={{ ...draft }} users={users} />
               </div>
-              <div className="panel-description text-sm text-muted-foreground user-tag-catalog-subtitle">
+              <div className="text-sm text-muted-foreground">
                 <code>{draft.name}</code>
                 {iconSrc ? ` · ${draft.icon}` : ''}
               </div>
             </>
           )}
         </div>
-        <div className="user-tag-catalog-actions">
+        <div>
           {isEditing ? (
             <>
-              <Button type="button" variant="ghost" size="sm" className="user-tag-catalog-icon-button" aria-label={users.catalog.actions.save}>
+              <Button type="button" variant="ghost" size="sm" aria-label={users.catalog.actions.save}>
                 <Icon icon="mdi:check" width={16} height={16} />
               </Button>
-              <Button type="button" variant="ghost" size="sm" className="user-tag-catalog-icon-button" aria-label={users.catalog.actions.cancelEdit}>
+              <Button type="button" variant="ghost" size="sm" aria-label={users.catalog.actions.cancelEdit}>
                 <Icon icon="mdi:close" width={16} height={16} />
               </Button>
               {!isSystem && !isNewCard && (
-                <Button type="button" variant="ghost" size="sm" className="user-tag-catalog-icon-button" aria-label={users.catalog.actions.delete}>
+                <Button type="button" variant="ghost" size="sm" aria-label={users.catalog.actions.delete}>
                   <Icon icon="mdi:trash-can-outline" width={16} height={16} />
                 </Button>
               )}
             </>
           ) : (
             <>
-              <Button type="button" variant="ghost" size="sm" className="user-tag-catalog-icon-button" aria-label={users.catalog.actions.edit}>
+              <Button type="button" variant="ghost" size="sm" aria-label={users.catalog.actions.edit}>
                 <Icon icon="mdi:pencil-outline" width={16} height={16} />
               </Button>
               {!isSystem && (
-                <Button type="button" variant="ghost" size="sm" className="user-tag-catalog-icon-button" aria-label={users.catalog.actions.delete}>
+                <Button type="button" variant="ghost" size="sm" aria-label={users.catalog.actions.delete}>
                   <Icon icon="mdi:trash-can-outline" width={16} height={16} />
                 </Button>
               )}
@@ -2828,40 +2829,40 @@ function StoryUserTagCatalogCard({
         </div>
       </div>
 
-      <div className="user-tag-catalog-card-meta">
-        <Badge variant="outline" className={`user-tag-meta-badge ${isSystem ? 'border-primary/30 bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+      <div>
+        <Badge variant="outline" className={`${isSystem ? 'border-primary/30 bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
           {isSystem ? users.catalog.scopeSystem : users.catalog.scopeCustom}
         </Badge>
         {isEditing ? (
           <StoryUserTagEffectToggle users={users} active={isBlockAll ? 'block_all' : 'quota_delta'} />
         ) : (
-          <Badge variant={isBlockAll ? 'destructive' : 'outline'} className={`user-tag-meta-badge${isBlockAll ? '' : ' border-success/30 bg-success/10 text-success'}`}>
+          <Badge variant={isBlockAll ? 'destructive' : 'outline'} className={isBlockAll ? undefined : 'border-success/30 bg-success/10 text-success'}>
             {isBlockAll ? users.catalog.effectKinds.blockAll : users.catalog.effectKinds.quotaDelta}
           </Badge>
         )}
-        <Button type="button" variant="secondary" size="xs" className="user-tag-catalog-users user-tag-catalog-users-button" disabled={isNewCard}>
-          <span className="user-tag-catalog-users-label">{users.catalog.columns.users}</span>
+        <Button type="button" variant="secondary" size="xs" disabled={isNewCard}>
+          <span>{users.catalog.columns.users}</span>
           <strong>{formatNumber(draft.userCount)}</strong>
         </Button>
       </div>
 
-      <div className="user-tag-catalog-body">
+      <div>
         {isBlockAll ? (
-          <Alert className="border-warning/40 bg-warning/10 text-warning user-tag-catalog-block-note" role="note"><AlertDescription>
+          <Alert className="border-warning/40 bg-warning/10 text-warning" role="note"><AlertDescription>
             {users.catalog.blockDescription}
           </AlertDescription></Alert>
         ) : (
-          <dl className="user-tag-catalog-delta-grid">
+          <dl>
             {([
               [users.quota.hourly, draft.businessCalls1hDelta],
               [users.quota.daily, draft.dailyCreditsDelta],
               [users.quota.monthly, draft.monthlyCreditsDelta],
             ] as const).map(([label, value]) => (
-              <div className="user-tag-catalog-delta-item" key={label}>
+              <div key={label}>
                 <dt>{label}</dt>
                 <dd>
                   {isEditing ? (
-                    <Input type="number" className="user-tag-delta-input" defaultValue={String(value)} />
+                    <Input type="number" defaultValue={String(value)} />
                   ) : (
                     formatSignedQuotaDelta(value)
                   )}
@@ -3293,16 +3294,16 @@ export function AdminPageFrame({
         {showDefaultShellChrome && (
           <>
             <AdminShellSidebarUtility>
-              <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+              <div className="flex flex-col gap-3">
                 <Card size="sm" className="admin-sidebar-utility-card">
                   <CardContent className="flex flex-col gap-3">
                     <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
                       <ThemeToggle />
                       <LanguageSwitcher />
                     </div>
-                    <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
-                      <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
-                        <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
+                        <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />
                         <span>Ops Admin</span>
                       </div>
                     </div>
@@ -3310,10 +3311,10 @@ export function AdminPageFrame({
                 </Card>
                 <Card size="sm" className="admin-sidebar-utility-card">
                   <CardContent className="flex flex-col gap-3">
-                    <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+                    <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
                       {sidebarUtilityActions ?? <>
-                        <AdminReturnToConsoleLink label={admin.header.returnToConsole} href="/console" className="admin-sidebar-utility-action" />
-                        <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                        <AdminReturnToConsoleLink label={admin.header.returnToConsole} href="/console" />
+                        <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button">
                           <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
                           <span>{admin.header.refreshNow}</span>
                         </Button>
@@ -3328,12 +3329,12 @@ export function AdminPageFrame({
 
             {isStackedAdminLayout ? (
               introOverride ? (
-                <section className="surface app-header admin-usage-stacked-intro">
-                  <div className="admin-usage-stacked-intro-main">
+                <section className="surface">
+                  <div>
                     <h1>{intro.title}</h1>
-                    {intro.description ? <p className="admin-compact-intro-description">{intro.description}</p> : null}
+                    {intro.description ? <p>{intro.description}</p> : null}
                   </div>
-                  {headerActions ? <div className="admin-usage-stacked-intro-actions">{headerActions}</div> : null}
+                  {headerActions ? <div>{headerActions}</div> : null}
                 </section>
               ) : (
                 <AdminPanelHeader
@@ -3353,10 +3354,10 @@ export function AdminPageFrame({
               <section
                 className={`admin-compact-intro flex flex-wrap items-end justify-between gap-4${headerActions ? ' admin-compact-intro--with-actions' : ''}`}
               >
-                <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+                <div className="flex min-w-0 flex-col gap-1">
                   <h1 className="text-xl font-semibold tracking-tight">{intro.title}</h1>
                   {intro.description ? (
-                    <p className="admin-compact-intro-description text-sm text-muted-foreground">{intro.description}</p>
+                    <p className="text-sm text-muted-foreground">{intro.description}</p>
                   ) : null}
                 </div>
                 {headerActions ? <div className="admin-compact-intro-actions max-w-full">{headerActions}</div> : null}
@@ -3635,16 +3636,16 @@ function TokensPageCanvas(): React.JSX.Element {
   const admin = useAdminTranslations()
   const tokenStrings = admin.tokens
   const tokenToolbar = (
-    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 admin-module-toolbar--tokens">
+    <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
       <Button
         type="button"
-        variant="outline" size="sm" className="admin-token-toolbar-secondary-action"
+        variant="outline" size="sm"
         aria-label={tokenStrings.actions.viewLeaderboard}
       >
         <Icon icon="mdi:chart-timeline-variant" width={16} height={16} aria-hidden="true" />
         <span>{tokenStrings.actions.viewLeaderboard}</span>
       </Button>
-      <div className="flex flex-wrap items-center gap-2 admin-module-toolbar-actions--tokens">
+      <div className="flex flex-wrap items-center gap-2">
         <Input
           type="text"
 
@@ -3668,8 +3669,8 @@ function TokensPageCanvas(): React.JSX.Element {
         <div className="block md:hidden">
           {tokenToolbar}
         </div>
-        <div className="token-filters-bar">
-          <div className="token-filter-search">
+        <div>
+          <div>
             <Input type="text"  readOnly value="legacy" aria-label={tokenStrings.filters.searchPlaceholder} />
             <Button type="button" variant="outline" size="xs">
               <Icon icon="mdi:filter-outline" width={16} height={16} aria-hidden="true" />
@@ -3681,16 +3682,16 @@ function TokensPageCanvas(): React.JSX.Element {
             `${tokenStrings.filters.owner}: ${tokenStrings.filters.ownerUnbound}`,
             `${tokenStrings.filters.quota}: ${tokenStrings.filters.quotaAll}`,
             `${tokenStrings.filters.status}: ${tokenStrings.filters.statusFrozen}`,
-          ].map((label) => <Button key={label} type="button" variant="outline" size="xs" className="token-filter-select">{label}</Button>)}
+          ].map((label) => <Button key={label} type="button" variant="outline" size="xs">{label}</Button>)}
           <Button type="button" variant="ghost" size="xs">{tokenStrings.filters.clear}</Button>
         </div>
 
-        <div className="table-wrapper overflow-hidden rounded-lg border admin-users-usage-table-wrapper">
-          <Table className="tokens-table">
+        <div className="table-wrapper overflow-hidden rounded-lg border">
+          <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="token-select-col"><Checkbox className="token-selection-checkbox" checked disabled aria-label="selected page" /></TableHead>
-                <TableHead className="token-id-col">{tokenStrings.table.id}</TableHead>
+                <TableHead><Checkbox checked disabled aria-label="selected page" /></TableHead>
+                <TableHead>{tokenStrings.table.id}</TableHead>
                 <TableHead>{tokenStrings.table.owner}</TableHead>
                 <TableHead>{tokenStrings.table.note}</TableHead>
                 <TableHead>{tokenStrings.table.usage}</TableHead>
@@ -3702,30 +3703,30 @@ function TokensPageCanvas(): React.JSX.Element {
             <TableBody>
               {MOCK_TOKENS.map((token) => (
                 <TableRow key={token.id}>
-                  <TableCell className="token-select-col"><Checkbox className="token-selection-checkbox" checked={token.id === 'Lt2R' || token.id === 'Q4sE'} disabled aria-label={token.id} /></TableCell>
-                  <TableCell className="token-id-col">
-                    <div className="token-id-cell">
-                      <code className="token-id-code">{token.id}</code>
-                      <span className="token-status-slot" aria-hidden={token.enabled ? true : undefined} title={token.enabled ? undefined : tokenStrings.statusBadges.disabled}>
+                  <TableCell><Checkbox checked={token.id === 'Lt2R' || token.id === 'Q4sE'} disabled aria-label={token.id} /></TableCell>
+                  <TableCell>
+                    <div>
+                      <code>{token.id}</code>
+                      <span aria-hidden={token.enabled ? true : undefined} title={token.enabled ? undefined : tokenStrings.statusBadges.disabled}>
                         {!token.enabled && (
-                          <Icon className="token-status-icon" icon="mdi:pause-circle-outline" width={14} height={14} aria-label={tokenStrings.statusBadges.disabled} />
+                          <Icon icon="mdi:pause-circle-outline" width={14} height={14} aria-label={tokenStrings.statusBadges.disabled} />
                         )}
                       </span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="token-owner-block">
+                    <div>
                       {token.owner ? (
                         <Button
                           type="button"
-                          variant="link" size="sm" className="h-auto p-0 token-owner-trigger"
+                          variant="link" size="sm" className="h-auto p-0"
                           onClick={() => openAdminStory('admin-pages--user-detail')}
                         >
-                          <span className="token-owner-link">{token.owner.displayName || token.owner.userId}</span>
-                          {token.owner.username ? <span className="token-owner-secondary">@{token.owner.username}</span> : null}
+                          <span>{token.owner.displayName || token.owner.userId}</span>
+                          {token.owner.username ? <span>@{token.owner.username}</span> : null}
                         </Button>
                       ) : (
-                        <span className="token-owner-empty">{tokenStrings.owner.unbound}</span>
+                        <span>{tokenStrings.owner.unbound}</span>
                       )}
                     </div>
                   </TableCell>
@@ -3735,8 +3736,8 @@ function TokensPageCanvas(): React.JSX.Element {
                     <StatusBadge tone={tokenQuotaTone(token.quota_state)}>{tokenStrings.quotaStates[token.quota_state]}</StatusBadge>
                   </TableCell>
                   <TableCell>{formatTimestamp(token.last_used_at)}</TableCell>
-                  <TableCell className="jobs-message-cell">
-                    <div className="table-actions">
+                  <TableCell>
+                    <div>
                       <Button type="button" variant="ghost" size="icon-sm" aria-label={tokenStrings.actions.copy}>
                         C
                       </Button>
@@ -3754,31 +3755,31 @@ function TokensPageCanvas(): React.JSX.Element {
           </Table>
         </div>
 
-        <div className="table-pagination">
-          <span className="panel-description text-sm text-muted-foreground">{tokenStrings.pagination.page.replace('{page}', '1').replace('{total}', '3')}</span>
+        <div>
+          <span className="text-sm text-muted-foreground">{tokenStrings.pagination.page.replace('{page}', '1').replace('{total}', '3')}</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
             <Button type="button" variant="outline" size="sm">{tokenStrings.pagination.prev}</Button>
             <Button type="button" variant="outline" size="sm">{tokenStrings.pagination.next}</Button>
           </div>
         </div>
-        <div className="token-bulk-action-panel" role="region" aria-live="polite">
-          <div className="token-bulk-action-summary">
+        <div role="region" aria-live="polite">
+          <div>
             <strong>{tokenStrings.bulk.selected.replace('{count}', '2')}</strong>
             <span>{tokenStrings.bulk.pageSelected.replace('{count}', '2').replace('{total}', String(MOCK_TOKENS.length))}</span>
-            <span className="token-bulk-feedback">{tokenStrings.bulk.result.replace('{updated}', '2')}</span>
+            <span>{tokenStrings.bulk.result.replace('{updated}', '2')}</span>
           </div>
-          <div className="token-bulk-action-buttons">
+          <div>
             {[
               ['mdi:play-circle-outline', tokenStrings.bulk.activate, 'inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 token-bulk-secondary-action'],
               ['mdi:pause-circle-outline', tokenStrings.bulk.freeze, 'inline-flex items-center justify-center gap-1.5 rounded-md border bg-background px-3 py-1.5 text-sm font-medium hover:bg-muted disabled:opacity-50 token-bulk-secondary-action'],
               ['mdi:trash-outline', tokenStrings.bulk.delete, 'btn-error token-bulk-delete-action'],
             ].map(([icon, label, variant]) => (
-              <button key={label} type="button" className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors ${variant} px-2.5 py-1 text-xs`}>
+              <button key={label} type="button" className={`inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium transition-colors${variant}px-2.5 py-1 text-xs`}>
                 <Icon icon={icon} width={16} height={16} aria-hidden="true" />
                 {label}
               </button>
             ))}
-            <Button type="button" variant="ghost" size="xs" className="token-bulk-clear-action">{tokenStrings.bulk.clear}</Button>
+            <Button type="button" variant="ghost" size="xs">{tokenStrings.bulk.clear}</Button>
           </div>
         </div>
       </Card>
@@ -3967,7 +3968,7 @@ function KeysPageCanvas({
         <CardHeader className="panel-header border-b" style={{ flexWrap: 'wrap', gap: 12, alignItems: 'flex-start' }}>
           <div style={{ flex: '1 1 320px', minWidth: 240 }}>
             <CardTitle role="heading" aria-level={2}>{keyStrings.title}</CardTitle>
-            <CardDescription className="panel-description">{keyStrings.description}</CardDescription>
+            <CardDescription>{keyStrings.description}</CardDescription>
           </div>
           <div style={{ ...keysQuickAddCardStyle, marginLeft: 'auto' }}>
             <div style={keysQuickAddActionsStyle}>
@@ -4130,7 +4131,7 @@ function KeysPageCanvas({
         </div>
         <div style={keysBulkToolbarStyle}>
           <div style={keysBulkSelectionStyle}>
-            <span className="panel-description text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground">
               {keyStrings.selection.selectedCount.replace('{count}', String(selectedVisibleKeyCount))}
             </span>
             <Button
@@ -4205,7 +4206,7 @@ function KeysPageCanvas({
         ) : null}
 
         <div className="table-wrapper overflow-hidden rounded-lg border">
-          <Table className="api-keys-table api-keys-table--admin">
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHead style={{ width: 52 }}>
@@ -4287,7 +4288,7 @@ function KeysPageCanvas({
                         <code>{item.id}</code>
                         <Button
                           type="button"
-                          variant="ghost" size="icon-sm" className="btn-xs"
+                          variant="ghost" size="icon-sm"
                           aria-label={keyStrings.actions.copy}
                           title={keyStrings.actions.copy}
                           style={{
@@ -4304,13 +4305,13 @@ function KeysPageCanvas({
                           <Icon icon="mdi:content-copy" width={18} height={18} aria-hidden="true" />
                         </Button>
                       </div>
-                      <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>{formatKeyGroupName(item.group, keyStrings.groups.ungrouped)}</span>
+                      <span style={tableEllipsisSecondaryFieldStyle}>{formatKeyGroupName(item.group, keyStrings.groups.ungrouped)}</span>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div style={tableStackStyle}>
-                      <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>{formatRegistrationValue(item.registration_ip)}</span>
-                      <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>
+                      <span style={tableEllipsisFieldStyle}>{formatRegistrationValue(item.registration_ip)}</span>
+                      <span style={tableEllipsisSecondaryFieldStyle}>
                         {formatRegistrationValue(item.registration_region)}
                       </span>
                     </div>
@@ -4326,12 +4327,12 @@ function KeysPageCanvas({
                   </TableCell>
                   <TableCell>
                     <div style={tableStackStyle}>
-                      <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>{formatNumber(item.success_count)}</span>
-                      <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>{formatNumber(item.error_count)}</span>
+                      <span style={tableEllipsisFieldStyle}>{formatNumber(item.success_count)}</span>
+                      <span style={tableEllipsisSecondaryFieldStyle}>{formatNumber(item.error_count)}</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>
+                    <span style={tableEllipsisFieldStyle}>
                       {item.quota_remaining != null && item.quota_limit != null
                         ? `${formatNumber(item.quota_remaining)} / ${formatNumber(item.quota_limit)}`
                         : '—'}
@@ -4339,18 +4340,18 @@ function KeysPageCanvas({
                   </TableCell>
                   <TableCell>
                     <div style={tableStackStyle}>
-                      <span className="api-keys-cell-text" style={tableEllipsisFieldStyle}>{formatTimestamp(item.last_used_at)}</span>
-                      <span className="api-keys-cell-text-secondary" style={tableEllipsisSecondaryFieldStyle}>{formatTimestamp(item.status_changed_at)}</span>
+                      <span style={tableEllipsisFieldStyle}>{formatTimestamp(item.last_used_at)}</span>
+                      <span style={tableEllipsisSecondaryFieldStyle}>{formatTimestamp(item.status_changed_at)}</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="table-actions api-keys-actions">
+                    <div>
                       {item.quarantine ? (
                         <Button
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="api-keys-action-button rounded-full shadow-none"
+                          className="rounded-full shadow-none"
                           title={keyStrings.actions.clearQuarantine}
                           aria-label={keyStrings.actions.clearQuarantine}
                         >
@@ -4361,7 +4362,7 @@ function KeysPageCanvas({
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="api-keys-action-button rounded-full shadow-none"
+                          className="rounded-full shadow-none"
                           title={keyStrings.actions.enable}
                           aria-label={keyStrings.actions.enable}
                         >
@@ -4372,7 +4373,7 @@ function KeysPageCanvas({
                           type="button"
                           variant="ghost"
                           size="icon"
-                          className="api-keys-action-button rounded-full shadow-none"
+                          className="rounded-full shadow-none"
                           title={keyStrings.actions.disable}
                           aria-label={keyStrings.actions.disable}
                         >
@@ -4383,7 +4384,7 @@ function KeysPageCanvas({
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="api-keys-action-button rounded-full shadow-none"
+                        className="rounded-full shadow-none"
                         title={keyStrings.actions.delete}
                         aria-label={keyStrings.actions.delete}
                       >
@@ -4393,7 +4394,7 @@ function KeysPageCanvas({
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="api-keys-action-button rounded-full shadow-none"
+                        className="rounded-full shadow-none"
                         title={keyStrings.actions.details}
                         aria-label={keyStrings.actions.details}
                       >
@@ -4407,9 +4408,9 @@ function KeysPageCanvas({
           </Table>
         </div>
         {filteredKeys.length > perPage ? (
-          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="table-pagination-meta flex min-w-0 flex-col gap-2">
-              <Field orientation="horizontal" className="table-pagination-per-page w-fit">
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-2">
+              <Field orientation="horizontal" className="w-fit">
                 <FieldLabel htmlFor={paginationPerPageId}>{keyStrings.pagination.perPage}</FieldLabel>
                 <Select
                   value={String(perPage)}
@@ -4421,7 +4422,7 @@ function KeysPageCanvas({
                   <SelectTrigger
                     id={paginationPerPageId}
                     aria-label={keyStrings.pagination.perPage}
-                    className="table-pagination-select w-20"
+                    className="w-20"
                   >
                     <SelectValue />
                   </SelectTrigger>
@@ -4436,14 +4437,14 @@ function KeysPageCanvas({
                   </SelectContent>
                 </Select>
               </Field>
-              <span className="table-pagination-summary text-sm text-muted-foreground">
-                <span className="panel-description text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {keyStrings.pagination.page.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
                 </span>
               </span>
             </div>
             <Pagination
-              className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+              className="mx-0 w-auto justify-start sm:justify-end"
               aria-label={`${admin.tokens.pagination.prev} / ${admin.tokens.pagination.next}`}
             >
               <PaginationContent>
@@ -4647,7 +4648,7 @@ function RequestsPageCanvas({
         }}
         shouldScaleBackground={false}
       >
-        <DrawerContent className="request-entity-drawer-content">
+        <DrawerContent>
           <div className="request-entity-drawer-body">
             {drawerTarget?.kind === 'key' ? (
               <StoryKeyDetailsCanvas id={drawerTarget.id} logs={MOCK_REQUESTS} />
@@ -4709,7 +4710,7 @@ function JobsPageCanvas(): React.JSX.Element {
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>{jobsStrings.title}</CardTitle>
-            <CardDescription className="panel-description">{jobsStrings.description}</CardDescription>
+            <CardDescription>{jobsStrings.description}</CardDescription>
           </div>
           <div className="flex flex-wrap items-end gap-3 admin-jobs-actions">
             <AdminJobTriggerMenu
@@ -4751,12 +4752,12 @@ function JobsPageCanvas(): React.JSX.Element {
             </DropdownMenu>
           </div>
         </CardHeader>
-        <Empty className="empty-state" role="status" style={{ marginBottom: 16 }}><EmptyDescription>
+        <Empty role="status" style={{ marginBottom: 16 }}><EmptyDescription>
           {jobTriggerNotice}
         </EmptyDescription></Empty>
 
-        <div className="table-wrapper overflow-hidden rounded-lg border jobs-module-table-wrapper">
-          <Table className="jobs-module-table">
+        <div className="table-wrapper overflow-hidden rounded-lg border">
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>{jobsStrings.table.id}</TableHead>
@@ -4795,21 +4796,20 @@ function JobsPageCanvas(): React.JSX.Element {
                       <TableCell>{jobSourceLabel(job.trigger_source, jobsStrings)}</TableCell>
                       <TableCell>{job.attempt}</TableCell>
                       <TableCell>{formatTimestamp(job.started_at ?? job.queued_at)}</TableCell>
-                      <TableCell className="jobs-message-cell">
+                      <TableCell>
                         {hasMessage ? (
                           <button
                             type="button"
-                            className={`jobs-message-button${expanded ? ' jobs-message-button-active' : ''}`}
+                            className={expanded ? 'jobs-message-button-active' : undefined}
                             onClick={() => toggleJob(job.id)}
                             aria-expanded={expanded}
                             aria-controls={`storybook-job-details-${job.id}`}
                           >
-                            <span className="jobs-message-text">{job.message}</span>
+                            <span>{job.message}</span>
                             <Icon
                               icon={expanded ? 'mdi:chevron-up' : 'mdi:chevron-down'}
                               width={16}
                               height={16}
-                              className="jobs-message-icon"
                               aria-hidden="true"
                             />
                           </button>
@@ -4819,10 +4819,10 @@ function JobsPageCanvas(): React.JSX.Element {
                       </TableCell>
                     </TableRow>
                     {expanded && hasMessage && (
-                      <TableRow className="log-details-row">
+                      <TableRow>
                         <TableCell colSpan={8} id={`storybook-job-details-${job.id}`}>
-                          <div className="log-details-panel">
-                            <div className="log-details-summary">
+                          <div>
+                            <div>
                               <div>
                                 <div className="min-w-24 text-xs font-medium text-muted-foreground">{jobsStrings.table.id}</div>
                                 <div className="text-xs leading-5">{job.id}</div>
@@ -4853,7 +4853,7 @@ function JobsPageCanvas(): React.JSX.Element {
                                 </div>
                               </div>
                             </div>
-                            <div className="log-details-body">
+                            <div>
                               <section className="flex flex-col gap-2">
                                 <header>{jobsStrings.table.message}</header>
                                 <pre>{job.message}</pre>
@@ -4869,7 +4869,7 @@ function JobsPageCanvas(): React.JSX.Element {
               {visibleJobs.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={8}>
-                    <Empty className="empty-state"><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
+                    <Empty><EmptyDescription>{jobsStrings.empty.none}</EmptyDescription></Empty>
                   </TableCell>
                 </TableRow>
               ) : null}
@@ -4877,8 +4877,8 @@ function JobsPageCanvas(): React.JSX.Element {
           </Table>
         </div>
 
-        <div className="table-pagination">
-          <span className="panel-description text-sm text-muted-foreground">{jobsStrings.description} (1 / 2)</span>
+        <div>
+          <span className="text-sm text-muted-foreground">{jobsStrings.description} (1 / 2)</span>
           <div style={{ display: 'inline-flex', gap: 8 }}>
             <Button type="button" variant="outline" size="sm">
               {admin.tokens.pagination.prev}
@@ -4959,16 +4959,15 @@ function UsersPageCanvas({
   return (
     <AdminPageFrame activeModule="users">
       <Card className="surface panel">
-        <CardHeader className="panel-header border-b admin-list-toolbar" style={{ gap: 12, flexWrap: 'wrap' }}>
+        <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div className="block md:hidden">
             <CardTitle role="heading" aria-level={2}>{users.title}</CardTitle>
-            <CardDescription className="panel-description">{users.description}</CardDescription>
+            <CardDescription>{users.description}</CardDescription>
           </div>
           <div className="users-search-controls">
             <Input
               type="text"
               name="users-search"
-              className="users-search-input"
               placeholder={users.searchPlaceholder}
               value={queryInput}
               onChange={(event) => handleQueryInputChange(event.target.value)}
@@ -4985,14 +4984,14 @@ function UsersPageCanvas({
           </div>
         </CardHeader>
         {usersFilterStatusText && (
-          <p className="panel-description text-sm text-muted-foreground" data-testid="users-filter-status">
+          <p className="text-sm text-muted-foreground" data-testid="users-filter-status">
             {usersFilterStatusText}
           </p>
         )}
 
         <div className="table-wrapper overflow-hidden rounded-lg border">
           {filteredUsers.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{users.empty.none}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{users.empty.none}</EmptyDescription></Empty>
           ) : (
             <Table className={`w-full caption-bottom text-sm [&_th]:h-10 [&_th]:px-3 [&_th]:text-left [&_th]:font-medium [&_th]:text-muted-foreground [&_td]:px-3 [&_td]:py-2 [&_tr]:border-b admin-users-list-table${showShadowDailyUsageColumn ? ' admin-users-list-table--shadow-compare' : ''}`}>
               <TableHeader>
@@ -5059,16 +5058,16 @@ function UsersPageCanvas({
                   const lastLoginMetric = formatStackedTimestamp(item.lastLoginAt, language)
                   return (
                   <TableRow key={item.userId}>
-                    <TableCell className="admin-users-identity-cell">
+                    <TableCell>
                       <Button
                         type="button"
-                        variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
+                        variant="link" size="sm" className="h-auto p-0"
                         aria-label={users.actions.view}
                         onClick={() => openAdminStory('admin-pages--user-detail')}
                       >
                         <strong>{item.displayName || item.username || item.userId}</strong>
                       </Button>
-                      <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
+                      <div className="text-sm text-muted-foreground">
                         <code>{item.userId}</code>
                         {item.username ? ` · @${item.username}` : ''}
                       </div>
@@ -5078,47 +5077,47 @@ function UsersPageCanvas({
                         {item.active ? users.status.active : users.status.inactive}
                       </StatusBadge>
                     </TableCell>
-                    <TableCell className="admin-users-tags-cell">
+                    <TableCell>
                       <StoryUserTagBadgeList tags={item.tags} users={users} emptyLabel={users.userTags.empty} />
                     </TableCell>
-                    <TableCell className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack flex flex-col gap-1">
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
                         <span className={`admin-table-value-primary${dailyQuotaMetric.primaryClassName ? ` ${dailyQuotaMetric.primaryClassName}` : ''}`}>{dailyQuotaMetric.primary}</span>
-                        <span className="admin-table-value-secondary">{dailyQuotaMetric.secondary}</span>
+                        <span>{dailyQuotaMetric.secondary}</span>
                       </div>
                     </TableCell>
                     {showShadowDailyUsageColumn ? (
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
                           <span className={`admin-table-value-primary${shadowDailyUsage.primaryClassName ? ` ${shadowDailyUsage.primaryClassName}` : ''}`}>{shadowDailyUsage.primary}</span>
                           {shadowDailyUsage.secondary ? (
-                            <span className="admin-table-value-secondary">{shadowDailyUsage.secondary}</span>
+                            <span>{shadowDailyUsage.secondary}</span>
                           ) : null}
                         </div>
                       </TableCell>
                     ) : null}
-                    <TableCell className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack flex flex-col gap-1">
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
                         <span className={`admin-table-value-primary${monthlyQuotaMetric.primaryClassName ? ` ${monthlyQuotaMetric.primaryClassName}` : ''}`}>{monthlyQuotaMetric.primary}</span>
-                        <span className="admin-table-value-secondary">{monthlyQuotaMetric.secondary}</span>
+                        <span>{monthlyQuotaMetric.secondary}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="admin-users-compact-cell">
-                      <span className="admin-table-value-primary">{formatNumber(item.recentIpCount7d)}</span>
+                    <TableCell>
+                      <span>{formatNumber(item.recentIpCount7d)}</span>
                     </TableCell>
-                    <TableCell className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack flex flex-col gap-1">
-                        <span className="admin-table-value-primary">{lastActivityMetric.primary}</span>
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
+                        <span>{lastActivityMetric.primary}</span>
                         {lastActivityMetric.secondary && (
-                          <span className="admin-table-value-secondary">{lastActivityMetric.secondary}</span>
+                          <span>{lastActivityMetric.secondary}</span>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="admin-users-compact-cell">
-                      <div className="admin-table-value-stack flex flex-col gap-1">
-                        <span className="admin-table-value-primary">{lastLoginMetric.primary}</span>
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
+                        <span>{lastLoginMetric.primary}</span>
                         {lastLoginMetric.secondary && (
-                          <span className="admin-table-value-secondary">{lastLoginMetric.secondary}</span>
+                          <span>{lastLoginMetric.secondary}</span>
                         )}
                       </div>
                     </TableCell>
@@ -5134,13 +5133,13 @@ function UsersPageCanvas({
         <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <CardTitle role="heading" aria-level={2}>{users.catalog.summaryTitle}</CardTitle>
-            <CardDescription className="panel-description">{users.catalog.summaryDescription}</CardDescription>
+            <CardDescription>{users.catalog.summaryDescription}</CardDescription>
           </div>
           <Button type="button" variant="outline" size="sm">
             {users.userTags.manageCatalog}
           </Button>
         </CardHeader>
-        <div className="user-tag-summary-grid">
+        <div>
           {MOCK_TAG_CATALOG.map((tag) => {
             const isSystem = tag.systemKey != null
             const isBlockAll = tag.effectKind === 'block_all'
@@ -5149,15 +5148,15 @@ function UsersPageCanvas({
               .join(' ')
             return (
               <article className={cardClasses} key={tag.id}>
-                <div className="user-tag-summary-card-head">
+                <div>
                   <StoryUserTagBadge tag={{ ...tag }} users={users} />
                   <StatusBadge tone={isSystem ? 'info' : isBlockAll ? 'error' : 'neutral'}>
                     {isSystem ? users.catalog.scopeSystem : users.catalog.scopeCustom}
                   </StatusBadge>
                 </div>
-                <div className="user-tag-summary-count">
+                <div>
                   <strong>{formatNumber(tag.userCount)}</strong>
-                  <span className="panel-description text-sm text-muted-foreground">{users.catalog.summaryAccounts}</span>
+                  <span className="text-sm text-muted-foreground">{users.catalog.summaryAccounts}</span>
                 </div>
               </article>
             )
@@ -5243,11 +5242,10 @@ function UsersUsagePageCanvas({
   }
   const usageHeaderActions = (
     <div style={{ display: 'grid', gap: 6 }}>
-      <div className="users-search-controls users-search-controls--header">
+      <div className="users-search-controls">
         <Input
           type="text"
           name="user-usage-search"
-          className="users-search-input"
           placeholder={users.searchPlaceholder}
           value={queryInput}
           onChange={(event) => handleQueryInputChange(event.target.value)}
@@ -5281,16 +5279,16 @@ function UsersUsagePageCanvas({
       showDefaultShellChrome={false}
     >
       <AdminShellSidebarUtility>
-        <div className="admin-sidebar-utility-stack flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
               <div className="admin-sidebar-utility-toolbar flex flex-wrap items-center gap-2">
                 <ThemeToggle />
                 <LanguageSwitcher />
               </div>
-              <div className="admin-sidebar-utility-meta flex min-w-0 flex-col gap-1">
-                <div className="user-badge user-badge-admin flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
-                  <Icon icon="mdi:crown-outline" className="user-badge-icon size-4 shrink-0" aria-hidden="true" />
+              <div className="flex min-w-0 flex-col gap-1">
+                <div className="user-badge flex min-w-0 items-center gap-2 text-sm [&>span]:truncate" title="Ops Admin">
+                  <Icon icon="mdi:crown-outline" className="size-4 shrink-0" aria-hidden="true" />
                   <span>Ops Admin</span>
                 </div>
               </div>
@@ -5298,13 +5296,12 @@ function UsersUsagePageCanvas({
           </Card>
           <Card size="sm" className="admin-sidebar-utility-card">
             <CardContent className="flex flex-col gap-3">
-              <div className="admin-sidebar-utility-actions flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
+              <div className="flex flex-col gap-2 [&>a]:w-full [&>button]:w-full">
                 <AdminReturnToConsoleLink
                   label={admin.header.returnToConsole}
                   href="/console"
-                  className="admin-sidebar-utility-action"
                 />
-                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button admin-sidebar-utility-action">
+                <Button type="button" variant="outline" size="sm" className="admin-panel-refresh-button">
                   <Icon icon="mdi:refresh" width={16} height={16} aria-hidden="true" />
                   <span>{admin.header.refreshNow}</span>
                 </Button>
@@ -5422,11 +5419,10 @@ function UnboundTokenUsagePageCanvas({
   const applySearch = () => { setQuery(searchDraft); setPage(1) }
   const resetSearch = () => { setSearchDraft(''); setQuery(''); setPage(1) }
   const unboundHeaderActions = (
-    <div className="users-search-controls users-search-controls--header">
+    <div className="users-search-controls">
       <Input
         type="text"
         name="unbound-token-usage-search"
-        className="users-search-input"
         placeholder={strings.searchPlaceholder}
         value={searchDraft}
         onChange={(event) => setSearchDraft(event.target.value)}
@@ -5469,12 +5465,12 @@ function UnboundTokenUsagePageCanvas({
     >
       <Card className="surface panel">
         <div className="hidden md:block">
-          <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-selected-token>{selectedTokenId ? `Opened ${selectedTokenId}` : 'No token opened yet'}</p>
+          <p className="text-sm text-muted-foreground" data-selected-token>{selectedTokenId ? `Opened ${selectedTokenId}` : 'No token opened yet'}</p>
         </div>
 
-        <div className="table-wrapper overflow-hidden admin-users-usage-table-wrapper hidden md:block">
+        <div className="table-wrapper overflow-hidden hidden md:block">
           {pagedItems.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{errorMessage ?? strings.empty.none}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{errorMessage ?? strings.empty.none}</EmptyDescription></Empty>
           ) : (
             <Table className="admin-users-usage-table">
               <TableHeader>
@@ -5557,16 +5553,16 @@ function UnboundTokenUsagePageCanvas({
                   const lastUsedMetric = formatStackedTimestamp(item.lastUsedAt, language)
                   return (
                     <TableRow key={item.tokenId} data-token-row={item.tokenId}>
-                      <TableCell className="admin-users-identity-cell">
+                      <TableCell>
                         <Button
                           type="button"
-                          variant="link" size="sm" className="h-auto p-0 admin-users-identity-button"
+                          variant="link" size="sm" className="h-auto p-0"
                           data-token-identity={item.tokenId}
                           onClick={() => setSelectedTokenId(item.tokenId)}
                         >
                           <strong>{item.tokenId}</strong>
                         </Button>
-                        <div className="panel-description text-sm text-muted-foreground admin-users-identity-meta">
+                        <div className="text-sm text-muted-foreground">
                           {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                         </div>
                       </TableCell>
@@ -5575,37 +5571,37 @@ function UnboundTokenUsagePageCanvas({
                           {item.enabled ? users.status.enabled : users.status.disabled}
                         </StatusBadge>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
                           <span className={`admin-table-value-primary${requestRateMetric.primaryClassName ? ` ${requestRateMetric.primaryClassName}` : ''}`}>{requestRateMetric.primary}</span>
-                          <span className="admin-table-value-secondary">{requestRateMetric.secondary}</span>
+                          <span>{requestRateMetric.secondary}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
                           <span className={`admin-table-value-primary${hourlyMetric.primaryClassName ? ` ${hourlyMetric.primaryClassName}` : ''}`}>{hourlyMetric.primary}</span>
-                          <span className="admin-table-value-secondary">{hourlyMetric.secondary}</span>
+                          <span>{hourlyMetric.secondary}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
                           <span className={`admin-table-value-primary${dailyQuotaMetric.primaryClassName ? ` ${dailyQuotaMetric.primaryClassName}` : ''}`}>{dailyQuotaMetric.primary}</span>
-                          <span className="admin-table-value-secondary">{dailyQuotaMetric.secondary}</span>
+                          <span>{dailyQuotaMetric.secondary}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
                           <span className={`admin-table-value-primary${monthlyQuotaMetric.primaryClassName ? ` ${monthlyQuotaMetric.primaryClassName}` : ''}`}>{monthlyQuotaMetric.primary}</span>
-                          <span className="admin-table-value-secondary">{monthlyQuotaMetric.secondary}</span>
+                          <span>{monthlyQuotaMetric.secondary}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
+                      <TableCell>
                         {monthlyBrokenMetric == null ? (
-                          <div className="admin-table-value-stack flex flex-col gap-1">
-                            <span className="admin-table-value-primary">—</span>
+                          <div className="flex flex-col gap-1">
+                            <span>—</span>
                           </div>
                         ) : (
-                          <div className="admin-table-value-stack flex flex-col gap-1">
+                          <div className="flex flex-col gap-1">
                             <MonthlyBrokenCountTrigger
                               count={item.monthlyBrokenCount ?? 0}
                               onOpen={() =>
@@ -5616,27 +5612,27 @@ function UnboundTokenUsagePageCanvas({
                               ariaLabel={users.brokenKeys.openDetails.replace('{label}', item.tokenId)}
                               className={monthlyBrokenMetric.primaryClassName}
                             />
-                            <span className="admin-table-value-secondary">{monthlyBrokenMetric.secondary}</span>
+                            <span>{monthlyBrokenMetric.secondary}</span>
                           </div>
                         )}
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
-                          <span className="admin-table-value-primary">{dailySuccessMetric.primary}</span>
-                          <span className="admin-table-value-secondary">{dailySuccessMetric.secondary}</span>
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
+                          <span>{dailySuccessMetric.primary}</span>
+                          <span>{dailySuccessMetric.secondary}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
-                          <span className="admin-table-value-primary">{monthlySuccessMetric.primary}</span>
-                          <span className="admin-table-value-secondary">{monthlySuccessMetric.secondary}</span>
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
+                          <span>{monthlySuccessMetric.primary}</span>
+                          <span>{monthlySuccessMetric.secondary}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="admin-users-compact-cell">
-                        <div className="admin-table-value-stack flex flex-col gap-1">
-                          <span className="admin-table-value-primary">{lastUsedMetric.primary}</span>
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
+                          <span>{lastUsedMetric.primary}</span>
                           {lastUsedMetric.secondary && (
-                            <span className="admin-table-value-secondary">{lastUsedMetric.secondary}</span>
+                            <span>{lastUsedMetric.secondary}</span>
                           )}
                         </div>
                       </TableCell>
@@ -5650,24 +5646,24 @@ function UnboundTokenUsagePageCanvas({
 
         <div className="flex flex-col gap-3 md:hidden flex md:hidden">
           {pagedItems.length === 0 ? (
-            <Empty className="empty-state"><EmptyDescription>{errorMessage ?? strings.empty.none}</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{errorMessage ?? strings.empty.none}</EmptyDescription></Empty>
           ) : (
             pagedItems.map((item) => {
               const requestRate = resolveRequestRate(item, 'token')
               return (
               <article key={item.tokenId} className="rounded-lg border p-3">
-                <div className="admin-mobile-identity-block">
-                  <div className="admin-mobile-identity-row">
-                    <span className="admin-mobile-identity-label">{strings.table.identity}</span>
+                <div>
+                  <div>
+                    <span>{strings.table.identity}</span>
                     <Button
                       type="button"
-                      variant="link" size="sm" className="h-auto p-0 admin-users-mobile-link"
+                      variant="link" size="sm" className="h-auto p-0"
                       onClick={() => setSelectedTokenId(item.tokenId)}
                     >
                       <strong>{item.tokenId}</strong>
                     </Button>
                   </div>
-                  <div className="panel-description text-sm text-muted-foreground admin-mobile-identity-meta">
+                  <div className="text-sm text-muted-foreground">
                     {formatUnboundTokenIdentityMeta(item.note, item.group, tokenStrings.groups.label)}
                   </div>
                 </div>
@@ -5737,16 +5733,16 @@ function UnboundTokenUsagePageCanvas({
         )}
 
         {sortedItems.length > pageSize && (
-          <div className="table-pagination flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="table-pagination-meta flex min-w-0 flex-col gap-2 table-pagination-meta-summary-only">
-              <span className="table-pagination-summary text-sm text-muted-foreground">
-                <span className="panel-description text-sm text-muted-foreground">
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-col gap-2">
+              <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   {users.pagination.replace('{page}', String(safePage)).replace('{total}', String(totalPages))}
                 </span>
               </span>
             </div>
             <Pagination
-              className="table-pagination-nav mx-0 w-auto justify-start sm:justify-end"
+              className="mx-0 w-auto justify-start sm:justify-end"
               aria-label={`${tokenStrings.pagination.prev} / ${tokenStrings.pagination.next}`}
             >
               <PaginationContent>
@@ -5799,7 +5795,7 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>Users usage tooltip proof</CardTitle>
-            <CardDescription className="panel-description">
+            <CardDescription>
               The table shell is intentionally clipped to reproduce the original overlap bug. Shared tooltips must
               render above the sticky header and scroll frame.
             </CardDescription>
@@ -5824,9 +5820,9 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
                   <TableHead aria-sort="descending">
                     <Tooltip open>
                       <TooltipTrigger asChild>
-                        <Button type="button" variant="ghost" size="sm" className="admin-table-sort-button is-active">
-                          <span className="admin-table-sort-label">{dailySuccessLabel}</span>
-                          <ArrowDown className="admin-table-sort-indicator" aria-hidden="true" />
+                        <Button type="button" variant="ghost" size="sm">
+                          <span>{dailySuccessLabel}</span>
+                          <ArrowDown aria-hidden="true" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent side="top">{dailySuccessTooltip}</TooltipContent>
@@ -5835,9 +5831,9 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
                   <TableHead aria-sort="descending">
                     <Tooltip open>
                       <TooltipTrigger asChild>
-                        <Button type="button" variant="ghost" size="sm" className="admin-table-sort-button is-active">
-                          <span className="admin-table-sort-label">{monthlySuccessLabel}</span>
-                          <ArrowDown className="admin-table-sort-indicator" aria-hidden="true" />
+                        <Button type="button" variant="ghost" size="sm">
+                          <span>{monthlySuccessLabel}</span>
+                          <ArrowDown aria-hidden="true" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent side="top">{monthlySuccessTooltip}</TooltipContent>
@@ -5848,7 +5844,7 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
               <TableBody>
                 <TableRow>
                   <TableCell>
-                    <div className="admin-users-identity-cell">
+                    <div>
                       <strong>unclejimao</strong>
                     </div>
                   </TableCell>
@@ -5856,15 +5852,15 @@ function UsersUsageTooltipProofCanvas(): React.JSX.Element {
                     <StatusBadge tone="success">{users.status.active}</StatusBadge>
                   </TableCell>
                   <TableCell>
-                    <div className="admin-table-value-stack flex flex-col gap-1">
-                      <span className="admin-table-value-primary">97.5%</span>
-                      <span className="admin-table-value-secondary">{dailyFailureText}</span>
+                    <div className="flex flex-col gap-1">
+                      <span>97.5%</span>
+                      <span>{dailyFailureText}</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="admin-table-value-stack flex flex-col gap-1">
-                      <span className="admin-table-value-primary">94.1%</span>
-                      <span className="admin-table-value-secondary">{monthlyFailureText}</span>
+                    <div className="flex flex-col gap-1">
+                      <span>94.1%</span>
+                      <span>{monthlyFailureText}</span>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -5888,15 +5884,15 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
   return (
     <AdminPageFrame activeModule="users">
       <div className="hidden md:block">
-        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4 admin-compact-intro--with-actions">
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+        <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">{users.catalog.title}</h1>
             {users.catalog.description ? (
-              <p className="admin-compact-intro-description text-sm text-muted-foreground">{users.catalog.description}</p>
+              <p className="text-sm text-muted-foreground">{users.catalog.description}</p>
             ) : null}
           </div>
           <div className="admin-compact-intro-actions max-w-full">
-            <div className="user-tag-page-actions">
+            <div>
               <Button type="button" variant="outline" size="sm">{users.catalog.backToUsers}</Button>
               <Button type="button" variant="default" size="sm" disabled={editorMode === 'new'}>
                 {users.catalog.actions.create}
@@ -5909,9 +5905,9 @@ function UserTagsPageCanvas({ editorMode = 'view' }: { editorMode?: StoryTagCard
         <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <CardTitle role="heading" aria-level={2}>{users.catalog.title}</CardTitle>
-            <CardDescription className="panel-description">{users.catalog.description}</CardDescription>
+            <CardDescription>{users.catalog.description}</CardDescription>
           </div>
-          <div className="user-tag-page-actions">
+          <div>
             <Button type="button" variant="outline" size="sm">{users.catalog.backToUsers}</Button>
             <Button type="button" variant="default" size="sm" disabled={editorMode === 'new'}>
               {users.catalog.actions.create}
@@ -6005,8 +6001,8 @@ function UserDetailPageCanvas({
         description: users.detail.subtitle.replace('{id}', detail.userId),
       }}
       sidebarUtilityActions={<>
-        <AdminReturnToConsoleLink label={admin.header.returnToConsole} href="/console" className="admin-sidebar-utility-action" />
-        <Button type="button" variant="ghost" size="sm" className="admin-sidebar-utility-action">
+        <AdminReturnToConsoleLink label={admin.header.returnToConsole} href="/console" />
+        <Button type="button" variant="ghost" size="sm">
           <Icon icon="mdi:arrow-left" width={18} height={18} aria-hidden="true" />
           {users.detail.back}
         </Button>
@@ -6022,15 +6018,15 @@ function UserDetailPageCanvas({
     >
       {activeTab === 'account' && (
       <>
-      <Card className="surface panel user-detail-panel-compact" id="user-detail-identity" role="tabpanel">
+      <Card className="surface panel" id="user-detail-identity" role="tabpanel">
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>{users.detail.identityTitle}</CardTitle>
-            <CardDescription className="panel-description">{users.detail.identityDescription}</CardDescription>
+            <CardDescription>{users.detail.identityDescription}</CardDescription>
           </div>
         </CardHeader>
-        <dl className="user-detail-definition-grid">
-          <div className="user-detail-definition-grid__item--wide">
+        <dl>
+          <div>
             <dt>{users.detail.userId}</dt>
             <dd>
               <code>{detail.userId}</code>
@@ -6052,7 +6048,7 @@ function UserDetailPageCanvas({
               </StatusBadge>
             </dd>
           </div>
-          <div className="user-detail-definition-grid__item--wide">
+          <div>
             <dt>{users.table.lastLogin}</dt>
             <dd>{formatTimestamp(detail.lastLoginAt)}</dd>
           </div>
@@ -6064,7 +6060,7 @@ function UserDetailPageCanvas({
             <dt>{users.usage.table.businessOneHour}</dt>
             <dd>
               {formatNumber(detail.businessCalls1h.totalCount)}
-              <span className="admin-table-value-secondary" style={{ display: 'block' }}>
+              <span style={{ display: 'block' }}>
                 {language === 'zh'
                   ? `成 ${formatNumber(detail.businessCalls1h.successCount)} / 败 ${formatNumber(detail.businessCalls1h.failureCount)}`
                   : `S ${formatNumber(detail.businessCalls1h.successCount)} / F ${formatNumber(detail.businessCalls1h.failureCount)}`}
@@ -6087,36 +6083,36 @@ function UserDetailPageCanvas({
         <CardHeader className="panel-header border-b" style={{ gap: 12, flexWrap: 'wrap' }}>
           <div>
             <CardTitle role="heading" aria-level={2}>{users.userTags.title}</CardTitle>
-            <CardDescription className="panel-description">{users.userTags.description}</CardDescription>
+            <CardDescription>{users.userTags.description}</CardDescription>
           </div>
           <Button type="button" variant="outline" size="sm">
             {users.userTags.manageCatalog}
           </Button>
         </CardHeader>
         <div className="user-tag-binding-toolbar">
-          <div className="user-tag-binding-summary">
-            <div className="user-tag-binding-summary-top">
+          <div>
+            <div>
               <StoryUserTagBadgeList tags={detail.tags} users={users} emptyLabel={users.userTags.empty} />
-              <p className="panel-description text-sm text-muted-foreground user-tag-binding-summary-note">
+              <p className="text-sm text-muted-foreground">
                 系统标签保持只读，手动标签在右侧选择后绑定。
               </p>
             </div>
-            <div className="user-tag-binding-summary-metrics" aria-label={users.userTags.title}>
+            <div aria-label={users.userTags.title}>
               <div className="user-tag-binding-summary-metric">
-                <span className="user-tag-binding-summary-label">已绑定</span>
+                <span>已绑定</span>
                 <strong>{formatNumber(detail.tags.length)}</strong>
               </div>
               <div className="user-tag-binding-summary-metric">
-                <span className="user-tag-binding-summary-label">系统标签</span>
+                <span>系统标签</span>
                 <strong>{formatNumber(systemTagCount)}</strong>
               </div>
               <div className="user-tag-binding-summary-metric">
-                <span className="user-tag-binding-summary-label">手动标签</span>
+                <span>手动标签</span>
                 <strong>{formatNumber(manualTagCount)}</strong>
               </div>
             </div>
           </div>
-          <div className="user-tag-binding-actions">
+          <div>
             <UserTagBindingControls
               bindableTags={[{ id: 'suspended_manual', displayName: 'Suspended' }]}
               buttonLabel={users.userTags.bindAction}
@@ -6128,13 +6124,13 @@ function UserDetailPageCanvas({
             />
           </div>
         </div>
-        <div className="user-tag-binding-list">
+        <div>
           {detail.tags.map((tag) => {
             const isSystem = isSystemUserTag(tag)
             return (
-              <article className="user-tag-binding-card" key={`${tag.tagId}:${tag.source}`}>
-                <div className="user-tag-binding-card-head">
-                  <div className="user-tag-pill-list">
+              <article key={`${tag.tagId}:${tag.source}`}>
+                <div>
+                  <div>
                     <StoryUserTagBadge tag={tag} users={users} />
                     <StatusBadge tone={isSystem ? 'info' : 'neutral'}>
                       {tag.source === 'system_linuxdo' ? users.userTags.sourceSystem : users.userTags.sourceManual}
@@ -6144,18 +6140,18 @@ function UserDetailPageCanvas({
                     {isSystem ? users.userTags.readOnly : users.userTags.unbindAction}
                   </Button>
                 </div>
-                <div className="token-compact-pair">
-                  <div className="token-compact-field">
-                    <span className="token-compact-label">{users.quota.hourly}</span>
-                    <span className="token-compact-value">{formatSignedQuotaDelta(tag.businessCalls1hDelta)}</span>
+                <div>
+                  <div>
+                    <span>{users.quota.hourly}</span>
+                    <span>{formatSignedQuotaDelta(tag.businessCalls1hDelta)}</span>
                   </div>
-                  <div className="token-compact-field">
-                    <span className="token-compact-label">{users.quota.daily}</span>
-                    <span className="token-compact-value">{formatSignedQuotaDelta(tag.dailyCreditsDelta)}</span>
+                  <div>
+                    <span>{users.quota.daily}</span>
+                    <span>{formatSignedQuotaDelta(tag.dailyCreditsDelta)}</span>
                   </div>
-                  <div className="token-compact-field">
-                    <span className="token-compact-label">{users.quota.monthly}</span>
-                    <span className="token-compact-value">{formatSignedQuotaDelta(tag.monthlyCreditsDelta)}</span>
+                  <div>
+                    <span>{users.quota.monthly}</span>
+                    <span>{formatSignedQuotaDelta(tag.monthlyCreditsDelta)}</span>
                   </div>
                 </div>
               </article>
@@ -6264,7 +6260,7 @@ function UserDetailPageCanvas({
         <CardHeader className="panel-header border-b">
           <div>
             <CardTitle role="heading" aria-level={2}>{users.detail.tokensTitle}</CardTitle>
-            <CardDescription className="panel-description">{users.detail.tokensDescription}</CardDescription>
+            <CardDescription>{users.detail.tokensDescription}</CardDescription>
           </div>
           <Button type="button" variant="secondary" size="sm" onClick={addToken}>
             <Icon icon="mdi:key-plus" width={16} height={16} />

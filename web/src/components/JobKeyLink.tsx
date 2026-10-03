@@ -56,7 +56,7 @@ export default function JobKeyLink({
   return (
     <Tooltip open={bubbleOpen}>
       <TooltipTrigger asChild>{link}</TooltipTrigger>
-      <TooltipContent className="jobs-key-tooltip max-w-[min(18rem,calc(100vw-2rem))] text-center" side="top">
+      <TooltipContent className="max-w-[min(18rem,calc(100vw-2rem))] text-center" side="top">
         {groupLabel}
       </TooltipContent>
     </Tooltip>

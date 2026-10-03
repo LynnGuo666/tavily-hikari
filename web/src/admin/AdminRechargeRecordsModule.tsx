@@ -212,28 +212,28 @@ export default function AdminRechargeRecordsModule({
         : strings.summary.totpSetupRequired
   if (data && !data.hasRechargeOrders) {
     return (
-      <section className="admin-recharge-module admin-recharge-module--empty" aria-label={strings.title}>
-        <Empty className="empty-state"><EmptyDescription>{strings.emptyHiddenDescription}</EmptyDescription></Empty>
+      <section aria-label={strings.title}>
+        <Empty><EmptyDescription>{strings.emptyHiddenDescription}</EmptyDescription></Empty>
       </section>
     )
   }
 
   return (
-    <section className="admin-recharge-module flex min-w-0 flex-col gap-4" aria-label={strings.title}>
-      <div className="admin-recharge-summary flex flex-wrap gap-3 text-sm text-muted-foreground" aria-label={strings.title}>
+    <section className="flex min-w-0 flex-col gap-4" aria-label={strings.title}>
+      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground" aria-label={strings.title}>
         <span>{formatTemplate(strings.summary.orders, { total: summary.total })}</span>
         <span>{formatTemplate(strings.summary.actionable, { count: summary.actionable })}</span>
         <span>{totpSummaryText}</span>
       </div>
       {totpStatusError && (
-        <p className="admin-recharge-inline-status" role="status" aria-live="polite">
+        <p role="status" aria-live="polite">
           {formatTemplate(strings.totpStatusLoadFailed, { message: totpStatusError })}
         </p>
       )}
 
       <div className="admin-recharge-toolbar flex flex-col gap-4">
-        <div className="admin-recharge-toolbar-primary flex flex-wrap items-center gap-3">
-          <Field className="admin-recharge-search-field"><FieldLabel htmlFor="admin-recharge-search" className="sr-only">{strings.searchLabel}</FieldLabel>
+        <div className="flex flex-wrap items-center gap-3">
+          <Field><FieldLabel htmlFor="admin-recharge-search" className="sr-only">{strings.searchLabel}</FieldLabel>
             <Input
               id="admin-recharge-search"
               name="admin_recharge_search"
@@ -248,14 +248,14 @@ export default function AdminRechargeRecordsModule({
           </ToggleGroup>
         </div>
         <FieldGroup className="admin-recharge-filter-row grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-status">{strings.statusFilterLabel}</FieldLabel>
+          <Field><FieldLabel htmlFor="admin-recharge-status">{strings.statusFilterLabel}</FieldLabel>
             <Select name="admin_recharge_status"
               value={status}
               onValueChange={(value) => { setPage(1); setStatus(value as AdminRechargeStatus | 'all') }}><SelectTrigger id="admin-recharge-status" className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectGroup>
               {STATUS_OPTIONS.map((item) => <SelectItem key={item} value={item}>{item === 'all' ? strings.allStatuses : statusLabel(item, strings)}</SelectItem>)}
             </SelectGroup></SelectContent></Select>
           </Field>
-          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-start-date">{strings.startDateFilterLabel}</FieldLabel>
+          <Field><FieldLabel htmlFor="admin-recharge-start-date">{strings.startDateFilterLabel}</FieldLabel>
             <Input
               id="admin-recharge-start-date"
               name="admin_recharge_start_date"
@@ -265,7 +265,7 @@ export default function AdminRechargeRecordsModule({
               onChange={(event) => { setPage(1); setStartDate(event.target.value) }}
             />
           </Field>
-          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-end-date">{strings.endDateFilterLabel}</FieldLabel>
+          <Field><FieldLabel htmlFor="admin-recharge-end-date">{strings.endDateFilterLabel}</FieldLabel>
             <Input
               id="admin-recharge-end-date"
               name="admin_recharge_end_date"
@@ -275,14 +275,14 @@ export default function AdminRechargeRecordsModule({
               onChange={(event) => { setPage(1); setEndDate(event.target.value) }}
             />
           </Field>
-          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-sort">{strings.sortFilterLabel}</FieldLabel>
+          <Field><FieldLabel htmlFor="admin-recharge-sort">{strings.sortFilterLabel}</FieldLabel>
             <Select name="admin_recharge_sort"
               value={sort}
               onValueChange={(value) => setSort(value as AdminRechargeSort)}><SelectTrigger id="admin-recharge-sort" className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectGroup>
               {SORT_OPTIONS.map((item) => <SelectItem key={item} value={item}>{sortLabel(item, strings)}</SelectItem>)}
             </SelectGroup></SelectContent></Select>
           </Field>
-          <Field className="admin-recharge-filter-field"><FieldLabel htmlFor="admin-recharge-order">{strings.orderFilterLabel}</FieldLabel>
+          <Field><FieldLabel htmlFor="admin-recharge-order">{strings.orderFilterLabel}</FieldLabel>
             <Select name="admin_recharge_order"
               value={order}
               onValueChange={(value) => setOrder(value as 'asc' | 'desc')}><SelectTrigger id="admin-recharge-order" className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectGroup>
@@ -295,9 +295,9 @@ export default function AdminRechargeRecordsModule({
 
       <AdminLoadingRegion loadState={loadState} errorLabel={error} loadingLabel={strings.loading}>
         {view === 'user' ? (
-          <div className="admin-recharge-group-grid grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {(data?.groups ?? []).map((group) => (
-              <Button variant="outline" key={group.user.id} type="button" className="admin-recharge-user-card h-auto w-full items-start whitespace-normal text-left flex flex-col gap-2 p-4 [&_span]:text-xs [&_span]:text-muted-foreground" onClick={() => openUser(group.user.id)}>
+              <Button variant="outline" key={group.user.id} type="button" className="h-auto w-full items-start whitespace-normal text-left flex flex-col gap-2 p-4 [&_span]:text-xs [&_span]:text-muted-foreground" onClick={() => openUser(group.user.id)}>
                 <strong>{userLabel(group.user)}</strong>
                 <span>{formatTemplate(strings.groupSummary, { orders: group.orderCount, paid: group.paidOrderCount, refunded: group.refundedOrderCount })}</span>
                 <span>{formatTemplate(strings.groupCredits, { credits: group.totalCredits.toLocaleString(), amount: (group.totalMoneyCents / 100).toFixed(2) })}</span>
@@ -305,7 +305,7 @@ export default function AdminRechargeRecordsModule({
             ))}
           </div>
         ) : (
-          <div className="admin-recharge-table-scroll min-w-0 max-w-full rounded-lg border">
+          <div className="min-w-0 max-w-full rounded-lg border">
             <Table className="admin-recharge-table">
               <TableHeader>
                 <TableRow>
@@ -323,9 +323,9 @@ export default function AdminRechargeRecordsModule({
               <TableBody>
                 {(data?.items ?? []).map((item) => (
                   <TableRow key={item.outTradeNo}>
-                    <TableCell><Button type="button" variant="link" size="sm" className="h-auto p-0 admin-recharge-user-link" onClick={() => openUser(item.user.id)}>{userLabel(item.user)}</Button></TableCell>
+                    <TableCell><Button type="button" variant="link" size="sm" className="h-auto p-0" onClick={() => openUser(item.user.id)}>{userLabel(item.user)}</Button></TableCell>
                     <TableCell>
-                      <div className="admin-recharge-order-cell flex flex-col gap-1 [&_code]:text-xs">
+                      <div className="flex flex-col gap-1 [&_code]:text-xs">
                         <span>{formatTemplate(strings.orderCredits, { credits: item.credits.toLocaleString(), months: item.months })}</span>
                         <code>{item.outTradeNo}</code>
                       </div>
@@ -333,12 +333,12 @@ export default function AdminRechargeRecordsModule({
                     <TableCell><StatusBadge tone={item.status === 'paid' ? 'success' : item.status === 'failed' ? 'error' : item.status === 'pending' || item.status === 'refunding' ? 'warning' : 'neutral'}>{statusLabel(item.status, strings)}</StatusBadge></TableCell>
                     <TableCell>{formatTemplate(strings.amountLdc, { amount: item.money })}</TableCell>
                     <TableCell>
-                      <div className="admin-recharge-order-cell flex flex-col gap-1 [&_code]:text-xs">
+                      <div className="flex flex-col gap-1 [&_code]:text-xs">
                         <span>{formatTemplate(strings.finalAmountLdc, { amount: (item.finalMoneyCents / 100).toFixed(2) })}</span>
                         {item.monthEndClampApplied ? (
-                          <span className="admin-recharge-order-meta text-xs text-muted-foreground">{strings.monthEndClampApplied}</span>
+                          <span className="text-xs text-muted-foreground">{strings.monthEndClampApplied}</span>
                         ) : (
-                          <span className="admin-recharge-order-meta text-xs text-muted-foreground">{strings.monthEndClampInactive}</span>
+                          <span className="text-xs text-muted-foreground">{strings.monthEndClampInactive}</span>
                         )}
                       </div>
                     </TableCell>
@@ -347,12 +347,12 @@ export default function AdminRechargeRecordsModule({
                     <TableCell>{formatDate(item.refundedAt)}</TableCell>
                     <TableCell>
                       {item.status === 'paid' ? (
-                        <div className="admin-recharge-actions flex flex-wrap gap-2">
-                          <Button type="button" size="sm" variant="outline" className="admin-recharge-action-button" onClick={() => openRefundDialog(item, 'refund')}>{strings.actions.refund}</Button>
-                          <Button type="button" size="sm" variant="outline" className="admin-recharge-action-button" onClick={() => openRefundDialog(item, 'refundOnly')}>{strings.actions.refundOnly}</Button>
+                        <div className="flex flex-wrap gap-2">
+                          <Button type="button" size="sm" variant="outline" onClick={() => openRefundDialog(item, 'refund')}>{strings.actions.refund}</Button>
+                          <Button type="button" size="sm" variant="outline" onClick={() => openRefundDialog(item, 'refundOnly')}>{strings.actions.refundOnly}</Button>
                         </div>
                       ) : (
-                        <span className="admin-recharge-action-state">{statusActionLabel(item, strings)}</span>
+                        <span>{statusActionLabel(item, strings)}</span>
                       )}
                     </TableCell>
                   </TableRow>
@@ -363,7 +363,7 @@ export default function AdminRechargeRecordsModule({
         )}
       </AdminLoadingRegion>
 
-      <div className="admin-recharge-pagination flex flex-wrap items-center justify-center gap-3 border-t pt-4 text-sm">
+      <div className="flex flex-wrap items-center justify-center gap-3 border-t pt-4 text-sm">
         <Button type="button" variant="outline" disabled={page <= 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>{strings.actions.previousPage}</Button>
         <span>{formatTemplate(strings.paginationSummary, { page: data?.page ?? page, total: data?.total ?? 0 })}</span>
         <Button type="button" variant="outline" disabled={!data || page * data.perPage >= data.total} onClick={() => setPage((value) => value + 1)}>{strings.actions.nextPage}</Button>
@@ -508,17 +508,16 @@ export function AdminRechargeRefundDialogBody({
     <>
       {header}
       {refundDialogBlocked ? (
-        <div className="admin-recharge-setup-callout rounded-lg border bg-muted/50 p-3 text-sm" role="status" aria-live="polite">
+        <div className="rounded-lg border bg-muted/50 p-3 text-sm" role="status" aria-live="polite">
           {blockedCallout}
         </div>
       ) : (
-        <label className="admin-recharge-totp-field flex flex-col gap-2 text-sm font-medium" htmlFor="admin-recharge-refund-totp">
+        <label className="flex flex-col gap-2 text-sm font-medium" htmlFor="admin-recharge-refund-totp">
           <span>{strings.confirm.totpLabel}</span>
           <Input
             id="admin-recharge-refund-totp"
             name="admin_recharge_refund_totp"
             type="text"
-            className="admin-recharge-totp-input"
             value={totpCode}
             onChange={(event) => onTotpCodeChange(event.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder={strings.confirm.totpPlaceholder}

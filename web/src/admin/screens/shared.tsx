@@ -22,11 +22,11 @@ export function AdminTableValueStack({
   primaryClassName,
 }: StackedValue): React.JSX.Element {
   return (
-    <div className="admin-table-value-stack flex flex-col gap-1">
+    <div className="flex flex-col gap-1">
       <span className={`admin-table-value-primary${primaryClassName ? ` ${primaryClassName}` : ''}`}>
         {primary}
       </span>
-      {secondary ? <span className="admin-table-value-secondary">{secondary}</span> : null}
+      {secondary ? <span>{secondary}</span> : null}
     </div>
   )
 }
@@ -87,12 +87,14 @@ export function AdminUsersSortableHeader<Field extends string>({
       variant="ghost"
       size="sm"
       data-sort-field={field}
-      className={`admin-table-sort-button${isActive ? ' is-active' : ''}`}
+      className="text-muted-foreground data-[active=true]:text-foreground"
+      data-active={isActive || undefined}
+      aria-pressed={isActive}
       onClick={() => onToggle(field)}
       aria-label={hasTooltip ? bubbleLabel : undefined}
     >
-      <span className="admin-table-sort-label">{visibleLabel}</span>
-      <SortIndicatorIcon className="admin-table-sort-indicator" aria-hidden="true" />
+      <span>{visibleLabel}</span>
+      <SortIndicatorIcon aria-hidden="true" />
     </Button>
   )
   return (
@@ -130,26 +132,26 @@ export function UsagePageIntro({
         <section
           className={`admin-compact-intro flex flex-wrap items-end justify-between gap-4${searchControls ? ' admin-compact-intro--with-actions' : ''}`}
         >
-          <div className="admin-compact-intro-main flex min-w-0 flex-col gap-1">
+          <div className="flex min-w-0 flex-col gap-1">
             <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
             {description ? (
-              <p className="admin-compact-intro-description text-sm text-muted-foreground">{description}</p>
+              <p className="text-sm text-muted-foreground">{description}</p>
             ) : null}
           </div>
           {searchControls ? <div className="admin-compact-intro-actions max-w-full">{searchControls}</div> : null}
         </section>
       </div>
       <div className="block md:hidden">
-        <section className="surface app-header admin-usage-stacked-intro">
-          <div className="admin-usage-stacked-intro-main">
+        <section className="surface">
+          <div>
             <h1>{title}</h1>
-            <p className="admin-compact-intro-description">{description}</p>
+            <p>{description}</p>
           </div>
-          <div className="admin-usage-stacked-intro-actions">{searchControls}</div>
+          <div>{searchControls}</div>
         </section>
       </div>
       {filterStatusText ? (
-        <p className="panel-description text-sm text-muted-foreground admin-usage-filter-status" data-testid={filterStatusTestId}>
+        <p className="text-sm text-muted-foreground" data-testid={filterStatusTestId}>
           {filterStatusText}
         </p>
       ) : null}
@@ -192,10 +194,10 @@ export function UserTagBadge({
 
   return (
     <Badge variant="outline" className={classes} title={tag.displayName}>
-      {iconSrc ? <img src={iconSrc} alt="" className="user-tag-pill-icon" aria-hidden="true" /> : null}
+      {iconSrc ? <img src={iconSrc} alt="" aria-hidden="true" /> : null}
       <span>{tag.displayName}</span>
-      {isSystem ? <span className="user-tag-pill-meta">{usersStrings.catalog.scopeSystemShort}</span> : null}
-      {isBlockAll ? <span className="user-tag-pill-meta">{usersStrings.catalog.blockShort}</span> : null}
+      {isSystem ? <span>{usersStrings.catalog.scopeSystemShort}</span> : null}
+      {isBlockAll ? <span>{usersStrings.catalog.blockShort}</span> : null}
     </Badge>
   )
 }
@@ -212,18 +214,18 @@ export function UserTagBadgeList({
   limit?: number
 }): React.JSX.Element {
   if (tags.length === 0) {
-    return <span className="panel-description text-sm text-muted-foreground">{emptyLabel}</span>
+    return <span className="text-sm text-muted-foreground">{emptyLabel}</span>
   }
 
   const visibleTags = tags.slice(0, limit)
   const overflow = Math.max(0, tags.length - visibleTags.length)
 
   return (
-    <div className="user-tag-pill-list">
+    <div>
       {visibleTags.map((tag) => (
         <UserTagBadge key={`${tag.tagId}:${tag.source}`} tag={tag} usersStrings={usersStrings} />
       ))}
-      {overflow > 0 ? <Badge variant="outline" className="user-tag-pill-overflow">+{overflow}</Badge> : null}
+      {overflow > 0 ? <Badge variant="outline">+{overflow}</Badge> : null}
     </div>
   )
 }

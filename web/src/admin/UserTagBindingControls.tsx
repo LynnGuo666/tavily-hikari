@@ -35,7 +35,7 @@ export function UserTagBindingControls({
   return (
     <div className="user-tag-bind-controls">
       <Select value={selectedTagId} onValueChange={onSelectedTagIdChange} disabled={isBusy}>
-        <SelectTrigger className="user-tag-bind-select" aria-label={placeholder}>
+        <SelectTrigger aria-label={placeholder}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent align="start">

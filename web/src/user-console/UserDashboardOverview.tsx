@@ -47,7 +47,7 @@ function ProgressChart({
   } satisfies ChartConfig
   if (!card || !card.points.some((point) => point.value != null || point.limitValue != null)) {
     return (
-      <Empty className="user-console-progress-chart h-28 min-h-0 p-0">
+      <Empty className="h-28 min-h-0 p-0">
         <EmptyDescription>—</EmptyDescription>
       </Empty>
     )
@@ -59,7 +59,7 @@ function ProgressChart({
   }))
 
   return (
-    <ChartContainer config={config} className="user-console-progress-chart h-28 w-full aspect-auto" data-accent={accentId}>
+    <ChartContainer config={config} className="h-28 w-full aspect-auto" data-accent={accentId}>
       <ComposedChart accessibilityLayer margin={{ top: 8, right: 4, bottom: 0, left: 4 }} data={points}>
         <CartesianGrid vertical={false} />
         <YAxis hide domain={[0, 'auto']} />
@@ -118,15 +118,15 @@ function SummaryCard({
         tone === 'month' && 'col-span-2 @lg:col-span-1',
       )}
     >
-      <div className="user-console-summary-card-header flex flex-wrap items-center justify-between gap-1">
-        <div className="user-console-summary-card-label text-xs font-medium tracking-wide text-muted-foreground uppercase">
+      <div className="flex flex-wrap items-center justify-between gap-1">
+        <div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
         </div>
-        <div className="user-console-summary-card-marker text-xs text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           {marker}
         </div>
       </div>
-      <div className="user-console-summary-card-value">
+      <div>
         <span
           className={cn(
             'text-3xl font-semibold tabular-nums',
@@ -184,12 +184,12 @@ function ProgressCard({
         loading && 'is-loading',
       )}
     >
-      <div className="user-console-progress-card-header">
-        <div className="user-console-progress-card-label min-h-8 min-w-0 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+      <div>
+        <div className="min-h-8 min-w-0 text-xs font-medium tracking-wide text-muted-foreground uppercase">
           {label}
         </div>
       </div>
-      <div className="user-console-progress-card-value flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <div>
           <strong className={cn('text-2xl font-semibold tabular-nums', loading && 'text-muted-foreground/50')}>
             {loading || !card ? '--' : formatNumber(card.used)}
@@ -200,7 +200,7 @@ function ProgressCard({
         </div>
         <ProgressChart card={card} accentId={accent} language={language} />
       </div>
-      <div className="user-console-progress-card-foot mt-auto flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
+      <div className="mt-auto flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
         <span>{marker}</span>
         <strong className={cn('tabular-nums', CHART_ACCENT_CLASS[accent])}>
           {fillRatio == null ? '--' : `${Math.round(fillRatio * 100)}%`}
@@ -237,8 +237,8 @@ export default function UserDashboardOverview({
       }
 
   return (
-    <div className="user-console-overview-grid @container flex flex-col gap-4">
-      <div className="user-console-summary-grid grid grid-cols-2 gap-4 @lg:grid-cols-3">
+    <div className="@container flex flex-col gap-4">
+      <div className="grid grid-cols-2 gap-4 @lg:grid-cols-3">
         <SummaryCard
           label={text.dailySuccess}
           value={summary?.dailySuccess ?? 0}
@@ -265,7 +265,7 @@ export default function UserDashboardOverview({
         />
       </div>
 
-      <div className="user-console-progress-grid grid gap-4 @md:grid-cols-2 @5xl:grid-cols-4">
+      <div className="grid gap-4 @md:grid-cols-2 @5xl:grid-cols-4">
         <ProgressCard
           language={language}
           label={requestRateLabel}
@@ -282,7 +282,7 @@ export default function UserDashboardOverview({
               label={text.hourly}
               kind="businessCalls1h"
               language={language}
-              className="user-console-progress-card-label min-w-0 whitespace-normal text-left"
+              className="min-w-0 whitespace-normal text-left"
             />
           }
           card={progress?.businessCalls1h ?? null}
@@ -298,7 +298,7 @@ export default function UserDashboardOverview({
               label={text.daily}
               kind="dailyCredits"
               language={language}
-              className="user-console-progress-card-label min-w-0 whitespace-normal text-left"
+              className="min-w-0 whitespace-normal text-left"
             />
           }
           card={progress?.dailyCredits ?? null}
@@ -314,7 +314,7 @@ export default function UserDashboardOverview({
               label={text.monthly}
               kind="monthlyCredits"
               language={language}
-              className="user-console-progress-card-label min-w-0 whitespace-normal text-left"
+              className="min-w-0 whitespace-normal text-left"
             />
           }
           card={progress?.monthlyCredits ?? null}

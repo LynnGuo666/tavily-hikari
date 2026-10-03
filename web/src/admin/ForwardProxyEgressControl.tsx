@@ -52,7 +52,6 @@ function ForwardProxyAnchoredProgressBubble({
   return createPortal(
     <div
       ref={bubbleRef}
-      className="forward-proxy-progress-bubble-shell layer-popover"
       data-placement={position?.placement ?? 'bottom'}
       style={{
         top: `${position?.top ?? 0}px`,
@@ -65,7 +64,6 @@ function ForwardProxyAnchoredProgressBubble({
       <ForwardProxyProgressBubble
         strings={strings}
         progress={progress}
-        className="forward-proxy-progress-bubble-surface"
       />
     </div>,
     document.body,

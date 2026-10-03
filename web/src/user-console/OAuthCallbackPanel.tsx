@@ -60,21 +60,21 @@ export default function OAuthCallbackPanel({
 }: OAuthCallbackPanelProps): React.JSX.Element {
   return (
     <Card
-      className="surface panel access-panel oauth-callback-panel mx-auto w-full max-w-xl gap-0 py-0"
+      className="surface panel mx-auto w-full max-w-xl gap-0 py-0"
       role="region"
       aria-label={`${model.badge} ${model.title}`}
     >
       <CardHeader className={cn('oauth-callback-hero', `oauth-callback-hero-${model.tone}`, 'gap-4 border-b p-5')}>
-        <div className="oauth-callback-hero-copy flex min-w-0 flex-1 flex-col gap-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
           <span
             className={cn(
-              'oauth-callback-badge inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
+              'inline-flex w-fit items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
               TONE_BADGE_CLASS[model.tone],
             )}
           >
             {model.badge}
           </span>
-          <div className="oauth-callback-title-row flex items-start gap-3">
+          <div className="flex items-start gap-3">
             <div
               className={cn(
                 'oauth-callback-icon-shell',
@@ -88,16 +88,16 @@ export default function OAuthCallbackPanel({
                 width={24}
                 height={24}
                 aria-hidden="true"
-                className={cn(model.busy && 'oauth-callback-icon-spin animate-spin')}
+                className={cn(model.busy && 'animate-spin')}
               />
             </div>
-            <div className="oauth-callback-title-copy min-w-0 flex-1">
+            <div className="min-w-0 flex-1">
               <h2 className="text-base font-semibold">{model.title}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{model.description}</p>
             </div>
           </div>
           {model.note ? (
-            <p className="oauth-callback-note text-xs text-muted-foreground">{model.note}</p>
+            <p className="text-xs text-muted-foreground">{model.note}</p>
           ) : null}
         </div>
         <div
@@ -121,7 +121,7 @@ export default function OAuthCallbackPanel({
       </CardHeader>
 
       <CardContent className="p-5">
-        <ol className="oauth-callback-step-list flex list-decimal flex-col gap-3" aria-label={model.badge}>
+        <ol className="flex list-decimal flex-col gap-3" aria-label={model.badge}>
           {model.steps.map((step, index) => (
             <li
               key={`${step.label}:${index}`}
@@ -145,7 +145,7 @@ export default function OAuthCallbackPanel({
                   width={18}
                   height={18}
                   aria-hidden="true"
-                  className={cn(step.state === 'active' && 'oauth-callback-icon-spin animate-spin')}
+                  className={cn(step.state === 'active' && 'animate-spin')}
                 />
               </div>
               <span>{step.label}</span>
@@ -155,7 +155,7 @@ export default function OAuthCallbackPanel({
       </CardContent>
 
       {model.showActions ? (
-        <CardFooter className="table-actions oauth-callback-actions justify-end gap-2 p-5 pt-0">
+        <CardFooter className="justify-end gap-2 p-5 pt-0">
           <Button type="button" onClick={onRestart}>
             {model.primaryActionLabel}
           </Button>

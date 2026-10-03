@@ -27,7 +27,7 @@ const meta = {
     onDismiss: () => undefined,
   },
   render: (args) => (
-    <div className="app-shell public-home" style={{ maxWidth: 1040, margin: '0 auto' }}>
+    <div className="public-home" style={{ maxWidth: 1040, margin: '0 auto' }}>
       <UpdateAvailableBanner {...args} />
     </div>
   ),

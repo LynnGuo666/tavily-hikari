@@ -20,20 +20,20 @@ export default function TokenListSummary({
 }: TokenListSummaryProps): React.JSX.Element {
   return (
     <div
-      className="user-console-section-meta user-console-md-up flex flex-wrap items-center gap-x-6 gap-y-2 text-sm"
+      className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm"
       aria-label={text.title}
     >
-      <div className="user-console-inline-stat flex items-baseline gap-2">
-        <span className="user-console-inline-stat-label text-muted-foreground">{text.summary.total}</span>
-        <strong className="user-console-inline-stat-value font-semibold tabular-nums">{formatNumber(total)}</strong>
+      <div className="flex items-baseline gap-2">
+        <span className="text-muted-foreground">{text.summary.total}</span>
+        <strong className="font-semibold tabular-nums">{formatNumber(total)}</strong>
       </div>
-      <div className="user-console-inline-stat flex items-baseline gap-2">
-        <span className="user-console-inline-stat-label text-muted-foreground">{text.summary.enabled}</span>
-        <strong className="user-console-inline-stat-value font-semibold tabular-nums">{formatNumber(enabled)}</strong>
+      <div className="flex items-baseline gap-2">
+        <span className="text-muted-foreground">{text.summary.enabled}</span>
+        <strong className="font-semibold tabular-nums">{formatNumber(enabled)}</strong>
       </div>
-      <div className="user-console-inline-stat flex items-baseline gap-2">
-        <span className="user-console-inline-stat-label text-muted-foreground">{text.summary.dailySuccess}</span>
-        <strong className="user-console-inline-stat-value font-semibold tabular-nums">{formatNumber(dailySuccess)}</strong>
+      <div className="flex items-baseline gap-2">
+        <span className="text-muted-foreground">{text.summary.dailySuccess}</span>
+        <strong className="font-semibold tabular-nums">{formatNumber(dailySuccess)}</strong>
       </div>
     </div>
   )

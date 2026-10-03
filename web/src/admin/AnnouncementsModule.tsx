@@ -354,7 +354,7 @@ function MilkdownPreviewContent({
       onChange={() => {}}
       fallback={(
         <Textarea
-          className="announcements-body-fallback text-sm text-muted-foreground announcements-body-fallback--readonly"
+          className="announcements-body-fallback text-sm text-muted-foreground"
           value={value}
           aria-label={label}
           rows={5}
@@ -419,7 +419,7 @@ function AnnouncementEditorPanel({
           <Button
             type="button"
             size="sm"
-            className="announcements-publish-action flex flex-wrap items-center gap-2"
+            className="flex flex-wrap items-center gap-2"
             title={strings.publishImpact}
             onClick={() => onSubmit('publish')}
             disabled={saving}
@@ -430,7 +430,7 @@ function AnnouncementEditorPanel({
           </Button>
         </div>
       </div>
-      <label className="announcements-field flex flex-col gap-1">
+      <label className="flex flex-col gap-1">
         <span>{strings.displayLabel}</span>
         <Select
           name="announcement-display-kind"
@@ -453,7 +453,7 @@ function AnnouncementEditorPanel({
           </SelectContent>
         </Select>
       </label>
-      <div className="announcements-field flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <div className="announcements-body-heading">
           <span id="announcement-body-editor-label">{strings.bodyLabel}</span>
           <SegmentedTabs<AnnouncementBodyMode>
@@ -489,12 +489,12 @@ function AnnouncementListPrimaryCopy({
 }): React.JSX.Element {
   const parsed = parseAnnouncementContent(item.content)
   if (!parsed.titleMarkdown) {
-    return <span className="announcements-summary-text text-sm text-muted-foreground">{parsed.summary}</span>
+    return <span className="text-sm text-muted-foreground">{parsed.summary}</span>
   }
 
   return (
     <>
-      <MarkdownContent content={parsed.titleMarkdown} inline className="announcements-title-markdown" />
+      <MarkdownContent content={parsed.titleMarkdown} inline />
       {parsed.bodyMarkdown ? <MarkdownContent content={parsed.bodyMarkdown} compact /> : null}
     </>
   )
@@ -590,7 +590,7 @@ function AnnouncementsListPanel({
   onAct: (id: string, action: 'publish' | 'archive') => void
 }): React.JSX.Element {
   return (
-    <div className="announcements-list">
+    <div>
       <div className="announcements-list-header">
         <div>
           <h3>{strings.listTitle}</h3>
@@ -610,7 +610,7 @@ function AnnouncementsListPanel({
         minHeight={260}
       >
         {items.length === 0 ? (
-          <div className="empty-state px-4 py-8 text-center text-sm text-muted-foreground alert announcements-empty-state">
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">
             <span>{strings.empty}</span>
             {showCreateAction ? (
               <Button type="button" size="sm" onClick={onCreate}>
@@ -621,14 +621,14 @@ function AnnouncementsListPanel({
           </div>
         ) : (
           <>
-            <div className="table-wrapper overflow-hidden announcements-table-wrapper hidden md:block">
+            <div className="table-wrapper overflow-hidden hidden md:block">
               <Table className="announcements-table">
                 <colgroup>
-                  <col className="announcements-col-title" />
-                  <col className="announcements-col-display" />
-                  <col className="announcements-col-status" />
-                  <col className="announcements-col-updated" />
-                  <col className="announcements-col-actions" />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
+                  <col />
                 </colgroup>
                 <TableHeader>
                   <TableRow>
@@ -643,7 +643,7 @@ function AnnouncementsListPanel({
                   {items.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell>
-                        <div className="announcements-title-cell">
+                        <div>
                           <AnnouncementListPrimaryCopy item={item} />
                         </div>
                       </TableCell>
@@ -655,7 +655,7 @@ function AnnouncementsListPanel({
                       </TableCell>
                       <TableCell>{formatTimestamp(item.updatedAt, language)}</TableCell>
                       <TableCell>
-                        <div className="table-actions announcements-actions">
+                        <div className="announcements-actions">
                           <Button type="button" variant="outline" size="xs" onClick={() => onPreview(item)}>
                             {strings.actions.preview}
                           </Button>
@@ -694,16 +694,15 @@ function AnnouncementsListPanel({
               {items.map((item) => {
                 const parsed = parseAnnouncementContent(item.content)
                 return (
-                  <article key={item.id} className="rounded-lg border p-3 announcements-mobile-card">
-                    <header className="announcements-mobile-header flex flex-col gap-1">
+                  <article key={item.id} className="rounded-lg border p-3">
+                    <header className="flex flex-col gap-1">
                       {parsed.titleMarkdown ? (
                         <MarkdownContent
                           content={parsed.titleMarkdown}
                           inline
-                          className="announcements-title-markdown"
                         />
                       ) : (
-                        <strong className="announcements-summary-text text-sm text-muted-foreground">{parsed.summary}</strong>
+                        <strong className="text-sm text-muted-foreground">{parsed.summary}</strong>
                       )}
                       <StatusBadge tone={statusTone(item.status)}>
                         {strings.status[item.status]}
@@ -712,7 +711,6 @@ function AnnouncementsListPanel({
                     {parsed.titleMarkdown && parsed.bodyMarkdown ? (
                       <MarkdownContent
                         content={parsed.bodyMarkdown}
-                        className="announcements-mobile-body"
                       />
                     ) : null}
                     <div className="flex items-center justify-between gap-2 text-sm">
@@ -723,7 +721,7 @@ function AnnouncementsListPanel({
                       <span>{strings.table.updated}</span>
                       <strong>{formatTimestamp(item.updatedAt, language)}</strong>
                     </div>
-                    <div className="table-actions announcements-mobile-actions">
+                    <div>
                       <Button type="button" variant="outline" size="xs" onClick={() => onPreview(item)}>
                         {strings.actions.preview}
                       </Button>
@@ -774,7 +772,7 @@ function AnnouncementUserPreview({
   if (!item) return null
 
   return (
-    <div className="announcements-user-preview max-h-40 overflow-y-auto rounded-md bg-muted/50 p-3 text-sm">
+    <div className="max-h-40 overflow-y-auto rounded-md bg-muted/50 p-3 text-sm">
       <UserConsoleAnnouncements
         language={language}
         text={language === 'zh' ? USER_CONSOLE_ZH : USER_CONSOLE_EN}
@@ -983,11 +981,11 @@ export default function AnnouncementsModule({
     : null
 
   return (
-    <Card className="surface panel admin-module-surface announcements-module">
+    <Card className="surface panel announcements-module">
       <CardContent className="flex flex-col gap-4">
         {headerAction}
-        {message ? <div className="announcements-message">{message}</div> : null}
-        {error && !loading ? <div className="announcements-error">{error}</div> : null}
+        {message ? <div>{message}</div> : null}
+        {error && !loading ? <div>{error}</div> : null}
 
         {isEditorRoute ? (
           editorMode ? (

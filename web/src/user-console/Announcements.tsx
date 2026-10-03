@@ -138,12 +138,12 @@ export default function UserConsoleAnnouncements({
             ].join(' ')}
           >
             <span
-              className="user-console-announcement-ticker-icon flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
+              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
               aria-hidden="true"
             >
               <Icon icon="mdi:bullhorn-outline" width={18} height={18} />
             </span>
-            <span className="user-console-announcement-ticker-copy min-w-0 flex-1 text-sm">
+            <span className="min-w-0 flex-1 text-sm">
               {tickerHasTitle && tickerParsed.titleMarkdown ? (
                 <AnnouncementTitleMarkdown
                   markdown={tickerParsed.titleMarkdown}
@@ -163,7 +163,7 @@ export default function UserConsoleAnnouncements({
               type="button"
               variant="ghost"
               size="xs"
-              className="user-console-announcement-action shrink-0"
+              className="shrink-0"
               aria-label={strings.tickerOpen.replace('{title}', tickerParsed.titleText ?? strings.ticker)}
               onClick={() => setTickerDetailId(tickerAnnouncement.id)}
             >
@@ -202,13 +202,12 @@ export default function UserConsoleAnnouncements({
               <DialogTitle>
                 <AnnouncementTitleMarkdown
                   markdown={modalParsed.titleMarkdown}
-                  className="user-console-announcement-dialog-title"
                 />
               </DialogTitle>
             </DialogHeader>
             <MarkdownContent
               content={modalParsed.bodyMarkdown}
-              className="user-console-announcement-dialog-body text-sm text-muted-foreground"
+              className="text-sm text-muted-foreground"
             />
             <DialogFooter>
               <Button type="button" onClick={() => onCloseAnnouncement(modalAnnouncement.id)}>
@@ -233,13 +232,12 @@ export default function UserConsoleAnnouncements({
               <DialogTitle>
                 <AnnouncementTitleMarkdown
                   markdown={tickerDetailParsed.titleMarkdown}
-                  className="user-console-announcement-dialog-title"
                 />
               </DialogTitle>
             </DialogHeader>
             <MarkdownContent
               content={tickerDetailParsed.bodyMarkdown}
-              className="user-console-announcement-dialog-body text-sm text-muted-foreground"
+              className="text-sm text-muted-foreground"
             />
             <DialogFooter>
               <Button
@@ -262,8 +260,8 @@ export default function UserConsoleAnnouncements({
         <DrawerContent
           className={`user-console-announcement-history user-console-announcement-history--${drawerDirection}`}
         >
-          <DrawerHeader className="user-console-announcement-history-header">
-            <div className="user-console-announcement-history-heading flex items-start justify-between gap-3">
+          <DrawerHeader>
+            <div className="flex items-start justify-between gap-3">
               <div>
                 <DrawerTitle>{strings.historyTitle}</DrawerTitle>
                 <DrawerDescription>{strings.historyDescription}</DrawerDescription>
@@ -283,7 +281,7 @@ export default function UserConsoleAnnouncements({
           </DrawerHeader>
           <div className="user-console-announcement-history-list flex flex-col gap-3 overflow-y-auto p-4 pt-0">
             {historyAnnouncements.length === 0 ? (
-              <Empty className="empty-state rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>
+              <Empty className="rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>
                 {strings.emptyHistory}
               </EmptyDescription></Empty>
             ) : (
@@ -301,7 +299,6 @@ export default function UserConsoleAnnouncements({
                         {parsed.titleMarkdown ? (
                           <AnnouncementTitleMarkdown
                             markdown={parsed.titleMarkdown}
-                            className="user-console-announcement-history-title"
                           />
                         ) : null}
                         <span className="text-xs text-muted-foreground">
@@ -317,11 +314,11 @@ export default function UserConsoleAnnouncements({
                     {historyContent ? (
                       <MarkdownContent
                         content={historyContent}
-                        className="user-console-announcement-history-body mt-2 text-sm text-muted-foreground"
+                        className="mt-2 text-sm text-muted-foreground"
                       />
                     ) : null}
                     {isClosed(item, closedRecords) ? (
-                      <div className="user-console-announcement-closed mt-2 flex items-center gap-1.5 text-xs text-success">
+                      <div className="mt-2 flex items-center gap-1.5 text-xs text-success">
                         <Icon icon="mdi:check-circle-outline" width={16} height={16} aria-hidden="true" />
                         <span>
                           {strings.handledAt.replace(
@@ -334,7 +331,7 @@ export default function UserConsoleAnnouncements({
                     {item.status === 'published'
                     && item.displayKind === 'ticker'
                     && !isClosed(item, closedRecords) ? (
-                      <div className="user-console-announcement-history-actions mt-3">
+                      <div className="mt-3">
                         <Button
                           type="button"
                           variant="outline"
