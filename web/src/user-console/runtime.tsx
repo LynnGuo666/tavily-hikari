@@ -2059,11 +2059,11 @@ export default function UserConsole(): JSX.Element {
     try {
       const result = await rotateUserTokenSecret(tokenId)
       invalidateTokenSecretAfterReset(tokenId, result.token)
-      const copyResult = await copyText(result.token)
+      // Show the result dialog immediately; a blocked clipboard must never wedge the reset flow.
       setResetResultToken(result.token)
-      setResetResultCopyState(copyResult.ok ? 'copied' : 'error')
       setResetTokenId(null)
       setManualCopyBubble(null)
+      void copyText(result.token).then((copyResult) => { setResetResultCopyState(copyResult.ok ? 'copied' : 'error') })
     } catch (err) {
       if (errorStatus(err) === 401) {
         abortActiveConsoleLoads()

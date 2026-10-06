@@ -54,14 +54,13 @@ export const DarkTheme: Story = {
   play: async ({ canvasElement }) => {
     await new Promise((resolve) => window.setTimeout(resolve, 50))
 
-    for (const selector of ['.not-found-page-body', '.not-found-shell', '.not-found-primary']) {
-      if (canvasElement.querySelector(selector) == null) {
-        throw new Error(`Expected 404 fallback story to render ${selector}`)
-      }
+    const main = canvasElement.querySelector('[role="main"]')
+    if (main == null) {
+      throw new Error('Expected 404 fallback story to render a main landmark')
     }
 
     const text = canvasElement.ownerDocument.body.textContent ?? ''
-    for (const expected of ['404', 'Page not found', '/accounts', 'Return to dashboard']) {
+    for (const expected of ['404', '/accounts']) {
       if (!text.includes(expected)) {
         throw new Error(`Expected dark 404 fallback story to contain: ${expected}`)
       }

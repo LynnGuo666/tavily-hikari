@@ -3,7 +3,15 @@ import { adminPressureTranslations } from '../adminPressureTranslations'
 import type { TranslationShape } from '../types'
 
 export const EN: TranslationShape = {
-    common: { languageLabel: 'Language', englishLabel: 'English', chineseLabel: '中文' },
+    common: { languageLabel: 'Language', englishLabel: 'English', chineseLabel: '中文', toggleSidebar: 'Toggle sidebar' },
+    notFound: {
+      code: '404',
+      title: 'Page not found',
+      description: (path) => `The page you’re trying to visit, ${path}, isn’t available right now.`,
+      returnHome: 'Return home',
+      returnConsole: 'Back to console',
+      errorReference: 'Error reference',
+    },
     public: {
       updateBanner: {
         title: 'New update available',
@@ -59,6 +67,8 @@ export const EN: TranslationShape = {
         password: {
           label: 'Admin Password',
           placeholder: 'Enter admin password',
+          showPassword: 'Show password',
+          hidePassword: 'Hide password',
         },
         totp: {
           label: 'TOTP code',
@@ -187,6 +197,8 @@ export const EN: TranslationShape = {
           httpStatus: 'HTTP',
           mcpStatus: 'Tavily',
           result: 'Result',
+          rowExpand: 'Expand request details',
+          rowCollapse: 'Collapse request details',
         },
         details: {
           request: 'Request',
@@ -1091,7 +1103,8 @@ export const EN: TranslationShape = {
           },
         },
         batchDialog: {
-          title: 'Batch Create Tokens', groupPlaceholder: 'Group (required)', confirm: 'Create', creating: 'Creating…',
+          title: 'Batch Create Tokens', groupLabel: 'Group', groupPlaceholder: 'Group (required)', countLabel: 'Count',
+          confirm: 'Create', creating: 'Creating…',
           cancel: 'Cancel', done: 'Done', createdN: 'Created {n} tokens', copyAll: 'Copy all links',
         },
         groups: {

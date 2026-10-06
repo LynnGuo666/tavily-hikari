@@ -31,10 +31,16 @@ function quotaRatio(used: number, limit: number): number {
   return Math.max(0, Math.min(1, used / limit))
 }
 
-function progressToneClass(ratio: number): string {
+export function progressToneClass(ratio: number): string {
   if (ratio >= 1) return '[&>[data-slot=progress-indicator]]:bg-destructive'
   if (ratio >= 0.8) return '[&>[data-slot=progress-indicator]]:bg-warning'
   return '[&>[data-slot=progress-indicator]]:bg-success'
+}
+
+export function quotaLoadTextClass(ratio: number): string {
+  if (ratio >= 1) return 'text-destructive'
+  if (ratio >= 0.8) return 'text-warning'
+  return 'text-success'
 }
 
 function QuotaStatCard({

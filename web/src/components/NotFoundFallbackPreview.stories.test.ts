@@ -2,6 +2,7 @@ import { describe, expect, it } from 'bun:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
+import { LanguageProvider } from '../i18n'
 import meta, * as notFoundStories from './NotFoundFallbackPreview.stories'
 import NotFoundFallbackPreview from './NotFoundFallbackPreview'
 
@@ -22,16 +23,20 @@ describe('NotFoundFallbackPreview Storybook proofs', () => {
 
   it('renders the shared 404 fallback markup with the requested path', () => {
     const markup = renderToStaticMarkup(
-      createElement(NotFoundFallbackPreview, {
-        originalPath: '/accounts?view=dark',
-        returnHref: '/',
-      }),
+      createElement(
+        LanguageProvider,
+        null,
+        createElement(NotFoundFallbackPreview, {
+          originalPath: '/accounts?view=dark',
+          returnHref: '/',
+        }),
+      ),
     )
 
-    expect(markup).toContain('not-found-page-body')
+    expect(markup).toContain('bg-card')
     expect(markup).toContain('Page not found')
     expect(markup).toContain('/accounts?view=dark')
-    expect(markup).toContain('Return to dashboard')
+    expect(markup).toContain('Return home')
     expect(markup).toContain('Error reference: 404')
     expect(markup).toContain('/assets/relay-mesh-mobile-logo-light.svg')
     expect(markup).toContain('/assets/relay-mesh-mobile-logo-dark.svg')

@@ -518,7 +518,7 @@ function getWindowColumnClassName(index: number): string {
 function RequestTrendCell({ buckets, scaleMax }: { buckets: ForwardProxyActivityBucket[]; scaleMax: number }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
   const data = buckets.map((bucket) => ({ label: formatTimeRange(bucket.bucketStart, bucket.bucketEnd), success: bucket.successCount, failure: bucket.failureCount }))
-  return <ChartContainer config={{ success: { label: 'Success', color: 'var(--chart-1)' }, failure: { label: 'Failure', color: 'var(--chart-2)' } }} className="h-16 w-40 aspect-auto">
+  return <ChartContainer config={{ success: { label: 'Success', color: 'var(--chart-1)' }, failure: { label: 'Failure', color: 'var(--chart-2)' } }} className="h-16 w-full max-w-40 aspect-auto">
     <BarChart accessibilityLayer data={data}>
       <YAxis hide domain={[0, Math.max(scaleMax, 1)]} />
       <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.label} />} />
@@ -548,7 +548,7 @@ function ErrorActivityCell({ buckets }: { buckets: ForwardProxyErrorActivityBuck
   const config: ChartConfig = { success: { label: 'Success', color: 'var(--chart-1)' } }
   kinds.forEach((kind, index) => { config[kind] = { label: formatErrorKind(kind), color: `var(--chart-${(index + 1) % 5 + 1})` } })
   const data = buckets.map((bucket) => ({ label: formatTimeRange(bucket.bucketStart, bucket.bucketEnd), success: bucket.successCount, ...Object.fromEntries(kinds.map((kind) => [kind, bucket.errors.find((item) => item.kind === kind)?.count ?? 0])) }))
-  return <ChartContainer config={config} className="h-16 w-40 aspect-auto">
+  return <ChartContainer config={config} className="h-16 w-full max-w-40 aspect-auto">
     <BarChart accessibilityLayer data={data}>
       <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.label} />} />
       <Bar dataKey="success" stackId="errors" fill="var(--color-success)" radius={2} />
@@ -571,7 +571,7 @@ function ErrorPieCell({ distribution }: { distribution: ForwardProxyErrorKindCou
 
 function WeightTrendCell({ buckets, scale }: { buckets: ForwardProxyWeightBucket[]; scale: WeightTrendScale }): React.JSX.Element {
   if (!buckets.length) return <span>—</span>
-  return <ChartContainer config={{ lastWeight: { label: 'Weight', color: 'var(--chart-1)' } }} className="h-16 w-40 aspect-auto">
+  return <ChartContainer config={{ lastWeight: { label: 'Weight', color: 'var(--chart-1)' } }} className="h-16 w-full max-w-40 aspect-auto">
     <AreaChart accessibilityLayer data={buckets.map((bucket) => ({ ...bucket, label: formatTimeRange(bucket.bucketStart, bucket.bucketEnd) }))}>
       <YAxis hide domain={[scale.minValue, scale.maxValue]} />
       <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.label} />} />
@@ -2128,22 +2128,28 @@ export default function ForwardProxySettingsModule({
                               )
                             })}
                             <TableCell className="py-3">
-                              <div className="flex flex-col gap-2">
+                              <div className="flex w-full min-w-0 flex-col gap-2">
                                 <RequestTrendCell buckets={node.last24h} scaleMax={requestBucketScaleMax} />
-                                <div className="text-[11px] text-muted-foreground">
-                                  {strings.nodes.successCountLabel}: <strong>{formatNumber(activity.success)}</strong>
-                                  {' · '}
-                                  {strings.nodes.failureCountLabel}: <strong>{formatNumber(activity.failure)}</strong>
+                                <div className="flex flex-col gap-0.5 text-[11px] text-muted-foreground [white-space:normal]">
+                                  <span className="whitespace-normal">
+                                    {strings.nodes.successCountLabel}: <strong>{formatNumber(activity.success)}</strong>
+                                  </span>
+                                  <span className="whitespace-normal">
+                                    {strings.nodes.failureCountLabel}: <strong>{formatNumber(activity.failure)}</strong>
+                                  </span>
                                 </div>
                               </div>
                             </TableCell>
                             <TableCell className="py-3">
-                              <div className="flex flex-col gap-2">
+                              <div className="flex w-full min-w-0 flex-col gap-2">
                                 <WeightTrendCell buckets={weightBuckets} scale={weightTrendScale} />
-                                <div className="text-[11px] text-muted-foreground">
-                                  {strings.nodes.lastWeightLabel}: <strong>{formatWeight(weight.lastWeight)}</strong>
-                                  {' · '}
-                                  {strings.nodes.avgWeightLabel}: <strong>{formatWeight(weight.avgWeight)}</strong>
+                                <div className="flex flex-col gap-0.5 text-[11px] text-muted-foreground [white-space:normal]">
+                                  <span className="whitespace-normal">
+                                    {strings.nodes.lastWeightLabel}: <strong>{formatWeight(weight.lastWeight)}</strong>
+                                  </span>
+                                  <span className="whitespace-normal">
+                                    {strings.nodes.avgWeightLabel}: <strong>{formatWeight(weight.avgWeight)}</strong>
+                                  </span>
                                 </div>
                               </div>
                             </TableCell>

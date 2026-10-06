@@ -394,19 +394,19 @@ function AnnouncementEditorPanel({
 
   return (
     <form
-      className="announcements-editor"
+      className="flex flex-col gap-5"
       aria-label={mode.kind === 'edit' ? strings.formTitleEdit : strings.formTitleNew}
       onSubmit={(event) => {
         event.preventDefault()
         onSubmit('draft')
       }}
     >
-      <div className="announcements-editor-header">
-        <div>
-          <h3>{mode.kind === 'edit' ? strings.formTitleEdit : strings.formTitleNew}</h3>
-          <p>{editorDescription(mode, strings)}</p>
+      <div className="flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h3 className="text-base font-semibold">{mode.kind === 'edit' ? strings.formTitleEdit : strings.formTitleNew}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{editorDescription(mode, strings)}</p>
         </div>
-        <div className="announcements-editor-actions">
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
           <Button type="button" variant="outline" size="sm" onClick={onBack} disabled={saving}>
             <Icon icon="mdi:arrow-left" width={16} height={16} aria-hidden="true" />
             <span>{strings.backToList}</span>
@@ -454,14 +454,13 @@ function AnnouncementEditorPanel({
         </Select>
       </label>
       <div className="flex flex-col gap-1">
-        <div className="announcements-body-heading">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <span id="announcement-body-editor-label">{strings.bodyLabel}</span>
           <SegmentedTabs<AnnouncementBodyMode>
             value={bodyMode}
             onChange={setBodyMode}
             options={bodyModeOptions}
             ariaLabel={strings.bodyModeLabel}
-            className="announcements-body-mode-tabs"
             disabled={saving}
           />
         </div>
@@ -591,10 +590,10 @@ function AnnouncementsListPanel({
 }): React.JSX.Element {
   return (
     <div>
-      <div className="announcements-list-header">
-        <div>
-          <h3>{strings.listTitle}</h3>
-          <p>{strings.listDescription}</p>
+      <div className="flex flex-col gap-3 pb-2 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h3 className="text-base font-semibold">{strings.listTitle}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">{strings.listDescription}</p>
         </div>
         {showCreateAction ? (
           <Button type="button" size="sm" onClick={onCreate}>
@@ -655,7 +654,7 @@ function AnnouncementsListPanel({
                       </TableCell>
                       <TableCell>{formatTimestamp(item.updatedAt, language)}</TableCell>
                       <TableCell>
-                        <div className="announcements-actions">
+                        <div className="flex flex-wrap items-center gap-1.5">
                           <Button type="button" variant="outline" size="xs" onClick={() => onPreview(item)}>
                             {strings.actions.preview}
                           </Button>

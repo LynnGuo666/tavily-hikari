@@ -305,16 +305,46 @@ export function deriveRequestKindQuickFilters(
   return matches.length === 1 ? matches[0] : defaultTokenLogRequestKindQuickFilters
 }
 
-export function summarizeRequestKindQuickFilters(filters: TokenLogRequestKindQuickFilters): string {
-  if (!hasActiveRequestKindQuickFilters(filters)) return 'All request types'
+export type RequestKindFilterLanguage = 'en' | 'zh'
+
+const REQUEST_KIND_QUICK_FILTER_LABELS: Record<
+  RequestKindFilterLanguage,
+  { all: string; paid: string; free: string; allRequestTypes: string; requestTypes: string }
+> = {
+  en: {
+    all: 'All',
+    paid: 'Paid',
+    free: 'Free',
+    allRequestTypes: 'All request types',
+    requestTypes: 'request types',
+  },
+  zh: {
+    all: '全部',
+    paid: '计费',
+    free: '免费',
+    allRequestTypes: '全部请求类型',
+    requestTypes: '请求类型',
+  },
+}
+
+export function summarizeRequestKindQuickFilters(
+  filters: TokenLogRequestKindQuickFilters,
+  language: RequestKindFilterLanguage = 'en',
+): string {
+  const labels = REQUEST_KIND_QUICK_FILTER_LABELS[language]
+  if (!hasActiveRequestKindQuickFilters(filters)) return labels.allRequestTypes
 
   const billingLabel =
-    filters.billing === 'all' ? 'All' : filters.billing === 'billable' ? 'Paid' : 'Free'
+    filters.billing === 'all' ? labels.all : filters.billing === 'billable' ? labels.paid : labels.free
   const protocolLabel =
-    filters.protocol === 'all' ? 'Request types' : filters.protocol === 'api' ? 'API' : 'MCP'
+    filters.protocol === 'all' ? labels.requestTypes : filters.protocol === 'api' ? 'API' : 'MCP'
 
-  if (filters.billing === 'all') return `${protocolLabel} request types`
-  if (filters.protocol === 'all') return `${billingLabel} request types`
+  if (filters.billing === 'all') {
+    return language === 'zh' ? `${protocolLabel}·${labels.requestTypes}` : `${protocolLabel} ${labels.requestTypes}`
+  }
+  if (filters.protocol === 'all') {
+    return language === 'zh' ? `${billingLabel}·${labels.requestTypes}` : `${billingLabel} ${labels.requestTypes}`
+  }
   return `${billingLabel} + ${protocolLabel}`
 }
 

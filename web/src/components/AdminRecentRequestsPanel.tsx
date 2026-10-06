@@ -112,7 +112,6 @@ type LogBodiesLoadState =
   | { status: 'ready'; value: RequestLogBodies }
   | { status: 'error'; message: string }
 const recentRequestsAllFilterValue = '__all__'
-const recentRequestsCompactAllLabel = 'All'
 function statusTone(status: string): StatusTone {
   const normalized = status.trim().toLowerCase()
   if (normalized === 'success') return 'success'
@@ -880,13 +879,13 @@ export default function AdminRecentRequestsPanel({
       summarizeOutcomeFilter(
         outcomeFilter,
         strings,
-        recentRequestsCompactAllLabel,
+        strings.logs.filters.resultOrEffectAll,
       ),
     [outcomeFilter, strings],
   )
   const keyFilterSummary = useMemo(
-    () => summarizeSingleFacet(selectedKeyId, keyOptions, recentRequestsCompactAllLabel),
-    [keyOptions, selectedKeyId],
+    () => summarizeSingleFacet(selectedKeyId, keyOptions, strings.logs.filters.keyAll),
+    [keyOptions, selectedKeyId, strings.logs.filters.keyAll],
   )
   const summaryColumnCount = 6 + Number(showKeyColumn) + Number(showTokenColumn)
   const paginationPerPageOptions = [10, 20, 50, 100].includes(perPage)

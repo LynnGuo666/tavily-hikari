@@ -35,19 +35,33 @@ import SegmentedTabs from '@/components/SegmentedTabs'
 type Language = 'en' | 'zh'
 type RequestKindContainer = 'dropdown' | 'drawer'
 
-const requestKindBillingQuickFilterOptions = [
-  { value: 'all', label: 'Any' },
-  { value: 'billable', label: 'Paid' },
-  { value: 'non_billable', label: 'Free' },
-] as const
+function requestKindBillingQuickFilterOptions(language: Language) {
+  return language === 'zh'
+    ? ([
+        { value: 'all', label: '全部' },
+        { value: 'billable', label: '计费' },
+        { value: 'non_billable', label: '免费' },
+      ] as const)
+    : ([
+        { value: 'all', label: 'Any' },
+        { value: 'billable', label: 'Paid' },
+        { value: 'non_billable', label: 'Free' },
+      ] as const)
+}
 
-const requestKindProtocolQuickFilterOptions = [
-  { value: 'all', label: 'Any' },
-  { value: 'mcp', label: 'MCP' },
-  { value: 'api', label: 'API' },
-] as const
-
-const recentRequestsCompactAllLabel = 'All'
+function requestKindProtocolQuickFilterOptions(language: Language) {
+  return language === 'zh'
+    ? ([
+        { value: 'all', label: '全部' },
+        { value: 'mcp', label: 'MCP' },
+        { value: 'api', label: 'API' },
+      ] as const)
+    : ([
+        { value: 'all', label: 'Any' },
+        { value: 'mcp', label: 'MCP' },
+        { value: 'api', label: 'API' },
+      ] as const)
+}
 
 function resolveRequestKindProtocolGroup(
   option: TokenLogRequestKindOption,
@@ -159,8 +173,8 @@ export default function AdminRecentRequestsRequestKindFilter({
   )
 
   const requestKindQuickSummary = useMemo(
-    () => summarizeRequestKindQuickFilters(requestKindQuickFilters),
-    [requestKindQuickFilters],
+    () => summarizeRequestKindQuickFilters(requestKindQuickFilters, language),
+    [language, requestKindQuickFilters],
   )
 
   const requestKindClearDisabled =
@@ -189,7 +203,7 @@ export default function AdminRecentRequestsRequestKindFilter({
         requestKindQuickSummary,
         requestKindSummary,
         language,
-        recentRequestsCompactAllLabel,
+        strings.logs.filters.requestTypeAll,
       ),
     [
       effectiveSelectedRequestKinds,
@@ -197,6 +211,7 @@ export default function AdminRecentRequestsRequestKindFilter({
       language,
       requestKindQuickSummary,
       requestKindSummary,
+      strings.logs.filters.requestTypeAll,
     ],
   )
 
@@ -275,7 +290,7 @@ export default function AdminRecentRequestsRequestKindFilter({
                 onChange={(next) =>
                   onRequestKindQuickFiltersChange(next, requestKindQuickProtocol)
                 }
-                options={requestKindBillingQuickFilterOptions}
+                options={requestKindBillingQuickFilterOptions(language)}
                 ariaLabel={strings.logs.filters.billingGroup}
                 smallViewportBehavior="buttons"
               />
@@ -289,7 +304,7 @@ export default function AdminRecentRequestsRequestKindFilter({
                 onChange={(next) =>
                   onRequestKindQuickFiltersChange(requestKindQuickBilling, next)
                 }
-                options={requestKindProtocolQuickFilterOptions}
+                options={requestKindProtocolQuickFilterOptions(language)}
                 ariaLabel={strings.logs.filters.protocolGroup}
                 smallViewportBehavior="buttons"
               />
@@ -304,6 +319,7 @@ export default function AdminRecentRequestsRequestKindFilter({
     ),
     [
       handleClearRequestKinds,
+      language,
       onRequestKindQuickFiltersChange,
       renderRequestKindOptionsList,
       requestKindClearDisabled,

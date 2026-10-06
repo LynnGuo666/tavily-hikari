@@ -9,6 +9,7 @@ import type {
   UserDashboardProgressCard,
 } from '../api'
 import { UsageMetricLabel } from '../components/UsageMetricLabel'
+import { quotaLoadTextClass } from './DashboardQuotaGrid'
 import { cn } from '@/lib/utils'
 import type { Language } from '../i18n'
 
@@ -141,13 +142,6 @@ const CHART_ACCENT_COLOR: Record<'request' | 'hour' | 'day' | 'month', string> =
   month: 'var(--chart-3)',
 }
 
-const CHART_ACCENT_CLASS: Record<'request' | 'hour' | 'day' | 'month', string> = {
-  request: 'text-chart-1',
-  hour: 'text-chart-2',
-  day: 'text-chart-4',
-  month: 'text-chart-3',
-}
-
 function ProgressCard({
   language,
   label,
@@ -195,7 +189,7 @@ function ProgressCard({
       </div>
       <div className="mt-auto flex items-center justify-between border-t pt-3 text-xs text-muted-foreground">
         <span>{marker}</span>
-        <strong className={cn('tabular-nums', CHART_ACCENT_CLASS[accent])}>
+        <strong className={cn('tabular-nums', fillRatio == null ? 'text-muted-foreground' : quotaLoadTextClass(fillRatio))}>
           {fillRatio == null ? '--' : `${Math.round(fillRatio * 100)}%`}
         </strong>
       </div>

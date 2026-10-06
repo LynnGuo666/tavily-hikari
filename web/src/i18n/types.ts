@@ -53,6 +53,8 @@ export interface PublicTranslations {
     password: {
       label: string
       placeholder: string
+      showPassword: string
+      hidePassword: string
     }
     totp: {
       label: string
@@ -172,6 +174,8 @@ export interface PublicTranslations {
       httpStatus: string
       mcpStatus: string
       result: string
+      rowExpand: string
+      rowCollapse: string
     }
     details: {
       request: string
@@ -1414,7 +1418,9 @@ export interface AdminTranslationsShape {
     }
     batchDialog: {
       title: string
+      groupLabel: string
       groupPlaceholder: string
+      countLabel: string
       confirm: string
       creating: string
       cancel: string
@@ -1963,6 +1969,15 @@ export interface TranslationShape {
     languageLabel: string
     englishLabel: string
     chineseLabel: string
+    toggleSidebar: string
+  }
+  notFound: {
+    code: string
+    title: string
+    description: (path: string) => string
+    returnHome: string
+    returnConsole: string
+    errorReference: string
   }
   public: PublicTranslations
   admin: AdminTranslationsShape

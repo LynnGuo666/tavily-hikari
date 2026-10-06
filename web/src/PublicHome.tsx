@@ -730,14 +730,33 @@ function PublicHome(): React.JSX.Element {
                                 <TableRow
                                   className="cursor-pointer"
                                   onClick={() => togglePublicLog(log.id)}
+                                  onKeyDown={(event) => {
+                                    if (event.target !== event.currentTarget) return
+                                    if (event.key === 'Enter' || event.key === ' ') {
+                                      event.preventDefault()
+                                      togglePublicLog(log.id)
+                                    }
+                                  }}
+                                  tabIndex={0}
                                   aria-expanded={expanded}
                                 >
                                   <TableCell className="w-10">
-                                    {expanded ? (
-                                      <ChevronDownIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-                                    ) : (
-                                      <ChevronRightIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-                                    )}
+                                    <button
+                                      type="button"
+                                      className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+                                      aria-label={expanded ? publicStrings.logs.table.rowCollapse : publicStrings.logs.table.rowExpand}
+                                      aria-expanded={expanded}
+                                      onClick={(event) => {
+                                        event.stopPropagation()
+                                        togglePublicLog(log.id)
+                                      }}
+                                    >
+                                      {expanded ? (
+                                        <ChevronDownIcon className="size-4" aria-hidden="true" />
+                                      ) : (
+                                        <ChevronRightIcon className="size-4" aria-hidden="true" />
+                                      )}
+                                    </button>
                                   </TableCell>
                                   <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
                                     {formatTimestamp(log.created_at)}

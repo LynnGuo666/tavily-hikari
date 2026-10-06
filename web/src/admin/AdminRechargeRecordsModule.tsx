@@ -498,7 +498,7 @@ export function AdminRechargeRefundDialogBody({
       {refundDialogNeedsSetup && !refundDialogUnavailable ? (
         <Button type="button" onClick={onOpenSystemSettings}>{strings.actions.openTotpSettings}</Button>
       ) : refundDialogBlocked ? null : (
-        <Button type="button" disabled={refundBusy || totpCode.length !== 6} onClick={onExecuteRefund}>
+        <Button type="button" variant="destructive" disabled={refundBusy || totpCode.length !== 6} onClick={onExecuteRefund}>
           {refundBusy ? strings.actions.processing : strings.actions.confirm}
         </Button>
       )}

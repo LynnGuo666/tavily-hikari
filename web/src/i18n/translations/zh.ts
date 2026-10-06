@@ -3,7 +3,15 @@ import { adminPressureTranslations } from '../adminPressureTranslations'
 import type { TranslationShape } from '../types'
 
 export const ZH: TranslationShape = {
-    common: { languageLabel: '语言', englishLabel: 'English', chineseLabel: '中文' },
+    common: { languageLabel: '语言', englishLabel: 'English', chineseLabel: '中文', toggleSidebar: '展开/收起侧边栏' },
+    notFound: {
+      code: '404',
+      title: '页面不存在',
+      description: (path) => `你访问的 ${path} 当前不可用。`,
+      returnHome: '返回首页',
+      returnConsole: '返回控制台',
+      errorReference: '错误代码',
+    },
     public: {
       updateBanner: {
         title: '有新版本上线',
@@ -58,6 +66,8 @@ export const ZH: TranslationShape = {
         password: {
           label: '管理员口令',
           placeholder: '请输入管理员口令',
+          showPassword: '显示管理员口令',
+          hidePassword: '隐藏管理员口令',
         },
         totp: {
           label: 'TOTP 验证码',
@@ -186,6 +196,8 @@ export const ZH: TranslationShape = {
           httpStatus: 'HTTP',
           mcpStatus: 'Tavily',
           result: '结果',
+          rowExpand: '展开请求详情',
+          rowCollapse: '收起请求详情',
         },
         details: {
           request: '请求',
@@ -1090,7 +1102,8 @@ export const ZH: TranslationShape = {
           },
         },
         batchDialog: {
-          title: '批量创建令牌', groupPlaceholder: '分组名（必填）', confirm: '创建', creating: '创建中…',
+          title: '批量创建令牌', groupLabel: '分组名', groupPlaceholder: '分组名（必填）', countLabel: '创建数量',
+          confirm: '创建', creating: '创建中…',
           cancel: '取消', done: '完成', createdN: '已创建 {n} 个令牌', copyAll: '复制全部链接',
         },
         groups: {
@@ -1364,18 +1377,18 @@ export const ZH: TranslationShape = {
           error: '错误',
           quota: '限额',
           requestType: '请求类型',
-          requestTypeAll: 'All',
+          requestTypeAll: '全部',
           requestTypeEmpty: '当前时间窗没有请求类型',
           billingGroup: '计费',
           protocolGroup: '协议',
           resultOrEffect: '结果与影响',
-          resultOrEffectAll: 'All',
+          resultOrEffectAll: '全部',
           resultGroup: '结果',
           keyEffectGroup: 'Key 影响',
           bindingEffectGroup: '绑定效果',
           selectionEffectGroup: '选路原因',
           tokenAll: '全部 Token',
-          keyAll: 'All',
+          keyAll: '全部 Key',
           noFacetOptions: '当前没有可选项',
         },
         empty: {

@@ -2211,6 +2211,7 @@ function handleUserTokenRoute(path: string, url: URL): Response {
   const id = decodeURIComponent(parts[4] ?? DEMO_TOKEN_ID)
   const token = demoState.tokens.find((item) => item.id === id) ?? demoState.tokens[0]
   if (path.endsWith('/secret')) return jsonResponse({ token: demoState.tokenSecrets.get(token.id) ?? DEMO_TOKEN })
+  if (path.endsWith('/secret/rotate')) return jsonResponse({ token: `th-${token.id}-${Math.random().toString(36).slice(2, 18)}` })
   if (path.endsWith('/logs')) return jsonResponse(publicTokenLogs(demoState.logs.filter((log) => log.auth_token_id === token.id)))
   if (path.endsWith('/events')) return textResponse('demo event stream is provided by the browser demo runtime\n')
   return jsonResponse(demoUserTokenSummaryFromToken(token))

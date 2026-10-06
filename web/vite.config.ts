@@ -46,6 +46,9 @@ export default defineConfig(({ mode }) => {
             ) {
               req.url = `/admin.html${parsed.search}`
             }
+            if (pathname === '/system-settings' || pathname.startsWith('/system-settings/')) {
+              req.url = `/admin.html${parsed.search}`
+            }
             if (
               (pathname === '/console' || pathname.startsWith('/console/'))
               && pathname !== '/console.html'

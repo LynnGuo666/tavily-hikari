@@ -296,7 +296,7 @@ function AdminLogin({ updateBanner }: { updateBanner?: ReactNode } = {}): React.
                               type="button"
                               variant="ghost"
                               size="icon-sm"
-                              aria-label={showPassword ? 'Hide password' : 'Show password'}
+                              aria-label={showPassword ? ui.password.hidePassword : ui.password.showPassword}
                               onClick={() => setShowPassword((visible) => !visible)}
                             >
                               {showPassword ? <EyeOffIcon data-icon="exclusive-end" /> : <EyeIcon data-icon="exclusive-end" />}

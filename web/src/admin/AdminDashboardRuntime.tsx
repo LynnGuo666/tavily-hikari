@@ -132,7 +132,7 @@ import {
   resolveAdminUserActivityScope,
   resolveAdminUserActivityScopeFromSettings,
 } from './userActivityScope'
-import { useAdminStackedLayout } from '../lib/responsive'
+import { useAdminStackedLayout, useViewportMode } from '../lib/responsive'
 import { formatRequestRateScope, formatRequestRateSummary, resolveRequestRate } from '../requestRate'
 import {
   type AdminAnalysisView,
@@ -1846,7 +1846,6 @@ function AdminDashboard(): React.JSX.Element {
   const [keyRegionFacets, setKeyRegionFacets] = useState<Array<{ value: string; count: number }>>([])
   const [tokens, setTokens] = useState<AuthToken[]>([])
   const tokenPanelRef = useRef<HTMLDivElement | null>(null)
-  const [tokenBulkPanelLeft, setTokenBulkPanelLeft] = useState('50%')
   const [dashboardTrend, setDashboardTrend] = useState<DashboardTrendBuckets>(() => createEmptyDashboardTrend())
   const [dashboardHourlyRequestWindow, setDashboardHourlyRequestWindow] = useState<DashboardHourlyRequestWindow>(
     () => createEmptyDashboardHourlyRequestWindow(),
@@ -7977,29 +7976,6 @@ function AdminDashboard(): React.JSX.Element {
                   ? 'dashboard'
                   : 'tokens'
   const isTokensModule = activeModule === 'tokens'
-  useLayoutEffect(() => {
-    if (!isTokensModule || selectedTokenCount === 0) return
-    const updateTokenBulkPanelLeft = () => {
-      const rect = tokenPanelRef.current?.getBoundingClientRect()
-      if (!rect) {
-        setTokenBulkPanelLeft('50%')
-        return
-      }
-      setTokenBulkPanelLeft(`${Math.round((rect.left + rect.width / 2) * 10) / 10}px`)
-    }
-
-    updateTokenBulkPanelLeft()
-    const observer =
-      typeof ResizeObserver !== 'undefined' && tokenPanelRef.current
-        ? new ResizeObserver(updateTokenBulkPanelLeft)
-        : null
-    if (tokenPanelRef.current) observer?.observe(tokenPanelRef.current)
-    window.addEventListener('resize', updateTokenBulkPanelLeft)
-    return () => {
-      observer?.disconnect()
-      window.removeEventListener('resize', updateTokenBulkPanelLeft)
-    }
-  }, [isTokensModule, selectedTokenCount])
   const usersStrings = adminStrings.users
   const registrationStatusText = registrationSettingsLoading && !registrationSettingsLoaded
     ? usersStrings.registration.description
@@ -8487,9 +8463,13 @@ function AdminDashboard(): React.JSX.Element {
         onOpenChange={(open) => {
           if (!open) closeMonthlyBrokenDrawer()
         }}
+        direction={monthlyBrokenDrawerDirection}
         shouldScaleBackground={false}
       >
-        <DrawerContent className="overflow-hidden" aria-describedby={undefined}>
+        <DrawerContent
+          className="overflow-hidden data-[vaul-drawer-direction=right]:sm:max-w-xl data-[vaul-drawer-direction=right]:p-0"
+          aria-describedby={undefined}
+        >
           <DrawerTitle className="sr-only">{usersStrings.brokenKeys.drawerTitle}</DrawerTitle>
           <div className="min-h-0 min-w-0 overflow-y-auto overscroll-contain p-4 sm:p-6">
             <section className="surface panel border-t" id="user-detail-tags">
@@ -8673,23 +8653,31 @@ function AdminDashboard(): React.JSX.Element {
         {batchShareText == null ? (
           <>
             <div className="flex flex-col gap-3 py-2 sm:flex-row">
-              <Input
-                type="text"
-                name="batch-token-group"
-                placeholder={tokenStrings.batchDialog.groupPlaceholder}
-                value={batchGroup}
-                onChange={(e) => setBatchGroup(e.target.value)}
-                className="flex-1"
-              />
-              <Input
-                type="number"
-                name="batch-token-count"
-                min={1}
-                max={1000}
-                value={batchCount}
-                onChange={(e) => setBatchCount(Number(e.target.value) || 1)}
-                className="w-full sm:w-[120px]"
-              />
+              <Field orientation="vertical" className="flex-1 gap-1.5">
+                <FieldLabel htmlFor="batch-token-group-input">{tokenStrings.batchDialog.groupLabel}</FieldLabel>
+                <Input
+                  id="batch-token-group-input"
+                  type="text"
+                  name="batch-token-group"
+                  placeholder={tokenStrings.batchDialog.groupPlaceholder}
+                  value={batchGroup}
+                  onChange={(e) => setBatchGroup(e.target.value)}
+                  className="flex-1"
+                />
+              </Field>
+              <Field orientation="vertical" className="gap-1.5 sm:w-[140px]">
+                <FieldLabel htmlFor="batch-token-count-input">{tokenStrings.batchDialog.countLabel}</FieldLabel>
+                <Input
+                  id="batch-token-count-input"
+                  type="number"
+                  name="batch-token-count"
+                  min={1}
+                  max={1000}
+                  value={batchCount}
+                  onChange={(e) => setBatchCount(Number(e.target.value) || 1)}
+                  className="w-full"
+                />
+              </Field>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={closeBatchDialog}>
@@ -9197,6 +9185,8 @@ function AdminDashboard(): React.JSX.Element {
   )
 
   const isStackedAdminLayout = useAdminStackedLayout()
+  const adminViewportMode = useViewportMode()
+  const monthlyBrokenDrawerDirection = adminViewportMode === 'small' ? 'bottom' as const : 'right' as const
   const openDashboardRecentAlerts = useCallback(() => {
     const now = new Date()
     navigateToPath(alertsPath({
@@ -11174,17 +11164,21 @@ function AdminDashboard(): React.JSX.Element {
           )}
         </AdminLoadingRegion>
         {isAdmin && selectedTokenCount > 0 && typeof document !== 'undefined' && createPortal(
-          <div role="region" aria-live="polite" style={{ left: tokenBulkPanelLeft }}>
-            <div>
-              <strong>{tokenStrings.bulk.selected.replace('{count}', String(selectedTokenCount))}</strong>
-              <span>
+          <div
+            role="region"
+            aria-live="polite"
+            className="fixed bottom-4 left-1/2 z-40 flex w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 flex-col gap-3 rounded-xl border bg-popover p-3 text-sm text-popover-foreground shadow-lg sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+          >
+            <div className="flex min-w-0 flex-col">
+              <strong className="truncate">{tokenStrings.bulk.selected.replace('{count}', String(selectedTokenCount))}</strong>
+              <span className="truncate text-xs text-muted-foreground">
                 {tokenStrings.bulk.pageSelected
                   .replace('{count}', String(selectedVisibleTokenCount))
                   .replace('{total}', String(tokenList.length))}
               </span>
-              {tokenBulkFeedback && <span>{tokenBulkFeedback}</span>}
+              {tokenBulkFeedback && <span className="truncate text-xs text-muted-foreground">{tokenBulkFeedback}</span>}
             </div>
-            <div>
+            <div className="flex shrink-0 flex-wrap items-center gap-2">
               <Button
                 type="button"
                 variant="outline"
