@@ -106,6 +106,9 @@ export interface PublicTranslations {
       hourlyLimit: string
       dailyLimit: string
       monthlyLimit: string
+      hourlyWindow: string
+      dailyWindow: string
+      monthlyWindow: string
     }
   }
   accessToken: {
@@ -138,6 +141,8 @@ export interface PublicTranslations {
   guide: {
     title: string
     dataSourceLabel: string
+    copy: string
+    copied: string
     tokenVisibility: {
       show: string
       hide: string
@@ -163,9 +168,16 @@ export interface PublicTranslations {
     }
     table: {
       time: string
+      request: string
       httpStatus: string
       mcpStatus: string
       result: string
+    }
+    details: {
+      request: string
+      response: string
+      outcome: string
+      error: string
     }
     toggles: {
       show: string
@@ -285,6 +297,10 @@ export interface AdminTranslationsShape {
     chartModeResultsArea: string
     chartModeTypesArea: string
     chartModeCreditsArea: string
+    chartMetricLabel: string
+    chartRenderLabel: string
+    chartRenderBar: string
+    chartRenderArea: string
     chartVisibleSeries: string
     chartEmpty: string
     chartUtcWindow: string
@@ -349,6 +365,8 @@ export interface AdminTranslationsShape {
     error: string
     empty: string
     tabsLabel: string
+    windowGroupLabel: string
+    metricGroupLabel: string
     windows: {
       last24h: string
       last7d: string
@@ -1338,6 +1356,7 @@ export interface AdminTranslationsShape {
     description: string
     notePlaceholder: string
     newToken: string
+    createAction: string
     creating: string
     batchCreate: string
     pagination: {

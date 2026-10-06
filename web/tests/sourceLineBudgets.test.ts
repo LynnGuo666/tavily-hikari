@@ -42,9 +42,9 @@ const EXCEPTIONS = new Map<string, { max: number; reason: string }>([
   [
     'src/api/demo.ts',
     {
-      max: 2610,
+      max: 2660,
       reason:
-        'Demo API fixtures now also cover the upstream privacy status surface, dedicated user billing summary surface, user-console overview snapshots, alerts center mother-child aggregation states, request-record drawers, SSE proof states, auth-token retention settings, recharge availability evidence, admin passkey/password security states, and the Tavily usage-boundary probe on the shared demo shell.',
+        'Demo API fixtures now also cover the upstream privacy status surface, dedicated user billing summary surface, user-console overview snapshots, alerts center mother-child aggregation states, request-record drawers, SSE proof states, auth-token retention settings, recharge availability evidence, admin passkey/password security states, the Tavily usage-boundary probe on the shared demo shell, and locale-aware demo alert/job copy for the HIG mixed-language fixes.',
     },
   ],
   [
@@ -106,9 +106,9 @@ const EXCEPTIONS = new Map<string, { max: number; reason: string }>([
   [
     'src/i18n/types.ts',
     {
-      max: 1950,
+      max: 2000,
       reason:
-        'HA source settings mode-specific failure copy, upstream privacy status strings, planned-cutover and node-detail strings, admin jobs maintenance strings, the expanded admin rankings contract, grouped-alert dashboard summary strings, auth-token retention settings copy, and admin passkey/password security copy remain in the shared catalog contract.',
+        'HA source settings mode-specific failure copy, upstream privacy status strings, planned-cutover and node-detail strings, admin jobs maintenance strings, the expanded admin rankings contract, grouped-alert dashboard summary strings, auth-token retention settings copy, admin passkey/password security copy, and the HIG mixed-language public/dashboard/rankings string additions remain in the shared catalog contract.',
     },
   ],
   [

@@ -93,6 +93,10 @@ export interface DashboardOverviewStrings {
   chartModeResultsArea: string
   chartModeTypesArea: string
   chartModeCreditsArea: string
+  chartMetricLabel: string
+  chartRenderLabel: string
+  chartRenderBar: string
+  chartRenderArea: string
   chartVisibleSeries: string
   chartEmpty: string
   chartUtcWindow: string
@@ -156,6 +160,7 @@ export type DashboardRecentAlertGroup = AlertGroup
 
 interface DashboardOverviewProps {
   strings: DashboardOverviewStrings
+  language?: 'zh' | 'en'
   overviewReady: boolean
   statusLoading: boolean
   todayMetrics: DashboardMetricCard[]
@@ -257,6 +262,8 @@ function SummaryMetricCard({
           comparisonValues={backdrop.comparison}
           primaryInitialValue={backdrop.baseline ?? 0}
           comparisonInitialValue={backdrop.baseline ?? 0}
+          primaryColor={backdrop.color}
+          comparisonColor={backdrop.comparisonColor}
         />
       ) : null}
       <div className="relative z-10 flex items-start justify-between gap-2">
@@ -304,6 +311,8 @@ function QuotaChargeCard({
           comparisonValues={backdrop.comparison}
           primaryInitialValue={backdrop.baseline ?? 0}
           comparisonInitialValue={backdrop.baseline ?? 0}
+          primaryColor={backdrop.color}
+          comparisonColor={backdrop.comparisonColor}
         />
       ) : null}
       <div className="relative z-10">
@@ -341,6 +350,8 @@ function DashboardUsageBackdropChart({
   comparisonValues,
   primaryInitialValue = 0,
   comparisonInitialValue = 0,
+  primaryColor = 'var(--chart-1)',
+  comparisonColor = 'var(--chart-2)',
   className,
 }: {
   ariaLabel: string
@@ -348,6 +359,8 @@ function DashboardUsageBackdropChart({
   comparisonValues?: ReadonlyArray<number | null>
   primaryInitialValue?: number
   comparisonInitialValue?: number
+  primaryColor?: string
+  comparisonColor?: string
   className?: string
 }): React.JSX.Element | null {
   if (primaryValues.length === 0) return null
@@ -355,8 +368,8 @@ function DashboardUsageBackdropChart({
   const comparison = comparisonValues ? buildCumulativeNullableSeries(comparisonValues, comparisonInitialValue) : []
   const data = primary.map((value, index) => ({ index, primary: value, comparison: comparison[index] ?? null }))
   const config = {
-    primary: { label: 'Current', color: 'var(--chart-1)' },
-    comparison: { label: 'Previous', color: 'var(--chart-2)' },
+    primary: { label: 'Current', color: primaryColor },
+    comparison: { label: 'Previous', color: comparisonColor },
   } satisfies ChartConfig
   return (
     <div className={className} aria-hidden="true">
@@ -435,15 +448,16 @@ function extractRecentAlertWindowMinutes(group: DashboardRecentAlertGroup): numb
     : null
 }
 
-function getRecentAlertRateWindowLabel(group: DashboardRecentAlertGroup): string | null {
+function getRecentAlertRateWindowLabel(group: DashboardRecentAlertGroup, language: 'zh' | 'en'): string | null {
   const windowMinutes = extractRecentAlertWindowMinutes(group)
-  return windowMinutes != null ? `${windowMinutes}m window` : null
+  if (windowMinutes == null) return null
+  return language === 'zh' ? `滚动 ${windowMinutes} 分钟窗口` : `${windowMinutes}m window`
 }
 
-function getRecentAlertReasonBadgeLabel(group: DashboardRecentAlertGroup, typeLabel: string): string {
+function getRecentAlertReasonBadgeLabel(group: DashboardRecentAlertGroup, typeLabel: string, language: 'zh' | 'en'): string {
   const parts = [typeLabel]
   if (group.type === 'user_request_rate_limited') {
-    const windowLabel = getRecentAlertRateWindowLabel(group)
+    const windowLabel = getRecentAlertRateWindowLabel(group, language)
     if (windowLabel) parts.push(windowLabel)
   }
   return parts.join(' · ')
@@ -455,6 +469,7 @@ function formatAlertDateTimeIso(timestamp: number): string {
 
 export default function DashboardOverview({
   strings,
+  language = 'en',
   overviewReady,
   statusLoading,
   todayMetrics,
@@ -553,6 +568,8 @@ export default function DashboardOverview({
     today: 'var(--chart-1)',
     yesterday: 'var(--chart-1)',
     month: 'var(--chart-1)',
+    success: 'var(--success)',
+    failure: 'var(--destructive)',
   }
   const comparisonRangeStart = summaryWindowValues.yesterday_start
   const comparisonRangeEnd = summaryWindowValues.today_start
@@ -618,8 +635,8 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'valuableSuccess',
         }),
-        color: backdropColors.today,
-        comparisonColor: backdropColors.yesterday,
+        color: backdropColors.success,
+        comparisonColor: backdropColors.success,
       },
       valuableFailure: {
         ...buildPeriodBackdropSeries({
@@ -643,8 +660,8 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'valuableFailure',
         }),
-        color: 'var(--chart-1)',
-        comparisonColor: backdropColors.yesterday,
+        color: backdropColors.failure,
+        comparisonColor: backdropColors.failure,
       },
       otherSuccess: {
         ...buildPeriodBackdropSeries({
@@ -668,8 +685,8 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'otherSuccess',
         }),
-        color: 'var(--chart-1)',
-        comparisonColor: backdropColors.yesterday,
+        color: backdropColors.success,
+        comparisonColor: backdropColors.success,
       },
       otherFailure: {
         ...buildPeriodBackdropSeries({
@@ -693,8 +710,8 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'otherFailure',
         }),
-        color: 'var(--chart-1)',
-        comparisonColor: backdropColors.yesterday,
+        color: backdropColors.failure,
+        comparisonColor: backdropColors.failure,
       },
       unknown: {
         ...buildPeriodBackdropSeries({
@@ -743,11 +760,13 @@ export default function DashboardOverview({
           displayBucketSeconds: 3600,
           metricKey: 'upstreamExhausted',
         }),
-        color: 'var(--chart-1)',
-        comparisonColor: backdropColors.yesterday,
+        color: backdropColors.failure,
+        comparisonColor: backdropColors.failure,
       },
     }
   ), [
+    backdropColors.failure,
+    backdropColors.success,
     backdropColors.today,
     backdropColors.yesterday,
     comparisonRangeEnd,
@@ -784,15 +803,17 @@ export default function DashboardOverview({
         color: backdropColors.month,
         comparisonColor: backdropColors.yesterday,
       },
-      valuableSuccess: buildMonthCardBackdrop('valuableSuccess'),
-      valuableFailure: buildMonthCardBackdrop('valuableFailure', 'var(--chart-1)'),
-      otherSuccess: buildMonthCardBackdrop('otherSuccess', 'var(--chart-1)'),
-      otherFailure: buildMonthCardBackdrop('otherFailure', 'var(--chart-1)'),
-      unknown: buildMonthCardBackdrop('unknown', 'var(--chart-1)'),
-      upstreamExhausted: buildMonthCardBackdrop('upstreamExhausted', 'var(--chart-1)'),
+      valuableSuccess: buildMonthCardBackdrop('valuableSuccess', backdropColors.success),
+      valuableFailure: buildMonthCardBackdrop('valuableFailure', backdropColors.failure),
+      otherSuccess: buildMonthCardBackdrop('otherSuccess', backdropColors.success),
+      otherFailure: buildMonthCardBackdrop('otherFailure', backdropColors.failure),
+      unknown: buildMonthCardBackdrop('unknown'),
+      upstreamExhausted: buildMonthCardBackdrop('upstreamExhausted', backdropColors.failure),
     }
   }, [
+    backdropColors.failure,
     backdropColors.month,
+    backdropColors.success,
     backdropColors.yesterday,
     monthBackdrop,
     monthSeriesValue,
@@ -973,7 +994,7 @@ export default function DashboardOverview({
               <TableBody className="block md:table-row-group">
                 {recentAlerts.topGroups.map((group, index) => {
                   const typeLabel = strings.recentAlertsTypeLabels[group.type]
-                  const reasonBadgeLabel = getRecentAlertReasonBadgeLabel(group, typeLabel)
+                  const reasonBadgeLabel = getRecentAlertReasonBadgeLabel(group, typeLabel, language)
                   const rowBaseId = `${recentAlertsTableId}-row-${index}`
                   const subjectId = `${rowBaseId}-subject`
                   const summaryId = `${rowBaseId}-summary`

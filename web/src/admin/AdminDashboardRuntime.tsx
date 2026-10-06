@@ -1570,25 +1570,41 @@ function keyBadgeStatus(item: Pick<ApiKeyStats, 'status' | 'quarantine' | 'trans
   return item.status
 }
 
-function jobStatusLabel(status: string): string {
+function jobStatusLabel(status: string, language: 'en' | 'zh'): string {
   const normalized = status.trim().toLowerCase()
   if (!normalized) return '—'
 
-  const aliases: Record<string, string> = {
-    success: 'Success',
-    running: 'Running',
-    in_progress: 'In progress',
-    pending: 'Pending',
-    queued: 'Queued',
-    completed: 'Completed',
-    error: 'Error',
-    failed: 'Failed',
-    quota_exhausted: 'Quota exhausted',
-    retry_exhausted: 'Retry exhausted',
-    timeout: 'Timed out',
-    cancelled: 'Canceled',
-    canceled: 'Canceled',
-  }
+  const aliases: Record<string, string> = language === 'zh'
+    ? {
+      success: '成功',
+      running: '运行中',
+      in_progress: '进行中',
+      pending: '等待中',
+      queued: '排队中',
+      completed: '已完成',
+      error: '错误',
+      failed: '失败',
+      quota_exhausted: '额度耗尽',
+      retry_exhausted: '重试耗尽',
+      timeout: '已超时',
+      cancelled: '已取消',
+      canceled: '已取消',
+    }
+    : {
+      success: 'Success',
+      running: 'Running',
+      in_progress: 'In progress',
+      pending: 'Pending',
+      queued: 'Queued',
+      completed: 'Completed',
+      error: 'Error',
+      failed: 'Failed',
+      quota_exhausted: 'Quota exhausted',
+      retry_exhausted: 'Retry exhausted',
+      timeout: 'Timed out',
+      cancelled: 'Canceled',
+      canceled: 'Canceled',
+    }
   const alias = aliases[normalized]
   if (alias) return alias
 
@@ -6676,6 +6692,30 @@ function AdminDashboard(): React.JSX.Element {
     })
   }
 
+  // Debounced search-as-you-type: keep the explicit search button as fallback,
+  // but apply the query automatically once typing settles.
+  useEffect(() => {
+    if (usersQueryInput === usersQuery) return
+    const handle = window.setTimeout(() => {
+      navigateUsersSearch(usersQueryInput, { tagId: usersTagFilterId, page: 1, sort: usersSort, order: usersSortOrder })
+    }, 400)
+    return () => window.clearTimeout(handle)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-arming on query text change only; other params captured at schedule time
+  }, [usersQueryInput])
+
+  useEffect(() => {
+    if (unboundTokenUsageQueryInput === unboundTokenUsageQuery) return
+    const handle = window.setTimeout(() => {
+      navigateUnboundTokenUsageSearch(unboundTokenUsageQueryInput, {
+        page: 1,
+        sort: unboundTokenUsageSort,
+        order: unboundTokenUsageSortOrder,
+      })
+    }, 400)
+    return () => window.clearTimeout(handle)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- re-arming on query text change only; other params captured at schedule time
+  }, [unboundTokenUsageQueryInput])
+
   const toggleUnboundTokenUsageSort = useCallback(
     (field: AdminUnboundTokenUsageSortField) => {
       const isActive = effectiveUnboundTokenUsageSort === field
@@ -10362,7 +10402,12 @@ function AdminDashboard(): React.JSX.Element {
         <TooltipContent side="top">{tokenStrings.actions.viewLeaderboard}</TooltipContent>
       </Tooltip>
       {isAdmin && (
-        <div className="flex flex-wrap items-center gap-2">
+        <div
+          className="flex flex-wrap items-center gap-2 rounded-lg border bg-background px-3 py-2"
+          role="group"
+          aria-label={tokenStrings.newToken}
+        >
+          <span className="text-xs font-medium text-muted-foreground">{tokenStrings.newToken}</span>
           <Input
             type="text"
             name="new-token-note"
@@ -10370,17 +10415,20 @@ function AdminDashboard(): React.JSX.Element {
             value={newTokenNote}
             onChange={(e) => setNewTokenNote(e.target.value)}
             aria-label={tokenStrings.notePlaceholder}
+            className="h-8 w-44"
           />
           <Button
             type="button"
+            size="sm"
             onClick={(event) => void handleAddToken(event.currentTarget)}
             disabled={submitting}
           >
-            {submitting ? tokenStrings.creating : tokenStrings.newToken}
+            {submitting ? tokenStrings.creating : tokenStrings.createAction}
           </Button>
           <Button
             type="button"
             variant="outline"
+            size="sm"
             onClick={openBatchDialog}
             disabled={submitting}
           >
@@ -10738,6 +10786,7 @@ function AdminDashboard(): React.JSX.Element {
       {showDashboard && (
         <DashboardOverview
           strings={adminStrings.dashboard}
+          language={language}
           overviewReady={dashboardOverviewLoaded}
           statusLoading={dashboardStatusLoading}
           todayMetrics={todayMetrics}
@@ -12091,7 +12140,7 @@ function AdminDashboard(): React.JSX.Element {
                   const jt = j.job_type
                   const jobTypeLabelText = adminJobTypeLabel(jt, jobsStrings)
                   const jobSourceText = jobSourceLabel(j.trigger_source, jobsStrings)
-                  const jobStatusText = jobStatusLabel(String(j.status ?? ''))
+                  const jobStatusText = jobStatusLabel(String(j.status ?? ''), language)
                   const keyId = j.key_id
                   const keyGroup = j.key_group
                   const queued = j.queued_at
@@ -12316,7 +12365,7 @@ function AdminDashboard(): React.JSX.Element {
                   <div className="flex items-center justify-between gap-2 text-sm">
                     <span>{jobsStrings.table.status}</span>
                     <StatusBadge tone={statusTone(j.status)} title={String(j.status ?? '')}>
-                      {jobStatusLabel(String(j.status ?? ''))}
+                      {jobStatusLabel(String(j.status ?? ''), language)}
                     </StatusBadge>
                   </div>
                   <div className="flex items-center justify-between gap-2 text-sm">
@@ -12345,7 +12394,7 @@ function AdminDashboard(): React.JSX.Element {
             <div className="flex min-w-0 flex-col gap-2">
               <span className="text-sm text-muted-foreground">
                 <span className="text-sm text-muted-foreground">
-                  {jobsStrings.description} ({jobsPage} / {Math.max(1, Math.ceil(jobsTotal / jobsPerPage))})
+                  ({jobsPage} / {Math.max(1, Math.ceil(jobsTotal / jobsPerPage))})
                 </span>
               </span>
             </div>

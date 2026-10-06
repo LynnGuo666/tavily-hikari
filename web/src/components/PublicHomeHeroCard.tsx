@@ -125,7 +125,7 @@ function PublicHomeHeroCard({
           </div>
         ) : null}
 
-        <div className="grid gap-3 sm:grid-cols-3" aria-label={publicStrings.metrics.pool.title}>
+        <div className="grid gap-3 pt-1 sm:grid-cols-3" aria-label={publicStrings.metrics.pool.title}>
           <HeroMetric
             title={publicStrings.metrics.monthly.title}
             value={numberFormatter.format(metrics?.monthlySuccess ?? 0)}

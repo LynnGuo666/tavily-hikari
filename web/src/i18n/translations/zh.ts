@@ -53,7 +53,7 @@ export const ZH: TranslationShape = {
         description: '已注册用户仍可继续使用 Linux DO 登录；新的账户暂时无法创建。',
       },
       adminLogin: {
-        title: '管理员登录', description: '登录后可管理 Tavily key 与访问令牌。',
+        title: '管理员登录', description: '登录后可管理 Tavily API Key 与访问令牌。',
         credentialsTitle: '登录凭据',
         password: {
           label: '管理员口令',
@@ -111,6 +111,9 @@ export const ZH: TranslationShape = {
           hourlyLimit: '1 小时限额',
           dailyLimit: '日限额',
           monthlyLimit: '月度限额',
+          hourlyWindow: '滚动 1 小时窗口',
+          dailyWindow: '服务器本地自然日',
+          monthlyWindow: 'UTC 自然月',
         },
       },
       accessToken: {
@@ -143,6 +146,8 @@ export const ZH: TranslationShape = {
       guide: {
         title: '如何在常见客户端接入 Tavily Hikari',
         dataSourceLabel: '数据来源：',
+        copy: '复制',
+        copied: '已复制',
         tokenVisibility: {
           show: '显示密钥',
           hide: '隐藏密钥',
@@ -177,9 +182,16 @@ export const ZH: TranslationShape = {
         },
         table: {
           time: '时间',
+          request: '请求',
           httpStatus: 'HTTP',
           mcpStatus: 'Tavily',
           result: '结果',
+        },
+        details: {
+          request: '请求',
+          response: '响应',
+          outcome: '结果',
+          error: '错误',
         },
         toggles: {
           show: '展开详情',
@@ -298,6 +310,10 @@ export const ZH: TranslationShape = {
         chartModeResultsArea: '面积图 · 调用结果',
         chartModeTypesArea: '面积图 · 调用类型',
         chartModeCreditsArea: '面积图 · 积分',
+        chartMetricLabel: '指标',
+        chartRenderLabel: '图表类型',
+        chartRenderBar: '柱状图',
+        chartRenderArea: '面积图',
         chartVisibleSeries: '显示系列',
         chartEmpty: '当前选择下没有可显示的图表系列。',
         chartUtcWindow: '本地时间横轴 · 24 个完整小时 + 当前小时（{count} 槽）',
@@ -362,6 +378,8 @@ export const ZH: TranslationShape = {
         error: '暂时无法加载用户排行。',
         empty: '当前分组暂无可展示的用户数据。',
         tabsLabel: '用户排行分组',
+        windowGroupLabel: '按时间范围',
+        metricGroupLabel: '按排行维度',
         windows: {
           last24h: '最近 24 小时',
           last7d: '最近 7 天',
@@ -999,6 +1017,7 @@ export const ZH: TranslationShape = {
         description: '用于 /mcp 的认证，格式 th-xxxx-xxxxxxxxxxxx',
         notePlaceholder: '备注（可选）',
         newToken: '新建令牌',
+        createAction: '创建',
         creating: '创建中…',
         batchCreate: '批量创建',
         pagination: {
@@ -1481,7 +1500,9 @@ export const ZH: TranslationShape = {
           'quota_sync/hot': '热 Key 同步',
           'quota_sync/manual': '手动同步',
           token_usage_rollup: '用量聚合',
+          usage_rollup: '用量聚合',
           usage_aggregation: '用量聚合',
+          geo_lookup: '地理查询',
           auth_token_logs_gc: '访问令牌日志清理',
           request_logs_gc: '请求日志清理',
           mcp_sessions_gc: 'MCP 会话清理',

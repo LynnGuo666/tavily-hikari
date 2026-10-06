@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useId, useMemo } from 'react'
 import type React from 'react'
 
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 
 import type { AdminTranslations, Language } from '../i18n'
@@ -126,12 +126,14 @@ function RankingsChartCard({ title, description, rows, strings, color, onSelectU
           <div className="admin-ranking-chart-shell min-w-0">
             <RankingsSemanticList id={descriptionId} title={title} rows={rows} strings={strings} />
             <ChartContainer config={{ value: { label: title, color } }} className="w-full aspect-auto" style={{ height: rankingChartHeight(rows.length, compact) }} aria-describedby={descriptionId}>
-              <BarChart accessibilityLayer data={data} layout="vertical" margin={{ left: 0, right: 16 }}>
+              <BarChart accessibilityLayer data={data} layout="vertical" margin={{ left: 0, right: 56 }}>
                 <CartesianGrid horizontal={false} />
                 <XAxis type="number" domain={[0, buildTopBarDomainMax(rows[0]?.value ?? 0)]} axisLine={false} tickLine={false} />
                 <YAxis type="category" dataKey="name" width={compact ? 100 : 140} axisLine={false} tickLine={false} />
                 <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => payload[0]?.payload.name} />} />
-                <Bar dataKey="value" fill="var(--color-value)" radius={4} onClick={(entry) => onSelectUser?.(entry.payload.user.userId)} cursor={onSelectUser ? 'pointer' : undefined} />
+                <Bar dataKey="value" fill="var(--color-value)" radius={4} onClick={(entry) => onSelectUser?.(entry.payload.user.userId)} cursor={onSelectUser ? 'pointer' : undefined}>
+                  <LabelList dataKey="value" position="right" className="fill-muted-foreground text-xs" formatter={(value) => Number(value ?? 0).toLocaleString()} />
+                </Bar>
               </BarChart>
             </ChartContainer>
             {onSelectUser && <div className="sr-only focus-within:not-sr-only flex flex-wrap gap-2">
@@ -421,10 +423,6 @@ export default function AdminUserRankingsPage({
   const primaryColor = 'var(--chart-1)'
   const creditColor = 'var(--chart-2)'
   const uniqueIpColor = 'var(--chart-3)'
-  const rankingTabs = useMemo<ReadonlyArray<RankingTabKey>>(
-    () => ['last24h', 'last7d', 'last30d', 'primarySuccess', 'businessCredits', 'uniqueIp'],
-    [],
-  )
 
   const renderedCards = useMemo(
     () =>
@@ -476,15 +474,35 @@ export default function AdminUserRankingsPage({
       ) : null}
 
       {snapshot || showLoadingSkeleton ? (
-        <section aria-label={strings.tabsLabel}>
-          <SegmentedTabs<RankingTabKey>
-            className="admin-rankings-tab-strip"
-            value={activeTab}
-            disabled={showLoadingSkeleton}
-            onChange={(tab) => onTabChange?.(tab)}
-            options={rankingTabs.map((tab) => ({ value: tab, label: buildTabLabel(strings, tab) }))}
-            ariaLabel={strings.tabsLabel}
-          />
+        <section aria-label={strings.tabsLabel} className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-muted-foreground">{strings.windowGroupLabel}</span>
+            <SegmentedTabs<RankingTabKey | ''>
+              className="admin-rankings-tab-strip"
+              value={isWindowTab(activeTab) ? activeTab : ''}
+              disabled={showLoadingSkeleton}
+              onChange={(tab) => { if (tab) onTabChange?.(tab) }}
+              options={(['last24h', 'last7d', 'last30d'] as const).map((tab) => ({
+                value: tab,
+                label: buildTabLabel(strings, tab),
+              }))}
+              ariaLabel={strings.windowGroupLabel}
+            />
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-muted-foreground">{strings.metricGroupLabel}</span>
+            <SegmentedTabs<RankingTabKey | ''>
+              className="admin-rankings-tab-strip"
+              value={isWindowTab(activeTab) ? '' : activeTab}
+              disabled={showLoadingSkeleton}
+              onChange={(tab) => { if (tab) onTabChange?.(tab) }}
+              options={(['primarySuccess', 'businessCredits', 'uniqueIp'] as const).map((tab) => ({
+                value: tab,
+                label: buildTabLabel(strings, tab),
+              }))}
+              ariaLabel={strings.metricGroupLabel}
+            />
+          </div>
         </section>
       ) : null}
 

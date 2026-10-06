@@ -68,7 +68,7 @@ export default function TokenResetDialogs({
             </Button>
             <Button
               type="button"
-              className="btn-warning bg-warning/15 text-warning hover:bg-warning/25"
+              variant="destructive"
               onClick={onResetToken}
               disabled={resettingTokenId != null}
             >

@@ -196,14 +196,39 @@ export default function DashboardTrendPanel({
       : getResultSeriesValue(slot.bucket, key as DashboardResultSeriesId)])),
   }))
   const seriesColors = Object.fromEntries(allSeries.map((key, index) => [key, `var(--chart-${index % 5 + 1})`]))
-  const modeOptions = [
-    { value: 'results' as const, label: strings.chartModeResults },
-    { value: 'types' as const, label: strings.chartModeTypes },
-    { value: 'credits' as const, label: strings.chartModeCredits },
-    { value: 'resultsArea' as const, label: strings.chartModeResultsArea },
-    { value: 'typesArea' as const, label: strings.chartModeTypesArea },
-    { value: 'creditsArea' as const, label: strings.chartModeCreditsArea },
+  type DashboardChartMetric = 'results' | 'types' | 'credits'
+  const AREA_MODE_BY_METRIC: Record<DashboardChartMetric, DashboardHourlyChartMode> = {
+    results: 'resultsArea',
+    types: 'typesArea',
+    credits: 'creditsArea',
+  }
+  const BAR_MODE_BY_METRIC: Record<DashboardChartMetric, DashboardHourlyChartMode> = {
+    results: 'results',
+    types: 'types',
+    credits: 'credits',
+  }
+  const chartMetric: DashboardChartMetric = chartMode === 'types' || chartMode === 'typesArea'
+    ? 'types'
+    : chartMode === 'credits' || chartMode === 'creditsArea'
+      ? 'credits'
+      : 'results'
+  const chartRendering: 'bar' | 'area' = isAreaMode ? 'area' : 'bar'
+  const metricOptions: ReadonlyArray<{ value: DashboardChartMetric; label: string }> = [
+    { value: 'results', label: strings.chartModeResults },
+    { value: 'types', label: strings.chartModeTypes },
+    { value: 'credits', label: strings.chartModeCredits },
   ]
+  const renderOptions: ReadonlyArray<{ value: 'bar' | 'area'; label: string }> = [
+    { value: 'bar', label: strings.chartRenderBar },
+    { value: 'area', label: strings.chartRenderArea },
+  ]
+  const handleMetricChange = (metric: DashboardChartMetric) => {
+    setChartMode(isAreaMode ? AREA_MODE_BY_METRIC[metric] : BAR_MODE_BY_METRIC[metric])
+  }
+  const handleRenderChange = (rendering: 'bar' | 'area') => {
+    if ((rendering === 'area') === isAreaMode) return
+    setChartMode(rendering === 'area' ? AREA_MODE_BY_METRIC[chartMetric] : BAR_MODE_BY_METRIC[chartMetric])
+  }
 
   const showEmpty = overviewReady && (rangeSlots.length === 0 || activeSeries.length === 0)
   const chartSeriesLabel = strings.chartVisibleSeries
@@ -238,13 +263,27 @@ export default function DashboardTrendPanel({
         </div>
       </CardHeader>
 
-      <SegmentedTabs<DashboardHourlyChartMode>
-        className="px-4"
-        value={chartMode}
-        onChange={setChartMode}
-        options={modeOptions}
-        ariaLabel={strings.trendsTitle}
-      />
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 px-4">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">{strings.chartMetricLabel}</span>
+          <SegmentedTabs<DashboardChartMetric>
+            value={chartMetric}
+            onChange={handleMetricChange}
+            options={metricOptions}
+            ariaLabel={strings.chartMetricLabel}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">{strings.chartRenderLabel}</span>
+          <SegmentedTabs<'bar' | 'area'>
+            value={chartRendering}
+            onChange={handleRenderChange}
+            options={renderOptions}
+            ariaLabel={strings.chartRenderLabel}
+            smallViewportBehavior="buttons"
+          />
+        </div>
+      </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2 px-4">
         <span className="text-sm font-medium">{chartSeriesLabel}</span>

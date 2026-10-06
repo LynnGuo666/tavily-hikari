@@ -2745,7 +2745,7 @@ export default function UserConsole(): JSX.Element {
       )}
       <div className="px-4">
         <Tabs value={activeGuide} onValueChange={(value) => handleSetupGuideChange(value as GuideKey)}>
-          <TabsList className="h-auto flex-wrap">
+          <TabsList className="h-auto w-full justify-start overflow-x-auto">
             {guideTabs.map((tab) => (
               <TabsTrigger key={tab.id} value={tab.id}>
                 {tab.label}

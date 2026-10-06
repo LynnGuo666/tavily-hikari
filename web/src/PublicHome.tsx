@@ -524,20 +524,20 @@ function PublicHome(): React.JSX.Element {
   const renderLogDetails = (log: PublicTokenLog): React.JSX.Element => (
     <div className="flex flex-col gap-1.5 px-4 py-3 text-sm">
       <div className="flex flex-wrap gap-2">
-        <span className="font-medium text-muted-foreground">Request</span>
+        <span className="font-medium text-muted-foreground">{publicStrings.logs.details.request}</span>
         <span className="font-mono text-xs leading-5">{`${log.method} ${log.path}${log.query ? `?${log.query}` : ''}`}</span>
       </div>
       <div className="flex flex-wrap gap-2">
-        <span className="font-medium text-muted-foreground">Response</span>
+        <span className="font-medium text-muted-foreground">{publicStrings.logs.details.response}</span>
         <span className="text-xs leading-5">{`${publicStrings.logs.table.httpStatus}: ${log.http_status ?? '—'} · ${publicStrings.logs.table.mcpStatus}: ${log.mcp_status ?? '—'}`}</span>
       </div>
       <div className="flex flex-wrap gap-2">
-        <span className="font-medium text-muted-foreground">Outcome</span>
+        <span className="font-medium text-muted-foreground">{publicStrings.logs.details.outcome}</span>
         <span className="text-xs leading-5">{log.result_status}</span>
       </div>
       {log.error_message ? (
         <div className="flex flex-wrap gap-2">
-          <span className="font-medium text-muted-foreground">Error</span>
+          <span className="font-medium text-muted-foreground">{publicStrings.logs.details.error}</span>
           <span className="text-xs leading-5 text-destructive">{log.error_message}</span>
         </div>
       ) : null}
@@ -641,33 +641,41 @@ function PublicHome(): React.JSX.Element {
                     label: publicStrings.accessPanel.stats.hourlyLimit,
                     used: recentTokenUsage?.quotaHourlyUsed ?? 0,
                     limit: recentTokenUsage?.quotaHourlyLimit ?? TOKEN_HOURLY_LIMIT,
-                    description: 'Rolling 1-hour window',
+                    description: publicStrings.accessPanel.stats.hourlyWindow,
                   },
                   {
                     label: publicStrings.accessPanel.stats.dailyLimit,
                     used: recentTokenUsage?.quotaDailyUsed ?? 0,
                     limit: recentTokenUsage?.quotaDailyLimit ?? TOKEN_DAILY_LIMIT,
-                    description: 'Server-local calendar day',
+                    description: publicStrings.accessPanel.stats.dailyWindow,
                   },
                   {
                     label: publicStrings.accessPanel.stats.monthlyLimit,
                     used: recentTokenUsage?.quotaMonthlyUsed ?? 0,
                     limit: recentTokenUsage?.quotaMonthlyLimit ?? TOKEN_MONTHLY_LIMIT,
-                    description: 'UTC calendar month',
+                    description: publicStrings.accessPanel.stats.monthlyWindow,
                   },
-                ] as const).map((quota) => (
-                  <div key={quota.label} className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-medium">{quota.label}</p>
-                      <p className="font-mono text-sm tabular-nums text-muted-foreground">
-                        {formatNumber(quota.used)}
-                        <span className="text-muted-foreground/70"> / {formatNumber(quota.limit)}</span>
-                      </p>
+                ] as const).map((quota) => {
+                  const usageRatio = quota.limit > 0 ? quota.used / quota.limit : 0
+                  return (
+                    <div key={quota.label} className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-sm font-medium">{quota.label}</p>
+                        <p className="font-mono text-sm tabular-nums text-muted-foreground">
+                          {formatNumber(quota.used)}
+                          <span className="text-muted-foreground/70"> / {formatNumber(quota.limit)}</span>
+                        </p>
+                      </div>
+                      <Progress
+                        value={Math.min(100, usageRatio * 100)}
+                        indicatorClassName={
+                          usageRatio >= 0.95 ? 'bg-destructive' : usageRatio >= 0.8 ? 'bg-warning' : undefined
+                        }
+                      />
+                      <p className="text-xs text-muted-foreground">{quota.description}</p>
                     </div>
-                    <Progress value={quota.limit > 0 ? Math.min(100, (quota.used / quota.limit) * 100) : 0} />
-                    <p className="text-xs text-muted-foreground">{quota.description}</p>
-                  </div>
-                ))}
+                  )
+                })}
 
                 <TokenSecretField
                   inputId="access-token"
@@ -709,7 +717,7 @@ function PublicHome(): React.JSX.Element {
                           <TableRow>
                             <TableHead className="w-10" />
                             <TableHead>{publicStrings.logs.table.time}</TableHead>
-                            <TableHead>Request</TableHead>
+                            <TableHead>{publicStrings.logs.table.request}</TableHead>
                             <TableHead>{publicStrings.logs.table.result}</TableHead>
                             <TableHead className="text-right">{publicStrings.logs.table.httpStatus}</TableHead>
                           </TableRow>
@@ -813,7 +821,7 @@ function PublicHome(): React.JSX.Element {
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             <Tabs value={activeGuide} onValueChange={(value) => setActiveGuide(value as GuideKey)}>
-              <TabsList className="h-auto flex-wrap">
+              <TabsList className="h-auto w-full justify-start overflow-x-auto">
                 {guideTabs.map((tab) => (
                   <TabsTrigger key={tab.id} value={tab.id}>
                     {tab.label}
@@ -863,7 +871,7 @@ function PublicHome(): React.JSX.Element {
                           ) : (
                             <CopyIcon data-icon="inline-start" />
                           )}
-                          {sampleCopyState === 'copied' ? 'Copied' : 'Copy'}
+                          {sampleCopyState === 'copied' ? publicStrings.guide.copied : publicStrings.guide.copy}
                         </Button>
                       </div>
                     </div>

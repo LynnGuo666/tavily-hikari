@@ -39,6 +39,7 @@ interface BillingText {
   unavailableNotice: string
   timelineTitle: string
   timelineDescription: string
+  quotaWindowLegend: string
   timelinePrevious: string
   timelineCurrent: string
   timelineFuture: string
@@ -736,6 +737,7 @@ export default function BillingPage({
           <div className="flex flex-col gap-1.5 [&_h2]:text-lg [&_h2]:font-semibold [&_p]:text-sm [&_p]:text-muted-foreground">
             <h2>{text.timelineTitle}</h2>
             <p>{text.timelineDescription}</p>
+            <p className="text-xs text-muted-foreground/80">{text.quotaWindowLegend}</p>
           </div>
           {summary ? (
             <div className="flex flex-wrap items-center gap-1.5">

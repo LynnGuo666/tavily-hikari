@@ -5,16 +5,13 @@ import BrandLockup from '../components/BrandLockup'
 import ThemeToggle from '../components/ThemeToggle'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 import { ConnectedUpdateAvailableBanner } from '../components/UpdateAvailableBanner'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from '@/components/ui/card'
 import { useTranslate } from '../i18n'
 
@@ -43,14 +40,9 @@ function RegistrationPaused(): React.JSX.Element {
         <ConnectedUpdateAvailableBanner strings={translations.public.updateBanner} />
 
         <Card>
-          <CardHeader>
-            <CardTitle>{strings.badge}</CardTitle>
-            <CardDescription>{strings.description}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
+          <CardContent className="flex flex-col gap-4 pt-6">
             <Alert className="border-warning/40 bg-warning/10">
               <CircleAlertIcon />
-              <AlertTitle className="text-warning">{strings.badge}</AlertTitle>
               <AlertDescription className="text-warning">{strings.continueHint}</AlertDescription>
             </Alert>
           </CardContent>

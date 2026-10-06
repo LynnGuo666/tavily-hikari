@@ -363,16 +363,58 @@ function SidebarSeparator({
 }
 
 function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
+  const scrollRef = React.useRef<HTMLDivElement | null>(null)
+  const [edgeFade, setEdgeFade] = React.useState<{ top: boolean; bottom: boolean }>({ top: false, bottom: false })
+
+  const updateEdgeFade = React.useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setEdgeFade({
+      top: el.scrollTop > 4,
+      bottom: el.scrollTop + el.clientHeight < el.scrollHeight - 4,
+    })
+  }, [])
+
+  React.useEffect(() => {
+    updateEdgeFade()
+    const el = scrollRef.current
+    if (!el) return
+    const observer = new ResizeObserver(updateEdgeFade)
+    observer.observe(el)
+    if (el.firstElementChild) observer.observe(el.firstElementChild)
+    // Native capture listener: scroll does not bubble through React synthetic events.
+    el.addEventListener("scroll", updateEdgeFade, { capture: true, passive: true })
+    return () => {
+      observer.disconnect()
+      el.removeEventListener("scroll", updateEdgeFade, { capture: true })
+    }
+  }, [updateEdgeFade])
+
   return (
-    <div
-      data-slot="sidebar-content"
-      data-sidebar="content"
-      className={cn(
-        "no-scrollbar flex min-h-0 flex-1 flex-col gap-0 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
-        className
-      )}
-      {...props}
-    />
+    <div className="relative flex min-h-0 flex-1 flex-col" data-sidebar="content-wrapper">
+      {edgeFade.top ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-8 bg-gradient-to-b from-sidebar to-transparent"
+        />
+      ) : null}
+      {edgeFade.bottom ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-8 bg-gradient-to-t from-sidebar to-transparent"
+        />
+      ) : null}
+      <div
+        ref={scrollRef}
+        data-slot="sidebar-content"
+        data-sidebar="content"
+        className={cn(
+          "sidebar-nav-scroll flex min-h-0 flex-1 flex-col gap-0 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+          className
+        )}
+        {...props}
+      />
+    </div>
   )
 }
 

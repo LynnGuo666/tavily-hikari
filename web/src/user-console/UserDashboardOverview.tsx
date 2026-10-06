@@ -99,14 +99,12 @@ function SummaryCard({
   label,
   value,
   loading,
-  marker,
   tone,
   formatNumber,
 }: {
   label: string
   value: number
   loading: boolean
-  marker: string
   tone: 'success' | 'failure' | 'month'
   formatNumber: (value: number) => string
 }): React.JSX.Element {
@@ -118,13 +116,8 @@ function SummaryCard({
         tone === 'month' && 'col-span-2 @lg:col-span-1',
       )}
     >
-      <div className="flex flex-wrap items-center justify-between gap-1">
-        <div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-          {label}
-        </div>
-        <div className="text-xs text-muted-foreground">
-          {marker}
-        </div>
+      <div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+        {label}
       </div>
       <div>
         <span
@@ -222,14 +215,12 @@ export default function UserDashboardOverview({
   const progress = overview?.progress ?? null
   const markerText = language === 'zh'
     ? {
-        today: '今日',
         monthUtc: 'UTC 月',
         rolling: '滚动 5 分钟',
         hour: '当前小时',
         day: '当前自然日',
       }
     : {
-        today: 'Today',
         monthUtc: 'UTC month',
         rolling: 'Rolling 5m',
         hour: 'Current hour',
@@ -243,7 +234,6 @@ export default function UserDashboardOverview({
           label={text.dailySuccess}
           value={summary?.dailySuccess ?? 0}
           loading={loading}
-          marker={markerText.today}
           tone="success"
           formatNumber={formatNumber}
         />
@@ -251,7 +241,6 @@ export default function UserDashboardOverview({
           label={text.dailyFailure}
           value={summary?.dailyFailure ?? 0}
           loading={loading}
-          marker={markerText.today}
           tone="failure"
           formatNumber={formatNumber}
         />
@@ -259,7 +248,6 @@ export default function UserDashboardOverview({
           label={text.monthlySuccessUtc}
           value={summary?.monthlySuccess ?? 0}
           loading={loading}
-          marker={markerText.monthUtc}
           tone="month"
           formatNumber={formatNumber}
         />

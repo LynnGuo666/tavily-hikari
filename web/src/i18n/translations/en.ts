@@ -112,6 +112,9 @@ export const EN: TranslationShape = {
           hourlyLimit: 'Hourly Limit',
           dailyLimit: 'Daily Limit',
           monthlyLimit: 'Monthly Limit',
+          hourlyWindow: 'Rolling 1-hour window',
+          dailyWindow: 'Server-local calendar day',
+          monthlyWindow: 'UTC calendar month',
         },
       },
       accessToken: {
@@ -144,6 +147,8 @@ export const EN: TranslationShape = {
       guide: {
         title: 'Connect Tavily Hikari to common clients',
         dataSourceLabel: 'Reference: ',
+        copy: 'Copy',
+        copied: 'Copied',
         tokenVisibility: {
           show: 'Show token',
           hide: 'Hide token',
@@ -178,9 +183,16 @@ export const EN: TranslationShape = {
         },
         table: {
           time: 'Time',
+          request: 'Request',
           httpStatus: 'HTTP',
           mcpStatus: 'Tavily',
           result: 'Result',
+        },
+        details: {
+          request: 'Request',
+          response: 'Response',
+          outcome: 'Outcome',
+          error: 'Error',
         },
         toggles: {
           show: 'Show details',
@@ -299,6 +311,10 @@ export const EN: TranslationShape = {
         chartModeResultsArea: 'Area · Results',
         chartModeTypesArea: 'Area · Types',
         chartModeCreditsArea: 'Area · Credits',
+        chartMetricLabel: 'Metric',
+        chartRenderLabel: 'Chart type',
+        chartRenderBar: 'Bars',
+        chartRenderArea: 'Area',
         chartVisibleSeries: 'Visible series',
         chartEmpty: 'No visible chart series for the current selection.',
         chartUtcWindow: 'Local time axis · 24 full hours + current hour ({count} slots)',
@@ -363,6 +379,8 @@ export const EN: TranslationShape = {
         error: 'Unable to load user rankings right now.',
         empty: 'No ranked users are available for this grouping yet.',
         tabsLabel: 'User ranking grouping',
+        windowGroupLabel: 'By time range',
+        metricGroupLabel: 'By ranking metric',
         windows: {
           last24h: 'Last 24 Hours',
           last7d: 'Last 7 Days',
@@ -1000,6 +1018,7 @@ export const EN: TranslationShape = {
         description: 'Auth for /mcp. Format th-xxxx-xxxxxxxxxxxx',
         notePlaceholder: 'Note (optional)',
         newToken: 'New Token',
+        createAction: 'Create',
         creating: 'Creating…',
         batchCreate: 'Batch Create',
         pagination: {
@@ -1482,7 +1501,9 @@ export const EN: TranslationShape = {
           'quota_sync/hot': 'Hot quota sync',
           'quota_sync/manual': 'Manual sync',
           token_usage_rollup: 'Usage rollups',
+          usage_rollup: 'Usage rollups',
           usage_aggregation: 'Usage rollups',
+          geo_lookup: 'Geo lookup',
           auth_token_logs_gc: 'Access-token log cleanup',
           request_logs_gc: 'Request log cleanup',
           mcp_sessions_gc: 'MCP session cleanup',
