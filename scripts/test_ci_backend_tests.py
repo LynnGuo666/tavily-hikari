@@ -204,6 +204,7 @@ class BackendTestRunnerContractTests(unittest.TestCase):
                 "remote_attempt_admission::tests::",
                 "tests::maintenance_queue_performance::",
                 "tests::schema_migrations::",
+                "tests::schema_migration_compatibility::",
                 "tests::reconciliation_controller::",
                 "tests::upstream_reconciliation_continuation::",
                 "tests::upstream_reconciliation_engine::",
@@ -397,6 +398,16 @@ class BackendTestRunnerContractTests(unittest.TestCase):
             RUNNER.write_minimal_web_assets(temp_dir)
 
             RUNNER.verify_web_assets(temp_dir)
+
+    def test_production_web_asset_contract_rejects_static_version_json(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            RUNNER.write_minimal_web_assets(temp_dir)
+
+            with self.assertRaisesRegex(SystemExit, "must not contain static version.json"):
+                RUNNER.verify_web_assets(temp_dir, require_no_static_version=True)
+
+            (Path(temp_dir) / "version.json").unlink()
+            RUNNER.verify_web_assets(temp_dir, require_no_static_version=True)
 
     def test_minimal_web_assets_do_not_rewrite_unchanged_files(self):
         with tempfile.TemporaryDirectory() as temp_dir:

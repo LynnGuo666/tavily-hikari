@@ -1,0 +1,227 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+from pathlib import Path
+import importlib.util
+import unittest
+
+
+ROOT = Path(__file__).resolve().parents[2]
+WORKFLOW = ROOT / ".github" / "workflows" / "performance-recovery.yml"
+RUNNER = ROOT / "scripts" / "run-performance-recovery-github-hosted.sh"
+
+
+class GithubPerformanceRecoveryWorkflowTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.source = WORKFLOW.read_text(encoding="utf-8")
+
+    def test_workflow_is_manual_only_and_serialized(self) -> None:
+        self.assertIn("  workflow_dispatch:", self.source)
+        for event in ("  push:", "  pull_request:", "  schedule:"):
+            self.assertNotIn(event, self.source)
+        self.assertIn("group: performance-recovery-manual", self.source)
+        self.assertIn("cancel-in-progress: false", self.source)
+        self.assertIn("runs-on: ubuntu-24.04", self.source)
+        self.assertNotIn("self-hosted", self.source)
+        self.assertNotIn("192.168.31.11", self.source)
+        self.assertNotIn("codex-testbox", self.source)
+
+    def test_workflow_requires_fixture_duration_and_confirmation(self) -> None:
+        self.assertIn("name: Performance Recovery A/B", self.source)
+        self.assertIn("confirm:", self.source)
+        self.assertIn('          - "no"', self.source)
+        self.assertIn('          - "yes"', self.source)
+        self.assertIn("default: no", self.source)
+        self.assertIn('if [[ "${CONFIRM}" != "yes" ]]', self.source)
+        self.assertIn("DURATION_SECS < 600", self.source)
+        self.assertIn("DURATION_SECS > 1800", self.source)
+        self.assertIn("low_seconds:", self.source)
+        self.assertIn("BASELINE_REF", self.source)
+        self.assertIn("candidate_ref || github.sha", self.source)
+
+    def test_workflow_uses_the_github_hosted_fixture_comparison(self) -> None:
+        self.assertIn(
+            "scripts/run-performance-recovery-github-hosted.sh",
+            self.source,
+        )
+        self.assertIn("actions/upload-artifact@v7", self.source)
+        self.assertIn("retention-days: 14", self.source)
+        self.assertIn(
+            "Databases are generated local fixtures; no production snapshot or private network host is used.",
+            self.source,
+        )
+        self.assertNotIn("https://api.tavily.com", self.source)
+        self.assertNotIn("TAVILY_UPSTREAM", self.source)
+
+    def test_github_hosted_runner_has_no_private_network_requirements(self) -> None:
+        runner = RUNNER.read_text(encoding="utf-8")
+        self.assertIn("PERFORMANCE_RECOVERY_RUN_MODE=github-hosted", runner)
+        self.assertIn("docker compose", runner)
+        self.assertIn('git -C "$ROOT_DIR" archive', runner)
+        self.assertIn("tavily_proxy-observability.db", runner)
+        self.assertNotIn("self-hosted", runner)
+        self.assertNotIn("192.168.31.11", runner)
+        self.assertNotIn("codex-testbox", runner)
+
+    def test_recovery_consistency_rejects_rollup_and_billing_corruption(self) -> None:
+        spec = importlib.util.spec_from_file_location("gc_recovery_load", ROOT / "scripts" / "gc_recovery_load.py")
+        harness = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(harness)
+        expected = harness.expected_target_counts()
+        state = {
+            "target_seal": expected.copy(),
+            "target_daily_rollup": expected.copy(),
+            "target_minute_rollup": expected.copy(),
+            "billing_truth": (5000, 5000, 5000),
+            "retained_fixture_identity": (95000, 1, 95000, 4512547500),
+            "retained_fixture_rows": 95000,
+        }
+        harness.validate_recovery_consistency(
+            state,
+            expected,
+            state["billing_truth"],
+            state["retained_fixture_identity"],
+        )
+        state["target_minute_rollup"]["local_estimated_credits"] -= 1
+        with self.assertRaises(AssertionError):
+            harness.validate_recovery_consistency(
+                state,
+                expected,
+                (5000, 4999, 5000),
+                state["retained_fixture_identity"],
+            )
+
+    def test_recovery_progress_trackers_reject_their_own_stalled_lane(self) -> None:
+        spec = importlib.util.spec_from_file_location("gc_recovery_load", ROOT / "scripts" / "gc_recovery_load.py")
+        harness = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(harness)
+        state = {
+            "expired": 0,
+            "target_source_rows": 0,
+            "body_cursor": None,
+            "pending_days": [(1, 2, 1)],
+            "blocking_work": [(1, 2, None, None, 3, "pending")],
+            "integrity_work": [],
+            "target_seal": None,
+            "target_minute_rollup": {},
+            "target_daily_rollup": {},
+            "active_gc": 0,
+            "gc_jobs": [(1, "success", "")],
+            "integrity_jobs": [(1, "success", "")],
+        }
+        tracker = harness.EffectiveProgressTracker(state, "integrity", harness.expected_target_counts())
+        with self.assertRaises(AssertionError):
+            tracker.observe(300, state)
+        gc_tracker = harness.EffectiveProgressTracker(state, "gc", harness.expected_target_counts())
+        gc_tracker.observe(300, state)
+
+    def test_recovery_progress_trackers_do_not_share_lane_markers(self) -> None:
+        spec = importlib.util.spec_from_file_location("gc_recovery_load", ROOT / "scripts" / "gc_recovery_load.py")
+        harness = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(harness)
+        expected = harness.expected_target_counts()
+        state = {
+            "expired": 5000,
+            "target_source_rows": 5000,
+            "body_cursor": None,
+            "pending_days": [(1, 2, 1)],
+            "blocking_work": [(1, 2, None, None, 3, "pending")],
+            "integrity_work": [],
+            "target_seal": {},
+            "target_minute_rollup": {},
+            "target_daily_rollup": {},
+            "active_gc": 1,
+            "gc_jobs": [(1, "running", "")],
+            "integrity_jobs": [(1, "running", "")],
+        }
+        gc_tracker = harness.EffectiveProgressTracker(state, "gc", expected)
+        integrity_tracker = harness.EffectiveProgressTracker(state, "integrity", expected)
+        progressed = dict(state, expired=4999)
+        gc_tracker.observe(100, progressed)
+        integrity_tracker.observe(100, progressed)
+        gc_tracker.observe(300, progressed)
+        with self.assertRaises(AssertionError):
+            integrity_tracker.observe(300, progressed)
+        self.assertEqual(gc_tracker.effective_progress_checks, 1)
+        self.assertEqual(integrity_tracker.effective_progress_checks, 0)
+
+    def test_recovery_progress_tracker_anchors_delayed_start(self) -> None:
+        spec = importlib.util.spec_from_file_location("gc_recovery_load", ROOT / "scripts" / "gc_recovery_load.py")
+        harness = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(harness)
+        expected = harness.expected_target_counts()
+        state = {
+            "expired": 5000,
+            "target_source_rows": 5000,
+            "body_cursor": None,
+            "pending_days": [],
+            "blocking_work": [],
+            "integrity_work": [],
+            "target_seal": expected.copy(),
+            "target_minute_rollup": expected.copy(),
+            "target_daily_rollup": expected.copy(),
+            "active_gc": 1,
+            "gc_jobs": [(1, "running", "")],
+            "integrity_jobs": [],
+        }
+        tracker = harness.EffectiveProgressTracker(state, "gc", expected, elapsed=60)
+        tracker.observe(359, state)
+        with self.assertRaises(AssertionError):
+            tracker.observe(360, state)
+
+    def test_fixture_container_preserves_host_mount_ownership(self) -> None:
+        runner = RUNNER.read_text(encoding="utf-8")
+        self.assertIn('RUNNER_UID="$(id -u)"', runner)
+        self.assertIn('RUNNER_GID="$(id -g)"', runner)
+        self.assertIn('--user "${RUNNER_UID}:${RUNNER_GID}"', runner)
+
+    def test_gc_recovery_is_a_manual_github_hosted_suite(self) -> None:
+        gc_job = self.source.split("  request-log-gc-recovery:\n", 1)[1]
+        harness = (ROOT / "scripts" / "gc_recovery_load.py").read_text(encoding="utf-8")
+
+        self.assertIn("      suite:\n", self.source)
+        self.assertIn("          - request-log-gc", self.source)
+        self.assertIn("if: ${{ inputs.suite == 'comparison' }}", self.source)
+        self.assertIn("if: ${{ inputs.suite == 'request-log-gc' }}", self.source)
+        self.assertIn("runs-on: ubuntu-24.04", gc_job)
+        self.assertIn("Require explicit manual confirmation", gc_job)
+        self.assertIn("Validate low-load recovery duration", gc_job)
+        self.assertIn("LOW_SECONDS < 1800", gc_job)
+        self.assertIn("LOW_SECONDS > 7200", gc_job)
+        self.assertIn('        default: "7200"', self.source)
+        self.assertIn("timeout-minutes: 180", gc_job)
+        self.assertIn("Test productive GC continuation turn retention", gc_job)
+        self.assertIn("maintenance_bulk_retains_request_logs_gc_progress_continuation", gc_job)
+        self.assertIn("Test request-log GC survives process restart", gc_job)
+        self.assertIn("request_logs_gc_remains_queued_after_process_restart", gc_job)
+        self.assertIn("Test dashboard integrity admission retry policy", gc_job)
+        self.assertIn("dashboard_integrity_admission_pressure_uses_full_backoff", gc_job)
+        self.assertIn("Test GC admission pressure retry policy", gc_job)
+        self.assertIn("request_logs_gc_admission_pressure_uses_full_backoff", gc_job)
+        self.assertIn("Test pending hot cursor page before GC-blocking re-audit", gc_job)
+        self.assertIn("integrity_new_hot_work_preempts_a_pending_gc_reaudit_page", gc_job)
+        self.assertIn("scripts/gc_recovery_load.py", gc_job)
+        self.assertIn("continuous ten requests/second", harness)
+        self.assertIn("fixed-target recovery must complete during continuous 10 RPS traffic", harness)
+        self.assertIn('"high_target_recovered": recovered', harness)
+        self.assertIn("EffectiveProgressTracker", harness)
+        self.assertIn("effective_progress_checks", harness)
+        self.assertIn("validate_recovery_consistency", harness)
+        self.assertIn("synthetic-recovery-billing", harness)
+        self.assertNotIn('assert high_end["expired"] == initial_expired', harness)
+        self.assertIn("integrity_restarts_after_a_cancelled_existing_source_mutation", gc_job)
+        self.assertIn("integrity_gc_recovers_missing_and_divergent_seals_without_touching_billing", gc_job)
+        self.assertIn("--high-seconds 1800", gc_job)
+        self.assertIn('--low-seconds "${LOW_SECONDS}"', gc_job)
+        self.assertIn("--low-rps 0.1", gc_job)
+        self.assertIn("${{ runner.temp }}/gc-recovery/**/*.json", gc_job)
+        self.assertNotIn(".db", gc_job)
+        self.assertNotIn("codex-testbox", gc_job)
+        self.assertNotIn("192.168.31.11", gc_job)
+        self.assertIn('os.environ.get("RUNNER_ENVIRONMENT") == "github-hosted"', harness)
+        self.assertIn("Path(runner_temp).resolve()", harness)
+
+
+if __name__ == "__main__":
+    unittest.main()

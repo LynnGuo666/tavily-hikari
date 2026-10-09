@@ -1,12 +1,73 @@
 # Implementation
 
+- HTTP user/token primary-affinity selection now embeds its optional transient-cooldown predicate
+  in the existing Key eligibility query, avoiding the bounded maintenance-read admission path while
+  preserving `http_global` cooldown behavior and the original affinity rebind fallback.
+- Request-log GC blocking-day registration uses the existing scoped write budget. In the legacy
+  same-file attachment layout it uses a single atomic UPSERT, preserving the fail-closed source
+  guard without requesting two immediate locks on the same SQLite file.
+- Joint recovery keeps one total deadline across bootstrap, integrity, GC, catalog cleanup, and final observations; each recovery lane uses the scoped bounded admission path, and GC tail reads or writes are cancelled or reported incomplete when the deadline expires.
+- Continuation uses the cursor retained at the end of a bounded pass; a terminal scan that clears
+  the cursor does not create a one-second no-progress loop during a seal or source-recovery block.
+- Startup recovery keeps a running automatic `request_logs_gc` representative queued after a
+  process restart, preserving the restart deferral and clearing execution timestamps instead of
+  abandoning the durable continuation. Focused coverage verifies the state transition and the
+  synthetic recovery workflow verifies that the retained backlog drains without foreground errors.
+
 ## Current Coverage
 
 - `SqliteRuntime` now owns per-`KeyStore` foreground activity, recent contention signals, one
   bulk permit, fixed workload budgets, and a bounded workload aggregation window. Bulk admission
   is rejected before a pooled connection is obtained whenever fewer than two foreground slots
   remain, foreground activity exceeds `5 rps`, or a busy/pool-timeout occurred in the last five
-  seconds.
+  seconds. An aged coordinator turn may bypass class ordering and the ordinary pool-capacity
+  precheck, but not the foreground-rate gate. Explicit research-drain and admin-cache liveness
+  paths retain their separate bounded admission policies.
+- Aged bounded recovery is explicitly limited to `dashboard_integrity` and `request_logs_gc`: it
+  bypasses only the foreground-rate heuristic after ticket age, while preserving the single bulk
+  permit, pool reserve, recent-contention checks, and coordinator fairness. Focused coverage verifies
+  both recovery operations are admitted after aging and unrelated maintenance remains rate-limited.
+- The physical bulk permit is fronted by a fixed-size per-runtime coordinator. The ten maintenance
+  classes (`admin_read`, `alert_projection`, `capacity_warm`, `dashboard_integrity`, `ha_outbox_gc`,
+  `observability_write`, `reconciliation_projection`, `request_logs_gc`, `request_stats_flush`,
+  and `server_pressure_rebuild`) keep at most one pending class ticket and are admitted oldest
+  first. When the oldest ticket is not being retried, any caller whose own ticket is aged at least
+  five seconds may take the turn, keeping low-frequency workers within the freshness bound. An aged
+  turn may reach the operation's bounded 100ms pool acquire even when all currently-open
+  connections are checked out; pools at or below the two-slot foreground reserve remain
+  foreground-only. A ticket expires after 120 seconds without a retry, so abandoned callers
+  cannot retain a turn indefinitely.
+  The permit owns both the coordinator lease and the physical semaphore; remote I/O remains outside
+  the lease.
+- Each admitted slice emits `sqlite_maintenance_admitted` with its class and pending age. The
+  periodic `sqlite_workload_window` event includes cumulative admissions, completions, maximum
+  wait, and stale-ticket counts for every class. This makes bounded fairness and quiet-tail
+  freshness inspectable without synchronously flushing derived state from owner-facing reads.
+- A typed admission defer keeps the class's single pending ticket while its caller retries, including
+  foreground, pool, and recent-contention pressure. Ordinary admission defers retry every five
+  seconds, including reconciliation, and the coordinator's aged class-order turn uses the same
+  boundary. Request-log GC uses a five-minute continuation after any admission defer; Dashboard
+  integrity uses five minutes for foreground, pool, or recent-contention pressure and five seconds
+  for `bulk_busy`. Completed request-log GC also uses five minutes after no progress, while HA GC
+  keeps its separate post-admission contention continuation.
+- A transient scheduled-job dequeue or claim conflict retries on that same five-second cadence.
+  The worker does not impose a global 30-second sleep on pending maintenance classes after a
+  bounded control write fails. A real-worker regression holds a competing SQLite writer across
+  claim admission, releases it without a notification, and verifies timely HA recovery.
+- Reconciliation preflight uses a drop guard so stale claims and controlled retries cancel a ticket
+  that never reached bulk admission; the actual preparation path explicitly transfers the ticket
+  before entering the bulk admission retry loop.
+- The snapshot comparison measures Dashboard, business, and maintenance traffic after credential
+  bootstrap, then performs its controlled restart halfway through that measured window. Both
+  variants use the same isolated mock upstream and immutable core/observability snapshot set.
+  Dashboard coverage is checked for each staggered client; a baseline without that coverage is
+  explicitly non-comparable for latency.
+- Recovery fixtures include deterministic shadow settlement and Research polling work. A queued
+  Research drain representative makes the intended work explicit in the cloned database. Manual
+  trigger admission failures stay visible in maintenance HTTP outcomes, while the business
+  request-path pool-timeout count excludes `ForegroundJobTrigger`. The finite-sample controlled-
+  restart allowance rounds five percent upward to a whole response; foreground HTTP failures
+  remain a strict zero-error gate.
 - HA GC rechecks admission between SQL statements and records a typed 30-second defer only for
   its selected channel. Request-stats flushes use adaptive `25..250` logical-key chunks; a
   background admission commits at most four chunks within one 50ms transaction-start/next-chunk
@@ -51,6 +112,8 @@
   boundary correction cannot scan source tables at startup or alter the Dashboard tail.
 
 - Startup uses `schema_migrations(version,name,checksum,applied_at)` as the synchronous additive migration ledger. New databases alone run the full schema bootstrap; existing production layouts are adopted directly after complete baseline validation, without replaying legacy bootstrap DDL. Checksum drift or missing critical objects fails startup closed. Warm production startup skips registered DDL and runs only bounded semantic maintenance. Additive HA GC migrations include the per-channel legacy cursor and seed it from the former shared cursor before recording the migration, so an upgraded database preserves completed legacy-scan progress.
+- Warm API-key membership compatibility is no-op aware: a read-only catalog/state precheck returns without opening a write transaction when the interval tables, indexes, and history marker are complete; only incomplete legacy layouts enter the repair transaction.
+- Warm semantic maintenance is no-op aware for suppression cleanup, LinuxDo system-tag/default synchronization, inherited account-quota defaults, and the current-month quota marker; complete state returns after read-only checks, while only missing or changed state enters a write transaction.
 - Reconciliation circuit fields are committed through one cancellation-safe immediate transaction. HA GC channel completion checks its persisted claim generation before clearing the claim.
 - Reconciliation historical projection no longer scans and aggregates 500 source rows while holding
   `BEGIN IMMEDIATE`. A `25..100` row stable-keyset read is aggregated in memory, followed by one short
@@ -171,7 +234,8 @@
   updates covered by the trigger set.
 - The daily `request_logs_gc` scheduler now runs one bounded cleanup pass per
   `scheduled_jobs` row. If backlog remains, it persists an automatic continuation with a
-  five-minute `available_at` delay instead of keeping one long-running `running` row open.
+  one-second `available_at` delay after durable progress, or five minutes after no progress,
+  pressure or an error, instead of keeping one long-running `running` row open.
 - Scheduled jobs now distinguish `trigger_source` from `job_type`, use an atomic claim path to avoid
   duplicate active work, and expose manual trigger entrypoints for maintenance/admin jobs.
 - `quota_sync` now uses a hard `/usage` timeout, a bounded job runtime budget, and claim-time stale
@@ -483,6 +547,9 @@
 - `cargo clippy -- -D warnings`
 - Full `cargo test --locked --all-features`
 - `cargo clippy -- -D warnings`
+- `cargo test --lib http_key_selection_ -- --nocapture`
+- `cargo test --lib http_affinity_cooldown_selector_waits_for_saturated_pool -- --nocapture`
+- `cargo test --lib token_primary_rebind -- --nocapture`
 - Shared testbox isolated run:
   - remote workspace `/srv/codex/workspaces/ivan/tavily-hikari__7aa37deb`
   - remote run `/srv/codex/workspaces/ivan/tavily-hikari__7aa37deb/runs/20260617_035715_7dfaaa12_sidecar`
@@ -581,8 +648,10 @@
   the earliest eligible wake, so a five-minute legacy scan or a 30-second busy defer cannot freeze
   the other two channels.
 - `scheduled_jobs.claim_generation` fences stale finish/error/continuation writes. HA continuation
-  enqueue is atomic with finish; failed persistence is left for stale reaper recovery instead of an
-  unbounded retry task.
+  enqueue is atomic with finish; a transient persistence conflict receives five fixed
+  same-generation retries at `100/200/400/800/1600ms`, then leaves the matching running claim for
+  stale-reaper recovery. The retry task stops on success, a stale claim, or a permanent error and
+  never becomes an unbounded background loop.
 - Reconciliation candidate selection is an indexed bounded page. Local pressure has its own short
   backoff; an observed upstream 429 applies the `5/10/20/30` minute cooldown only to the triggering
   `period_reconciliation` key and honors the maximum `Retry-After`. Legacy global-backoff metadata
@@ -621,4 +690,4 @@
 
 - Lifecycle: active
 - Created: 2026-05-07
-- Last: 2026-07-05
+- Last: 2026-10-04

@@ -1,6 +1,6 @@
 # SQLite write-lock hardening（#2wdrp）
 
-## Background
+## Context and Scope
 
 Production `tavily-hikari` `0.46.2` showed transient SQLite `database is locked` errors after API
 rebalance was enabled. The service remained healthy, but logs included request-path failures such as
@@ -61,7 +61,13 @@ source when a usable persisted runtime already exists.
 
 ## Requirements
 
-- `quota_subject_locks` acquire/refresh/release writes must retry transient SQLite write errors with
+### REQ-SQLITE-MAINTENANCE — Scoped, bounded maintenance
+
+SQLite maintenance MUST preserve foreground capacity, bounded source reads and write windows,
+durable claim fences, and the retention/recovery guards specified below.
+
+- `REQ-BOUNDED-WRITE-RETRY`: `quota_subject_locks` acquire/refresh/release writes must retry
+  transient SQLite write errors with
   bounded backoff and must remain inside the existing lock timeout/lease budget.
 - Token billing and MCP session lock callers must retain the current fail-closed semantics if the
   bounded retry window is exhausted.
@@ -96,10 +102,15 @@ source when a usable persisted runtime already exists.
   first healthy image status. Once the process is already serving business traffic, it may run once
   as a best-effort background rebuild whose failure is isolated to logs/observability and does not
   turn serving `/health` red.
-- Request-path pressure observations and rebalance audits must not synchronously wait for SQLite's
+- `REQ-DEFERRED-OBSERVABILITY`: Request-path pressure observations and rebalance audits must not
+  synchronously wait for SQLite's
   writer. They enter instance-owned bounded deferred queues; pressure deltas are replayable from
   request logs, while a rejected rebalance audit records explicit stale coverage without changing
   MCP success or billing truth. Every deferred flush uses `SqliteRuntime` operation budgets.
+- Foreground HTTP user/token primary-affinity selection must evaluate active `http_global` cooldown
+  in the existing specific-key eligibility query instead of acquiring a separate
+  `ScheduledJobControl` read. The active-cooldown boundary and established rebind/fallback order
+  remain unchanged.
 - Administrator API-key creation and undelete are foreground durable commands. Their SQLite
   acquire, `BEGIN IMMEDIATE`, and connection-local busy wait use the `AdminMutation` runtime
   operation and one bounded retry window. Exhausted transient contention returns a retryable
@@ -169,6 +180,21 @@ source when a usable persisted runtime already exists.
   phases outside the DB execution window, but only one maintenance job may hold the SQLite-writing
   execution gate at a time, and the worker must not fan out multiple remote-I/O maintenance jobs at
   once just because those phases are outside SQLite.
+- `REQ-MAINTENANCE-FAIRNESS`: Every instance-local derived maintenance writer that uses a SQLite
+  bulk slice must pass through
+  one runtime admission coordinator in front of the physical bulk permit. The coordinator has one
+  pending ticket per maintenance class, serves the oldest pending class first, and expires a class
+  after six minutes without a retry, preserving its age across the five-minute pressure backoff.
+  Admission remains non-blocking and returns a typed defer; it
+  must not create an unbounded async waiter queue or acquire a raw pool connection.
+- `REQ-BOUNDED-ONLINE-RECOVERY`: Aged dashboard-integrity and request-log-GC debt MUST be eligible
+  for scoped, bounded recovery turns that bypass only the ordinary foreground-rate heuristic when
+  actual database capacity permits. A turn MUST retain the single maintenance-bulk permit, real
+  capacity and contention protections, bounded acquisition, source reads and transactions, durable
+  claim fencing, and source/seal correctness. Other maintenance classes MUST NOT inherit this rate
+  exception. Effective progress MUST be distinguished from admitted or successfully deferred work.
+  These turns MUST meet the progress and foreground acceptance boundaries in
+  [the retention Spec](../request-log-body-retention/SPEC.md#sustained-traffic-recovery-acceptance).
 - Request-log GC catch-up must finish one bounded slice, persist its progress message, and requeue a
   fresh `queued` row when more backlog remains instead of keeping one long-lived `running` row while
   waiting for the next catch-up opportunity.
@@ -176,14 +202,15 @@ source when a usable persisted runtime already exists.
   five-minute age adjustment for non-manual jobs. The adjustment may raise an older job only to
   effective priority `2`; manual priority remains unchanged. This prevents fresh GC continuation
   rows from indefinitely starving HA cleanup or other aged maintenance work.
-- Incomplete automatic request-log GC must requeue with a persisted five-minute delay. A manual
+- Incomplete automatic request-log GC must requeue with a persisted one-second delay after deletion,
+  body cleanup, or durable scan progress; no progress, pressure, or errors use five minutes. A manual
   trigger may reuse and immediately unlock its queued representative row. Body cleanup must cache
   retention context per unique user for a bounded pass, and its `(created_at, id)` partial body
   cursor index must be built by a low-priority post-ready maintenance task rather than schema
   bootstrap. The online scheduler obtains `maintenance_bulk` admission before acquiring a
   connection; when a required local-day seal is absent it records one typed incomplete result and
   defers instead of repeating raw-row, reference-unlink, or rollup work in that slice.
-- The request-log GC completion and its incomplete five-minute continuation must be one fenced
+- The request-log GC completion and its incomplete continuation must be one fenced
   queue transaction. If the short control transaction cannot commit, the current claim remains
   running for the request-log stale reaper; it must not finish first and then silently lose a
   separate continuation enqueue. A permanent GC error must retain `error` status on the completed
@@ -224,13 +251,21 @@ source when a usable persisted runtime already exists.
 - The three-connection application pool reserves two actual or immediately allocatable slots for
   foreground work. Bulk maintenance takes one instance-local permit only when foreground arrival
   rate is at most `5 rps` and the preceding five seconds contain no pool-timeout or SQLite busy
-  outcome. Admission rejection occurs before pool acquisition and records a typed deferred reason.
-- Scheduled-job metadata writes are `maintenance_control`: they use a `100ms` connection/writer
+  outcome. An aged coordinator turn may bypass class ordering or the ordinary pool-capacity
+  precheck, but never the foreground-rate gate. Admission rejection occurs before pool acquisition
+  and records a typed deferred reason.
+- Request-log GC uses a persisted five-minute continuation after an admission defer. Dashboard
+  integrity also uses a five-minute continuation for foreground, pool, or recent-contention
+  pressure; ordinary `bulk_busy` fairness retries remain on the five-second cadence.
+- `REQ-MAINTENANCE-CONTROL`: Scheduled-job metadata writes are `maintenance_control`: they use a
+  `100ms` connection/writer
   budget, do not wait for the bulk permit, and never start an unbounded retry task. A durable
   representative row or claim-fenced stale recovery owns later retry.
 - Scheduler dequeue and next-wake reads are also `maintenance_control`: they acquire through the
   same bounded operation path. If an actual remote-attempt lease makes the first candidate page
   ineligible, the scheduler must perform one bounded local-only fallback lookup before yielding.
+  A transient dequeue or claim conflict retries on the five-second maintenance admission cadence;
+  it must not add a global 30-second sleep in front of pending classes.
 - The same bounded in-memory buffering model may also cover other request-derived observability
   counters such as auth-token activity and account request-rate buckets, provided billing truth
   stays synchronous and owner-facing reads use durable fallback instead of inheriting any write-side
@@ -285,7 +320,30 @@ source when a usable persisted runtime already exists.
   the offline migration on the target host itself, restart and validate, and if anything fails
   restore the pre-cutover core DB and delete the sibling sidecar before bringing the service back.
 
-## Acceptance
+## Verification
+
+- `VER-MAINTENANCE-FAIRNESS` (covers: REQ-MAINTENANCE-FAIRNESS): SQLite runtime tests verify
+  oldest-first ordering, retained tickets, aged turns, ticket expiry, and permit cleanup. The
+  isolated snapshot comparison records each exercised class's admission and pending-age telemetry.
+- `VER-BOUNDED-ONLINE-RECOVERY` (covers: REQ-BOUNDED-ONLINE-RECOVERY): Tests MUST demonstrate
+  effective historical recovery during sustained traffic above the ordinary rate threshold with
+  available capacity, safe deferral during actual resource exhaustion, scoped eligibility,
+  unchanged foreground correctness, resumable debt across retries and restarts, and the linked
+  five-minute progress and sustained-traffic foreground budgets.
+- `VER-DEFERRED-OBSERVABILITY` (covers: REQ-DEFERRED-OBSERVABILITY): Observability audit tests verify
+  that foreground completion does not wait for the deferred writer and that later admitted flushes
+  persist queued observations. The snapshot comparison records foreground transaction duration
+  separately from maintenance admission.
+- `VER-MAINTENANCE-CONTROL` (covers: REQ-MAINTENANCE-CONTROL): Maintenance control tests verify
+  bounded admission, durable representative reuse, and claim-fenced recovery. Manual trigger
+  admission failure must retain its explicit unavailable response.
+
+### VER-SQLITE-MAINTENANCE — Retention and scheduling regressions
+
+covers: REQ-SQLITE-MAINTENANCE
+
+The backend maintenance, retention, admission, integrity and restart regression suites verify
+these guards. Synthetic two-phase load verifies foreground deferral and subsequent bounded catch-up.
 
 ### Cancellation-safe maintenance transactions
 
@@ -342,7 +400,8 @@ source when a usable persisted runtime already exists.
   1–25 hour window. Startup backfill reads 500-row pages and merges a captured request-log tail, so
   it never materializes the complete history or copies live events while holding the cache lock.
 
-- Under a competing SQLite writer, acquiring a quota subject lock eventually succeeds after the
+- `VER-BOUNDED-WRITE-RETRY` (covers: REQ-BOUNDED-WRITE-RETRY): Under a competing SQLite writer,
+  acquiring a quota subject lock eventually succeeds after the
   writer releases within the existing wait budget.
 - Under a competing SQLite writer that outlives SQLite's builtin busy timeout but releases before
   the bounded application retry budget, one billable `/mcp` tools/call request still returns `200`,
@@ -537,3 +596,5 @@ source when a usable persisted runtime already exists.
 
 - [ADR 0002: Scoped SQLite and Remote Admission](../../adr/0002-scoped-sqlite-and-remote-admission.md)
 - [ADR 0004: Research Uses an Independent Durable Drain](../../adr/0004-reconciliation-research-drain.md)
+- [ADR 0005: Fair SQLite Maintenance Admission](../../adr/0005-fair-sqlite-maintenance-admission.md)
+- [ADR 0008: Bounded Online Recovery for Request Statistics](../../adr/0008-bounded-request-statistics-recovery.md)

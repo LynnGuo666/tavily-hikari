@@ -284,6 +284,31 @@ async fn explicit_read_close_and_write_error_leave_the_single_connection_clean()
 }
 
 #[tokio::test]
+async fn explicit_operation_close_and_discard_releases_the_physical_connection() {
+    let runtime = single_connection_runtime().await;
+    let connection = runtime
+        .acquire_operation_connection(SqliteOperation::DashboardIntegrityWrite)
+        .await
+        .expect("operation connection");
+    connection
+        .close_and_discard()
+        .await
+        .expect("discard operation connection");
+    assert_eq!(runtime.inner.pool.size(), 0);
+    assert_eq!(
+        runtime.discarded_connections_for_test(SqliteOperation::DashboardIntegrityWrite),
+        0,
+        "an explicitly cleaned connection is not an unfinished transaction discard"
+    );
+    runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("pool can replace the released connection");
+}
+
+#[tokio::test]
 async fn successful_short_write_restores_busy_timeout_before_pool_return() {
     let runtime = single_connection_runtime().await;
     let mut transaction = runtime
@@ -462,6 +487,856 @@ async fn sqlite_runtime_foreground_preempts_bulk_work() {
         .expect("foreground pool acquisition");
     drop(foreground);
     drop(first);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_admission_services_oldest_pending_class_first() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+            .expect_err("request stats waits behind the active slice"),
+        SqliteAdmissionDeferReason::BulkBusy
+    );
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::AlertProjection)
+            .expect_err("alert projection waits behind the active slice"),
+        SqliteAdmissionDeferReason::BulkBusy
+    );
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::AlertProjection)
+            .expect_err("repeated alert admission is coalesced into one pending class"),
+        SqliteAdmissionDeferReason::BulkBusy
+    );
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::RequestLogsGc)
+            .expect_err("request-log GC waits behind older pending classes"),
+        SqliteAdmissionDeferReason::BulkBusy
+    );
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.pending_count(),
+        3,
+        "the fixed coordinator keeps one pending request per class"
+    );
+
+    drop(holder);
+    for (operation, class) in [
+        (
+            SqliteOperation::RequestStatsFlush,
+            SqliteMaintenanceClass::RequestStatsFlush,
+        ),
+        (
+            SqliteOperation::AlertProjection,
+            SqliteMaintenanceClass::AlertProjection,
+        ),
+        (
+            SqliteOperation::RequestLogsGc,
+            SqliteMaintenanceClass::RequestLogsGc,
+        ),
+    ] {
+        let permit = runtime
+            .try_admit_maintenance_bulk(operation)
+            .expect("oldest pending class is admitted");
+        assert_eq!(
+            runtime.inner.maintenance_coordinator.active_class(),
+            Some(class)
+        );
+        drop(permit);
+    }
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.pending_count(),
+        0,
+        "released slices advance the queue without leaving duplicate tickets"
+    );
+}
+
+#[tokio::test]
+async fn maintenance_bulk_new_class_cannot_jump_a_pending_class() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::ReconciliationProjection)
+        .expect_err("reconciliation becomes the oldest pending class");
+    drop(holder);
+
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::ServerPressureRebuild)
+            .expect_err("a fresh class cannot jump the pending reconciliation class"),
+        SqliteAdmissionDeferReason::BulkBusy
+    );
+    let reconciliation = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::ReconciliationProjection)
+        .expect("the oldest pending class is admitted first");
+    drop(reconciliation);
+    let server_pressure = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::ServerPressureRebuild)
+        .expect("the next pending class is admitted after reconciliation");
+    drop(server_pressure);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_ages_a_pending_class_into_a_bounded_turn() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect_err("request stats becomes the oldest pending class");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::AlertProjection)
+        .expect_err("alert projection waits behind request stats");
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        let aged_at = Instant::now() - MAINTENANCE_BULK_TURN_BYPASS_AGE;
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("request stats registers a fair ticket")
+            .first_requested_at = aged_at;
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("request stats remains pending")
+            .last_requested_at = aged_at;
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::AlertProjection)
+            .expect("alert projection registers a fair ticket")
+            .first_requested_at = aged_at;
+    }
+    drop(holder);
+
+    let alert = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::AlertProjection)
+        .expect("the aged class receives a bounded turn");
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.active_class(),
+        Some(SqliteMaintenanceClass::AlertProjection)
+    );
+    drop(alert);
+    let request_stats = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect("the older class remains available after the aged turn");
+    drop(request_stats);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_does_not_bypass_an_actively_retrying_oldest_class() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect_err("request stats becomes the oldest pending class");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::AlertProjection)
+        .expect_err("alert projection waits behind request stats");
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        let aged_at = Instant::now() - MAINTENANCE_BULK_TURN_BYPASS_AGE;
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("request stats registers a fair ticket")
+            .first_requested_at = aged_at;
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::AlertProjection)
+            .expect("alert projection registers a fair ticket")
+            .first_requested_at = aged_at;
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("request stats remains pending")
+            .last_requested_at = Instant::now();
+    }
+    drop(holder);
+
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::AlertProjection)
+            .expect_err("an actively retrying oldest class cannot be bypassed"),
+        SqliteAdmissionDeferReason::BulkBusy
+    );
+    let request_stats = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect("the oldest class is admitted first");
+    drop(request_stats);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_expires_an_idle_pending_class() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect_err("request stats registers a pending ticket");
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("request stats remains pending")
+            .last_requested_at = Instant::now() - MAINTENANCE_BULK_PENDING_IDLE_TIMEOUT;
+    }
+
+    let snapshot = runtime.inner.maintenance_coordinator.snapshot();
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 0);
+    assert!(snapshot.contains("request_stats_flush:pending_age_ms=none"));
+    assert!(snapshot.contains(
+        "request_stats_flush:pending_age_ms=none,admissions=0,completed=0,max_wait_ms=0,stale=1"
+    ));
+    drop(holder);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_retains_a_pending_class_when_pool_pressure_returns() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect_err("request stats waits behind the active slice");
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 1);
+
+    let first_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("first foreground");
+    let second_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("second foreground");
+    drop(holder);
+
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+            .expect_err("pool pressure must defer before queue admission"),
+        SqliteAdmissionDeferReason::PoolPressure
+    );
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.pending_count(),
+        1,
+        "a retrying class keeps its fair-queue ticket while pool pressure is active"
+    );
+
+    drop((second_foreground, first_foreground));
+    tokio::time::timeout(Duration::from_secs(1), async {
+        while runtime.inner.pool.num_idle() < 2 {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .expect("foreground connections return to the pool");
+    let permit = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect("the retained class is admitted when foreground capacity returns");
+    drop(permit);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_ticket_survives_scheduled_pressure_backoff() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::ServerPressureRebuild)
+        .expect_err("server pressure becomes the oldest pending class");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect_err("request stats waits behind the active slice");
+
+    let first_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("first foreground");
+    let second_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("second foreground");
+    let third_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("third foreground");
+    drop(holder);
+
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+            .expect_err("pool pressure defers the retrying class"),
+        SqliteAdmissionDeferReason::PoolPressure
+    );
+
+    let (older_ticket, request_stats_ticket, first_requested_at) = {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        let aged_at = Instant::now() - Duration::from_secs(300);
+        let older_ticket = {
+            let older = state
+                .pending
+                .get_mut(&SqliteMaintenanceClass::ServerPressureRebuild)
+                .expect("server pressure keeps its earlier ticket");
+            older.first_requested_at = aged_at;
+            older.last_requested_at = aged_at;
+            older.ticket
+        };
+        let (request_stats_ticket, first_requested_at) = {
+            let pending = state
+                .pending
+                .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+                .expect("request stats keeps its ticket during backoff");
+            pending.first_requested_at = aged_at;
+            pending.last_requested_at = aged_at;
+            (pending.ticket, pending.first_requested_at)
+        };
+        (older_ticket, request_stats_ticket, first_requested_at)
+    };
+
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::AlertProjection)
+            .expect_err("the new class also observes pool pressure"),
+        SqliteAdmissionDeferReason::PoolPressure
+    );
+    {
+        let state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        assert_eq!(
+            state
+                .pending
+                .get(&SqliteMaintenanceClass::ServerPressureRebuild)
+                .expect("the older ticket also survives the backoff")
+                .ticket,
+            older_ticket
+        );
+        let pending = state
+            .pending
+            .get(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("coordinator activity must not expire the sleeping ticket");
+        assert_eq!(pending.ticket, request_stats_ticket);
+        assert_eq!(pending.first_requested_at, first_requested_at);
+    }
+
+    drop((third_foreground, second_foreground, first_foreground));
+    tokio::time::timeout(Duration::from_secs(1), async {
+        while runtime.inner.pool.num_idle() < 2 {
+            tokio::task::yield_now().await;
+        }
+    })
+    .await
+    .expect("foreground connections return to the pool");
+    let permit = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect("the original pending class receives the recovered turn");
+    drop(permit);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_retains_request_logs_gc_progress_continuation() {
+    let runtime = three_connection_runtime().await;
+    let permit = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestLogsGc)
+        .expect("request-log GC slice");
+
+    permit.retain_progress_continuation();
+    drop(permit);
+
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 1);
+    {
+        let state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        assert_eq!(
+            SqliteMaintenanceCoordinator::oldest_pending(&state),
+            Some(SqliteMaintenanceClass::RequestLogsGc)
+        );
+    }
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::DashboardIntegrityWrite)
+            .expect_err("later rolling integrity work waits behind GC continuation"),
+        SqliteAdmissionDeferReason::BulkBusy
+    );
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 2);
+
+    let continuation = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestLogsGc)
+        .expect("the productive GC continuation retains its next turn");
+    drop(continuation);
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 1);
+
+    let rolling_integrity = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::DashboardIntegrityWrite)
+        .expect("the waiting dashboard turn follows the productive GC slice");
+    drop(rolling_integrity);
+}
+
+#[tokio::test]
+async fn maintenance_bulk_ages_a_pending_class_through_pool_pressure() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect_err("request stats waits behind the active slice");
+    let first_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("first foreground");
+    let second_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("second foreground");
+    let third_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("third foreground");
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("request stats registers a fair ticket")
+            .first_requested_at = Instant::now() - MAINTENANCE_BULK_TURN_BYPASS_AGE;
+    }
+    drop(holder);
+
+    let permit = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect("an aged ticket reaches the bounded pool acquire at capacity");
+    drop(permit);
+    drop((third_foreground, second_foreground, first_foreground));
+}
+
+#[tokio::test]
+async fn maintenance_bulk_age_does_not_bypass_foreground_pressure() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("first maintenance slice");
+    for _ in 0..6 {
+        runtime.record_foreground_activity();
+    }
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+        .expect_err("foreground pressure defers the pending class");
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestStatsFlush)
+            .expect("foreground defer registers a fair ticket")
+            .first_requested_at = Instant::now() - Duration::from_secs(30);
+    }
+    drop(holder);
+
+    assert_eq!(
+        runtime
+            .try_admit_maintenance_bulk(SqliteOperation::RequestStatsFlush)
+            .expect_err("class age cannot bypass the foreground rate limit"),
+        SqliteAdmissionDeferReason::ForegroundPressure
+    );
+    assert_eq!(runtime.inner.maintenance_coordinator.active_class(), None);
+}
+
+#[tokio::test]
+async fn bounded_recovery_bulk_allows_foreground_pressure_after_ticket_ages() {
+    let runtime = three_connection_runtime().await;
+    for _ in 0..6 {
+        runtime.record_foreground_activity();
+    }
+    assert_eq!(
+        runtime
+            .try_admit_bounded_recovery_bulk(SqliteOperation::RequestLogsGc)
+            .expect_err("foreground pressure defers an unaged recovery ticket"),
+        SqliteAdmissionDeferReason::ForegroundPressure
+    );
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        let aged_at = Instant::now() - MAINTENANCE_BULK_TURN_BYPASS_AGE;
+        let pending = state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::RequestLogsGc)
+            .expect("recovery ticket is retained");
+        pending.first_requested_at = aged_at;
+        pending.last_requested_at = aged_at;
+    }
+
+    let permit = runtime
+        .try_admit_bounded_recovery_bulk(SqliteOperation::RequestLogsGc)
+        .expect("an aged recovery ticket receives a bounded turn");
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.active_class(),
+        Some(SqliteMaintenanceClass::RequestLogsGc)
+    );
+    drop(permit);
+}
+
+#[tokio::test]
+async fn bounded_recovery_bulk_is_scoped_to_the_two_recovery_operations() {
+    let runtime = three_connection_runtime().await;
+    for _ in 0..6 {
+        runtime.record_foreground_activity();
+    }
+    assert_eq!(
+        runtime
+            .try_admit_bounded_recovery_bulk(SqliteOperation::AlertProjection)
+            .expect_err("non-recovery maintenance cannot use the bounded exception"),
+        SqliteAdmissionDeferReason::ForegroundPressure
+    );
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        let pending = state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::AlertProjection)
+            .expect("non-recovery ticket is retained");
+        pending.first_requested_at = Instant::now() - MAINTENANCE_BULK_TURN_BYPASS_AGE;
+        pending.last_requested_at = pending.first_requested_at;
+    }
+    assert_eq!(
+        runtime
+            .try_admit_bounded_recovery_bulk(SqliteOperation::AlertProjection)
+            .expect_err("an aged non-recovery ticket still cannot bypass foreground pressure"),
+        SqliteAdmissionDeferReason::ForegroundPressure
+    );
+}
+
+#[tokio::test]
+async fn bounded_recovery_bulk_allows_both_recovery_operations_after_aging() {
+    for operation in [
+        SqliteOperation::DashboardIntegrityWrite,
+        SqliteOperation::RequestLogsGc,
+    ] {
+        let runtime = three_connection_runtime().await;
+        for _ in 0..6 {
+            runtime.record_foreground_activity();
+        }
+        assert_eq!(
+            runtime
+                .try_admit_bounded_recovery_bulk(operation)
+                .expect_err("foreground pressure defers an unaged recovery ticket"),
+            SqliteAdmissionDeferReason::ForegroundPressure
+        );
+        let class = operation
+            .maintenance_class()
+            .expect("recovery operation has a maintenance class");
+        {
+            let mut state = runtime
+                .inner
+                .maintenance_coordinator
+                .state
+                .lock()
+                .expect("maintenance coordinator state");
+            let pending = state
+                .pending
+                .get_mut(&class)
+                .expect("recovery ticket is retained");
+            let aged_at = Instant::now() - MAINTENANCE_BULK_TURN_BYPASS_AGE;
+            pending.first_requested_at = aged_at;
+            pending.last_requested_at = aged_at;
+        }
+        let permit = runtime
+            .try_admit_bounded_recovery_bulk(operation)
+            .expect("an aged recovery ticket receives a bounded turn");
+        drop(permit);
+    }
+}
+
+#[tokio::test]
+async fn reconciliation_preflight_age_does_not_bypass_foreground_pressure() {
+    let runtime = three_connection_runtime().await;
+    for _ in 0..6 {
+        runtime.record_foreground_activity();
+    }
+
+    assert!(matches!(
+        runtime.preflight_reconciliation_projection_admission(),
+        Err(SqliteAdmissionDeferReason::ForegroundPressure)
+    ));
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::ReconciliationProjection)
+            .expect("preflight defer registers a fair ticket")
+            .first_requested_at = Instant::now() - Duration::from_secs(30);
+    }
+
+    assert_eq!(
+        runtime
+            .preflight_reconciliation_projection_admission()
+            .expect_err("class age cannot bypass the foreground rate limit"),
+        SqliteAdmissionDeferReason::ForegroundPressure
+    );
+}
+
+#[tokio::test]
+async fn reconciliation_preflight_ages_a_pool_pressure_ticket_into_a_bounded_turn() {
+    let runtime = three_connection_runtime().await;
+    let first_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("first foreground");
+    let second_foreground = runtime
+        .inner
+        .pool
+        .acquire()
+        .await
+        .expect("second foreground");
+
+    assert!(matches!(
+        runtime.preflight_reconciliation_projection_admission(),
+        Err(SqliteAdmissionDeferReason::PoolPressure)
+    ));
+    {
+        let mut state = runtime
+            .inner
+            .maintenance_coordinator
+            .state
+            .lock()
+            .expect("maintenance coordinator state");
+        state
+            .pending
+            .get_mut(&SqliteMaintenanceClass::ReconciliationProjection)
+            .expect("reconciliation registers a fair ticket")
+            .first_requested_at = Instant::now() - MAINTENANCE_BULK_TURN_BYPASS_AGE;
+    }
+
+    let _preflight = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("aged preflight may use the one available pool slot");
+    let permit = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::ReconciliationProjection)
+        .expect("aged reconciliation ticket receives its bounded slice");
+    drop(permit);
+    drop((second_foreground, first_foreground));
+}
+
+#[tokio::test]
+async fn reconciliation_preflight_guard_cancels_without_a_bulk_attempt() {
+    let runtime = three_connection_runtime().await;
+    let preflight = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("preflight admission");
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 1);
+
+    drop(preflight);
+
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 0);
+}
+
+#[tokio::test]
+async fn reconciliation_preflight_bulk_busy_retains_ticket_for_retry() {
+    let runtime = three_connection_runtime().await;
+    let holder = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("hold the shared bulk permit");
+
+    assert!(matches!(
+        runtime.preflight_reconciliation_projection_admission(),
+        Err(SqliteAdmissionDeferReason::BulkBusy)
+    ));
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.pending_count(),
+        1,
+        "a bulk-busy preflight must retain its fair ticket for the next retry"
+    );
+
+    drop(holder);
+    let permit = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::ReconciliationProjection)
+        .expect("the retained ticket should be admitted after the bulk permit is released");
+    drop(permit);
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 0);
+}
+
+#[tokio::test]
+async fn reconciliation_preflight_retains_ticket_when_coordinator_orders_an_older_class() {
+    let runtime = three_connection_runtime().await;
+    runtime
+        .inner
+        .maintenance_coordinator
+        .register_request(SqliteMaintenanceClass::RequestStatsFlush);
+
+    assert!(matches!(
+        runtime.preflight_reconciliation_projection_admission(),
+        Err(SqliteAdmissionDeferReason::BulkBusy)
+    ));
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.pending_count(),
+        2,
+        "coordinator ordering must retain the reconciliation preflight ticket"
+    );
+
+    runtime
+        .inner
+        .maintenance_coordinator
+        .cancel_request(SqliteMaintenanceClass::RequestStatsFlush);
+    let preflight = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("reconciliation should proceed after the older class is removed");
+    drop(preflight);
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 0);
+}
+
+#[tokio::test]
+async fn reconciliation_preflight_guard_does_not_cancel_a_replacement_ticket() {
+    let runtime = three_connection_runtime().await;
+    let preflight = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("preflight admission");
+    let class = SqliteOperation::ReconciliationProjection
+        .maintenance_class()
+        .expect("reconciliation class");
+
+    runtime.inner.maintenance_coordinator.cancel_request(class);
+    runtime
+        .inner
+        .maintenance_coordinator
+        .register_request(class);
+    drop(preflight);
+
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 1);
+}
+
+#[tokio::test]
+async fn reconciliation_preflight_guards_share_ticket_ownership_safely() {
+    let runtime = three_connection_runtime().await;
+    let first = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("first preflight admission");
+    let second = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("second preflight admission");
+
+    drop(first);
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 1);
+
+    drop(second);
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 0);
+}
+
+#[tokio::test]
+async fn preserved_reconciliation_preflight_owns_the_ticket_during_bulk_admission() {
+    let runtime = three_connection_runtime().await;
+    let first = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("first preflight admission");
+    let second = runtime
+        .preflight_reconciliation_projection_admission()
+        .expect("second preflight admission");
+
+    first.preserve_ticket();
+    drop(second);
+
+    assert_eq!(runtime.inner.maintenance_coordinator.pending_count(), 1);
+    runtime
+        .try_admit_maintenance_bulk(SqliteOperation::ReconciliationProjection)
+        .expect("the promoted ticket remains available for bulk admission");
+}
+
+#[tokio::test]
+async fn research_drain_foreground_exception_still_uses_the_fair_coordinator() {
+    let runtime = three_connection_runtime().await;
+    for _ in 0..6 {
+        runtime.record_foreground_activity();
+    }
+
+    let research = runtime
+        .try_admit_research_drain_bulk()
+        .expect("aged research may bypass only foreground-rate pressure");
+    assert_eq!(
+        runtime.inner.maintenance_coordinator.active_class(),
+        Some(SqliteMaintenanceClass::ReconciliationProjection)
+    );
+    drop(research);
 }
 
 #[tokio::test]
@@ -727,6 +1602,10 @@ async fn reconciliation_projection_can_probe_a_partially_open_idle_pool() {
         .expect("prewarm reconciliation capacity");
     assert_eq!(runtime.inner.pool.size(), 3);
     assert_eq!(runtime.inner.pool.num_idle(), 2);
+    let ha_gc = runtime
+        .try_admit_maintenance_bulk(SqliteOperation::HaOutboxGc)
+        .expect("prewarmed capacity services the older HA GC ticket");
+    drop(ha_gc);
     runtime.mark_recent_contention_for_test();
     let projection = runtime
         .try_admit_maintenance_bulk(SqliteOperation::ReconciliationProjection)

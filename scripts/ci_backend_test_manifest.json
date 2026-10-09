@@ -36,6 +36,8 @@
         "--bin",
         "request_logs_gc_once",
         "--bin",
+        "request_statistics_recovery_once",
+        "--bin",
         "request_user_id_backfill"
       ]
     },
@@ -55,6 +57,12 @@
       "list_args": [
         "--test",
         "request_kind_canonical_backfill"
+      ]
+    },
+    "integration:request_statistics_recovery_cli": {
+      "list_args": [
+        "--test",
+        "request_statistics_recovery_cli"
       ]
     },
     "integration:rust_source_line_budgets": {
@@ -315,6 +323,9 @@
         "tests::proxy_affinity_runtime_geo::record_",
         "tests::proxy_affinity_runtime_geo::persist_",
         "tests::observability_and_lifecycle::small_"
+      ],
+      "serial_prefixes": [
+        "tests::observability_and_lifecycle::observability_"
       ]
     },
     {
@@ -381,6 +392,7 @@
         "tests::proxy_affinity_and_summary::token_",
         "tests::request_kind_and_core::token_",
         "tests::user_tokens_and_pending_billing::token_",
+        "tests::user_tokens_and_pending_billing::create_access_token_returns_secret_when_post_commit_cleanup_fails",
         "tests::jobs_and_request_log_retention::user_",
         "tests::proxy_affinity_and_summary::user_",
         "tests::request_kind_and_core::user_",
@@ -519,6 +531,7 @@
       "include_prefixes": [
         "tests::maintenance_queue_performance::",
         "tests::schema_migrations::",
+        "tests::schema_migration_compatibility::",
         "tests::reconciliation_controller::"
       ]
     },
@@ -613,6 +626,8 @@
         "request_kind_canonical_backfill",
         "--bin",
         "request_logs_gc_once",
+        "--bin",
+        "request_statistics_recovery_once",
         "--bin",
         "request_user_id_backfill"
       ]
@@ -939,7 +954,10 @@
         "server::tests::alerts_and_ha_node_detail::admin_",
         "server::tests::alerts_and_ha::dual_active_",
         "server::tests::alerts_and_ha_source_and_recovery::ha_",
+        "server::tests::alerts_and_ha_source_and_recovery::maintenance_worker_retries_a_locked_claim_",
         "server::tests::alerts_and_ha_source_and_recovery::request_logs_gc_",
+        "server::tests::alerts_and_ha_source_and_recovery::dashboard_integrity_admission_pressure_",
+        "server::dashboard_integrity_admission_tests::",
         "server::tests::alerts_and_ha_source_and_recovery::aged_",
         "server::tests::alerts_and_ha_source_and_recovery::non_aged_reconciliation_",
         "server::tests::alerts_and_ha_source_and_recovery::non_aged_research_",
@@ -1061,6 +1079,17 @@
       "run_args": [
         "--test",
         "request_kind_canonical_backfill"
+      ]
+    },
+    {
+      "id": "integration-request-statistics-recovery-cli",
+      "kind": "integration",
+      "name": "Integration Request Statistics Recovery CLI",
+      "estimated_seconds": 8,
+      "coverage_target": "integration:request_statistics_recovery_cli",
+      "run_args": [
+        "--test",
+        "request_statistics_recovery_cli"
       ]
     },
     {
