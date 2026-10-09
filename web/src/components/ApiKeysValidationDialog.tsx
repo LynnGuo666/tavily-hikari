@@ -209,6 +209,7 @@ function RegistrationIpIndicator(props: {
   regionLabel: string;
   proxyLabelText: string;
 }): React.JSX.Element {
+  const [open, setOpen] = React.useState(false);
   const region = props.region?.trim() ?? null;
   const proxyValue = props.proxyLabel?.trim() || props.proxyKey?.trim() || null;
   const accessibleLabel = [
@@ -219,13 +220,16 @@ function RegistrationIpIndicator(props: {
     .filter(Boolean)
     .join("; ");
   return (
-    <Tooltip>
+    <Tooltip open={open} onOpenChange={setOpen}>
       <TooltipTrigger asChild>
         <span
           className="inline-flex"
           tabIndex={0}
           aria-label={accessibleLabel}
           data-registration-ip-trigger="true"
+          onMouseEnter={() => setOpen(true)}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
         >
           <Badge variant="outline" className="gap-1">
             <Icon icon="mdi:check-bold" width={12} height={12} aria-hidden="true" />
