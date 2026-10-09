@@ -96,8 +96,8 @@ export default function TokenResetDialogs({
             id="user-console-reset-token-result"
             ref={resetResultFieldRef}
             readOnly
-            rows={3}
-            className="min-h-[96px] resize-none font-mono text-xs"
+            rows={1}
+            className="min-h-0 resize-none py-2 font-mono text-xs"
             value={resetResultToken ?? ''}
             onClick={(event) => selectAllReadonlyText(event.currentTarget)}
             onFocus={(event) => selectAllReadonlyText(event.currentTarget)}

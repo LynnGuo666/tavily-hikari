@@ -2365,10 +2365,10 @@ export const TokenLogsMobile: Story = {
     if (canvasElement.querySelector('[aria-label="近期请求额度筛选"]') == null) {
       throw new Error('Expected mobile token logs page to expose the billing filter select.')
     }
-    const metaText = Array.from(canvasElement.querySelectorAll('.user-console-log-card-meta'))
+    const creditsText = Array.from(canvasElement.querySelectorAll('.user-console-log-credits'))
       .map((node) => node.textContent ?? '')
       .join(' ')
-    if (!metaText.includes('积分 2') || !metaText.includes('积分 —')) {
+    if (!creditsText.includes('2') || !creditsText.includes('—')) {
       throw new Error('Expected mobile token logs page to render charged and uncharged credit values.')
     }
   },

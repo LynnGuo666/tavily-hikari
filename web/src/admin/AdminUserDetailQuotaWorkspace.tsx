@@ -329,10 +329,10 @@ export function AdminUserDetailQuotaWorkspace({
             </DialogContent>
           </Dialog>
         </div>
-        <div>
-          <span>{rechargeStrings.entitlementBase.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentBaseDelta.monthlyCreditsDelta))}</span>
-          <span>{rechargeStrings.entitlementCurrentMonth.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentMonthDelta.monthlyCreditsDelta))}</span>
-          <span>{rechargeStrings.entitlementPermanent.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentPermanentDelta.monthlyCreditsDelta))}</span>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          <span className="tabular-nums">{rechargeStrings.entitlementBase.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentBaseDelta.monthlyCreditsDelta))}</span>
+          <span className="tabular-nums">{rechargeStrings.entitlementCurrentMonth.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentMonthDelta.monthlyCreditsDelta))}</span>
+          <span className="tabular-nums">{rechargeStrings.entitlementPermanent.replace('{value}', formatSignedQuotaDelta(detail.entitlements.currentPermanentDelta.monthlyCreditsDelta))}</span>
         </div>
         <div className="user-detail-entitlement-filters">
           <Select value={entitlementScopeFilter} onValueChange={(value) => setEntitlementScopeFilter(value as EntitlementScopeFilter)} disabled={entitlementBusy}>
@@ -466,7 +466,7 @@ function EntitlementTable({
               <TableCell>{formatEntitlementScope(item.scopeKind, strings)}</TableCell>
               <TableCell>{item.scopeKind === 'month' ? formatMonth(item.monthStart, locale) : '—'}</TableCell>
               <TableCell>
-                <div>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 tabular-nums">
                   <span>{formatSignedQuotaDelta(item.businessCalls1hDelta)}</span>
                   <span>{formatSignedQuotaDelta(item.dailyCreditsDelta)}</span>
                   <span>{formatSignedQuotaDelta(item.monthlyCreditsDelta)}</span>
@@ -474,9 +474,10 @@ function EntitlementTable({
               </TableCell>
               <TableCell>{item.sourceKind}</TableCell>
               <TableCell>
-                <div>
-                  <span>{item.backendNote}</span>
-                  <span>{item.frontendNote}</span>
+                <div className="flex flex-col gap-0.5">
+                  {item.backendNote ? <span className="text-muted-foreground">{item.backendNote}</span> : null}
+                  {item.frontendNote ? <span>{item.frontendNote}</span> : null}
+                  {!item.backendNote && !item.frontendNote ? '—' : null}
                 </div>
               </TableCell>
               <TableCell>{item.actorDisplayName || item.actorUserId || '—'}</TableCell>

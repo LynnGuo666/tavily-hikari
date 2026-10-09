@@ -100,24 +100,26 @@ export default function OAuthCallbackPanel({
             <p className="text-xs text-muted-foreground">{model.note}</p>
           ) : null}
         </div>
-        <div
-          className={cn(
-            'oauth-callback-status-pill',
-            `oauth-callback-status-pill-${model.tone}`,
-            'flex w-fit shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium',
-            TONE_BADGE_CLASS[model.tone],
-          )}
-        >
-          <span
+        {model.busy ? (
+          <div
             className={cn(
-              'oauth-callback-status-dot',
-              `oauth-callback-status-dot-${model.tone}`,
-              'size-2 rounded-full',
-              TONE_DOT_CLASS[model.tone],
+              'oauth-callback-status-pill',
+              `oauth-callback-status-pill-${model.tone}`,
+              'flex w-fit shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium',
+              TONE_BADGE_CLASS[model.tone],
             )}
-          />
-          <span>{model.liveMessage}</span>
-        </div>
+          >
+            <span
+              className={cn(
+                'oauth-callback-status-dot',
+                `oauth-callback-status-dot-${model.tone}`,
+                'size-2 rounded-full',
+                TONE_DOT_CLASS[model.tone],
+              )}
+            />
+            <span>{model.liveMessage}</span>
+          </div>
+        ) : null}
       </CardHeader>
 
       <CardContent className="p-5">

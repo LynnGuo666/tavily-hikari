@@ -35,6 +35,7 @@ interface TokenLogsPanelText {
     credits: string
     result: string
   }
+  resultLabels: Record<string, string>
 }
 
 interface TokenLogsPanelProps {
@@ -98,7 +99,7 @@ export default function TokenLogsPanel({
         <TableCell className="whitespace-normal">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <StatusBadge tone={statusTone(log.result_status)}>
-              {log.result_status}
+              {text.resultLabels[log.result_status] ?? log.result_status}
             </StatusBadge>
             <span className="truncate text-xs text-muted-foreground">{log.error_message ?? '—'}</span>
           </div>
@@ -129,7 +130,7 @@ export default function TokenLogsPanel({
       )}
     >
       <TokenLogsHeader
-        title={text.logs}
+        title={mode === 'detail' ? text.logs : undefined}
         filter={filter}
         filterOptions={filterOptions}
         filterAriaLabel={text.logFilters.ariaLabel}
@@ -156,8 +157,10 @@ export default function TokenLogsPanel({
       ) : null}
       <div
         className={cn(
-          'table-wrapper overflow-hidden rounded-lg border max-h-[420px] overflow-auto',
-          mode === 'detail' && 'table-sticky-header-shell user-console-logs-table-scroll',
+          'table-wrapper rounded-lg border',
+          mode === 'detail'
+            ? 'max-h-[420px] overflow-auto table-sticky-header-shell user-console-logs-table-scroll'
+            : 'overflow-x-auto',
         )}
         onScroll={mode === 'detail'
           ? (event) => event.currentTarget.style.setProperty('--table-scroll-y', `${event.currentTarget.scrollTop}px`)
@@ -191,39 +194,6 @@ export default function TokenLogsPanel({
           </>
         )}
       </div>
-      {mode === 'full' ? (
-        <div className="flex flex-col gap-3 p-4">
-          {logs.length === 0 ? (
-            <Empty className="rounded-lg border border-dashed border-border/70 bg-muted/30 p-4"><EmptyDescription>{text.emptyLogs}</EmptyDescription></Empty>
-          ) : (
-            logs.map((log) => (
-              <article
-                key={log.id}
-                className="user-console-log-card rounded-lg border border-border bg-card p-4"
-              >
-                <header className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <strong className="block truncate text-sm font-semibold">{log.method} {log.path}</strong>
-                    {log.query ? <span className="block truncate text-xs text-muted-foreground">{log.query}</span> : null}
-                  </div>
-                  <StatusBadge tone={statusTone(log.result_status)}>
-                    {log.result_status}
-                  </StatusBadge>
-                </header>
-                <div className="user-console-log-card-meta mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                  <time dateTime={new Date(log.created_at * 1000).toISOString()}>{formatTimestamp(log.created_at)}</time>
-                  <span>H {log.http_status ?? '—'}</span>
-                  <span>T {log.mcp_status ?? '—'}</span>
-                  <span>{text.table.credits} {formatLogCredits(log.business_credits)}</span>
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {log.error_message ?? text.noError}
-                </p>
-              </article>
-            ))
-          )}
-        </div>
-      ) : null}
     </section>
   )
 }

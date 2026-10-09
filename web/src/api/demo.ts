@@ -473,6 +473,8 @@ function demoUserBillingSummary() {
   }
 }
 
+let demoDebugInfoShared = false
+
 function demoUserDashboardSummary(now = Date.now()) {
   const tokenSummaries = demoUserTokenSummaries(now)
   const pulse = demoPulse(now)
@@ -493,7 +495,7 @@ function demoUserDashboardSummary(now = Date.now()) {
   )
 
   return {
-    debugInfoShared: false,
+    debugInfoShared: demoDebugInfoShared,
     requestRate: {
       used: requestRateUsed,
       limit: requestRateLimit,
@@ -2033,6 +2035,11 @@ async function handleDemoRoute(url: URL, method: string, init?: RequestInit): Pr
   if (path === '/api/user/logout') return noContentResponse()
   if (path === '/api/user/token') return jsonResponse({ token: DEMO_TOKEN })
   if (path === '/api/user/dashboard') return jsonResponse(demoUserDashboardSummary())
+  if (path === '/api/user/debug-info-sharing' && method === 'PUT') {
+    const body = await readJsonBody(init)
+    demoDebugInfoShared = Boolean(body.shared)
+    return jsonResponse({ debugInfoShared: demoDebugInfoShared })
+  }
   if (path === '/api/user/recharge/config') return jsonResponse(demoRechargeConfig())
   if (path === '/api/user/billing/summary') return jsonResponse(demoUserBillingSummary())
   if (path === '/api/user/recharge/quote' && method === 'POST') return jsonResponse(buildDemoRechargeQuote())

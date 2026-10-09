@@ -34,9 +34,9 @@ const EXCEPTIONS = new Map<string, { max: number; reason: string }>([
   [
     'src/api/runtime.ts',
     {
-      max: 4120,
+      max: 4160,
       reason:
-        'API barrel still carries HA source settings, upstream privacy status contracts, MCP session bindings contracts, planned cutover node-detail contracts, admin settings, passkey/password admin auth contracts, auth-token retention contracts, grouped-alert dashboard summary contracts, alert last-good coverage decoding, expanded alert event/group job metadata, user-list contracts, source dialog failure normalization, and user-console overview APIs until the proxy API surface is split out.',
+        'API barrel still carries HA source settings, upstream privacy status contracts, MCP session bindings contracts, planned cutover node-detail contracts, admin settings, passkey/password admin auth contracts, auth-token retention contracts, grouped-alert dashboard summary contracts, alert last-good coverage decoding, expanded alert event/group job metadata, user-list contracts, source dialog failure normalization, and user-console overview APIs until the proxy API surface is split out; the HIG fixes additionally add shared response-error message extraction and a language-aware offline fetch error.',
     },
   ],
   [
@@ -90,25 +90,25 @@ const EXCEPTIONS = new Map<string, { max: number; reason: string }>([
   [
     'src/i18n/translations/en.ts',
     {
-      max: 1665,
+      max: 1760,
       reason:
-        'Admin jobs maintenance copy, upstream privacy status copy, the expanded admin rankings grouping/dimension strings, the dashboard grouped-alert summary copy, auth-token retention settings copy, and admin passkey/password security copy are still stored in the shared English runtime catalog.',
+        'Admin jobs maintenance copy, upstream privacy status copy, the expanded admin rankings grouping/dimension strings, the dashboard grouped-alert summary copy, auth-token retention settings copy, and admin passkey/password security copy are still stored in the shared English runtime catalog; the HIG fixes additionally add the admin token-detail page copy and shared quota-card labels',
     },
   ],
   [
     'src/i18n/translations/zh.ts',
     {
-      max: 1665,
+      max: 1760,
       reason:
-        'Admin jobs maintenance copy, upstream privacy status copy, the expanded admin rankings grouping/dimension strings, the dashboard grouped-alert summary copy, auth-token retention settings copy, and admin passkey/password security copy are still stored in the shared Chinese runtime catalog.',
+        'Admin jobs maintenance copy, upstream privacy status copy, the expanded admin rankings grouping/dimension strings, the dashboard grouped-alert summary copy, auth-token retention settings copy, and admin passkey/password security copy are still stored in the shared Chinese runtime catalog; the HIG fixes additionally add the admin token-detail page copy and shared quota-card labels',
     },
   ],
   [
     'src/i18n/types.ts',
     {
-      max: 2000,
+      max: 2080,
       reason:
-        'HA source settings mode-specific failure copy, upstream privacy status strings, planned-cutover and node-detail strings, admin jobs maintenance strings, the expanded admin rankings contract, grouped-alert dashboard summary strings, auth-token retention settings copy, admin passkey/password security copy, and the HIG mixed-language public/dashboard/rankings string additions remain in the shared catalog contract.',
+        'HA source settings mode-specific failure copy, upstream privacy status strings, planned-cutover and node-detail strings, admin jobs maintenance strings, the expanded admin rankings contract, grouped-alert dashboard summary strings, auth-token retention settings copy, admin passkey/password security copy, and the HIG mixed-language public/dashboard/rankings string additions remain in the shared catalog contract; the HIG fixes additionally add the admin token-detail page copy and the shared key-details quota-card group.',
     },
   ],
   [

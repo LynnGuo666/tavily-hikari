@@ -64,8 +64,8 @@ export function UserRechargeQuotaCalendar({
         <Empty><EmptyDescription>{strings.empty}</EmptyDescription></Empty>
       ) : (
         <>
-          <div aria-label={strings.title}>
-            {tableFacts.map((fact) => <span key={fact}>{fact}</span>)}
+          <div aria-label={strings.title} className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            {tableFacts.map((fact) => <span key={fact} className="tabular-nums">{fact}</span>)}
           </div>
           <div>
             <Table>

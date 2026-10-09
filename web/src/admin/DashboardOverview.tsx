@@ -463,6 +463,42 @@ function getRecentAlertReasonBadgeLabel(group: DashboardRecentAlertGroup, typeLa
   return parts.join(' · ')
 }
 
+const ACTION_CENTER_STATUS_LABELS: Record<'zh' | 'en', Record<string, string>> = {
+  zh: {
+    success: '成功',
+    error: '错误',
+    failed: '失败',
+    quota_exhausted: '额度耗尽',
+    running: '运行中',
+    in_progress: '进行中',
+    pending: '等待中',
+    queued: '排队中',
+    completed: '已完成',
+    timeout: '已超时',
+    cancelled: '已取消',
+    canceled: '已取消',
+  },
+  en: {
+    success: 'Success',
+    error: 'Error',
+    failed: 'Failed',
+    quota_exhausted: 'Quota exhausted',
+    running: 'Running',
+    in_progress: 'In progress',
+    pending: 'Pending',
+    queued: 'Queued',
+    completed: 'Completed',
+    timeout: 'Timed out',
+    cancelled: 'Canceled',
+    canceled: 'Canceled',
+  },
+}
+
+function actionCenterStatusLabel(value: string, language: 'zh' | 'en'): string {
+  const normalized = value.trim().toLowerCase()
+  return ACTION_CENTER_STATUS_LABELS[language][normalized] ?? value
+}
+
 function formatAlertDateTimeIso(timestamp: number): string {
   return new Date(timestamp * 1000).toISOString()
 }
@@ -1114,7 +1150,7 @@ export default function DashboardOverview({
               {logs.slice(0, 5).map((log) => (
                 <li key={log.id} className="flex items-center justify-between gap-3">
                   <code>{log.key_id}</code>
-                  <StatusBadge tone={log.result_status === 'success' ? 'success' : log.result_status === 'quota_exhausted' ? 'warning' : 'error'}>{log.result_status}</StatusBadge>
+                  <StatusBadge tone={log.result_status === 'success' ? 'success' : log.result_status === 'quota_exhausted' ? 'warning' : 'error'}>{actionCenterStatusLabel(log.result_status, language)}</StatusBadge>
                 </li>
               ))}
             </ul></CardContent>
@@ -1125,7 +1161,7 @@ export default function DashboardOverview({
               {jobs.slice(0, 5).map((job) => (
                 <li key={job.id} className="flex items-center justify-between gap-3">
                   <span>#{job.id}</span>
-                  <StatusBadge tone={job.status === 'success' ? 'success' : job.status === 'failed' ? 'error' : 'neutral'}>{job.status}</StatusBadge>
+                  <StatusBadge tone={job.status === 'success' ? 'success' : job.status === 'failed' ? 'error' : 'neutral'}>{actionCenterStatusLabel(job.status, language)}</StatusBadge>
                 </li>
               ))}
             </ul></CardContent>

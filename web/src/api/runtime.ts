@@ -1182,15 +1182,33 @@ export function buildPublicEventsUrl(token?: string, todayWindow?: TodayWindowRa
   return `/api/public/events${params.toString() ? `?${params.toString()}` : ''}`
 }
 
+function preferredApiLanguage(): 'en' | 'zh' {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage.getItem('tavily-hikari-language') === 'en') {
+      return 'en'
+    }
+  } catch {
+    // localStorage unavailable (private mode etc.) — fall through to zh default.
+  }
+  return 'zh'
+}
+
+function offlineFetchError(): Error & { status?: number } {
+  const message = preferredApiLanguage() === 'en'
+    ? 'Offline: network connection is unavailable'
+    : '网络连接不可用，请检查网络后重试'
+  return new Error(message) as Error & { status?: number }
+}
+
 function normalizeFetchError(error: unknown): Error & { status?: number } {
   if (error instanceof Error) {
     const message = error.message.trim()
     if (message === 'Failed to fetch' || message === 'Load failed' || message === 'NetworkError when attempting to fetch resource.') {
-      return new Error('Offline: network connection is unavailable') as Error & { status?: number }
+      return offlineFetchError()
     }
     return error as Error & { status?: number }
   }
-  return new Error('Offline: network connection is unavailable') as Error & { status?: number }
+  return offlineFetchError()
 }
 
 async function fetchOrThrow(input: RequestInfo, init?: RequestInit): Promise<Response> {
@@ -1201,10 +1219,34 @@ async function fetchOrThrow(input: RequestInfo, init?: RequestInit): Promise<Res
   }
 }
 
+function extractResponseErrorMessage(body: string): string {
+  if (!body) return body
+  try {
+    const parsed = JSON.parse(body) as unknown
+    if (parsed && typeof parsed === 'object') {
+      const record = parsed as Record<string, unknown>
+      for (const key of ['message', 'error', 'detail']) {
+        const value = record[key]
+        if (typeof value === 'string' && value.trim()) return value
+      }
+      return body
+    }
+    if (typeof parsed === 'string' && parsed.trim()) return parsed
+    return body
+  } catch {
+    return body
+  }
+}
+
+async function responseErrorMessage(response: Response): Promise<string> {
+  const body = await response.text().catch(() => response.statusText)
+  return extractResponseErrorMessage(body) || response.statusText
+}
+
 export async function requestJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const response = await fetchOrThrow(input, init)
   if (!response.ok) {
-    const message = await response.text().catch(() => response.statusText)
+    const message = await responseErrorMessage(response)
     const err = new Error(message || `Request failed with status ${response.status}`) as Error & {
       status?: number
     }
@@ -1217,7 +1259,7 @@ export async function requestJson<T>(input: RequestInfo, init?: RequestInit): Pr
 async function requestNoContent(input: RequestInfo, init?: RequestInit): Promise<void> {
   const response = await fetchOrThrow(input, init)
   if (!response.ok) {
-    const message = await response.text().catch(() => response.statusText)
+    const message = await responseErrorMessage(response)
     const err = new Error(message || `Request failed with status ${response.status}`) as Error & {
       status?: number
     }

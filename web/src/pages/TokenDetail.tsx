@@ -138,25 +138,23 @@ interface UsageBar {
   external: number
 }
 
-const requestKindBillingQuickFilterOptions = [
-  { value: 'all', label: 'Any' },
-  { value: 'billable', label: 'Paid' },
-  { value: 'non_billable', label: 'Free' },
-] as const
+function localeTag(language: string): string {
+  return language === 'zh' ? 'zh-CN' : 'en-US'
+}
 
-const requestKindProtocolQuickFilterOptions = [
-  { value: 'all', label: 'Any' },
-  { value: 'mcp', label: 'MCP' },
-  { value: 'api', label: 'API' },
-] as const
+function formatNumber(n: number, locale = 'en-US') {
+  return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(n)
+}
 
-const numberFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 })
-const dateTimeFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'medium' })
-const weekdayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'short' })
+function formatDateTimeValue(ts: number, locale: string): string {
+  return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'medium' }).format(new Date(ts * 1000))
+}
 
-function formatNumber(n: number) { return numberFormatter.format(n) }
-function formatTime(ts: number | null) { return ts ? dateTimeFormatter.format(new Date(ts * 1000)) : '—' }
-function formatLogTime(ts: number | null, period: Period) {
+function formatTime(ts: number | null, locale = 'en-US') {
+  return ts ? formatDateTimeValue(ts, locale) : '—'
+}
+
+function formatLogTime(ts: number | null, period: Period, locale = 'en-US') {
   if (!ts) return '—'
   const date = new Date(ts * 1000)
   const hh = date.getHours().toString().padStart(2, '0')
@@ -167,20 +165,11 @@ function formatLogTime(ts: number | null, period: Period) {
     case 'day':
       return time
     case 'week':
-      return `${weekdayFormatter.format(date)} ${time}`
+      return `${new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(date)} ${time}`
     case 'month':
-      return `${date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })} ${time}`
+      return `${date.toLocaleDateString(locale, { month: 'short', day: '2-digit' })} ${time}`
     default:
-      return dateTimeFormatter.format(date)
-  }
-}
-
-function statusLabel(status: string): string {
-  switch (status.toLowerCase()) {
-    case 'success': return 'Success'
-    case 'error': return 'Error'
-    case 'quota_exhausted': return 'Quota Exhausted'
-    default: return status
+      return formatDateTimeValue(ts, locale)
   }
 }
 
@@ -238,14 +227,17 @@ interface QuotaStatCardProps {
   limit: number
   resetAt?: number | null
   description: string
+  locale: string
+  notUsedYetLabel: string
+  formatNextReset: (time: string) => string
 }
 
-function QuotaStatCard({ label, used, limit, resetAt, description }: QuotaStatCardProps): React.JSX.Element {
+function QuotaStatCard({ label, used, limit, resetAt, description, locale, notUsedYetLabel, formatNextReset }: QuotaStatCardProps): React.JSX.Element {
   const shouldShowReset = used > 0 && typeof resetAt === 'number' && resetAt * 1000 > Date.now()
-  let resetLabel = 'Not used yet'
+  let resetLabel = notUsedYetLabel
   if (shouldShowReset) {
     try {
-      resetLabel = dateTimeFormatter.format(new Date(resetAt! * 1000))
+      resetLabel = formatDateTimeValue(resetAt!, locale)
     } catch {
       resetLabel = '—'
     }
@@ -254,12 +246,12 @@ function QuotaStatCard({ label, used, limit, resetAt, description }: QuotaStatCa
     <div>
       <div>{label}</div>
       <div>
-        {formatNumber(used)}
-        <span>/ {formatNumber(limit)}</span>
+        {formatNumber(used, locale)}
+        <span>/ {formatNumber(limit, locale)}</span>
       </div>
       <div>{description}</div>
       <div>
-        {shouldShowReset ? `Next reset: ${resetLabel}` : resetLabel}
+        {shouldShowReset ? formatNextReset(resetLabel) : resetLabel}
       </div>
     </div>
   )
@@ -401,9 +393,9 @@ function hourLabel(bucket: number): string {
   return `${date.getHours().toString().padStart(2, '0')}:00`
 }
 
-function dayLabel(bucket: number): string {
+function dayLabel(bucket: number, locale = 'en-US'): string {
   const date = new Date(bucket * 1000)
-  return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })
+  return date.toLocaleDateString(locale, { month: 'short', day: '2-digit' })
 }
 
 export default function TokenDetail({
@@ -424,6 +416,8 @@ export default function TokenDetail({
   const tokenStrings = translations.admin.tokens
   const loadingStateStrings = translations.admin.loadingStates
   const headerStrings = translations.admin.header
+  const strings = translations.admin.tokenDetail
+  const locale = localeTag(language)
   const refreshingLabel = (
     <span className="inline-flex items-center gap-1.5">
       <Spinner className="size-3" aria-hidden="true" />
@@ -665,7 +659,7 @@ export default function TokenDetail({
   const applyStartInput = (raw: string, nextPeriod: Period = period, opts?: { suppressWarning?: boolean }) => {
     const sanitized = sanitizeInput(nextPeriod, raw || defaultInputValue(nextPeriod))
     const shouldWarn = !opts?.suppressWarning && raw.trim() !== '' && sanitized !== raw
-    setWarning(shouldWarn ? 'Start value was adjusted to the valid range' : null)
+    setWarning(shouldWarn ? strings.startAdjustedWarning : null)
     setSinceInput((prev) => (prev === sanitized ? prev : sanitized))
   }
 
@@ -728,12 +722,12 @@ export default function TokenDetail({
       throw new Error(body || `${res.status} ${res.statusText}`)
     }
     if (!contentType.toLowerCase().includes('application/json')) {
-      throw new Error(body || 'Response was not valid JSON')
+      throw new Error(body || strings.loadFailed)
     }
     try {
       return JSON.parse(body) as T
     } catch {
-      throw new Error(body || 'Failed to parse response JSON')
+      throw new Error(body || strings.loadFailed)
     }
   }
 
@@ -946,7 +940,7 @@ export default function TokenDetail({
         void loadQuickStats()
       } catch (e) {
         if ((e as Error).name === 'AbortError') return
-        setError(e instanceof Error ? e.message : 'Failed to load token details')
+        setError(e instanceof Error ? e.message : strings.loadFailed)
         setSummaryLoadState('error')
       }
     }
@@ -984,7 +978,7 @@ export default function TokenDetail({
         if ((e as Error).name === 'AbortError') return
         setLogs([])
         setLogsPageInfo(createEmptyTokenLogsListPage(requestedPerPage))
-        setError(e instanceof Error ? e.message : 'Failed to load request records')
+        setError(e instanceof Error ? e.message : strings.loadLogsFailed)
         setLogsLoadState('error')
       }
     }
@@ -1166,7 +1160,7 @@ export default function TokenDetail({
       setIsRotatedDialogOpen(true)
     } catch (e) {
       setIsRotateDialogOpen(false)
-      alert((e as Error)?.message || 'Failed to regenerate token secret')
+      alert((e as Error)?.message || strings.rotate.failed)
     } finally {
       setRotating(false)
     }
@@ -1199,8 +1193,8 @@ export default function TokenDetail({
                   <span>{profile.displayName}</span>
                 </div>
               )}
-              <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
-                <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
+              <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title={strings.liveBadgeTitle}>
+                <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? strings.live : strings.offline}
               </span>
             </div>
           </CardContent>
@@ -1228,10 +1222,10 @@ export default function TokenDetail({
                 size="sm"
                 className="border-warning/40 text-warning hover:bg-warning/10"
                 onClick={() => setIsRotateDialogOpen(true)}
-                aria-label="Regenerate secret"
+                aria-label={strings.rotate.actionAria}
               >
                 <Icon icon="mdi:key-change" width={16} height={16} aria-hidden="true" />
-                Regenerate Secret
+                {strings.rotate.action}
               </Button>
               <Button
                 type="button"
@@ -1269,8 +1263,8 @@ export default function TokenDetail({
       <div className="block md:hidden">
         <section className="surface">
           <div className="flex flex-col gap-1">
-            <h1>Access Token Detail</h1>
-            <div className="text-sm text-muted-foreground">Token <code>{id}</code></div>
+            <h1>{strings.title}</h1>
+            <div className="text-sm text-muted-foreground">{strings.tokenId} <code>{id}</code></div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <ThemeToggle />
@@ -1278,8 +1272,8 @@ export default function TokenDetail({
               label={translations.admin.header.returnToConsole}
               href={ADMIN_USER_CONSOLE_HREF}
             />
-            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title="Live updates via SSE">
-              <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? 'Live' : 'Offline'}
+            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs ${sseConnected ? 'border-success/40 bg-success/10 text-success' : 'border-warning/40 bg-warning/10 text-warning'}`} title={strings.liveBadgeTitle}>
+              <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> {sseConnected ? strings.live : strings.offline}
             </span>
             <Button type="button" variant="outline" onClick={() => (onBack ? onBack() : window.history.back())}>
               <Icon icon="mdi:arrow-left" width={18} height={18} />
@@ -1291,10 +1285,10 @@ export default function TokenDetail({
               size="sm"
               className="border-warning/40 text-warning hover:bg-warning/10"
               onClick={() => setIsRotateDialogOpen(true)}
-              aria-label="Regenerate secret"
+              aria-label={strings.rotate.actionAria}
             >
               <Icon icon="mdi:key-change" width={16} height={16} aria-hidden="true" />
-              Regenerate Secret
+              {strings.rotate.action}
             </Button>
           </div>
         </section>
@@ -1303,8 +1297,8 @@ export default function TokenDetail({
       <div className="hidden md:block">
         <section className="admin-compact-intro flex flex-wrap items-end justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1">
-            <h1 className="text-xl font-semibold tracking-tight">Access Token Detail</h1>
-            <p className="text-sm text-muted-foreground">Token <code>{id}</code></p>
+            <h1 className="text-xl font-semibold tracking-tight">{strings.title}</h1>
+            <p className="text-sm text-muted-foreground">{strings.tokenId} <code>{id}</code></p>
           </div>
         </section>
       </div>
@@ -1318,33 +1312,33 @@ export default function TokenDetail({
           minHeight={184}
         >
           {info ? (
-            <div className="grid min-w-0 gap-3 px-4 sm:grid-cols-2" aria-label="Token metadata">
+            <div className="grid min-w-0 gap-3 px-4 sm:grid-cols-2" aria-label={strings.title}>
               <InfoCard
-                label="Token ID"
+                label={strings.tokenId}
                 value={<code title={info.id}>{info.id}</code>}
               />
               <InfoCard
-                label="Status"
+                label={strings.status}
                 value={
                   <StatusBadge tone={info.enabled ? 'success' : 'error'}>
-                    {info.enabled ? 'Enabled' : 'Disabled'}
+                    {info.enabled ? strings.enabled : strings.disabled}
                   </StatusBadge>
                 }
               />
-              <InfoCard label="Total Requests" value={formatNumber(info.total_requests)} />
-              <InfoCard label="Created" value={formatTime(info.created_at)} />
-              <InfoCard label="Last Used" value={formatTime(info.last_used_at)} />
+              <InfoCard label={strings.totalRequests} value={formatNumber(info.total_requests, locale)} />
+              <InfoCard label={strings.created} value={formatTime(info.created_at, locale)} />
+              <InfoCard label={strings.lastUsed} value={formatTime(info.last_used_at, locale)} />
               <InfoCard
                 label={tokenStrings.owner.label}
                 value={<TokenOwnerValue owner={info.owner ?? null} emptyLabel={tokenStrings.owner.unbound} onOpenUser={onOpenUser} />}
               />
               <InfoCard
-                label="Note"
+                label={strings.note}
                 value={info.note ? <span className="text-xs text-muted-foreground" title={info.note}>{info.note}</span> : '—'}
               />
             </div>
           ) : (
-            <Empty><EmptyDescription>Token details are unavailable right now.</EmptyDescription></Empty>
+            <Empty><EmptyDescription>{strings.infoUnavailable}</EmptyDescription></Empty>
           )}
         </AdminLoadingRegion>
       </Card>
@@ -1352,8 +1346,8 @@ export default function TokenDetail({
       <Card className="surface panel">
         <CardHeader className="panel-header border-b">
           <div>
-            <CardTitle role="heading" aria-level={2}>Quick Stats</CardTitle>
-            <CardDescription>Rolling usage windows (1 hour / 24 hours / calendar month).</CardDescription>
+            <CardTitle role="heading" aria-level={2}>{strings.quickStatsTitle}</CardTitle>
+            <CardDescription>{strings.quickStatsDescription}</CardDescription>
           </div>
         </CardHeader>
         <AdminLoadingRegion
@@ -1365,48 +1359,60 @@ export default function TokenDetail({
             {info ? (
               <>
                 <QuotaStatCard
-                  label="1 Hour"
+                  label={strings.windowHour}
                   used={info.quota_hourly_used}
                   limit={info.quota_hourly_limit}
                   resetAt={info.quota_hourly_reset_at}
-                  description="Rolling 1-hour window"
+                  description={strings.windowHourDescription}
+                  locale={locale}
+                  notUsedYetLabel={strings.notUsedYet}
+                  formatNextReset={strings.nextReset}
                 />
                 <QuotaStatCard
-                  label="24 Hours"
+                  label={strings.window24Hours}
                   used={info.quota_daily_used}
                   limit={info.quota_daily_limit}
                   resetAt={info.quota_daily_reset_at}
-                  description="Rolling 24-hour window"
+                  description={strings.window24HoursDescription}
+                  locale={locale}
+                  notUsedYetLabel={strings.notUsedYet}
+                  formatNextReset={strings.nextReset}
                 />
                 <QuotaStatCard
-                  label="This Month"
+                  label={strings.windowMonth}
                   used={info.quota_monthly_used}
                   limit={info.quota_monthly_limit}
                   resetAt={info.quota_monthly_reset_at}
-                  description="Calendar month"
+                  description={strings.windowMonthDescription}
+                  locale={locale}
+                  notUsedYetLabel={strings.notUsedYet}
+                  formatNextReset={strings.nextReset}
                 />
               </>
             ) : (
               <Empty className="col-span-full"><EmptyDescription>
-                Token quota details are unavailable right now.
+                {strings.quotaUnavailable}
               </EmptyDescription></Empty>
             )}
           </section>
         </AdminLoadingRegion>
         <div className="mt-4">
-          <UsageChart data={quickUsage} loading={quickUsageLoading} labelFormatter={hourLabel} height={200} />
+          <UsageChart data={quickUsage} loading={quickUsageLoading} labelFormatter={hourLabel} height={200}
+            legendLabels={{ success: strings.chart.success, system: strings.chart.systemLimited, external: strings.chart.otherFailures }}
+            loadingLabel={strings.chart.loading}
+          />
         </div>
       </Card>
 
       <Card className="surface panel">
         <CardHeader className="panel-header border-b flex flex-wrap items-start justify-between gap-3 border-b px-4 pb-4">
           <div>
-            <CardTitle role="heading" aria-level={2}>Usage Snapshot</CardTitle>
-            <CardDescription>Aggregated metrics for the selected window.</CardDescription>
+            <CardTitle role="heading" aria-level={2}>{strings.snapshotTitle}</CardTitle>
+            <CardDescription>{strings.snapshotDescription}</CardDescription>
           </div>
-          <div className="flex flex-wrap items-center gap-2 px-4" role="group" aria-label="Period filter">
+          <div className="flex flex-wrap items-center gap-2 px-4" role="group" aria-label={strings.periodFilterAria}>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
-              <label htmlFor={periodSelectId}>Period</label>
+              <label htmlFor={periodSelectId}>{strings.periodLabel}</label>
               <Select
                 value={period}
                 onValueChange={(value) => {
@@ -1423,15 +1429,15 @@ export default function TokenDetail({
                 </SelectTrigger>
                 <SelectContent align="start">
                   <SelectGroup>
-                    <SelectItem value="day">Day</SelectItem>
-                    <SelectItem value="week">Week</SelectItem>
-                    <SelectItem value="month">Month</SelectItem>
+                    <SelectItem value="day">{translations.admin.keyDetails.periodOptions.day}</SelectItem>
+                    <SelectItem value="week">{translations.admin.keyDetails.periodOptions.week}</SelectItem>
+                    <SelectItem value="month">{translations.admin.keyDetails.periodOptions.month}</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium">
-              <label htmlFor={sinceInputId}>Start</label>
+              <label htmlFor={sinceInputId}>{strings.startLabel}</label>
               {period === 'day' && (
                 <Input
                   id={sinceInputId}
@@ -1477,18 +1483,20 @@ export default function TokenDetail({
           minHeight={160}
         >
           <div className="grid min-w-0 grid-cols-2 gap-3 px-4 sm:grid-cols-4">
-            <MetricCard label="Requests" value={formatNumber(summary?.total_requests ?? 0)} />
-            <MetricCard label="Success" value={formatNumber(summary?.success_count ?? 0)} />
-            <MetricCard label="Errors" value={formatNumber(summary?.error_count ?? 0)} />
-            <MetricCard label="Quota Exhausted" value={formatNumber(summary?.quota_exhausted_count ?? 0)} />
+            <MetricCard label={translations.admin.keyDetails.metrics.total} value={formatNumber(summary?.total_requests ?? 0, locale)} />
+            <MetricCard label={translations.admin.keyDetails.metrics.success} value={formatNumber(summary?.success_count ?? 0, locale)} />
+            <MetricCard label={translations.admin.keyDetails.metrics.errors} value={formatNumber(summary?.error_count ?? 0, locale)} />
+            <MetricCard label={translations.admin.keyDetails.metrics.quota} value={formatNumber(summary?.quota_exhausted_count ?? 0, locale)} />
           </div>
         </AdminLoadingRegion>
         <div className="mt-4">
           <UsageChart
             data={snapshotUsage}
             loading={snapshotUsageLoading}
-            labelFormatter={period === 'day' ? hourLabel : dayLabel}
+            labelFormatter={period === 'day' ? hourLabel : (bucket) => dayLabel(bucket, locale)}
             height={220}
+            legendLabels={{ success: strings.chart.success, system: strings.chart.systemLimited, external: strings.chart.otherFailures }}
+            loadingLabel={strings.chart.loading}
           />
         </div>
       </Card>
@@ -1499,7 +1507,7 @@ export default function TokenDetail({
         strings={translations.admin}
         title={translations.admin.logs.title}
         description={logsDescription}
-        emptyLabel="No logs yet."
+        emptyLabel={strings.logsEmpty}
         loadState={logsLoadState}
         loadingLabel={logsRefreshing ? refreshingLabel : loadingStateStrings.switching}
         errorLabel={error}
@@ -1531,26 +1539,25 @@ export default function TokenDetail({
         onNewerPage={goNewerLogsPage}
         onOlderPage={goOlderLogsPage}
         onPerPageChange={(value) => void changePerPage(value)}
-        formatTime={(ts) => formatLogTime(ts, period)}
-        formatTimeDetail={(ts) => (ts ? dateTimeFormatter.format(new Date(ts * 1000)) : '—')}
+        formatTime={(ts) => formatLogTime(ts, period, locale)}
+        formatTimeDetail={(ts) => (ts ? formatDateTimeValue(ts, locale) : '—')}
         loadLogBodies={loadTokenLogBodies}
       />
 
     <Dialog open={isRotateDialogOpen} onOpenChange={setIsRotateDialogOpen}>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>Regenerate Token Secret</DialogTitle>
+          <DialogTitle>{strings.rotate.dialogTitle}</DialogTitle>
           <DialogDescription>
-            This will invalidate the current token secret and generate a new one. The 4-char token ID will remain the same.
-            Clients must be updated to use the new token.
+            {strings.rotate.dialogDescription}
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-end gap-2">
           <Button type="button" variant="outline" onClick={() => setIsRotateDialogOpen(false)}>
-            Cancel
+            {strings.rotate.cancel}
           </Button>
           <Button type="button" variant="outline" className="border-warning/40 bg-warning/10 text-warning hover:bg-warning/20" onClick={() => void handleRotateToken()} disabled={rotating}>
-            {rotating ? 'Regenerating…' : 'Regenerate'}
+            {rotating ? strings.rotate.confirming : strings.rotate.confirm}
           </Button>
         </div>
       </DialogContent>
@@ -1559,28 +1566,28 @@ export default function TokenDetail({
     <Dialog open={isRotatedDialogOpen} onOpenChange={setIsRotatedDialogOpen}>
       <DialogContent className="sm:max-w-[520px]">
         <DialogHeader>
-          <DialogTitle>New Token Generated</DialogTitle>
+          <DialogTitle>{strings.rotated.dialogTitle}</DialogTitle>
           <DialogDescription>
             {rotatedCopyState === 'error'
-              ? 'Automatic copy was blocked. The full token is selected below for manual copy.'
-              : 'Full token copied to clipboard:'}
+              ? strings.rotated.copyBlockedDescription
+              : strings.rotated.copiedDescription}
           </DialogDescription>
         </DialogHeader>
         <Textarea
           ref={rotatedTokenFieldRef}
           readOnly
-          rows={3}
-          className="min-h-[96px] resize-none font-mono text-xs"
+          rows={1}
+          className="min-h-0 resize-none font-mono text-xs"
           value={rotatedToken ?? '—'}
           onClick={(event) => selectAllReadonlyText(event.currentTarget)}
           onFocus={(event) => selectAllReadonlyText(event.currentTarget)}
         />
         <div className="flex justify-end gap-2">
           <Button type="button" variant="outline" onClick={() => setIsRotatedDialogOpen(false)}>
-            Close
+            {strings.rotated.close}
           </Button>
           <Button type="button" onClick={() => void handleCopyRotatedToken()}>
-            {rotatedCopyState === 'copied' ? 'Copied' : rotatedCopyState === 'error' ? 'Copy Failed' : 'Copy'}
+            {rotatedCopyState === 'copied' ? strings.rotated.copied : rotatedCopyState === 'error' ? strings.rotated.copyFailed : strings.rotated.copy}
           </Button>
         </div>
       </DialogContent>
@@ -1612,21 +1619,25 @@ function UsageChart({
   loading,
   labelFormatter,
   height = 180,
+  legendLabels,
+  loadingLabel = 'Loading…',
 }: {
   data: UsageBar[]
   loading: boolean
   labelFormatter: (bucket: number) => string
   height?: number
+  legendLabels: { success: string; system: string; external: string }
+  loadingLabel?: string
 }) {
   const chartConfig = {
-    success: { label: 'Success', color: 'var(--chart-1)' },
-    system: { label: 'System limited', color: 'var(--chart-2)' },
-    external: { label: 'Other failures', color: 'var(--chart-3)' },
+    success: { label: legendLabels.success, color: 'var(--chart-1)' },
+    system: { label: legendLabels.system, color: 'var(--chart-2)' },
+    external: { label: legendLabels.external, color: 'var(--chart-3)' },
   } satisfies ChartConfig
   return (
     <div className="min-w-0 px-4">
       {loading ? (
-        <Empty><EmptyDescription>Loading…</EmptyDescription></Empty>
+        <Empty><EmptyDescription>{loadingLabel}</EmptyDescription></Empty>
       ) : (
         <ChartContainer config={chartConfig} className="aspect-auto w-full" style={{ height }}>
           <BarChart accessibilityLayer data={data.map((point) => ({ ...point, label: labelFormatter(point.bucket) }))}>

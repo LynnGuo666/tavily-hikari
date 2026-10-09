@@ -306,12 +306,12 @@ function AnnouncementBodyEditor({
 
   if (mode === 'split') {
     return (
-      <div className="announcements-body-split">
+      <div className="announcements-body-split grid items-stretch max-lg:grid-cols-1 lg:grid-cols-2">
         {textarea}
         <MilkdownPreviewContent
           value={draft.content || strings.bodyModeRenderEmpty}
           label={strings.bodyModeRenderLabel}
-          className="announcements-body-milkdown-preview"
+          className="announcements-body-milkdown-preview min-h-40 max-lg:border-t lg:border-l"
         />
       </div>
     )

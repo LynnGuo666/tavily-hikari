@@ -1881,6 +1881,14 @@ export interface AdminTranslationsShape {
     }
     apply: string
     loading: string
+    quotaCard: {
+      title: string
+      description: string
+      used: string
+      usedOf: (limit: string) => string
+      remaining: string
+      synced: string
+    }
     metrics: {
       total: string
       success: string
@@ -1940,6 +1948,66 @@ export interface AdminTranslationsShape {
     logsTitle: string
     logsDescription: string
     logsEmpty: string
+  }
+  tokenDetail: {
+    title: string
+    tokenId: string
+    status: string
+    enabled: string
+    disabled: string
+    totalRequests: string
+    created: string
+    lastUsed: string
+    note: string
+    infoUnavailable: string
+    quickStatsTitle: string
+    quickStatsDescription: string
+    windowHour: string
+    window24Hours: string
+    windowMonth: string
+    windowHourDescription: string
+    window24HoursDescription: string
+    windowMonthDescription: string
+    notUsedYet: string
+    nextReset: (time: string) => string
+    quotaUnavailable: string
+    snapshotTitle: string
+    snapshotDescription: string
+    periodFilterAria: string
+    periodLabel: string
+    startLabel: string
+    startAdjustedWarning: string
+    logsEmpty: string
+    loadFailed: string
+    loadLogsFailed: string
+    rotate: {
+      action: string
+      actionAria: string
+      dialogTitle: string
+      dialogDescription: string
+      cancel: string
+      confirm: string
+      confirming: string
+      failed: string
+    }
+    rotated: {
+      dialogTitle: string
+      copiedDescription: string
+      copyBlockedDescription: string
+      close: string
+      copy: string
+      copied: string
+      copyFailed: string
+    }
+    chart: {
+      success: string
+      systemLimited: string
+      otherFailures: string
+      loading: string
+    }
+    live: string
+    offline: string
+    liveBadgeTitle: string
   }
   errors: {
       copyKey: string

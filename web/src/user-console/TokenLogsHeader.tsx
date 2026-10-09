@@ -23,7 +23,7 @@ export interface DetailLogsPushStatusText {
 }
 
 interface TokenLogsHeaderProps {
-  title: string
+  title?: string
   filter: UserTokenLogFilter
   filterOptions: ReadonlyArray<SegmentedTabsOption<UserTokenLogFilter>>
   filterAriaLabel: string
@@ -59,7 +59,7 @@ export default function TokenLogsHeader({
 }: TokenLogsHeaderProps): React.JSX.Element {
   return (
     <div className="user-console-logs-header flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
-      <h2 className="text-base font-semibold">{title}</h2>
+      {title ? <h2 className="text-base font-semibold">{title}</h2> : null}
       <div className="flex items-center gap-2">
         <SegmentedTabs<UserTokenLogFilter>
           value={filter}

@@ -23,7 +23,7 @@ export default function AccessStatePanel({ state, text, onHome }: AccessStatePan
 
   return (
     <Card className="surface panel mx-auto w-full max-w-xl gap-0 py-0">
-      <Alert className="m-4 items-start gap-4 rounded-lg border-none">
+      <Alert className="m-4 flex items-start gap-4 rounded-lg border-none py-3">
         <span
           className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
           aria-hidden="true"
@@ -38,7 +38,7 @@ export default function AccessStatePanel({ state, text, onHome }: AccessStatePan
             <p>{model.copy.description}</p>
           </AlertDescription>
         </div>
-        <AlertAction className="self-center">
+        <AlertAction className="static self-center">
           <Button type="button" onClick={model.action}>
             {'home' in model.copy ? model.copy.home : model.copy.action}
           </Button>

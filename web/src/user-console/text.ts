@@ -420,6 +420,11 @@ export const EN = {
       result: 'Result',
       error: 'Error',
     },
+    resultLabels: {
+      success: 'Success',
+      error: 'Error',
+      quota_exhausted: 'Quota exhausted',
+    },
     noQuery: 'No query string',
     noError: 'No error message',
   },
@@ -856,6 +861,11 @@ export const ZH = {
       credits: '积分',
       result: '结果',
       error: '错误',
+    },
+    resultLabels: {
+      success: '成功',
+      error: '错误',
+      quota_exhausted: '额度耗尽',
     },
     noQuery: '无查询参数',
     noError: '无错误信息',

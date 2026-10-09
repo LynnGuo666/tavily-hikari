@@ -8130,29 +8130,46 @@ function AdminDashboard(): React.JSX.Element {
         <div>
           <div>
             {isEditing ? (
-              <div>
-                <Input
-                  type="text"
-                  value={userTagCatalogDraft.displayName}
-                  onChange={(event) => updateUserTagCatalogField('displayName', event.target.value)}
-                  disabled={editingSystemTag || savingUserTagCatalog}
-                  placeholder={usersStrings.catalog.fields.displayName}
-                />
-                <div>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="user-tag-display-name" className="text-xs font-medium text-muted-foreground">
+                    {usersStrings.catalog.fields.displayName}
+                  </label>
                   <Input
+                    id="user-tag-display-name"
+                    type="text"
+                    value={userTagCatalogDraft.displayName}
+                    onChange={(event) => updateUserTagCatalogField('displayName', event.target.value)}
+                    disabled={editingSystemTag || savingUserTagCatalog}
+                    placeholder={usersStrings.catalog.fields.displayName}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="user-tag-name" className="text-xs font-medium text-muted-foreground">
+                    {usersStrings.catalog.fields.name}
+                  </label>
+                  <Input
+                    id="user-tag-name"
                     type="text"
                     value={userTagCatalogDraft.name}
                     onChange={(event) => updateUserTagCatalogField('name', event.target.value)}
                     disabled={editingSystemTag || savingUserTagCatalog}
                     placeholder={usersStrings.catalog.fields.name}
                   />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label htmlFor="user-tag-icon" className="text-xs font-medium text-muted-foreground">
+                    {usersStrings.catalog.fields.icon}
+                  </label>
                   <Input
+                    id="user-tag-icon"
                     type="text"
                     value={userTagCatalogDraft.icon}
                     onChange={(event) => updateUserTagCatalogField('icon', event.target.value)}
                     disabled={editingSystemTag || savingUserTagCatalog}
                     placeholder={usersStrings.catalog.iconPlaceholder}
                   />
+                  <p className="text-xs text-muted-foreground">{usersStrings.catalog.iconHint}</p>
                 </div>
               </div>
             ) : (
@@ -8172,7 +8189,6 @@ function AdminDashboard(): React.JSX.Element {
               <>
                 <Button
                   type="button"
-                  variant="ghost"
                   size="sm"
                   title={usersStrings.catalog.actions.save}
                   aria-label={usersStrings.catalog.actions.save}
@@ -8180,10 +8196,11 @@ function AdminDashboard(): React.JSX.Element {
                   disabled={savingUserTagCatalog}
                 >
                   <Icon icon="mdi:check" width={16} height={16} />
+                  {usersStrings.catalog.actions.save}
                 </Button>
                 <Button
                   type="button"
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
                   title={usersStrings.catalog.actions.cancelEdit}
                   aria-label={usersStrings.catalog.actions.cancelEdit}
@@ -8191,12 +8208,14 @@ function AdminDashboard(): React.JSX.Element {
                   disabled={savingUserTagCatalog}
                 >
                   <Icon icon="mdi:close" width={16} height={16} />
+                  {usersStrings.catalog.actions.cancelEdit}
                 </Button>
                 {!isNewCard && !isSystem && (
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
+                    className="text-destructive hover:text-destructive"
                     title={usersStrings.catalog.actions.delete}
                     aria-label={usersStrings.catalog.actions.delete}
                     onClick={() => requestUserTagCatalogDelete(tag)}
@@ -13895,8 +13914,8 @@ export function KeyDetails({
       <Card className="surface panel min-w-0">
         <CardHeader className="panel-header border-b">
           <div>
-            <CardTitle role="heading" aria-level={2}>Quota</CardTitle>
-            <CardDescription>Tavily Usage for this key</CardDescription>
+            <CardTitle role="heading" aria-level={2}>{keyDetailsStrings.quotaCard.title}</CardTitle>
+            <CardDescription>{keyDetailsStrings.quotaCard.description}</CardDescription>
           </div>
         </CardHeader>
         <AdminLoadingRegion
@@ -13914,13 +13933,13 @@ export function KeyDetails({
                 const used = (limit != null && remaining != null) ? Math.max(limit - remaining, 0) : null
                 const percent = (limit && remaining != null && limit > 0) ? formatPercent(remaining, limit) : '—'
                 return [
-                  { id: 'used', label: 'Used', value: used != null ? formatNumber(used) : '—', subtitle: limit != null ? `of ${formatNumber(limit)}` : '—' },
-                  { id: 'remaining', label: 'Remaining', value: remaining != null ? formatNumber(remaining) : '—', subtitle: percent },
-                  { id: 'synced', label: 'Synced', value: detail?.quota_synced_at ? formatTimestamp(detail.quota_synced_at) : '—', subtitle: '' },
+                  { id: 'used', label: keyDetailsStrings.quotaCard.used, value: used != null ? formatNumber(used) : '—', subtitle: limit != null ? keyDetailsStrings.quotaCard.usedOf(formatNumber(limit)) : '—' },
+                  { id: 'remaining', label: keyDetailsStrings.quotaCard.remaining, value: remaining != null ? formatNumber(remaining) : '—', subtitle: percent },
+                  { id: 'synced', label: keyDetailsStrings.quotaCard.synced, value: detail?.quota_synced_at ? formatTimestamp(detail.quota_synced_at) : '—', subtitle: '' },
                 ].map((m) => (
                   <div key={m.id} className="flex flex-col gap-1.5 p-4">
                     <h3 className="text-xs text-muted-foreground">{m.label}</h3>
-                    <div className={`min-w-0 break-words font-mono font-semibold tabular-nums${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
+                    <div className={`min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
                     <div className="text-xs text-muted-foreground">{m.subtitle}</div>
                   </div>
                 ))
@@ -13974,7 +13993,7 @@ export function KeyDetails({
               metricCards.map((m) => (
                 <div key={m.id} className="flex flex-col gap-1.5 p-4">
                   <h3 className="text-xs text-muted-foreground">{m.label}</h3>
-                  <div className={`min-w-0 break-words font-mono font-semibold tabular-nums${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
+                  <div className={`min-w-0 break-words font-mono font-semibold tabular-nums ${m.id === 'synced' ? 'text-base' : 'text-2xl'}`}>{m.value}</div>
                   <div className="text-xs text-muted-foreground">{m.subtitle}</div>
                 </div>
               ))
