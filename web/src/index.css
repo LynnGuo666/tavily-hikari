@@ -72,9 +72,9 @@
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
     --destructive-foreground: oklch(0.985 0 0);
-    --success: oklch(0.596 0.145 163.225);
+    --success: oklch(0.49 0.145 163.225);
     --success-foreground: oklch(0.985 0 0);
-    --warning: oklch(0.666 0.179 58.06);
+    --warning: oklch(0.51 0.14 58.06);
     --warning-foreground: oklch(0.985 0 0);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
@@ -197,4 +197,15 @@
 
 [data-slot='table-container']::-webkit-scrollbar-track {
     background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

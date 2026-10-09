@@ -8969,13 +8969,14 @@ function AdminDashboard(): React.JSX.Element {
 
 {/* Token Edit Note modal */}
 <Dialog open={editingTokenId != null} onOpenChange={(open) => { if (!open) cancelTokenNote() }}>
-  <DialogContent className="sm:max-w-lg">
+  <DialogContent className="sm:max-w-lg" aria-describedby={undefined}>
     <DialogHeader>
       <DialogTitle>{tokenStrings.dialogs.note.title}</DialogTitle>
     </DialogHeader>
     <Input
       type="text"
       name="editing-token-note"
+      aria-label={tokenStrings.dialogs.note.title}
       placeholder={tokenStrings.dialogs.note.placeholder}
       value={editingTokenNote}
       onChange={(e) => setEditingTokenNote(e.target.value)}
@@ -9848,6 +9849,7 @@ function AdminDashboard(): React.JSX.Element {
                 <Input
                   type="text"
                   name="user-usage-search"
+                  aria-label={usersStrings.searchPlaceholder}
                   className="min-w-0 flex-1"
                   placeholder={usersStrings.searchPlaceholder}
                   value={usersQueryInput}
@@ -10007,6 +10009,7 @@ function AdminDashboard(): React.JSX.Element {
               <Input
                 type="text"
                 name="unbound-token-usage-search"
+                aria-label={unboundTokenUsageStrings.searchPlaceholder}
                 className="min-w-0 flex-1"
                 placeholder={unboundTokenUsageStrings.searchPlaceholder}
                 value={unboundTokenUsageQueryInput}
@@ -10323,6 +10326,7 @@ function AdminDashboard(): React.JSX.Element {
         <Input
           type="text"
           name="users-search"
+          aria-label={usersStrings.searchPlaceholder}
           className="min-w-0 flex-1"
           placeholder={usersStrings.searchPlaceholder}
           value={usersQueryInput}

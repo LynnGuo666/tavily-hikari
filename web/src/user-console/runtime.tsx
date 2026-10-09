@@ -2745,9 +2745,9 @@ export default function UserConsole(): JSX.Element {
       )}
       <div className="px-4">
         <Tabs value={activeGuide} onValueChange={(value) => handleSetupGuideChange(value as GuideKey)}>
-          <TabsList className="h-auto w-full justify-start overflow-x-auto">
+          <TabsList className="h-auto w-full max-w-full justify-start overflow-x-auto">
             {guideTabs.map((tab) => (
-              <TabsTrigger key={tab.id} value={tab.id}>
+              <TabsTrigger key={tab.id} value={tab.id} className="shrink-0 flex-none">
                 {tab.label}
               </TabsTrigger>
             ))}
@@ -2930,9 +2930,9 @@ export default function UserConsole(): JSX.Element {
               goTokens()
             }}
           >
-            <TabsList className="w-full sm:w-fit">
+            <TabsList className="h-auto w-full max-w-full justify-start overflow-x-auto sm:w-fit">
               {consoleSectionTabs.map((option) => (
-                <TabsTrigger key={option.value} value={option.value}>
+                <TabsTrigger key={option.value} value={option.value} className="shrink-0 flex-none">
                   {option.label}
                 </TabsTrigger>
               ))}

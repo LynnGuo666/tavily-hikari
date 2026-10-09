@@ -52,6 +52,7 @@ import SegmentedTabs from '@/components/SegmentedTabs'
 import {
   Drawer,
   DrawerContent,
+  DrawerTitle,
 } from '@/components/ui/drawer'
 import {
   DropdownMenu,
@@ -2146,8 +2147,9 @@ function StoryMonthlyBrokenDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange} shouldScaleBackground={false}>
-      <DrawerContent>
-        <div>
+      <DrawerContent aria-describedby={undefined} className="overflow-hidden">
+        <DrawerTitle className="sr-only">{users.brokenKeys.drawerTitle}</DrawerTitle>
+        <div className="min-h-0 overflow-y-auto overscroll-contain p-4">
           <Card className="surface panel">
             <CardHeader className="panel-header border-b flex-wrap gap-3">
               <div>
@@ -4638,8 +4640,9 @@ function RequestsPageCanvas({
         }}
         shouldScaleBackground={false}
       >
-        <DrawerContent>
-          <div className="request-entity-drawer-body">
+        <DrawerContent aria-describedby={undefined} className="overflow-hidden">
+          <DrawerTitle className="sr-only">{drawerTarget?.id}</DrawerTitle>
+          <div className="request-entity-drawer-body min-h-0 overflow-y-auto overscroll-contain p-4">
             {drawerTarget?.kind === 'key' ? (
               <StoryKeyDetailsCanvas id={drawerTarget.id} logs={MOCK_REQUESTS} />
             ) : drawerTarget?.kind === 'token' ? (

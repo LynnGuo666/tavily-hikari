@@ -1148,7 +1148,7 @@ export const CreditsEmptyData: Story = {
 
 export const RecentAlertsDesktopEvidence: Story = {
   render: (args) => (
-    <div className="dashboard-recent-alerts-evidence" style={{ width: '1320px', maxWidth: '1320px', margin: '0 auto' }}>
+    <div className="dashboard-recent-alerts-evidence" style={{ width: '100%', maxWidth: '1320px', margin: '0 auto' }}>
       <style>{`
         .dashboard-recent-alerts-evidence .dashboard-alerts-summary__overview {
           grid-template-columns: minmax(240px, 1fr) minmax(0, 1.7fr) !important;

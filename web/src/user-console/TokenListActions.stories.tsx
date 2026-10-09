@@ -85,7 +85,7 @@ export const StateGallery: Story = {
   render: () => (
     <div
       data-testid="token-list-actions-state-gallery"
-      className="grid min-w-[420px] gap-4 rounded-[20px] border border-border/55 bg-card/82 p-5 shadow-clayCard"
+      className="grid w-full max-w-xl gap-4 rounded-xl border bg-card p-5"
     >
       {[
         ['Idle copy', renderActions('idle')],
@@ -93,7 +93,7 @@ export const StateGallery: Story = {
         ['Copy failed', renderActions('error')],
         ['Reset unavailable', renderActions('idle', false)],
       ].map(([label, actions]) => (
-        <div key={label as string} className="grid grid-cols-[130px_1fr] items-center gap-4">
+        <div key={label as string} className="grid items-center gap-4 sm:grid-cols-[130px_1fr]">
           <span className="text-sm font-bold text-muted-foreground">{label}</span>
           {actions}
         </div>

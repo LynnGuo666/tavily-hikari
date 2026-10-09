@@ -9,7 +9,8 @@ import LanguageSwitcher from '../components/LanguageSwitcher'
 import ThemeToggle from '../components/ThemeToggle'
 import SegmentedTabs from '@/components/SegmentedTabs'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { translations, useLanguage, useTranslate, type AdminTranslations } from '../i18n'
 import { Icon } from '../lib/icons'
 import AdminShell, { AdminShellSidebarUtility, type AdminNavItem, type AdminNavTarget } from './AdminShell'
@@ -46,72 +47,32 @@ const DEFAULT_NAV_ITEMS = buildNavItems(translations.en.admin)
 
 function LayoutBody(props: { title: string; description: string }): React.JSX.Element {
   return (
-    <>
-      <section className="surface panel">
-        <div className="panel-header">
-          <div>
-            <h2>{props.title}</h2>
-            <p>{props.description}</p>
-          </div>
-        </div>
-        <div className="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Updated</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>610</td>
-                <td>Sync quota</td>
-                <td>Success</td>
-                <td>11:42:10</td>
-              </tr>
-              <tr>
-                <td>609</td>
-                <td>Usage rollups</td>
-                <td>Running</td>
-                <td>11:41:37</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <article>
-            <div>
-              <span>ID</span>
-              <strong>610</strong>
-            </div>
-            <div>
-              <span>Type</span>
-              <strong>Sync quota</strong>
-            </div>
-            <div>
-              <span>Status</span>
-              <strong>Success</strong>
-            </div>
-          </article>
-          <article>
-            <div>
-              <span>ID</span>
-              <strong>609</strong>
-            </div>
-            <div>
-              <span>Type</span>
-              <strong>Usage rollups</strong>
-            </div>
-            <div>
-              <span>Status</span>
-              <strong>Running</strong>
-            </div>
-          </article>
-        </div>
-      </section>
-    </>
+    <Card>
+      <CardHeader>
+        <CardTitle>{props.title}</CardTitle>
+        <CardDescription>{props.description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead><TableHead>Type</TableHead>
+              <TableHead>Status</TableHead><TableHead>Updated</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell>610</TableCell><TableCell>Sync quota</TableCell>
+              <TableCell>Success</TableCell><TableCell>11:42:10</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>609</TableCell><TableCell>Usage rollups</TableCell>
+              <TableCell>Running</TableCell><TableCell>11:41:37</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   )
 }
 

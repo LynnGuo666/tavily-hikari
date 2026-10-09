@@ -33,15 +33,15 @@ export default function AdminPanelHeader(props: AdminPanelHeaderProps): React.JS
         props.stackActions && 'admin-panel-header--stacked-actions',
       )}
     >
-      <div className="flex min-w-0 flex-col gap-1">
+      <div className="flex min-w-0 max-w-full flex-col gap-1">
         <h1 className="truncate text-lg font-semibold">{props.title}</h1>
         {props.subtitle ? (
           <p className="text-sm text-muted-foreground">{props.subtitle}</p>
         ) : null}
       </div>
 
-      <div className="flex flex-col items-end gap-2">
-        <div className="flex items-center gap-2">
+      <div className="flex min-w-0 max-w-full flex-col items-end gap-2">
+        <div className="flex max-w-full flex-wrap items-center justify-end gap-2">
           <div className="flex items-center gap-1">
             <ThemeToggle />
             <LanguageSwitcher />

@@ -1,0 +1,6630 @@
+{
+  "date": "2026-10-09",
+  "browser": "Ego Lite",
+  "desktopViewport": [
+    1440,
+    900
+  ],
+  "mobileViewport": [
+    390,
+    844
+  ],
+  "mobileReducedMotion": true,
+  "stories": [
+    {
+      "id": "public-publichome--token-modal-open",
+      "title": "Public/PublicHome",
+      "name": "Token Modal Open",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichome--token-modal-open-dark",
+      "title": "Public/PublicHome",
+      "name": "Token Modal Open Dark",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichome--token-modal-open-with-admin-action",
+      "title": "Public/PublicHome",
+      "name": "Token Modal Open With Admin Action",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichome--mobile-guide-menu-proof",
+      "title": "Public/PublicHome",
+      "name": "Mobile Guide Menu Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichome--guide-token-revealed",
+      "title": "Public/PublicHome",
+      "name": "Guide Token Revealed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichome--guide-token-revealed-dark-mobile",
+      "title": "Public/PublicHome",
+      "name": "Guide Token Revealed Dark Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home",
+      "title": "User Console/UserConsole",
+      "name": "Console Home",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-dark",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Dark",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-recharge-test-price",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Recharge Test Price",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-recharge-month-end-clamp",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Recharge Month End Clamp",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-recharge-disabled",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Recharge Disabled",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-recharge-hidden",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Recharge Hidden",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-root",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Root",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-admin",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcements",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcements",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-ticker-detail-close",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Ticker Detail Close",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-bodyless-ticker",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Title Only Ticker",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-untitled-ticker",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Untitled Ticker",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-admin-mobile",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Admin Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-dark-mobile",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Dark Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-admin-mobile-menu-open",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Admin Mobile Menu Open",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-tokens-focus",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Tokens Focus",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-tokens-focus-admin",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Tokens Focus Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-tokens-focus-mobile",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Tokens Focus Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-multiple-tokens",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Multiple Tokens",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-empty-tokens",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Empty Tokens",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-copy-failure-recovery",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Copy Failure Recovery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--setup-guide",
+      "title": "User Console/UserConsole",
+      "name": "Setup Guide",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--setup-guide-token-revealed",
+      "title": "User Console/UserConsole",
+      "name": "Setup Guide Token Revealed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--setup-guide-cli-skills",
+      "title": "User Console/UserConsole",
+      "name": "Setup Guide CLI + Skills",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--setup-guide-mobile",
+      "title": "User Console/UserConsole",
+      "name": "Setup Guide Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--setup-guide-cli-skills-mobile",
+      "title": "User Console/UserConsole",
+      "name": "Setup Guide CLI + Skills Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--setup-guide-empty",
+      "title": "User Console/UserConsole",
+      "name": "Setup Guide Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-overview",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Overview",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-setup-action",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Setup Action",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-setup-navigation",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Setup Navigation",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-mobile-credits",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Mobile Logs Entry",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-logs-mobile",
+      "title": "User Console/UserConsole",
+      "name": "Token Logs Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-dark",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Dark",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-live-logs",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Live Logs",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-push-warning",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Push Warning",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-copy-failure-recovery",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Copy Failure Recovery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-revealed",
+      "title": "User Console/UserConsole",
+      "name": "Token Revealed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--token-detail-admin",
+      "title": "User Console/UserConsole",
+      "name": "Token Detail Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcement-history",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcement History",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcement-history-small-max",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcement History Small Max",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcement-history-desktop-min",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcement History Desktop Min",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcement-history-mark-read",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcement History Mark Read",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcement-history-read-ticker",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcement History Read Ticker",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcement-history-empty",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcement History Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-userconsole--console-home-announcement-history-untitled",
+      "title": "User Console/UserConsole",
+      "name": "Console Home Announcement History Untitled",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--dashboard",
+      "title": "Admin/Pages",
+      "name": "Dashboard",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--dashboard-dark",
+      "title": "Admin/Pages",
+      "name": "Dashboard Dark",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--dashboard-stacked",
+      "title": "Admin/Pages",
+      "name": "Dashboard Stacked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--tokens",
+      "title": "Admin/Pages",
+      "name": "Tokens",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--rankings",
+      "title": "Admin/Pages",
+      "name": "Rankings",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--rankings-dimension",
+      "title": "Admin/Pages",
+      "name": "Rankings Dimension",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--rankings-empty",
+      "title": "Admin/Pages",
+      "name": "Rankings Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--rankings-loading",
+      "title": "Admin/Pages",
+      "name": "Rankings Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--rankings-mobile",
+      "title": "Admin/Pages",
+      "name": "Rankings Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--pressure",
+      "title": "Admin/Pages",
+      "name": "Pressure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--pressure-mobile",
+      "title": "Admin/Pages",
+      "name": "Pressure Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--keys",
+      "title": "Admin/Pages",
+      "name": "Keys",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--keys-selected",
+      "title": "Admin/Pages",
+      "name": "Keys Selected",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--keys-sync-usage-in-progress",
+      "title": "Admin/Pages",
+      "name": "Keys Sync Usage In Progress",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--keys-selection-retained-after-sync",
+      "title": "Admin/Pages",
+      "name": "Keys Selection Retained After Sync",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--keys-registration-filters",
+      "title": "Admin/Pages",
+      "name": "Keys Registration Filters",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--keys-temporary-isolation-filter",
+      "title": "Admin/Pages",
+      "name": "Keys Temporary Isolation Filter",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--requests",
+      "title": "Admin/Pages",
+      "name": "Requests",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--requests-result-filter-open",
+      "title": "Admin/Pages",
+      "name": "Requests Result Filter Open",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--alerts",
+      "title": "Admin/Pages",
+      "name": "Alerts",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--alerts-mobile",
+      "title": "Admin/Pages",
+      "name": "Alerts Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--alerts-stale",
+      "title": "Admin/Pages",
+      "name": "Alerts Stale",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--alerts-stale-mobile",
+      "title": "Admin/Pages",
+      "name": "Alerts Stale Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--key-detail-recent-requests",
+      "title": "Admin/Pages",
+      "name": "Key Detail Recent Requests",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--token-detail-recent-requests",
+      "title": "Admin/Pages",
+      "name": "Token Detail Recent Requests",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--requests-token-drawer-desktop",
+      "title": "Admin/Pages",
+      "name": "Requests Token Drawer Desktop",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--jobs",
+      "title": "Admin/Pages",
+      "name": "Jobs",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users",
+      "title": "Admin/Pages",
+      "name": "Users",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-active-only-default",
+      "title": "Admin/Pages",
+      "name": "Users Active Only Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-active-only-search-all",
+      "title": "Admin/Pages",
+      "name": "Users Active Only Search All",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-usage",
+      "title": "Admin/Pages",
+      "name": "Users Usage",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-usage-active-only-default",
+      "title": "Admin/Pages",
+      "name": "Users Usage Active Only Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-usage-active-only-search-all",
+      "title": "Admin/Pages",
+      "name": "Users Usage Active Only Search All",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-usage-stacked",
+      "title": "Admin/Pages",
+      "name": "Users Usage Stacked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-usage-breakage-drawer-proof",
+      "title": "Admin/Pages",
+      "name": "Users Usage Breakage Drawer Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage-monthly-broken-sort-proof",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage Monthly Broken Sort Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage-breakage-drawer-proof",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage Breakage Drawer Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage-mobile",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage-stacked",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage Stacked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage-empty",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage-error",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage Error",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--unbound-token-usage-token-detail-trigger",
+      "title": "Admin/Pages",
+      "name": "Unbound Token Usage Token Detail Trigger",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--users-usage-tooltip-proof",
+      "title": "Admin/Pages",
+      "name": "Users Usage Tooltip Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--recharges",
+      "title": "Admin/Pages",
+      "name": "Recharges",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--monthly-broken-drawer-empty",
+      "title": "Admin/Pages",
+      "name": "Monthly Broken Drawer Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--monthly-broken-drawer-single-row",
+      "title": "Admin/Pages",
+      "name": "Monthly Broken Drawer Single Row",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--monthly-broken-drawer-long-content",
+      "title": "Admin/Pages",
+      "name": "Monthly Broken Drawer Long Content",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--monthly-broken-drawer-overflow",
+      "title": "Admin/Pages",
+      "name": "Monthly Broken Drawer Overflow",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--monthly-broken-drawer-mobile",
+      "title": "Admin/Pages",
+      "name": "Monthly Broken Drawer Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-tags",
+      "title": "Admin/Pages",
+      "name": "User Tags",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-tag-new",
+      "title": "Admin/Pages",
+      "name": "User Tag New",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-tag-edit",
+      "title": "Admin/Pages",
+      "name": "User Tag Edit",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail",
+      "title": "Admin/Pages",
+      "name": "User Detail",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-account-tab",
+      "title": "Admin/Pages",
+      "name": "User Detail Account Tab",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-identity-tab",
+      "title": "Admin/Pages",
+      "name": "User Detail Identity Tab",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-single-token-guard",
+      "title": "Admin/Pages",
+      "name": "User Detail Single Token Guard",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-tags-tab",
+      "title": "Admin/Pages",
+      "name": "User Detail Tags Tab",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-quota-tab",
+      "title": "Admin/Pages",
+      "name": "User Detail Quota Tab",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-quota-tab-compact",
+      "title": "Admin/Pages",
+      "name": "User Detail Quota Tab Compact",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-tokens-tab",
+      "title": "Admin/Pages",
+      "name": "User Detail Tokens Tab",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-compact",
+      "title": "Admin/Pages",
+      "name": "User Detail Compact",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-shared-usage-tooltip",
+      "title": "Admin/Pages",
+      "name": "User Detail Shared Usage Tooltip",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-monthly-gap",
+      "title": "Admin/Pages",
+      "name": "User Detail Monthly Gap",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-business-calls-1-h",
+      "title": "Admin/Pages",
+      "name": "User Detail Business Calls 1 H",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--user-detail-ip-usage",
+      "title": "Admin/Pages",
+      "name": "User Detail Ip Usage",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--announcements",
+      "title": "Admin/Pages",
+      "name": "Announcements",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings",
+      "title": "Admin/Pages",
+      "name": "System Settings",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings-status",
+      "title": "Admin/Pages",
+      "name": "System Settings Status",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings-mcp-session-bindings",
+      "title": "Admin/Pages",
+      "name": "System Settings Mcp Session Bindings",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings-admin",
+      "title": "Admin/Pages",
+      "name": "System Settings Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings-admin-compact",
+      "title": "Admin/Pages",
+      "name": "System Settings Admin Compact",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings-admin-scope-mismatch",
+      "title": "Admin/Pages",
+      "name": "System Settings Admin Scope Mismatch",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings-ha",
+      "title": "Admin/Pages",
+      "name": "System Settings Ha",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--dashboard-ha-attention",
+      "title": "Admin/Pages",
+      "name": "Dashboard Ha Attention",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--system-settings-ha-mobile",
+      "title": "Admin/Pages",
+      "name": "System Settings Ha Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--dashboard-ha-attention-mobile",
+      "title": "Admin/Pages",
+      "name": "Dashboard Ha Attention Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages--proxy-settings",
+      "title": "Admin/Pages",
+      "name": "Proxy Settings",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--flat",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Flat",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--lifecycle-states",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Lifecycle States",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--grouped",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Grouped",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--unbound-totp-prompt",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Unbound Totp Prompt",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--bound-totp-confirmation",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Bound Totp Confirmation",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--refund-failure-feedback",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Refund Failure Feedback",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--expired-clamp-visible",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Expired Clamp Visible",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-rechargerecordsmodule--empty-hidden-module",
+      "title": "Admin/RechargeRecordsModule",
+      "name": "Empty Hidden Module",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-adminshell--panel-header-shell",
+      "title": "Admin/AdminShell",
+      "name": "Panel Header Shell",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-adminshell--token-usage-shell",
+      "title": "Admin/AdminShell",
+      "name": "Token Usage Shell",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-adminshell--panel-header-shell-stacked",
+      "title": "Admin/AdminShell",
+      "name": "Panel Header Shell Stacked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--default",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--dimension-view",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Dimension View",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--empty-state",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Empty State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--error-state",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Error State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--stale-snapshot",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Stale Snapshot",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--connecting-state",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Connecting State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--loading-state",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Loading State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--mobile",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-userrankingscontent--interaction-contract",
+      "title": "Admin/Modules/UserRankingsContent",
+      "name": "Interaction Contract",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--default",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--empty",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--create-announcement",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Create Announcement",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--create-announcement-mobile",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Create Announcement Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--edit-announcement-route",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Edit Announcement Route",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--edit-announcement-route-static",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Edit Announcement Route Static",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--preview-from-list",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Preview From List",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-announcementsmodule--mobile",
+      "title": "Admin/AnnouncementsModule",
+      "name": "Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--default",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--integrity-repairing",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Integrity Repairing",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--no-previous-month-comparison",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "No Previous Month Comparison",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--quarantine-state",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Quarantine State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--large-numbers",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Large Numbers",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--zero-baseline",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Zero Baseline",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--types-mode",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Types Mode",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--credits-mode",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Credits Mode",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--credits-area-mode",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Credits Area Mode",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--results-area-mode",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Results Area Mode",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--types-area-mode",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Types Area Mode",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--types-area-hidden-middle-series",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Types Area Hidden Middle Series",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--hidden-series-empty",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Hidden Series Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--credits-area-local-only",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Credits Area Local Only",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--credits-area-no-upstream-samples",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Credits Area No Upstream Samples",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--credits-empty-data",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Credits Empty Data",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--recent-alerts-desktop-evidence",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Recent Alerts Desktop Evidence",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--recent-alerts-business-hour-window",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Recent Alerts Business Hour Window",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-dashboardoverview--zh-dark-evidence",
+      "title": "Admin/Components/DashboardOverview",
+      "name": "Zh Dark Evidence",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxyegresscontrol--default",
+      "title": "Admin/ForwardProxyEgressControl",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxyegresscontrol--editable",
+      "title": "Admin/ForwardProxyEgressControl",
+      "name": "Editable",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxyegresscontrol--saving-with-bubble",
+      "title": "Admin/ForwardProxyEgressControl",
+      "name": "Saving With Bubble",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxyegresscontrol--enabled-locked",
+      "title": "Admin/ForwardProxyEgressControl",
+      "name": "Enabled Locked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxyegresscontrol--failed-validation",
+      "title": "Admin/ForwardProxyEgressControl",
+      "name": "Failed Validation",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxyegresscontrol--state-gallery",
+      "title": "Admin/ForwardProxyEgressControl",
+      "name": "State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--default",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--error-statistics",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Error Statistics",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--error-statistics-with-chart-bubble",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Error Statistics Chart Bubble Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--global-socks-5-disabled-editable",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Global Socks 5 Disabled Editable",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--global-socks-5-enabling-progress",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Global Socks 5 Enabling Progress",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--global-socks-5-enabled-locked",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Global Socks 5 Enabled Locked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--global-socks-5-enable-failed",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Global Socks 5 Enable Failed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--revalidate-progress-bubble",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Revalidate Progress Card",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--status-detail-bubble",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Status Detail Bubble Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--subscription-dialog-empty",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Subscription Dialog Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--manual-dialog-ready-to-import",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Manual Dialog Ready To Import",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--subscription-validation-success",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Subscription Validation Success",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--subscription-validation-failure",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Subscription Validation Failure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--manual-validation-mixed",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Manual Validation Mixed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--manual-validation-overflow",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Manual Validation Overflow",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--subscription-validating-progress",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Subscription Validating Progress",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--subscription-adding-progress",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Subscription Adding Progress",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--manual-validating-progress",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Manual Validating Progress",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-forwardproxysettingsmodule--progress-failure",
+      "title": "Admin/ForwardProxySettingsModule",
+      "name": "Progress Failure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--default",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--eligible",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Eligible",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--draining",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Draining",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--deferred",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Deferred",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--evidence-deferred",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Evidence Deferred",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--recovering",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Recovering",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--unknown",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Unknown",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--baseline-required",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Baseline Required",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--stalled",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Stalled",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--stale",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Stale",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--state-gallery",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--mobile-393-x-852",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--evidence-deferred-mobile-393-x-852",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Evidence Deferred Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--mobile-state-gallery",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Mobile State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-hanodedetailpanel--mobile",
+      "title": "Admin/HaNodeDetailPanel",
+      "name": "Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-fragments-keystickypanels--default",
+      "title": "Admin/Fragments/KeyStickyPanels",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-fragments-keystickypanels--empty",
+      "title": "Admin/Fragments/KeyStickyPanels",
+      "name": "Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-fragments-keystickypanels--loading",
+      "title": "Admin/Fragments/KeyStickyPanels",
+      "name": "Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-fragments-keystickypanels--error-state",
+      "title": "Admin/Fragments/KeyStickyPanels",
+      "name": "Error State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-fragments-keystickypanels--paginated",
+      "title": "Admin/Fragments/KeyStickyPanels",
+      "name": "Paginated",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-fragments-keystickypanels--gallery",
+      "title": "Admin/Fragments/KeyStickyPanels",
+      "name": "Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-mcpsessionbindingsmodule--active-only",
+      "title": "Admin/Modules/McpSessionBindingsModule",
+      "name": "Active Only",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-mcpsessionbindingsmodule--revoked-history",
+      "title": "Admin/Modules/McpSessionBindingsModule",
+      "name": "Revoked History",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-mcpsessionbindingsmodule--all-states",
+      "title": "Admin/Modules/McpSessionBindingsModule",
+      "name": "All States",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-mcpsessionbindingsmodule--empty-state",
+      "title": "Admin/Modules/McpSessionBindingsModule",
+      "name": "Empty State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-mcpsessionbindingsmodule--interaction-contract",
+      "title": "Admin/Modules/McpSessionBindingsModule",
+      "name": "Interaction Contract",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--default",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--compact-density",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Compact Density",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--rebalance-enabled",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Rebalance Enabled",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--rebalance-warning",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Rebalance Warning",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--api-rebalance-enabled",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Api Rebalance Enabled",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--fixed-project-id-and-control-ua",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Fixed Project Id And Control Ua",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--comparison-only-reconciliation",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Comparison Only Reconciliation",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--applying",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Applying",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--active-users-default-enabled",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Active Users Default Enabled",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--error-state",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Error State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--help-bubble-open",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Help Bubble Open",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--limit-help-tooltips",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Limit Help Tooltips",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--request-rate-edited",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Request Rate Edited",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--autosave-on-blur",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Autosave On Blur",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--blocked-key-base-configured",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Blocked Key Base Configured",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-systemsettingsmodule--client-ip-dialog-with-observed-values",
+      "title": "Admin/SystemSettingsModule",
+      "name": "Client Ip Dialog With Observed Values",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--pending",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Pending",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--blocked-by-sessions",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Blocked By Sessions",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--active",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Active",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--active-paused",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Active Paused",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--healthy",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Healthy",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--compare-only",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Compare Only",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--degraded",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Degraded",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--local-backoff",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Local Backoff",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-local-backoff",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Local Backoff",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--upstream-backoff",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Upstream Backoff",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--global-backoff",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Global Backoff",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--unknown-observation",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Unknown Observation",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--budget-exhausted",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Budget Exhausted",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--no-adjustment",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "No Adjustment",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--projecting",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Projecting",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--observed",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Observed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--transport-failure",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Transport Failure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-transport-failure",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Transport Failure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--transport-failure-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Transport Failure Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-transport-failure-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Transport Failure Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--privacy-status-stale",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Privacy Status Stale",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-privacy-status-stale",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Privacy Status Stale",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--privacy-status-stale-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Privacy Status Stale Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-privacy-status-stale-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Privacy Status Stale Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--semantic-failure",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Semantic Failure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--missing-eligible-upstream-key",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Missing Eligible Upstream Key",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--recovered",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Recovered",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--research-unavailable",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Research Unavailable",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-research-unavailable",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Research Unavailable",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-research-unavailable-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Research Unavailable Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--research-credentials-cooldown",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Research Credentials Cooldown",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-research-credentials-cooldown",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Research Credentials Cooldown",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-research-credentials-cooldown-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Research Credentials Cooldown Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--research-liveness-pressure",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Research Liveness Pressure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-research-liveness-pressure",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Research Liveness Pressure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-research-liveness-pressure-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Research Liveness Pressure Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--empty-state",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Empty State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--error-state",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Error State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--loading-state",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Loading State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--evidence-local-backoff-mobile-393-x-852",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Evidence Local Backoff Mobile 393 X 852",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--gallery",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--mobile-state-gallery",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Mobile State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--mobile",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-modules-systemstatusmodule--interaction-contract",
+      "title": "Admin/Modules/SystemStatusModule",
+      "name": "Interaction Contract",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminpanelheader--default",
+      "title": "Admin/Components/AdminPanelHeader",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminpanelheader--refreshing",
+      "title": "Admin/Components/AdminPanelHeader",
+      "name": "Refreshing",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--lazy-details-gallery",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Lazy Details Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--identifier-alignment",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Identifier Alignment",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--rebalance-markers",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Rebalance Markers",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--request-kind-desktop-expanded",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Request Kind Desktop Expanded",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--request-kind-mobile-drawer",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Request Kind Mobile Drawer",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--catalog-loading",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Catalog Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--empty-state",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Empty State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-adminrecentrequestspanel--error-state",
+      "title": "Admin/Components/AdminRecentRequestsPanel",
+      "name": "Error State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-adminreturntoconsolelink--default",
+      "title": "Admin/AdminReturnToConsoleLink",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-wrappers-admintableshell--default",
+      "title": "Admin/Wrappers/AdminTableShell",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-wrappers-admintableshell--switch-loading",
+      "title": "Admin/Wrappers/AdminTableShell",
+      "name": "Switch Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-wrappers-admintableshell--refreshing",
+      "title": "Admin/Wrappers/AdminTableShell",
+      "name": "Refreshing",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-apikeysvalidationdialog--mixed-results",
+      "title": "Admin/Components/ApiKeysValidationDialog",
+      "name": "Mixed Results",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-apikeysvalidationdialog--checking-in-progress",
+      "title": "Admin/Components/ApiKeysValidationDialog",
+      "name": "Checking In Progress",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-apikeysvalidationdialog--post-import-no-remaining-rows",
+      "title": "Admin/Components/ApiKeysValidationDialog",
+      "name": "Post Import No Remaining Rows",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-apikeysvalidationdialog--post-import-with-remaining-rows",
+      "title": "Admin/Components/ApiKeysValidationDialog",
+      "name": "Post Import With Remaining Rows",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-apikeysvalidationdialog--registration-ip-preview",
+      "title": "Admin/Components/ApiKeysValidationDialog",
+      "name": "Registration Ip Preview",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-apikeysvalidationdialog--assigned-proxy-match-kinds",
+      "title": "Admin/Components/ApiKeysValidationDialog",
+      "name": "Assigned Proxy Match Kinds",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "brand-lockup--full",
+      "title": "Brand/Lockup",
+      "name": "Full",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "brand-lockup--compact",
+      "title": "Brand/Lockup",
+      "name": "Compact",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "brand-lockup--responsive-desktop",
+      "title": "Brand/Lockup",
+      "name": "Responsive Desktop",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "brand-lockup--responsive-minimum",
+      "title": "Brand/Lockup",
+      "name": "Responsive Minimum",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "brand-lockup--responsive-compact",
+      "title": "Brand/Lockup",
+      "name": "Responsive Compact",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-connectivity-checks--state-gallery",
+      "title": "User Console/Fragments/Connectivity Checks",
+      "name": "State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-connectivity-checks--bubble-proof",
+      "title": "User Console/Fragments/Connectivity Checks",
+      "name": "Bubble Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-connectivity-checks--testables",
+      "title": "User Console/Fragments/Connectivity Checks",
+      "name": "Testables",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-wrappers-datetimerangefield--default",
+      "title": "Admin/Wrappers/DateTimeRangeField",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-wrappers-datetimerangefield--month-range",
+      "title": "Admin/Wrappers/DateTimeRangeField",
+      "name": "Month Range",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--node-list-gallery",
+      "title": "Components/HaStatusBanner",
+      "name": "Node List Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--standby-admin",
+      "title": "Components/HaStatusBanner",
+      "name": "Standby Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--provisional-admin",
+      "title": "Components/HaStatusBanner",
+      "name": "Provisional Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--full-master-admin",
+      "title": "Components/HaStatusBanner",
+      "name": "Full Master Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--missing-peer-diagnostics",
+      "title": "Components/HaStatusBanner",
+      "name": "Missing Peer Diagnostics",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--missing-peer-diagnostics-mobile",
+      "title": "Components/HaStatusBanner",
+      "name": "Missing Peer Diagnostics Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--rolling-upgrade-compatibility",
+      "title": "Components/HaStatusBanner",
+      "name": "Rolling Upgrade Compatibility",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--planned-cutover-ready",
+      "title": "Components/HaStatusBanner",
+      "name": "Planned Cutover Ready",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--planned-cutover-running",
+      "title": "Components/HaStatusBanner",
+      "name": "Planned Cutover Running",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--node-source-config-proof",
+      "title": "Components/HaStatusBanner",
+      "name": "Node Source Config Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--planned-cutover-failed",
+      "title": "Components/HaStatusBanner",
+      "name": "Planned Cutover Failed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--timeline-empty",
+      "title": "Components/HaStatusBanner",
+      "name": "Timeline Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--origin-group-source-dialog",
+      "title": "Components/HaStatusBanner",
+      "name": "Origin Group Source Dialog",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--direct-source-dialog",
+      "title": "Components/HaStatusBanner",
+      "name": "Direct Source Dialog",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--standby-source-dialog",
+      "title": "Components/HaStatusBanner",
+      "name": "Standby Source Dialog",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--source-dialog-submit-failure",
+      "title": "Components/HaStatusBanner",
+      "name": "Source Dialog Submit Failure",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--recovery-admin",
+      "title": "Components/HaStatusBanner",
+      "name": "Recovery Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--compact-admin-attention",
+      "title": "Components/HaStatusBanner",
+      "name": "Compact Admin Attention",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-hastatusbanner--user-degraded",
+      "title": "Components/HaStatusBanner",
+      "name": "User Degraded",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-jobkeylink--showcase",
+      "title": "Admin/Components/JobKeyLink",
+      "name": "Showcase",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-components-jobkeylink--bubble-proof",
+      "title": "Admin/Components/JobKeyLink",
+      "name": "Bubble Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-languageswitcher--default",
+      "title": "Components/LanguageSwitcher",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-pages-notfoundfallback--light-theme",
+      "title": "Support/Pages/NotFoundFallback",
+      "name": "Light Theme",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-pages-notfoundfallback--dark-theme",
+      "title": "Support/Pages/NotFoundFallback",
+      "name": "Dark Theme",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-offlinestatusbanner--default",
+      "title": "Support/Status/OfflineStatusBanner",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-offlinestatusbanner--admin",
+      "title": "Support/Status/OfflineStatusBanner",
+      "name": "Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--auth-status-checking-slow-stats",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Auth Status Checking Slow Stats",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--auth-status-unavailable",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Auth Status Unavailable",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-out-no-token",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged Out No Token",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--load-balancer-visual-proof",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Load Balancer Visual Proof",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--load-balancer-visual-proof-mobile",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Load Balancer Visual Proof Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-out-registration-paused",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged Out Registration Paused",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-out-with-token",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged Out With Token",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-in-no-privilege",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged In No Privilege",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-in-builtin-auth",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged In Builtin Auth",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-in-admin",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged In Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-out-no-token-with-builtin-auth",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged Out No Token With Builtin Auth",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-out-with-token-builtin-auth",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged Out With Token Builtin Auth",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-out-no-token-admin",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged Out No Token Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-publichomeherocard--logged-out-with-token-admin",
+      "title": "Public/PublicHomeHeroCard",
+      "name": "Logged Out With Token Admin",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-wrappers-quotarangefield--default",
+      "title": "Admin/Wrappers/QuotaRangeField",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-requestkindbadge--default",
+      "title": "Components/RequestKindBadge",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-requestkindbadge--compact",
+      "title": "Components/RequestKindBadge",
+      "name": "Compact",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-requestkindbadge--theme-catalog",
+      "title": "Components/RequestKindBadge",
+      "name": "Theme Catalog",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-rollingnumber--default",
+      "title": "Components/RollingNumber",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-rollingnumber--loading",
+      "title": "Components/RollingNumber",
+      "name": "Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-rollingnumber--empty",
+      "title": "Components/RollingNumber",
+      "name": "Empty",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-rollingnumber--carry-chain-suffix-only",
+      "title": "Components/RollingNumber",
+      "name": "Carry Chain Suffix Only",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-rollingnumber--borrow-chain-suffix-only",
+      "title": "Components/RollingNumber",
+      "name": "Borrow Chain Suffix Only",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-rollingnumber--equal-digit-full-cycle",
+      "title": "Components/RollingNumber",
+      "name": "Equal Digit Full Cycle",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-rollingnumber--group-boundary-jump",
+      "title": "Components/RollingNumber",
+      "name": "Group Boundary Jump",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-searchablefacetselect--default",
+      "title": "Components/SearchableFacetSelect",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-searchablefacetselect--selected-value",
+      "title": "Components/SearchableFacetSelect",
+      "name": "Selected Value",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-searchablefacetselect--state-gallery",
+      "title": "Components/SearchableFacetSelect",
+      "name": "State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-statusbadge--success",
+      "title": "Components/StatusBadge",
+      "name": "Success",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-statusbadge--warning",
+      "title": "Components/StatusBadge",
+      "name": "Warning",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-statusbadge--error",
+      "title": "Components/StatusBadge",
+      "name": "Error",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-statusbadge--info",
+      "title": "Components/StatusBadge",
+      "name": "Info",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-statusbadge--neutral",
+      "title": "Components/StatusBadge",
+      "name": "Neutral",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "components-themetoggle--default",
+      "title": "Components/ThemeToggle",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-wrappers-tokensecretfield--default",
+      "title": "Public/Wrappers/TokenSecretField",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-wrappers-tokensecretfield--visible",
+      "title": "Public/Wrappers/TokenSecretField",
+      "name": "Visible",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-wrappers-tokensecretfield--copied-state",
+      "title": "Public/Wrappers/TokenSecretField",
+      "name": "Copied State",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--ready",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Ready",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--installing",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Installing",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--activating",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Activating",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--activation-failed",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Activation Failed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--chinese-ready",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Chinese Ready",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--chinese-activation-failed",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Chinese Activation Failed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--dark-ready",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Dark Ready",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "support-status-updateavailablebanner--dark-activation-failed",
+      "title": "Support/Status/UpdateAvailableBanner",
+      "name": "Dark Activation Failed",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsolefooter--stable-release",
+      "title": "Console/UserConsoleFooter",
+      "name": "Stable Release",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsolefooter--prerelease",
+      "title": "Console/UserConsoleFooter",
+      "name": "Prerelease",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsolefooter--non-release-fallback",
+      "title": "Console/UserConsoleFooter",
+      "name": "Non Release Fallback",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsoleheader--desktop-landing",
+      "title": "Console/UserConsoleHeader",
+      "name": "storybook_canvas / desktop-landing",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsoleheader--token-detail",
+      "title": "Console/UserConsoleHeader",
+      "name": "storybook_canvas / token-detail",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsoleheader--mobile-collapsed-actions",
+      "title": "Console/UserConsoleHeader",
+      "name": "storybook_canvas / mobile-collapsed-actions",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsoleheader--long-chinese-summary",
+      "title": "Console/UserConsoleHeader",
+      "name": "中文摘要",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "console-userconsoleheader--dark-theme",
+      "title": "Console/UserConsoleHeader",
+      "name": "暗色桌面",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--update-available-below-header",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Update Available Below Header",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--update-available-below-header-mobile",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Update available below header / mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--passkey-login",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Passkey Login",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--passkey-login-mobile",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Passkey login / mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--reset-enrollment",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Reset Enrollment",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--reset-enrollment-complete",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Reset Enrollment Complete",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--password-only",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Password Only",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--passkey-only-totp-required",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Passkey Only Totp Required",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--no-login-methods",
+      "title": "Public/Pages/AdminLogin",
+      "name": "No login methods / desktop",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--no-login-methods-mobile",
+      "title": "Public/Pages/AdminLogin",
+      "name": "No login methods / mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--no-login-methods-short-mobile",
+      "title": "Public/Pages/AdminLogin",
+      "name": "No login methods / short mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--profile-unavailable",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Profile Unavailable",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-adminlogin--dark-theme",
+      "title": "Public/Pages/AdminLogin",
+      "name": "Dark Theme",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-keydetailroute--c-bo-x-review",
+      "title": "Admin/Pages/KeyDetailRoute",
+      "name": "C Bo X Review",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-keydetailroute--c-bo-x-review-stacked",
+      "title": "Admin/Pages/KeyDetailRoute",
+      "name": "C Bo X Review Stacked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-keydetailroute--c-bo-x-quarantined-sync-ready",
+      "title": "Admin/Pages/KeyDetailRoute",
+      "name": "C Bo X Quarantined Sync Ready",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-registrationpaused--default",
+      "title": "Public/Pages/RegistrationPaused",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "public-pages-registrationpaused--dark-theme",
+      "title": "Public/Pages/RegistrationPaused",
+      "name": "Dark Theme",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--token-detail-story-canvas",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Token Detail Story Canvas",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--default",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--default-stacked",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Default Stacked",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--unbound",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Unbound",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--initial-loading",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Initial Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--switch-loading",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Switch Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--refreshing",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Refreshing",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "admin-pages-tokendetail--dense-request-records",
+      "title": "Admin/Pages/TokenDetail",
+      "name": "Dense Request Records",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-billing-billing-page--default",
+      "title": "User Console/Billing/Billing Page",
+      "name": "Default",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-billing-billing-page--lifecycle-states",
+      "title": "User Console/Billing/Billing Page",
+      "name": "Lifecycle States",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-billing-billing-page--clamped-current-month-preview",
+      "title": "User Console/Billing/Billing Page",
+      "name": "Clamped Current Month Preview",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-billing-billing-page--no-orders-no-future",
+      "title": "User Console/Billing/Billing Page",
+      "name": "No Orders No Future",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-billing-billing-page--recharge-disabled",
+      "title": "User Console/Billing/Billing Page",
+      "name": "Recharge Disabled",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-billing-billing-page--loading",
+      "title": "User Console/Billing/Billing Page",
+      "name": "Loading",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-billing-billing-page--mobile",
+      "title": "User Console/Billing/Billing Page",
+      "name": "Mobile",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--gallery",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--timeout-recovery",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "Timeout Recovery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--success-handoff",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "Success Handoff",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--desktop-timeout",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "Desktop Timeout",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--desktop-connecting",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "Desktop Connecting",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--mobile-timeout",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "Mobile Timeout",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--desktop-success",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "Desktop Success",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-fragments-oauth-callback--mobile-success",
+      "title": "User Console/Fragments/OAuth Callback",
+      "name": "Mobile Success",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-tokenlistactions--playground",
+      "title": "User Console/TokenListActions",
+      "name": "Playground",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-tokenlistactions--state-gallery",
+      "title": "User Console/TokenListActions",
+      "name": "State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    },
+    {
+      "id": "user-console-tokenlistactions--dark-state-gallery",
+      "title": "User Console/TokenListActions",
+      "name": "Dark State Gallery",
+      "desktop": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      },
+      "mobile": {
+        "rendered": true,
+        "pageOverflow": false,
+        "namedOverlays": true
+      }
+    }
+  ]
+}

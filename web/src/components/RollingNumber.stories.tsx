@@ -20,7 +20,8 @@ function RollingNumberDeltaDemo(props: { from: number; to: number; delay?: numbe
 
   return (
     <div style={{
-      minWidth: 420,
+      width: '100%',
+      maxWidth: 420,
       borderRadius: 28,
       border: '1px solid hsl(var(--legacy-border) / 0.68)',
       background: 'hsl(var(--legacy-card) / 0.92)',
@@ -49,7 +50,7 @@ function RollingNumberDeltaDemo(props: { from: number; to: number; delay?: numbe
       <div style={{
         marginTop: 8,
         fontFamily: 'Nunito, var(--font-sans, sans-serif)',
-        fontSize: 58,
+        fontSize: 'clamp(32px, 8vw, 58px)',
         fontWeight: 900,
         letterSpacing: '0.02em',
         lineHeight: 1,

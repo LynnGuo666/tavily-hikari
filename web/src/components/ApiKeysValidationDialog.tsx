@@ -1,10 +1,8 @@
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import React from "react";
-import { createPortal } from "react-dom";
 import { Icon } from "../lib/icons";
 
 import { useTranslate } from "../i18n";
-import { useAnchoredFloatingLayer } from "../lib/useAnchoredFloatingLayer";
 import { useViewportMode } from "../lib/responsive";
 import { StatusBadge, type StatusTone } from "./StatusBadge";
 import { Button } from '@/components/ui/button';
@@ -12,8 +10,9 @@ import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
 } from '@/components/ui/dialog';
-import { Drawer, DrawerContent } from '@/components/ui/drawer';
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   Table,
@@ -210,11 +209,8 @@ function RegistrationIpIndicator(props: {
   regionLabel: string;
   proxyLabelText: string;
 }): React.JSX.Element {
-  const triggerRef = React.useRef<HTMLSpanElement | null>(null);
-  const [open, setOpen] = React.useState(false);
   const region = props.region?.trim() ?? null;
   const proxyValue = props.proxyLabel?.trim() || props.proxyKey?.trim() || null;
-  const proxyValueToneClass = assignedProxyMatchToneClass(props.proxyMatchKind);
   const accessibleLabel = [
     `${props.ipLabel}: ${props.ip}`,
     region ? `${props.regionLabel}: ${region}` : null,
@@ -222,76 +218,31 @@ function RegistrationIpIndicator(props: {
   ]
     .filter(Boolean)
     .join("; ");
-  const { layerRef: bubbleRef, position } = useAnchoredFloatingLayer<HTMLSpanElement>({
-    open,
-    anchorEl: triggerRef.current,
-    placement: "bottom",
-    align: "center",
-    offset: 10,
-    viewportMargin: 12,
-    arrowPadding: 18,
-  });
-
   return (
-    <span>
-      <span
-        ref={triggerRef}
-        className="inline-flex"
-        tabIndex={0}
-        aria-label={accessibleLabel}
-        data-registration-ip-trigger="true"
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
-      >
-        <Badge
-          variant="outline"
-          className="gap-1 rounded-full border-success/30 bg-success/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-success"
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span
+          className="inline-flex"
+          tabIndex={0}
+          aria-label={accessibleLabel}
+          data-registration-ip-trigger="true"
         >
-          <Icon icon="mdi:check-bold" width={12} height={12} aria-hidden="true" />
-          <span>{props.label}</span>
-        </Badge>
-      </span>
-      {open && typeof document !== "undefined"
-        ? createPortal(
-            <span
-              ref={bubbleRef}
-              className="key-validation-bubble pointer-events-none"
-              role="tooltip"
-              data-placement={position?.placement ?? "bottom"}
-              style={{
-                top: `${position?.top ?? 0}px`,
-                left: `${position?.left ?? 0}px`,
-                visibility: position ? "visible" : "hidden",
-                ["--key-validation-bubble-arrow-left" as string]: `${position?.arrowOffset ?? 40}px`,
-              }}
-            >
-              <span>
-                <span>{props.ipLabel}</span>
-                <span>{props.ip}</span>
-              </span>
-              {region ? (
-                <span>
-                  <span>{props.regionLabel}</span>
-                  <span>{region}</span>
-                </span>
-              ) : null}
-              {proxyValue ? (
-                <span>
-                  <span>{props.proxyLabelText}</span>
-                  <span
-                    className={`key-validation-bubble-value${proxyValueToneClass ? ` ${proxyValueToneClass}` : ""}`}
-                  >
-                    {proxyValue}
-                  </span>
-                </span>
-              ) : null}
-            </span>,
-            document.body,
-          )
-        : null}
-    </span>
+          <Badge variant="outline" className="gap-1">
+            <Icon icon="mdi:check-bold" width={12} height={12} aria-hidden="true" />
+            <span>{props.label}</span>
+          </Badge>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent side="bottom" className="max-w-[min(24rem,calc(100vw-2rem))]">
+        <dl className="flex flex-col gap-2 break-all">
+          <div><dt>{props.ipLabel}</dt><dd>{props.ip}</dd></div>
+          {region ? <div><dt>{props.regionLabel}</dt><dd>{region}</dd></div> : null}
+          {proxyValue ? (
+            <div><dt>{props.proxyLabelText}</dt><dd>{proxyValue}</dd></div>
+          ) : null}
+        </dl>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -381,6 +332,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
     return rows.filter((row) => filterKeyForStatus(row.status) === activeFilter);
   }, [props.state?.rows, activeFilter]);
   const isSmallViewport = viewportMode === "small";
+  const ValidationTitle = isSmallViewport ? DrawerTitle : DialogTitle;
   const importVerboseLabel = (actions.importValid ?? "Import {count} valid keys").replace(
     "{count}",
     String(props.validKeys.length),
@@ -411,14 +363,14 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
   }, [props.state]);
 
   const content = (
-    <div className="flex flex-col h-full">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       {/* Header */}
-      <div className="px-4 md:px-5 pt-4 pb-3 border-b">
+      <div className="shrink-0 px-4 md:px-5 pt-4 pb-3 border-b">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <h3 className="m-0 font-extrabold text-lg md:text-xl tracking-tight">
+            <ValidationTitle>
               {validationStrings.title}
-            </h3>
+            </ValidationTitle>
             <div className="mt-1 text-sm opacity-70 truncate">
               {groupText}
               {props.state ? (
@@ -437,6 +389,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
               className="h-9 w-9 rounded-full"
               onClick={props.onClose}
               title={actions.close}
+              aria-label={actions.close}
             >
               <Icon icon="mdi:close" width={18} height={18} />
             </Button>
@@ -790,7 +743,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
       </div>
 
       {/* Footer */}
-      <div className="px-4 md:px-5 py-3 border-t">
+      <div className="shrink-0 px-4 md:px-5 py-3 border-t">
         {props.exhaustedKeys.length > 0 && (
           <div className="mb-2 text-sm opacity-70 flex items-start gap-2 min-w-0">
             <span className="flex-shrink-0 mt-0.5">
@@ -852,7 +805,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
   if (isSmallViewport) {
     return (
       <Drawer open={props.open} onOpenChange={handleOpenChange} shouldScaleBackground={false}>
-        <DrawerContent>
+        <DrawerContent aria-describedby={undefined}>
           {content}
         </DrawerContent>
       </Drawer>
@@ -861,7 +814,7 @@ export function ApiKeysValidationDialog(props: ApiKeysValidationDialogProps): Re
 
   return (
     <Dialog open={props.open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-5xl gap-0 p-0 sm:max-h-[min(calc(100dvh-4rem),calc(100vh-4rem))] [&>button]:hidden">
+      <DialogContent showCloseButton={false} aria-describedby={undefined} className="sm:max-w-5xl gap-0 p-0 sm:max-h-[min(calc(100dvh-4rem),calc(100vh-4rem))]">
         {content}
       </DialogContent>
     </Dialog>
