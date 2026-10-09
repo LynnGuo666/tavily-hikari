@@ -1,0 +1,22 @@
+[
+  {
+    "mode": "light",
+    "tone": "success",
+    "ratio": 4.82924516906307
+  },
+  {
+    "mode": "light",
+    "tone": "warning",
+    "ratio": 5.167558174667845
+  },
+  {
+    "mode": "dark",
+    "tone": "success",
+    "ratio": 7.142697853439158
+  },
+  {
+    "mode": "dark",
+    "tone": "warning",
+    "ratio": 9.819955873029683
+  }
+]

@@ -1,0 +1,271 @@
+[
+  {
+    "path": "/",
+    "headings": [],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin",
+    "headings": [
+      "Tavily Hikari 总览"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/analysis/rankings",
+    "headings": [
+      "用户排行"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/analysis/usage",
+    "headings": [
+      "用户用量",
+      "用户用量"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/analysis/pressure",
+    "headings": [
+      "压力"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/keys",
+    "headings": [
+      "API Keys"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/keys/Hk01",
+    "headings": [
+      "密钥详情",
+      "密钥详情"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/tokens",
+    "headings": [
+      "访问令牌"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/tokens/a1b2",
+    "headings": [
+      "访问令牌详情",
+      "访问令牌详情"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/tokens/leaderboard",
+    "headings": [
+      "未关联 Token 用量",
+      "未关联 Token 用量"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/users",
+    "headings": [
+      "用户管理"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/users/usage",
+    "headings": [
+      "用户用量",
+      "用户用量"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/user-tags",
+    "headings": [
+      "页面不存在"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/announcements",
+    "headings": [
+      "公告"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/announcements/new",
+    "headings": [
+      "公告"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/recharges",
+    "headings": [
+      "充值记录"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/requests",
+    "headings": [
+      "近期请求"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/jobs",
+    "headings": [
+      "计划任务"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/alerts",
+    "headings": [
+      "告警中心"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/system-settings",
+    "headings": [
+      "系统设置"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/system-settings/status",
+    "headings": [
+      "系统状态"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/system-settings/admin",
+    "headings": [
+      "管理员"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/system-settings/ha",
+    "headings": [
+      "高可用",
+      "HA 服务节点"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/system-settings/mcp-session-bindings",
+    "headings": [
+      "遗留会话绑定记录"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/proxy-settings",
+    "headings": [
+      "正向代理设置"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/console",
+    "headings": [
+      "维护窗口通知"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/console/setup",
+    "headings": [
+      "维护窗口通知"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/console/billing",
+    "headings": [
+      "自然月安排",
+      "维护窗口通知"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/console/tokens/a1b2",
+    "headings": [
+      "Token 详情 a1b2",
+      "近期请求（50 条）",
+      "维护窗口通知"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/login",
+    "headings": [],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/registration-paused",
+    "headings": [
+      "新用户注册暂时关闭"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/users/tags",
+    "headings": [
+      "标签目录"
+    ],
+    "overflow": false,
+    "blank": false
+  },
+  {
+    "path": "/admin/users/tags/new",
+    "headings": [
+      "标签目录"
+    ],
+    "overflow": false,
+    "blank": false
+  }
+]
